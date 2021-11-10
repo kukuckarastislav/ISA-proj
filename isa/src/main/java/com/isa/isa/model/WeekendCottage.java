@@ -9,7 +9,7 @@ public class WeekendCottage {
 	private int id;
 	private int ownerID;
 	private String name;
-	private String address;
+	private Address address;
 	private String description;
 	private ArrayList<String> images;
 	private String behaviourRules;

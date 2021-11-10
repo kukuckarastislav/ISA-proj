@@ -2,6 +2,6 @@ package com.isa.isa.model.enums;
 
 public enum AdditionalServices {
 
-	OPEN_FIRE, WIFI
+	OPEN_FIRE, WIFI, INSTRUCOTR
 	
 }

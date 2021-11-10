@@ -7,7 +7,7 @@ public class Client {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private String addres;
+	private Address address;
 	private String city;
 	private String country;
 	private String phoneNumber;
@@ -18,7 +18,7 @@ public class Client {
 	}
 
 
-	public Client(int id, String email, String password, String firstName, String lastName, String addres, String city,
+	public Client(int id, String email, String password, String firstName, String lastName, Address address, String city,
 			String country, String phoneNumber) {
 		super();
 		this.id = id;
@@ -26,7 +26,7 @@ public class Client {
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.addres = addres;
+		this.address = address;
 		this.city = city;
 		this.country = country;
 		this.phoneNumber = phoneNumber;
@@ -83,13 +83,13 @@ public class Client {
 	}
 
 
-	public String getAddres() {
-		return addres;
+	public Address getAddres() {
+		return address;
 	}
 
 
-	public void setAddres(String addres) {
-		this.addres = addres;
+	public void setAddres(Address address) {
+		this.address = address;
 	}
 
 

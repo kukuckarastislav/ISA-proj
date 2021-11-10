@@ -10,7 +10,7 @@ public class CottageOwner {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private String addres;
+	private Address address;
 	private String city;
 	private String country;
 	private String phoneNumber;
