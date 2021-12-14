@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
 export default {
   name: 'HelloWorld',
   props: {
@@ -17,10 +17,10 @@ export default {
     }
   },
   mounted() {
-
-    this.msgFromBackend = 'super'
+    /*
     axios.get('http://localhost:8180/helloTest')
 			.then(response => (this.msgFromBackend = response.data)).catch(err => (alert(err)));
+      */
   },
   methods: {
 
