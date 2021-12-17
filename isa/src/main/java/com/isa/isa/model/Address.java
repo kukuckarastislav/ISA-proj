@@ -1,12 +1,11 @@
 package com.isa.isa.model;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="address")
+@Embeddable 
 public class Address {
-	
 	
 	private String country;
 	private String city;

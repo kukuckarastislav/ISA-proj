@@ -2,11 +2,14 @@ package com.isa.isa.model;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 
@@ -33,8 +36,8 @@ public abstract class Person {
 	@Column(nullable=false)
 	private String lastName;
 	
-	//@Column(nullable=false)
-	//private Address address;
+	@Embedded
+	private Address address;
 
 	@Column(nullable=false)
 	private String phoneNumber;
@@ -95,7 +98,7 @@ public abstract class Person {
 	}
 
 
-	/*
+	
 	public Address getAddress() {
 		return address;
 	}
@@ -104,7 +107,7 @@ public abstract class Person {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	*/
+	
 
 	public String getPhoneNumber() {
 		return phoneNumber;
