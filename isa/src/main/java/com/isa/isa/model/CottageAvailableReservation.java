@@ -8,7 +8,7 @@ import com.isa.isa.model.enums.AdditionalServices;
 public class CottageAvailableReservation {
 
 	private int id;
-	private WeekendCottage weekendCottage;
+	private Cottage weekendCottage;
 	private Date reservationBeginning;
 	private int duration;
 	private int maxNumberOfPeople;

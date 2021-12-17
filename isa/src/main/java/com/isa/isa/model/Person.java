@@ -1,35 +1,47 @@
 package com.isa.isa.model;
 
-public class Client {
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.SequenceGenerator;
+
+
+
+@Entity
+@Inheritance(strategy=TABLE_PER_CLASS)
+public abstract class Person {
 	
+	@Id
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 10, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
 	private int id;
+	
+	@Column(nullable=false)
 	private String email;
+	
+	@Column(nullable=false)
 	private String password;
+	
+	@Column(nullable=false)
 	private String firstName;
+	
+	@Column(nullable=false)
 	private String lastName;
-	private Address address;
-	private String city;
-	private String country;
+	
+	//@Column(nullable=false)
+	//private Address address;
+
+	@Column(nullable=false)
 	private String phoneNumber;
 	
 	
-	public Client() {
+	public Person() {
 
-	}
-
-
-	public Client(int id, String email, String password, String firstName, String lastName, Address address, String city,
-			String country, String phoneNumber) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.city = city;
-		this.country = country;
-		this.phoneNumber = phoneNumber;
 	}
 
 
@@ -83,35 +95,16 @@ public class Client {
 	}
 
 
-	public Address getAddres() {
+	/*
+	public Address getAddress() {
 		return address;
 	}
 
 
-	public void setAddres(Address address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
-
-
-	public String getCity() {
-		return city;
-	}
-
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-
-	public String getCountry() {
-		return country;
-	}
-
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
+	*/
 
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -121,6 +114,8 @@ public class Client {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+
 	
 	
 }

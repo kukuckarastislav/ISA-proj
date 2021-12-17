@@ -1,7 +1,14 @@
 package com.isa.isa.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+//@Entity
+//@Table(name="address")
 public class Address {
 	
+	
+	private String country;
 	private String city;
 	private String street;
 	private String number;
@@ -9,14 +16,14 @@ public class Address {
 	private float longitude;
 	
 	public Address() { }
+
 	
-	public Address(String city, String street, String number, float latitude, float longitude) {
-		super();
-		this.city = city;
-		this.street = street;
-		this.number = number;
-		this.latitude = latitude;
-		this.longitude = longitude;
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public String getCity() {
@@ -58,10 +65,6 @@ public class Address {
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
 	}
-	
-	
-	
-	
 	
 	
 }
