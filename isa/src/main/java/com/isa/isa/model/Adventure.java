@@ -2,7 +2,7 @@ package com.isa.isa.model;
 
 import java.util.Set;
 
-import com.isa.isa.model.enums.AdditionalEquipment;
+
 
 import javax.persistence.*;
 
@@ -32,13 +32,19 @@ public class Adventure {
 
 	//private Set<AdventureAvailableReservation> availableTermins; // fast actions
 	private String behaviourRules;
+	
+	@ManyToMany
+	@JoinTable(name = "adventure_additional_equipment", joinColumns = @JoinColumn(name = "adventure_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "additional_equipment_id", referencedColumnName = "id"))
+	private Set<AdditionalEquipment> AdditionalEquipments;
 
-	//private Set<AdditionalEquipment> AdditionalEquipments;
-
-	// MANY TO MANY
-	//private Set<ItemPrice> pricelist;
+	@ManyToMany
+	@JoinTable(name = "adventure_additional_services", joinColumns = @JoinColumn(name = "adventure_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "additional_service_id", referencedColumnName = "id"))
+	private Set<ItemPrice> pricelist;
 
 	private String termsOfTermination;
+	
+	@Column(nullable=true)
+	private double averageGrade;
 	
 	public Adventure() { }
 
