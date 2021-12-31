@@ -64,6 +64,17 @@ public class Address {
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
 	}
-	
-	
+
+
+	@Override
+	public String toString() {
+		return "Address{" +
+				"country='" + country + '\'' +
+				", city='" + city + '\'' +
+				", street='" + street + '\'' +
+				", number='" + number + '\'' +
+				", latitude=" + latitude +
+				", longitude=" + longitude +
+				'}';
+	}
 }

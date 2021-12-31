@@ -1,15 +1,15 @@
 
 insert into cottage_owner (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation) 
-values (1, 'Novi Sad', 'Serbia', 34, 54, 10, 'Bulevar evrope', 'email@gg', 'pass', 'milan', 'milanovic', '030345', 'imao sam zelju');
+values (1, 'Novi Sad', 'Serbia', 34, 54, 10, 'Bulevar evrope', 'isaprojectftn+1@gmail.com', 'pass', 'milan', 'milanovic', '030345', 'imao sam zelju');
 
 insert into cottage_owner (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation)
-values (2, 'Beograd', 'Serbia', 14, 24, 35, 'Knez', 'AHAHAHA@gg', 'pass', 'milan', 'milanovic', '030345', 'imao sam zelju');
+values (2, 'Beograd', 'Serbia', 14, 24, 35, 'Knez', 'isaprojectftn+2@gmail.com', 'pass', 'milan', 'milanovic', '030345', 'imao sam zelju');
 
 insert into cottage_owner (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation) 
-values (3, 'Backi Petrovac', 'Serbia', 14, 24, 35, 'Knez', 'AHAHAHA@gg', 'pass', 'Rastisalv', 'Kukucka', '030345', 'imao sam zelju');
+values (3, 'Backi Petrovac', 'Serbia', 14, 24, 35, 'Knez', 'isaprojectftn+3@gmail.com', 'pass', 'Rastisalv', 'Kukucka', '030345', 'imao sam zelju');
 
 insert into instructor (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation)
-values (4, 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 'isaprojectftn+1@gmail.com', 'pass', 'Ivan', 'Citanov', '030345', 'Hoho instruktor');
+values (4, 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 'isaprojectftn+4@gmail.com', 'pass', 'Ivan', 'Citanov', '030345', 'Hoho instruktor');
 
 
 

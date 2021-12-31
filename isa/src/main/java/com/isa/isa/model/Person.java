@@ -1,5 +1,7 @@
 package com.isa.isa.model;
 
+import com.isa.isa.DTO.StuffDTO;
+
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -24,7 +26,7 @@ public abstract class Person {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
 	private int id;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, unique=true)
 	private String email;
 	
 	@Column(nullable=false)
@@ -44,7 +46,15 @@ public abstract class Person {
 	
 	
 	public Person() {
+	}
 
+	public Person(StuffDTO stuffDTO) {
+		this.email = stuffDTO.getEmail();
+		this.password = stuffDTO.getPassword();
+		this.firstName = stuffDTO.getFirstName();
+		this.lastName = stuffDTO.getLastName();
+		this.address = stuffDTO.getAddress();
+		this.phoneNumber = stuffDTO.getPhoneNumber();
 	}
 
 
@@ -98,7 +108,6 @@ public abstract class Person {
 	}
 
 
-	
 	public Address getAddress() {
 		return address;
 	}

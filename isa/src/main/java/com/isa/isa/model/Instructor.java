@@ -1,5 +1,7 @@
 package com.isa.isa.model;
 
+import com.isa.isa.DTO.StuffDTO;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,4 +15,11 @@ public class Instructor extends Person{
 
     @Column(name="registrationMotivation", nullable=true)
     private String registrationMotivation;
+
+    public Instructor(){}
+
+    public Instructor(StuffDTO stuffDTO) {
+        super(stuffDTO);
+        registrationMotivation = stuffDTO.getRegistrationMotivation();
+    }
 }
