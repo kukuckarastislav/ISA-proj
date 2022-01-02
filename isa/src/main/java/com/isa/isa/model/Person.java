@@ -1,8 +1,13 @@
 package com.isa.isa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.StuffDTO;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
+
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -14,11 +19,13 @@ import javax.persistence.Inheritance;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 
 @Entity
 @Inheritance(strategy=TABLE_PER_CLASS)
-public abstract class Person {
+public abstract class Person implements UserDetails {
 	
 	@Id
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +51,12 @@ public abstract class Person {
 	@Column(nullable=false)
 	private String phoneNumber;
 	
+	 @Column(name = "enabled")
+	    private boolean enabled;
+
+	 @Column(name = "last_password_reset_date")
+	 private Timestamp lastPasswordResetDate;
+	
 	
 	public Person() {
 	}
@@ -55,6 +68,15 @@ public abstract class Person {
 		this.lastName = stuffDTO.getLastName();
 		this.address = stuffDTO.getAddress();
 		this.phoneNumber = stuffDTO.getPhoneNumber();
+	}
+	
+	public Person(ClientDto clientDto) {
+		this.email = clientDto.getEmail();
+		this.password = clientDto.getPassword();
+		this.firstName = clientDto.getFirstName();
+		this.lastName = clientDto.getLastName();
+		this.address = clientDto.getAddress();
+		this.phoneNumber = clientDto.getPhoneNumber();
 	}
 
 
@@ -126,6 +148,33 @@ public abstract class Person {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	
+	  public Timestamp getLastPasswordResetDate() {
+	        return lastPasswordResetDate;
+	    }
+
+	    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+	        this.lastPasswordResetDate = lastPasswordResetDate;
+	    }
+
+	    @JsonIgnore
+	    @Override
+	    public boolean isAccountNonExpired() {
+	        return true;
+	    }
+
+	    @JsonIgnore
+	    @Override
+	    public boolean isAccountNonLocked() {
+	        return true;
+	    }
+
+	    @JsonIgnore
+	    @Override
+	    public boolean isCredentialsNonExpired() {
+	        return true;
+	    }
+
 
 
 	

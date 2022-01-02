@@ -76,7 +76,7 @@
 </template>
 
 <script>
-
+import axios from "axios";
 export default {
   name: 'Registration',
   components: {
@@ -89,6 +89,7 @@ export default {
         password: '',
         firstName: '',
         lastName: '',
+        phoneNumber: '011-111-111',
         address: {
           country: '',
           city: '',
@@ -106,8 +107,9 @@ export default {
   },
   methods: {
     sendRegistration: function(){
-      alert('send registration');
-      console.log(this.registration);
+      axios
+          .post('http://localhost:8180/api/auth/registration',this.registration)
+          .then(response => console.log(response))
     }
   }
 }
