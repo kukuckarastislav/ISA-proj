@@ -5,8 +5,8 @@ import Login from '../views/Login.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: '/registration', name: 'Registration', component: Registration},
-  { path: '/login', name: 'Login', component: Login}
+  { path: '/registration', name: 'Registration', component: Registration },
+  { path: '/login', name: 'Login', component: Login }
 ]
 
 const router = createRouter({

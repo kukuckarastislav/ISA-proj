@@ -1,5 +1,6 @@
 <template>
   <!-- NAV -->
+  <div class="fixed-top">
   <nav class="navbar navbar-expand-lg navbar-dark py-3 fixed-top isa-color-standard">
             <div class="container">
                 <a href="/" class="navbar-brand">Fishing Online</a>
@@ -28,6 +29,21 @@
                 </div>
             </div>
         </nav>
+  
+         
+    
+    <div v-if="role === 'ROLE_ADMIN'">
+      <AdminLinks></AdminLinks>
+    </div>
+    <!-- 
+    <div v-if="role == 'ROLE_COTTAGE_OWNER'">
+      <CottageOwnerLinks></CottageOwnerLinks>
+    </div>
+    -->
+
+  </div>
+  <div style="height: 72px;"></div>
+  <div v-if="role !== ''" style="height: 40px;"></div>
 
   <router-view/>
 
@@ -47,10 +63,12 @@
 <script>
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
+import AdminLinks from './views/Admin.vue'
 
 export default {
   name: 'App',
   components: {
+    AdminLinks
 
   },
   mounted: function(){
@@ -72,7 +90,6 @@ export default {
           .then(response => console.log(response))
     }
   }
-
   
 }
 </script>

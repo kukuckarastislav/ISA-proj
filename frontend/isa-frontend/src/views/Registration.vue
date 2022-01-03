@@ -1,5 +1,4 @@
 <template>
-    <div style="height: 100px;"></div>
 
 
     <div class="container">
