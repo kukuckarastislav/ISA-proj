@@ -23,7 +23,7 @@
                         <a href="/registration" class="nav-link">registration</a>
                         </li>
                         <li v-if="role!==''" class="nav-item">
-                        <a href="/registration" class="nav-link">logout</a>
+                        <a v-on:click="logout" class="nav-link">logout</a>
                         </li>
                     </ul>
                 </div>
@@ -84,7 +84,10 @@ export default {
     }
   },
   methods: {
-    
+    logout: function(){
+      window.sessionStorage.clear()
+      this.role = ''
+    }
   }
   
 }

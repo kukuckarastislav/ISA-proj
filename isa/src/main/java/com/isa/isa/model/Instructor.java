@@ -1,6 +1,6 @@
 package com.isa.isa.model;
 
-import com.isa.isa.DTO.StuffDTO;
+import com.isa.isa.DTO.UserDTO;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -18,8 +18,8 @@ public class Instructor extends Person{
 
     public Instructor(){}
 
-    public Instructor(StuffDTO stuffDTO) {
-        super(stuffDTO);
-        registrationMotivation = stuffDTO.getRegistrationMotivation();
+    public Instructor(UserDTO userDTO) {
+        super(userDTO);
+        registrationMotivation = userDTO.getRegistrationMotivation();
     }
 }

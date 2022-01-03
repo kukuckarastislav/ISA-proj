@@ -1,7 +1,6 @@
 package com.isa.isa.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isa.isa.DTO.StuffDTO;
+import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.service.BoatOwnerService;
@@ -29,34 +28,34 @@ public class PersonController {
     private BoatOwnerService boatOwnerService;
     
     @PutMapping("/registration")
-    public ResponseEntity<StuffDTO> registrationStuff(@RequestBody StuffDTO stuffDTO){
+    public ResponseEntity<UserDTO> registrationStuff(@RequestBody UserDTO userDTO){
 
-        System.out.println("[api/person/registration] stuffDTO: " + stuffDTO.toString());
+        System.out.println("[api/person/registration] stuffDTO: " + userDTO.toString());
 
-        if(stuffDTO.isAdmin()){
+        if(userDTO.isAdmin()){
 
-        }else if(stuffDTO.isCottageOwner()){
+        }else if(userDTO.isCottageOwner()){
         	
-        	CottageOwner owner = cottageOwnerService.register(stuffDTO);
+        	CottageOwner owner = cottageOwnerService.register(userDTO);
         	if(owner==null)
-        		return new ResponseEntity(stuffDTO,HttpStatus.BAD_REQUEST);//promeniti da vraca userexists	
+        		return new ResponseEntity(userDTO,HttpStatus.BAD_REQUEST);//promeniti da vraca userexists
 
-        }else if(stuffDTO.isBoatOwner()){
+        }else if(userDTO.isBoatOwner()){
         	
-        	BoatOwner owner = boatOwnerService.register(stuffDTO);
+        	BoatOwner owner = boatOwnerService.register(userDTO);
         	if(owner==null)
-        		return new ResponseEntity(stuffDTO,HttpStatus.BAD_REQUEST);//promeniti da vraca userexists	
+        		return new ResponseEntity(userDTO,HttpStatus.BAD_REQUEST);//promeniti da vraca userexists
 
 
-        }else if(stuffDTO.isInstrucotr()){
+        }else if(userDTO.isInstructor()){
             System.out.println("Registracija instruktora");
-            instructorService.save(stuffDTO);
+            instructorService.save(userDTO);
             System.out.println("Registracija uspesna");
         }else{
-            return new ResponseEntity(stuffDTO, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(userDTO, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<StuffDTO>(stuffDTO, HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
     }
 
 }

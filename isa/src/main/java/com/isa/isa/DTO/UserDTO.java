@@ -2,7 +2,7 @@ package com.isa.isa.DTO;
 
 import com.isa.isa.model.Address;
 
-public class StuffDTO {
+public class UserDTO {
 
     private String email;
 
@@ -20,9 +20,9 @@ public class StuffDTO {
 
     private String registrationMotivation;
 
-    public StuffDTO(){ }
+    public UserDTO(){ }
 
-    public StuffDTO(String email, String password, String firstName, String lastName, Address address, String phoneNumber, String typeOfUser, String registrationMotivation) {
+    public UserDTO(String email, String password, String firstName, String lastName, Address address, String phoneNumber, String typeOfUser, String registrationMotivation) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -97,6 +97,10 @@ public class StuffDTO {
         this.registrationMotivation = registrationMotivation;
     }
 
+    public boolean isCustomer() {
+        return typeOfUser.equals("Customer");
+    }
+
     public boolean isAdmin() {
         return typeOfUser.equals("Admin");
     }
@@ -109,7 +113,7 @@ public class StuffDTO {
         return typeOfUser.equals("BoatOwner");
     }
 
-    public boolean isInstrucotr() {
+    public boolean isInstructor() {
         return typeOfUser.equals("Instructor");
     }
 

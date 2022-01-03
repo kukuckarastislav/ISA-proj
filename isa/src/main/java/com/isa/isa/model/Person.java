@@ -1,17 +1,15 @@
 package com.isa.isa.model;
 
-import com.isa.isa.DTO.StuffDTO;
+import com.isa.isa.DTO.UserDTO;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 
@@ -48,13 +46,13 @@ public abstract class Person {
 	public Person() {
 	}
 
-	public Person(StuffDTO stuffDTO) {
-		this.email = stuffDTO.getEmail();
-		this.password = stuffDTO.getPassword();
-		this.firstName = stuffDTO.getFirstName();
-		this.lastName = stuffDTO.getLastName();
-		this.address = stuffDTO.getAddress();
-		this.phoneNumber = stuffDTO.getPhoneNumber();
+	public Person(UserDTO userDTO) {
+		this.email = userDTO.getEmail();
+		this.password = userDTO.getPassword();
+		this.firstName = userDTO.getFirstName();
+		this.lastName = userDTO.getLastName();
+		this.address = userDTO.getAddress();
+		this.phoneNumber = userDTO.getPhoneNumber();
 	}
 
 

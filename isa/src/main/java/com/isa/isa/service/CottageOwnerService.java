@@ -2,10 +2,9 @@ package com.isa.isa.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.DTO.StuffDTO;
+import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
@@ -32,9 +31,9 @@ public class CottageOwnerService {
 		modelMapper = new ModelMapper();
 	}
 	
-	public CottageOwner register(StuffDTO stuffDTO) {
-		CottageOwner cottageOwner = modelMapper.map(stuffDTO, CottageOwner.class);
-		if(!checkIfUserWithEmailExist(stuffDTO.getEmail()))
+	public CottageOwner register(UserDTO userDTO) {
+		CottageOwner cottageOwner = modelMapper.map(userDTO, CottageOwner.class);
+		if(!checkIfUserWithEmailExist(userDTO.getEmail()))
 			return cottageOwnerRepository.saveAndFlush(cottageOwner);
 		
 		return null;

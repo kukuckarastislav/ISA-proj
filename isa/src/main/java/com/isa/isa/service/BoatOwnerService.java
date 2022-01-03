@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.DTO.StuffDTO;
+import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
@@ -30,9 +30,9 @@ public class BoatOwnerService {
 		modelMapper = new ModelMapper();
 	}
 	
-	public BoatOwner register(StuffDTO stuffDTO) {
-		BoatOwner boatOwner = modelMapper.map(stuffDTO, BoatOwner.class);
-		if(!checkIfUserWithEmailExist(stuffDTO.getEmail()))
+	public BoatOwner register(UserDTO userDTO) {
+		BoatOwner boatOwner = modelMapper.map(userDTO, BoatOwner.class);
+		if(!checkIfUserWithEmailExist(userDTO.getEmail()))
 			return boatOwnerRepository.saveAndFlush(boatOwner);
 		
 		return null;

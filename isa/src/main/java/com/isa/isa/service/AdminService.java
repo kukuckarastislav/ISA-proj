@@ -1,10 +1,11 @@
 package com.isa.isa.service;
 
+import com.isa.isa.model.Instructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.DTO.StuffDTO;
+import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.Admin;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
@@ -30,9 +31,9 @@ public class AdminService {
 		modelMapper = new ModelMapper();
 	}
 	
-	public Admin register(StuffDTO stuffDTO) {
-		Admin admin = modelMapper.map(stuffDTO, Admin.class);
-		if(!checkIfUserWithEmailExist(stuffDTO.getEmail()))
+	public Admin register(UserDTO userDTO) {
+		Admin admin = modelMapper.map(userDTO, Admin.class);
+		if(!checkIfUserWithEmailExist(userDTO.getEmail()))
 			return adminRepository.saveAndFlush(admin);
 		
 		return null;
@@ -43,5 +44,10 @@ public class AdminService {
 				&& instructorRepository.getByEmail(email)!=null && adminRepository.getByEmail(email)!=null)
 			return true;
 		return false;
+    }
+
+    public Admin save(UserDTO userDTO) {
+		Admin newAdmin = new Admin(userDTO);
+		return adminRepository.saveAndFlush(newAdmin);
     }
 }

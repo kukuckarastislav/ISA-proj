@@ -57,6 +57,8 @@ values (6, 'Novi Sad', 'Serbia', 11, 13, 33, 'Zmaj Jovina', 'isaprojectftn+6@gma
 insert into admin(id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number)
 values (7, 'Nis', 'Serbia', 11, 13, 33, 'Cara Stefana', 'isaprojectftn+7@gmail.com', 'pass', 'Admin', 'Adminovic', '030349');
 
+
+
 insert into role(name)
 values ('ROLE_ADMIN');
 

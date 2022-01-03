@@ -108,10 +108,30 @@ export default {
     }
   },
   methods: {
+    validate: function(){
+      if (this.registration.email === '') return false;
+      if (this.registration.password === '') return false;
+      if (this.registration.firstName === '') return false;
+      if (this.registration.lastName === '') return false;
+      if (this.registration.phoneNumber === '') return false;
+      if (this.registration.address.country === '') return false;
+      if (this.registration.address.city === '') return false;
+      if (this.registration.address.street === '') return false;
+      if (this.registration.address.latitude === '') return false;
+      if (this.registration.address.longitude === '') return false;
+      
+      return true;
+    },
     sendRegistration: function(){
+      if(!this.validate()){
+        alert('Niste popunili sva polja');
+        return;
+      }
      axios
           .post('http://localhost:8180/auth/signup',this.registration)
-          .then(response => console.log(response))
+          .then(response => console.log(response)).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
     }
   }
 }

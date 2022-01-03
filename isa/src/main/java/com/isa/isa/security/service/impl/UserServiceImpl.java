@@ -2,6 +2,11 @@ package com.isa.isa.security.service.impl;
 
 import java.util.List;
 
+import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.repository.AdminRepository;
+import com.isa.isa.repository.InstructorRepository;
+import com.isa.isa.service.AdminService;
+import com.isa.isa.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +22,16 @@ import com.isa.isa.security.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+	// Repository for
+	@Autowired
+	private AdminService adminService;
+
+	@Autowired
+	private InstructorService instructorService;
+
+	//
+
 
 	@Autowired
 	private UserRepository userRepository;
@@ -41,23 +56,33 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User save(UserRequest userRequest) {
+	public User save(UserDTO userDTO) {
 		User u = new User();
-		u.setUsername(userRequest.getUsername());
+		u.setUsername(userDTO.getEmail());
 		
 		// pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
 		// treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
-		u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+		u.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		
 		
-		u.setEnabled(true);
-		
+		u.setEnabled(false);
+		List<Role> roles = null;
+		if(userDTO.isAdmin()){
+			roles = roleService.findByName("ROLE_ADMIN");
+			adminService.save(userDTO);
+		}else if(userDTO.isInstructor()){
+			roles = roleService.findByName("ROLE_INSTRUCTOR");
+			instructorService.save(userDTO);
+		}
 
-		// u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
-		List<Role> roles = roleService.findByName("ROLE_ADMIN");
 		u.setRoles(roles);
 		
 		return this.userRepository.save(u);
+	}
+
+	@Override
+	public User save(User user) {
+		return userRepository.save(user);
 	}
 
 }
