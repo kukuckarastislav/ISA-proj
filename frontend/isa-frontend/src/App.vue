@@ -15,6 +15,9 @@
 
                 <div class="collapse navbar-collapse" d="navmenu">
                     <ul class="navbar-nav ms-auto">
+                       <li class="nav-item">
+                        <a href="/login" class="nav-link">login</a>
+                        </li>
                         <li class="nav-item">
                         <a href="/registration" class="nav-link">registration</a>
                         </li>

@@ -13,6 +13,9 @@
             <label class="form-label">Last name</label>
             <input v-model="registration.lastName" type="text" placeholder="" class="form-control">
             <br>
+            <label class="form-label">Phone number</label>
+            <input v-model="registration.phoneNumber" type="text" placeholder="" class="form-control">
+            <br>
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input v-model="registration.email" type="email" placeholder="youremail@gmail.com" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             <br><br>
@@ -76,7 +79,7 @@
 </template>
 
 <script>
-
+import axios from "axios";
 export default {
   name: 'Registration',
   components: {
@@ -89,6 +92,7 @@ export default {
         password: '',
         firstName: '',
         lastName: '',
+        phoneNumber: '',
         address: {
           country: '',
           city: '',
@@ -106,8 +110,9 @@ export default {
   },
   methods: {
     sendRegistration: function(){
-      alert('send registration');
-      console.log(this.registration);
+     axios
+          .post('http://localhost:8180/auth/signup',this.registration)
+          .then(response => console.log(response))
     }
   }
 }
