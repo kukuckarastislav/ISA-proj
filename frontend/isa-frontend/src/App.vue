@@ -15,11 +15,14 @@
 
                 <div class="collapse navbar-collapse" d="navmenu">
                     <ul class="navbar-nav ms-auto">
-                       <li class="nav-item">
+                       <li v-if="role===''" class="nav-item">
                         <a href="/login" class="nav-link">login</a>
                         </li>
-                        <li class="nav-item">
+                        <li v-if="role===''" class="nav-item">
                         <a href="/registration" class="nav-link">registration</a>
+                        </li>
+                        <li v-if="role!==''" class="nav-item">
+                        <a href="/registration" class="nav-link">logout</a>
                         </li>
                     </ul>
                 </div>
@@ -49,7 +52,28 @@ export default {
   name: 'App',
   components: {
 
+  },
+  mounted: function(){
+      
+      this.role = window.sessionStorage.getItem("role")
+      if (this.role == null) this.role = ""
+      console.log(this.role)
+      //this.role = userInformation.role
+  },
+  data: function(){
+    return {
+      role: ''
+    }
+  },
+  methods: {
+    sendRegistration: function(){
+     axios
+          .post('http://localhost:8180/auth/signup',this.registration)
+          .then(response => console.log(response))
+    }
   }
+
+  
 }
 </script>
 

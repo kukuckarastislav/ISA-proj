@@ -91,6 +91,12 @@ public class User implements UserDetails {
        return roles;
     }
 
+    public Role getRole() {
+    	if (this.roles.size()>0) {
+    		return this.roles.get(0);
+    	}
+    	else return null;
+    }
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

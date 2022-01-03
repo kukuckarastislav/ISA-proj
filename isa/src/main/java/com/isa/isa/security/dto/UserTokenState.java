@@ -3,6 +3,7 @@ package com.isa.isa.security.dto;
 // DTO koji enkapsulira generisani JWT i njegovo trajanje koji se vracaju klijentu
 public class UserTokenState {
 	
+	private String role;
     private String accessToken;
     private Long expiresIn;
 
@@ -15,8 +16,15 @@ public class UserTokenState {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
     }
+    
 
-    public String getAccessToken() {
+    public UserTokenState(String role, String accessToken, long expiresIn) {
+		this.role = role;
+		this.accessToken = accessToken;
+		this.expiresIn = expiresIn;
+	}
+
+	public String getAccessToken() {
         return accessToken;
     }
 
@@ -31,5 +39,14 @@ public class UserTokenState {
     public void setExpiresIn(Long expiresIn) {
         this.expiresIn = expiresIn;
     }
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+    
     
 }

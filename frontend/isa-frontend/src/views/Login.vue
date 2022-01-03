@@ -56,7 +56,11 @@ export default {
     sendLogin: function () {
       axios
         .post("http://localhost:8180/auth/login", this.loginData)
-        .then((response) => console.log(response));
+        .then((response) =>{
+          window.sessionStorage.setItem("jwt", response.data.accessToken)
+          window.sessionStorage.setItem("role", response.data.role)
+          this.$router.push('/');
+        });
     },
   },
 };
