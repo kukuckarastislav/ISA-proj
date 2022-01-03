@@ -1,27 +1,32 @@
 <template>
   <!-- NAV -->
-  <nav class="navbar navbar-expand-lg navbar-dark py-3 fixed-top isa-color-standard">
-            <div class="container">
-                <a href="/" class="navbar-brand">Fishing Online</a>
+  <div class="fixed-top">
+          <nav class="navbar navbar-expand-lg navbar-dark py-3 isa-color-standard">
+              <div class="container">
+                  <a href="/" class="navbar-brand">Fishing Online</a>
 
-                <button
-                class="navbar-toggler"
-                        type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navmenu"
-                >
-                <span class="navbar-toggler-icon"></span>
-                </button>
+                  <div class="collapse navbar-collapse" d="navmenu">
+                      <ul class="navbar-nav ms-auto">
+                          <li class="nav-item">
+                          <a href="/registration" class="nav-link">registration</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </nav>
+    
+    <div v-if="typeOfUser == 'Admin'">
+      <AdminLinks></AdminLinks>
+    </div>
+    <!-- 
+    <div v-if="typeOfUser == 'CottageOwner'">
+      <CottageOwnerLinks></CottageOwnerLinks>
+    </div>
+    -->
 
-                <div class="collapse navbar-collapse" d="navmenu">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                        <a href="/registration" class="nav-link">registration</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+  </div>
+  <div style="height: 72px;"></div>
+  <div v-if="typeOfUser != 'None'" style="height: 40px;"></div>
 
   <router-view/>
 
@@ -41,11 +46,18 @@
 <script>
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
+import AdminLinks from './views/Admin.vue'
 
 export default {
   name: 'App',
   components: {
+    AdminLinks
 
+  },
+  data: function(){
+    return {
+      typeOfUser: 'Admin'
+    }
   }
 }
 </script>
