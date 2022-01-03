@@ -1,7 +1,7 @@
 <template>
   <!-- NAV -->
   <div class="fixed-top">
-  <nav class="navbar navbar-expand-lg navbar-dark py-3 fixed-top isa-color-standard">
+  <nav class="navbar navbar-expand-lg navbar-dark py-3 isa-color-standard">
             <div class="container">
                 <a href="/" class="navbar-brand">Fishing Online</a>
 
@@ -45,7 +45,7 @@
   <div style="height: 72px;"></div>
   <div v-if="role !== ''" style="height: 40px;"></div>
 
-  <router-view/>
+  <router-view :key="$route.fullPath"/>
 
   <!-- Footer -->
   <footer class="p-5 isa- text-white text-center position-relative isa-color-standard">
@@ -84,11 +84,7 @@ export default {
     }
   },
   methods: {
-    sendRegistration: function(){
-     axios
-          .post('http://localhost:8180/auth/signup',this.registration)
-          .then(response => console.log(response))
-    }
+    
   }
   
 }
