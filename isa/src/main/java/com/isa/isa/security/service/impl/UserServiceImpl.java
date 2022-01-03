@@ -6,6 +6,7 @@ import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.InstructorRepository;
 import com.isa.isa.service.AdminService;
+import com.isa.isa.service.ClientService;
 import com.isa.isa.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -31,7 +32,8 @@ public class UserServiceImpl implements UserService {
 	private InstructorService instructorService;
 
 	//
-
+	@Autowired
+	private ClientService clientService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService {
 		// treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
 		u.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		
-		
+		userDTO.setPassword(u.getPassword());
 		u.setEnabled(false);
 		List<Role> roles = null;
 		if(userDTO.isAdmin()){
@@ -73,6 +75,9 @@ public class UserServiceImpl implements UserService {
 		}else if(userDTO.isInstructor()){
 			roles = roleService.findByName("ROLE_INSTRUCTOR");
 			instructorService.save(userDTO);
+		} else if(userDTO.isCustomer()) {
+			roles = roleService.findByName("ROLE_CUSTOMER");
+			clientService.save(userDTO);
 		}
 
 		u.setRoles(roles);

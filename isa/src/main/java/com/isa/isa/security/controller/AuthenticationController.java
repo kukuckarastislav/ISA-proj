@@ -18,6 +18,7 @@ import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.security.dto.JwtAuthenticationRequest;
 import com.isa.isa.security.dto.UserTokenState;
 import com.isa.isa.security.model.User;
+import com.isa.isa.security.service.EmailService;
 import com.isa.isa.security.service.UserService;
 import com.isa.isa.security.util.TokenUtils;
 
@@ -34,6 +35,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	// Prvi endpoint koji pogadja korisnik kada se loguje.
 	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -70,10 +74,27 @@ public class AuthenticationController {
 		}
 
 		User user = this.userService.save(userDTO);
-
+		if (userDTO.isCustomer()) {
+			try {
+				emailService.sendNotificaition(user);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 
 
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/confirm/{username}")
+	public ResponseEntity confirm(@PathVariable String username) {
+		User user = userService.findByUsername(username);
+		if(user!=null){
+			System.out.println("Pronadjen user");
+			user.setEnabled(true);
+			userService.save(user);
+		}
+		return new ResponseEntity(HttpStatus.OK);
 	}
 
 

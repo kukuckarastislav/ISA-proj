@@ -1,0 +1,42 @@
+package com.isa.isa.security.service.impl;
+
+import com.isa.isa.security.model.User;
+import com.isa.isa.security.service.EmailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+@Service
+public class EmailServiceImpl implements EmailService{
+	
+	 @Autowired
+	    private JavaMailSender javaMailSender;
+
+
+
+	    @Autowired
+	    private Environment env;
+	    
+	@Override
+	public void sendNotificaition(User user) throws MailException, InterruptedException{
+	    SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(user.getUsername());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Confirm you acc ISA Proj");
+        String link = "<a href=\"http://localhost:8180/auth/confirm/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8) + "\">CONFIRM</a>";
+        mail.setText("Molimo vas potvrdite registraciju na sajtu " + link);
+        javaMailSender.send(mail);
+
+        System.out.println("Email poslat!");
+		
+	}
+
+}
