@@ -1,10 +1,18 @@
 package com.isa.isa.security.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.isa.isa.DTO.UserApproveDTO;
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.Instructor;
 import com.isa.isa.repository.AdminRepository;
+import com.isa.isa.repository.BoatOwnerRepository;
+import com.isa.isa.repository.CottageOwnerRepository;
 import com.isa.isa.repository.InstructorRepository;
+import com.isa.isa.security.service.EmailService;
 import com.isa.isa.service.AdminService;
 import com.isa.isa.service.ClientService;
 import com.isa.isa.service.InstructorService;
@@ -24,12 +32,24 @@ import com.isa.isa.security.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
+	@Autowired
+	private EmailService emailService;
+
 	// Repository for
 	@Autowired
 	private AdminService adminService;
 
 	@Autowired
 	private InstructorService instructorService;
+
+	@Autowired
+	private InstructorRepository instructorRepository;
+
+	@Autowired
+	private CottageOwnerRepository cottageOwnerRepository;
+
+	@Autowired
+	private BoatOwnerRepository boatOwnerRepository;
 
 	//
 	@Autowired
@@ -61,6 +81,7 @@ public class UserServiceImpl implements UserService {
 	public User save(UserDTO userDTO) {
 		User u = new User();
 		u.setUsername(userDTO.getEmail());
+		u.setApproved(false);
 		
 		// pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
 		// treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
@@ -88,6 +109,60 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User save(User user) {
 		return userRepository.save(user);
+	}
+
+	@Override
+	public ArrayList<UserDTO> getNoApprovedStuff() {
+		ArrayList<User> noEnabledStuff = (ArrayList<User>) userRepository.findByApproved(false);
+		ArrayList<UserDTO> noEnabledStuffDTO = new ArrayList<UserDTO>();
+
+		for (User user : noEnabledStuff) {
+			if (user.getRole().isInstructor()){
+				Instructor instructor = instructorRepository.getByEmail(user.getUsername());
+				if(instructor != null){
+					noEnabledStuffDTO.add(new UserDTO(instructor));
+				}
+			}else if (user.getRole().isBoatOwner()){
+				BoatOwner boatOwner = boatOwnerRepository.getByEmail(user.getUsername());
+				if(boatOwner != null){
+					noEnabledStuffDTO.add(new UserDTO(boatOwner));
+				}
+			}else if (user.getRole().isCottageOwner()){
+				CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(user.getUsername());
+				if(cottageOwner != null){
+					noEnabledStuffDTO.add(new UserDTO(cottageOwner));
+				}
+			}
+		}
+
+		return noEnabledStuffDTO;
+	}
+
+	@Override
+	public boolean approveOrReject(UserApproveDTO userApproveDTO) {
+		User user = findByUsername(userApproveDTO.getEmail());
+		if(user != null){
+			if(userApproveDTO.isEnabled()){
+				user.setEnabled(true);
+				user.setApproved(true);
+				save(user);
+				try {
+					emailService.sendNotificaitionApproved(user);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				return true;
+			}else{
+				try {
+					emailService.sendNotificaitionRejected(user, userApproveDTO);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				userRepository.delete(user);
+				return false;
+			}
+		}
+		return false;
 	}
 
 }

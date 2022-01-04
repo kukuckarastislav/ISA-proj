@@ -16,6 +16,14 @@ public class Instructor extends Person{
     @Column(name="registrationMotivation", nullable=true)
     private String registrationMotivation;
 
+    public String getRegistrationMotivation() {
+        return registrationMotivation;
+    }
+
+    public void setRegistrationMotivation(String registrationMotivation) {
+        this.registrationMotivation = registrationMotivation;
+    }
+
     public Instructor(){}
 
     public Instructor(UserDTO userDTO) {

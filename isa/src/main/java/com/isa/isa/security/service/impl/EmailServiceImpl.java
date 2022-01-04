@@ -1,5 +1,6 @@
 package com.isa.isa.security.service.impl;
 
+import com.isa.isa.DTO.UserApproveDTO;
 import com.isa.isa.security.model.User;
 import com.isa.isa.security.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,11 @@ import java.util.Base64;
 public class EmailServiceImpl implements EmailService{
 	
 	 @Autowired
-	    private JavaMailSender javaMailSender;
+	 private JavaMailSender javaMailSender;
 
 
-
-	    @Autowired
-	    private Environment env;
+	 @Autowired
+	 private Environment env;
 	    
 	@Override
 	public void sendNotificaition(User user) throws MailException, InterruptedException{
@@ -36,7 +36,32 @@ public class EmailServiceImpl implements EmailService{
         javaMailSender.send(mail);
 
         System.out.println("Email poslat!");
-		
+	}
+
+
+
+	@Override
+	public void sendNotificaitionApproved(User user)  throws MailException, InterruptedException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(user.getUsername());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Fishing Acc information");
+		mail.setText("Your " + user.getRole().getName() + " is approved. Now you can use your acc. :)");
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
+
+	@Override
+	public void sendNotificaitionRejected(User user, UserApproveDTO userApproveDTO)  throws MailException, InterruptedException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(user.getUsername());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Fishing Acc information");
+		mail.setText("We are sad but your acc is not approved: " + userApproveDTO.getMessage());
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
 	}
 
 }

@@ -20,4 +20,13 @@ public class BoatOwner extends Person {
 	
 	@Column(name="registrationMotivation", nullable=true)
 	private String registrationMotivation;
+
+
+	public String getRegistrationMotivation() {
+		return registrationMotivation;
+	}
+
+	public void setRegistrationMotivation(String registrationMotivation) {
+		this.registrationMotivation = registrationMotivation;
+	}
 }
