@@ -76,21 +76,28 @@ export default {
     CustomerLinks
   },
   mounted: function(){
-      
-      this.role = window.sessionStorage.getItem("role")
-      if (this.role == null) this.role = ""
-      console.log(this.role)
-      //this.role = userInformation.role
+      this.updateLinks();
   },
   data: function(){
     return {
       role: ''
     }
   },
+  watch:{
+		$route (to, from){
+			this.updateLinks();
+		}
+  },
   methods: {
     logout: function(){
       window.sessionStorage.clear()
       this.role = ''
+    },
+    updateLinks: function(){
+      this.role = window.sessionStorage.getItem("role")
+      if (this.role == null) this.role = ""
+      console.log(this.role)
+      //this.role = userInformation.role
     }
   }
   
