@@ -42,14 +42,14 @@
             <br>
 
             <select class="form-select" v-model="registration.typeOfUser">
-              <option value="Customer">Customer</option>
-              <option value="CottageOwner">Cottage Owner</option>
-              <option value="BoatOwner">Boat Owner</option>
-              <option value="Instructor">Instructor</option>
-              <option value="Admin">Admin</option>
+              <option value="ROLE_CUSTOMER">Customer</option>
+              <option value="ROLE_COTTAGE_OWNER">Cottage Owner</option>
+              <option value="ROLE_BOAT_OWNER">Boat Owner</option>
+              <option value="ROLE_INSTRUCTOR">Instructor</option>
+              <!-- <option value="ROLE_ADMIN">Admin</option> -->
             </select>
             
-            <div v-if="registration.typeOfUser != 'Customer'">
+            <div v-if="registration.typeOfUser != 'ROLE_CUSTOMER'">
               <br>
               <label for="exampleFormControlTextarea1" class="form-label">Tell us your Motivation</label>
               <textarea class="form-control" v-model="registration.registrationMotivation" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -100,7 +100,7 @@ export default {
           latitude: 0,
           longitude: 0
         },
-        typeOfUser: 'Customer',
+        typeOfUser: 'ROLE_CUSTOMER',
         registrationMotivation: ''
       },
 

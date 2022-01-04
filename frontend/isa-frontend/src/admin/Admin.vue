@@ -10,7 +10,7 @@
                     <a href="/" class="nav-link">Registrations</a>
                 </div>
                 <div class="col">
-                    <a href="/" class="nav-link">ToDo1</a>
+                    <a href="/approval" class="nav-link">Approval Registrations</a>
                 </div>
                 <div class="col">
                     <a href="/" class="nav-link">ToDo2</a>
