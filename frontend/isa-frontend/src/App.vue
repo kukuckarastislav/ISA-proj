@@ -35,6 +35,9 @@
     <div v-if="role === 'ROLE_ADMIN'">
       <AdminLinks></AdminLinks>
     </div>
+    <div v-if="role === 'ROLE_CUSTOMER'">
+      <CustomerLinks></CustomerLinks>
+    </div>
     <!-- 
     <div v-if="role == 'ROLE_COTTAGE_OWNER'">
       <CottageOwnerLinks></CottageOwnerLinks>
@@ -64,12 +67,13 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import AdminLinks from './views/Admin.vue'
+import CustomerLinks from './views/Customer.vue'
 
 export default {
   name: 'App',
   components: {
-    AdminLinks
-
+    AdminLinks,
+    CustomerLinks
   },
   mounted: function(){
       

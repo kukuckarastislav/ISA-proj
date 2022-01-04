@@ -1,5 +1,6 @@
 package com.isa.isa.model;
 
+import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.UserDTO;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
@@ -53,6 +54,15 @@ public abstract class Person {
 		this.lastName = userDTO.getLastName();
 		this.address = userDTO.getAddress();
 		this.phoneNumber = userDTO.getPhoneNumber();
+	}
+	
+	public Person(ClientDto clientDto) {
+		this.email = clientDto.getEmail();
+		this.password = clientDto.getPassword();
+		this.firstName = clientDto.getFirstName();
+		this.lastName = clientDto.getLastName();
+		this.address = clientDto.getAddress();
+		this.phoneNumber = clientDto.getPhoneNumber();
 	}
 
 
