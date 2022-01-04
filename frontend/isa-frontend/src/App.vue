@@ -66,8 +66,8 @@
 <script>
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
-import AdminLinks from './views/Admin.vue'
 import CustomerLinks from './views/Customer.vue'
+import AdminLinks from './admin/Admin.vue'
 
 export default {
   name: 'App',

@@ -2,6 +2,7 @@ package com.isa.isa.security.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.isa.isa.DTO.UserApproveDTO;
 import com.isa.isa.security.exception.ResourceConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ import com.isa.isa.security.model.User;
 import com.isa.isa.security.service.EmailService;
 import com.isa.isa.security.service.UserService;
 import com.isa.isa.security.util.TokenUtils;
+
+import java.util.ArrayList;
 
 //Kontroler zaduzen za autentifikaciju korisnika
 @RestController
@@ -92,10 +95,26 @@ public class AuthenticationController {
 		if(user!=null){
 			System.out.println("Pronadjen user");
 			user.setEnabled(true);
+			user.setApproved(true);
 			userService.save(user);
 		}
 		return new ResponseEntity(HttpStatus.OK);
 	}
+
+	@GetMapping("/noenabled")
+	public ResponseEntity<ArrayList<UserDTO>> noEnabled() {
+		ArrayList<UserDTO> noEnabledUsersDTO = userService.getNoApprovedStuff();
+		return new ResponseEntity<ArrayList<UserDTO>>(noEnabledUsersDTO ,HttpStatus.OK);
+	}
+
+	@PostMapping("/setapproved")
+	public ResponseEntity approveUser(@RequestBody UserApproveDTO userApproveDTO) {
+		Boolean status = userService.approveOrReject(userApproveDTO);
+		return new ResponseEntity(HttpStatus.OK);
+	}
+
+
+
 
 
 }

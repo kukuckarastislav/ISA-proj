@@ -41,13 +41,24 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-   
+    @Column(name = "approved")
+    private boolean approved;
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
 
     @Column(name = "enabled")
     private boolean enabled;
 
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",

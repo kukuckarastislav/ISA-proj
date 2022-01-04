@@ -43,4 +43,23 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
+
+    public boolean isCustomer() { return name.equals("ROLE_CUSTOMER"); }
+
+    public boolean isAdmin() {
+        return name.equals("ROLE_ADMIN");
+    }
+
+    public boolean isCottageOwner() {
+        return name.equals("ROLE_COTTAGE_OWNER");
+    }
+
+    public boolean isBoatOwner() {
+        return name.equals("ROLE_BOAT_OWNER");
+    }
+
+    public boolean isInstructor() {
+        return name.equals("ROLE_INSTRUCTOR");
+    }
+
 }

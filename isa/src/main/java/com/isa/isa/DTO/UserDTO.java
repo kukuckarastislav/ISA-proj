@@ -1,6 +1,9 @@
 package com.isa.isa.DTO;
 
 import com.isa.isa.model.Address;
+import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.Instructor;
 
 public class UserDTO {
 
@@ -31,6 +34,39 @@ public class UserDTO {
         this.phoneNumber = phoneNumber;
         this.typeOfUser = typeOfUser;
         this.registrationMotivation = registrationMotivation;
+    }
+
+    public UserDTO(Instructor instructor) {
+        this.email = instructor.getEmail();
+        this.password = instructor.getPassword();
+        this.firstName = instructor.getFirstName();
+        this.lastName = instructor.getLastName();
+        this.address = instructor.getAddress();
+        this.phoneNumber = instructor.getPhoneNumber();
+        this.typeOfUser = "ROLE_INSTRUCTOR";
+        this.registrationMotivation = instructor.getRegistrationMotivation();
+    }
+
+    public UserDTO(CottageOwner cottageOwner) {
+        this.email = cottageOwner.getEmail();
+        this.password = cottageOwner.getPassword();
+        this.firstName = cottageOwner.getFirstName();
+        this.lastName = cottageOwner.getLastName();
+        this.address = cottageOwner.getAddress();
+        this.phoneNumber = cottageOwner.getPhoneNumber();
+        this.typeOfUser = "ROLE_COTTAGE_OWNER";
+        this.registrationMotivation = cottageOwner.getRegistrationMotivation();
+    }
+
+    public UserDTO(BoatOwner boatOwner) {
+        this.email = boatOwner.getEmail();
+        this.password = boatOwner.getPassword();
+        this.firstName = boatOwner.getFirstName();
+        this.lastName = boatOwner.getLastName();
+        this.address = boatOwner.getAddress();
+        this.phoneNumber = boatOwner.getPhoneNumber();
+        this.typeOfUser = "ROLE_BOAT_OWNER";
+        this.registrationMotivation = boatOwner.getRegistrationMotivation();
     }
 
     public String getEmail() {
@@ -97,24 +133,22 @@ public class UserDTO {
         this.registrationMotivation = registrationMotivation;
     }
 
-    public boolean isCustomer() {
-        return typeOfUser.equals("Customer");
-    }
+    public boolean isCustomer() { return typeOfUser.equals("ROLE_CUSTOMER"); }
 
     public boolean isAdmin() {
-        return typeOfUser.equals("Admin");
+        return typeOfUser.equals("ROLE_ADMIN");
     }
 
     public boolean isCottageOwner() {
-        return typeOfUser.equals("CottageOwner");
+        return typeOfUser.equals("ROLE_COTTAGE_OWNER");
     }
 
     public boolean isBoatOwner() {
-        return typeOfUser.equals("BoatOwner");
+        return typeOfUser.equals("ROLE_BOAT_OWNER");
     }
 
     public boolean isInstructor() {
-        return typeOfUser.equals("Instructor");
+        return typeOfUser.equals("ROLE_INSTRUCTOR");
     }
 
     @Override
