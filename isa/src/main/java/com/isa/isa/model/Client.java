@@ -7,6 +7,7 @@ import javax.persistence.OneToMany;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.termins.model.InsFastResHistory;
 import com.isa.isa.model.termins.model.InstructorReservation;
 
 import java.util.HashSet;
@@ -29,11 +30,34 @@ public class Client extends Person{
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<InstructorReservation> instructorReservations = new HashSet<InstructorReservation>();
 
+	@OneToMany (mappedBy = "client",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<InsFastResHistory> insFastResHistories = new HashSet<InsFastResHistory>();
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public Set<InstructorReservation> getInstructorReservations() {
 		return instructorReservations;
 	}
 
 	public void setInstructorReservations(Set<InstructorReservation> instructorReservations) {
 		this.instructorReservations = instructorReservations;
+	}
+
+	public Set<InsFastResHistory> getInsFastResHistories() {
+		return insFastResHistories;
+	}
+
+	public void setInsFastResHistories(Set<InsFastResHistory> insFastResHistories) {
+		this.insFastResHistories = insFastResHistories;
 	}
 }

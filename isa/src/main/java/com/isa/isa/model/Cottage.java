@@ -45,9 +45,7 @@ public class Cottage {
 	
 	@Column(nullable=false)
 	private String behaviourRules;
-	
-	@Column(nullable=false)
-	private double price;
+
 	
 	@ManyToMany
 	@JoinTable(name = "cottage_additional_services", joinColumns = @JoinColumn(name = "cottage_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "additional_service_id", referencedColumnName = "id"))
@@ -55,5 +53,8 @@ public class Cottage {
 	
 	@Column(nullable=true)
 	private double averageGrade;
+
+	@Embedded
+	private Price price;
 	
 }

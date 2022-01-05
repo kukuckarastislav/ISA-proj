@@ -52,6 +52,13 @@ public class Adventure {
 	
 	@Column(nullable=true)
 	private double averageGrade;
+
+	//TODO: dodati cenu
+	//
+
+	@Embedded
+	private Price price;
+
 	
 	public Adventure() { }
 
@@ -158,5 +165,13 @@ public class Adventure {
 
 	public void setAverageGrade(double averageGrade) {
 		this.averageGrade = averageGrade;
+	}
+
+	public Price getPrice() {
+		return price;
+	}
+
+	public void setPrice(Price price) {
+		this.price = price;
 	}
 }

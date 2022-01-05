@@ -50,4 +50,6 @@ public class Boat {
 	private ReservationCancellationConditions reservationCancellationConditions;
 	@Column(nullable=true)
 	private double averageGrade;
+	@Embedded
+	private Price price;
 }
