@@ -63,11 +63,11 @@ values (5, 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 'isaprojectftn+stefa
 insert into adventure (name, city, country, latitude, longitude, number, street, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
 values ('Penjanje na planinu', 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 'Pecacemo Ribe', 'Odlican Pecaros', 4, 'Nema skakanja u vodu', 'FREE', 5, 0);
 insert into entity_image (name, path)
-values ('img1.jpg', 'EntityImage/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img1.jpg');
+values ('img1.jpg', 'images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img1.jpg');
 insert into entity_image (name, path)
-values ('img2.jpg', 'EntityImage/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img2.jpg');
+values ('img2.jpg', 'images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img2.jpg');
 insert into entity_image (name, path)
-values ('img3.jpg', 'EntityImage/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img3.jpg');
+values ('img3.jpg', 'images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img3.jpg');
 insert into adventure_images (adventure_id, images_id)
 values (1, 1);
 insert into adventure_images (adventure_id, images_id)
@@ -77,9 +77,9 @@ values (1, 3);
 insert into adventure (name, city, country, latitude, longitude, number, street, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
 values ('Krstarenje', 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 'Pecacemo Ribe', 'Odlican Pecaros', 4, 'Nema skakanja u vodu', 'FREE', 5, 0);
 insert into entity_image (name, path)
-values ('img1.jpg', 'EntityImage/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img1.jpg');
+values ('img1.jpg', 'images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img1.jpg');
 insert into entity_image (name, path)
-values ('img2.jpg', 'EntityImage/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img2.jpg');
+values ('img2.jpg', 'images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img2.jpg');
 insert into adventure_images (adventure_id, images_id)
 values (2, 4);
 insert into adventure_images (adventure_id, images_id)

@@ -46,14 +46,9 @@ public class AdventureDTO {
         this.behaviourRules = adventure.getBehaviourRules();
         this.images = images;
         this.AdditionalEquipments = new ArrayList<>();
-
-        for(AdditionalEquipment addE : adventure.getAdditionalEquipments())
-            this.AdditionalEquipments.add(addE);
+        this.AdditionalEquipments.addAll(adventure.getAdditionalEquipments());
         this.pricelist = new ArrayList<ItemPrice>();
-
-        for(ItemPrice itemPrice : adventure.getPricelist())
-            this.pricelist.add(itemPrice);
-
+        this.pricelist.addAll(adventure.getPricelist());
         this.reservationCancellationConditions = adventure.getReservationCancellationConditions();
         this.averageGrade = adventure.getAverageGrade();
     }

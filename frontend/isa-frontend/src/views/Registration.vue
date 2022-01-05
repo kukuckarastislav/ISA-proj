@@ -69,7 +69,7 @@
 
         </div>
         <div class="col">
-          <img src="../assets/undraw_secure_login_pdn4.svg" class="img-fluid" alt="" />
+         <img src="../assets/undraw_secure_login_pdn4.svg" class="img-fluid" alt="" /> 
         </div>
       </div>
     </div>

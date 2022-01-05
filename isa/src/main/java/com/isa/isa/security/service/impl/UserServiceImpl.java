@@ -100,6 +100,7 @@ public class UserServiceImpl implements UserService {
 			roles = roleService.findByName("ROLE_CUSTOMER");
 			clientService.save(userDTO);
 		}
+		//TODO: Registration owners
 
 		u.setRoles(roles);
 		
