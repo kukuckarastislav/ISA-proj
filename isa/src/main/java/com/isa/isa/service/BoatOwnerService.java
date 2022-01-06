@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.Client;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
 import com.isa.isa.repository.CottageOwnerRepository;
@@ -43,5 +44,10 @@ public class BoatOwnerService {
 				&& instructorRepository.getByEmail(email)!=null && adminRepository.getByEmail(email)!=null)
 			return true;
 		return false;
+    }
+	
+	public BoatOwner save(UserDTO userDTO) {
+		BoatOwner newClient = new BoatOwner(userDTO);
+		return boatOwnerRepository.saveAndFlush(newClient);
     }
 }

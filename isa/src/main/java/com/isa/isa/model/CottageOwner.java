@@ -10,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
+import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.enums.OwnerType;
 
 @Entity
@@ -29,5 +29,14 @@ public class CottageOwner extends Person{
 
 	public void setRegistrationMotivation(String registrationMotivation) {
 		this.registrationMotivation = registrationMotivation;
+	}
+	
+	public CottageOwner(UserDTO userDTO) {
+        super(userDTO);
+    }
+	
+	public CottageOwner()
+	{
+		super();
 	}
 }

@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.isa.isa.DTO.UserDTO;
+
 @Entity
 @Table(name="boat_owner")
 public class BoatOwner extends Person {
@@ -28,5 +30,14 @@ public class BoatOwner extends Person {
 
 	public void setRegistrationMotivation(String registrationMotivation) {
 		this.registrationMotivation = registrationMotivation;
+	}
+	
+	public BoatOwner(UserDTO userDTO) {
+        super(userDTO);
+    }
+	
+	public BoatOwner()
+	{
+		super();
 	}
 }

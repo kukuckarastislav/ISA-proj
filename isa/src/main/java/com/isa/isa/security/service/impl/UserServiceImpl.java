@@ -3,31 +3,31 @@ package com.isa.isa.security.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.isa.isa.DTO.UserApproveDTO;
-import com.isa.isa.DTO.UserDTO;
-import com.isa.isa.model.BoatOwner;
-import com.isa.isa.model.CottageOwner;
-import com.isa.isa.model.Instructor;
-import com.isa.isa.repository.AdminRepository;
-import com.isa.isa.repository.BoatOwnerRepository;
-import com.isa.isa.repository.CottageOwnerRepository;
-import com.isa.isa.repository.InstructorRepository;
-import com.isa.isa.security.service.EmailService;
-import com.isa.isa.service.AdminService;
-import com.isa.isa.service.ClientService;
-import com.isa.isa.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import	com.isa.isa.security.dto.UserRequest;
+import com.isa.isa.DTO.UserApproveDTO;
+import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.Instructor;
+import com.isa.isa.repository.BoatOwnerRepository;
+import com.isa.isa.repository.CottageOwnerRepository;
+import com.isa.isa.repository.InstructorRepository;
 import com.isa.isa.security.model.Role;
 import com.isa.isa.security.model.User;
 import com.isa.isa.security.repository.UserRepository;
+import com.isa.isa.security.service.EmailService;
 import com.isa.isa.security.service.RoleService;
 import com.isa.isa.security.service.UserService;
+import com.isa.isa.service.AdminService;
+import com.isa.isa.service.BoatOwnerService;
+import com.isa.isa.service.ClientService;
+import com.isa.isa.service.CottageOwnerService;
+import com.isa.isa.service.InstructorService;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,6 +41,13 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private InstructorService instructorService;
+	
+	@Autowired
+	private CottageOwnerService cottageOwnerService;
+	
+	@Autowired
+	private BoatOwnerService boatOwnerService;
+	
 
 	@Autowired
 	private InstructorRepository instructorRepository;
@@ -99,8 +106,13 @@ public class UserServiceImpl implements UserService {
 		} else if(userDTO.isCustomer()) {
 			roles = roleService.findByName("ROLE_CUSTOMER");
 			clientService.save(userDTO);
+		} else if(userDTO.isCottageOwner()) {
+			roles = roleService.findByName("ROLE_COTTAGE_OWNER");
+			cottageOwnerService.save(userDTO);
+		} else if(userDTO.isBoatOwner()) {
+			roles = roleService.findByName("ROLE_BOAT_OWNER");
+			boatOwnerService.save(userDTO);
 		}
-		//TODO: Registration owners
 
 		u.setRoles(roles);
 		

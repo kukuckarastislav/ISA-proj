@@ -4,12 +4,14 @@ import Registration from '../views/Registration.vue'
 import Login from '../views/Login.vue'
 import CustomProfile from '../views/CustomerProfile.vue'
 import ApprovalRegistrations from '../admin/ApprovalRegistrations'
+import CottageOwnerHomePage from '../views/CottageOwnerHomePage.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/registration', name: 'Registration', component: Registration },
   { path: '/login', name: 'Login', component: Login },
   {path: '/customerProfile', name: 'CustomerProfile', component: CustomProfile},
+  {path: '/cottageOwnerProfile', name: 'CottageOwnerHomePage', component: CottageOwnerHomePage},
   { path: '/approval', name: 'ApprovalRegistrations', component: ApprovalRegistrations },
 ]
 
