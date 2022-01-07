@@ -24,9 +24,10 @@ public class AdventureController {
     @Autowired
     private AdventureService adventureService;
 
-    @GetMapping("/byinstructor/{username}")
-    public ResponseEntity<ArrayList<AdventureDTO>> getAdventureByInstructor(@PathVariable String username) {
-        ArrayList<AdventureDTO> adventuresByInstructor = adventureService.getAdventureDTOByInstructor(username);
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    @GetMapping("/byinstructor")
+    public ResponseEntity<ArrayList<AdventureDTO>> getAdventureByInstructor(Principal user) {
+        ArrayList<AdventureDTO> adventuresByInstructor = adventureService.getAdventureDTOByInstructor(user.getName());
         return new ResponseEntity<ArrayList<AdventureDTO>>(adventuresByInstructor, HttpStatus.OK);
     }
 

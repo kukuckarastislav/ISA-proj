@@ -53,8 +53,6 @@ public class Adventure {
 	@Column(nullable=true)
 	private double averageGrade;
 
-	//TODO: dodati cenu
-	//
 
 	@Embedded
 	private Price price;

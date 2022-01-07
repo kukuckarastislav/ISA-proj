@@ -41,6 +41,9 @@
     <div v-if="role == 'ROLE_COTTAGE_OWNER'">
       <CottageOwnerLinks></CottageOwnerLinks>
     </div>
+    <div v-if="role === 'ROLE_INSTRUCTOR'">
+      <InstructorLinks></InstructorLinks>
+    </div>
 
   </div>
   <div style="height: 72px;"></div>
@@ -67,12 +70,14 @@ import "bootstrap"
 import CustomerLinks from './views/Customer.vue'
 import AdminLinks from './admin/Admin.vue'
 import CottageOwnerLinks from './views/CottageOwnerLinks.vue'
+import InstructorLinks from './instructor/InstructorLinks.vue'
 
 export default {
   name: 'App',
   components: {
     AdminLinks,
-    CustomerLinks
+    CustomerLinks,
+    InstructorLinks
   },
   mounted: function(){
       this.updateLinks();

@@ -34,6 +34,7 @@ public class BoatOwner extends Person {
 	
 	public BoatOwner(UserDTO userDTO) {
         super(userDTO);
+		this.registrationMotivation = userDTO.getRegistrationMotivation();
     }
 	
 	public BoatOwner()

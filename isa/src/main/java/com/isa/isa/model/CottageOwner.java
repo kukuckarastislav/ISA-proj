@@ -33,6 +33,7 @@ public class CottageOwner extends Person{
 	
 	public CottageOwner(UserDTO userDTO) {
         super(userDTO);
+		this.registrationMotivation = userDTO.getRegistrationMotivation();
     }
 	
 	public CottageOwner()
