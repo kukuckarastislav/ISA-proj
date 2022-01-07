@@ -138,6 +138,12 @@ insert into ins_fast_res_history(status_of_fast_reservation, client_id, ins_fast
 values ('TAKEN', 3, 1);
 
 
+-- cottage owner petar, izvuceni entity_image da se gore kod stefana ne bi menjalo
+insert into entity_image (name, path)
+values ('img1.jpg', 'images/CottageOwners/isaprojectftn+petarCO@gmail.com/Kuca/img1.jpg');
+insert into cottage_images (cottage_id, images_id)
+values (2, 6);
+
 -- Boat owner Nikola
 insert into USERS (username, password, last_password_reset_date, enabled, approved)
 values ('isaprojectftn+nikolaBO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
