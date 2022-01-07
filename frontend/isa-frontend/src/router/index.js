@@ -6,6 +6,7 @@ import CustomProfile from '../views/CustomerProfile.vue'
 import ApprovalRegistrations from '../admin/ApprovalRegistrations'
 import CottageOwnerHomePage from '../views/CottageOwnerHomePage.vue'
 import Adventures from '../instructor/Adventures.vue'
+import AdventureView from '../instructor/AdventureView.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -15,6 +16,7 @@ const routes = [
   {path: '/cottageOwnerProfile', name: 'CottageOwnerHomePage', component: CottageOwnerHomePage},
   { path: '/approval', name: 'ApprovalRegistrations', component: ApprovalRegistrations },
   { path: '/adventures', name: 'Adventures', component: Adventures },
+  { path: '/adventure/:adventurename?', name: 'AdventureView', component: AdventureView},
 ]
 
 const router = createRouter({

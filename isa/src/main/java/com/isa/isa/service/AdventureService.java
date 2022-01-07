@@ -1,6 +1,7 @@
 package com.isa.isa.service;
 
 import com.isa.isa.DTO.AdventureDTO;
+import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.EntityImageDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.EntityImage;
@@ -42,5 +43,24 @@ public class AdventureService {
         }
 
         return adventureDTOByInstructor;
+    }
+
+    public Adventure getAdventureByInstructorAndAdventureName(String instructorUsername, String adventureName){
+        Instructor instructor = instructorRepository.getByEmail(instructorUsername);
+        ArrayList<Adventure> adventureByInstructor = (ArrayList<Adventure>)adventureRepository.getByInstructorId(instructor.getId());
+        Adventure adventureByName = null;
+        for (Adventure adventure : adventureByInstructor) {
+            if(adventure.getName().equals(adventureName)){
+                adventureByName = adventure;
+                break;
+            }
+        }
+        return adventureByName;
+    }
+
+    public AdventureViewDTO getAdventureDTOByInstructorAndName(String username, String adventurename) {
+        Adventure adventure = getAdventureByInstructorAndAdventureName(username, adventurename);
+        AdventureViewDTO adventureViewDTO = new AdventureViewDTO(adventure, username);
+        return adventureViewDTO;
     }
 }
