@@ -24,15 +24,15 @@ public class ClientController {
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
-	public Client getInfo(Principal user) {
-		return this.clientService.findByEmail(user.getName());
+	public ClientDto getInfo(Principal user) {
+		return new ClientDto(this.clientService.findByEmail(user.getName()));
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	@PutMapping("/updateProfile")
-	public Client updateClient(@RequestBody ClientDto clientDto) {
+	public ClientDto updateClient(@RequestBody ClientDto clientDto) {
 		Client client= new Client(clientDto);
-		return this.clientService.update(client);
+		return new ClientDto(this.clientService.update(client));
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")

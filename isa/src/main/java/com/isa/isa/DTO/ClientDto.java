@@ -3,6 +3,7 @@ package com.isa.isa.DTO;
 
 
 import com.isa.isa.model.Address;
+import com.isa.isa.model.Client;
 
 public class ClientDto {
 	
@@ -27,6 +28,16 @@ public class ClientDto {
 
 	public ClientDto() {
 		super();
+	}
+	
+	public ClientDto(Client client) {
+		super();
+		this.email = client.getEmail();
+		this.password = client.getPassword();
+		this.firstName = client.getFirstName();
+		this.lastName = client.getLastName();
+		this.address = client.getAddress();
+		this.phoneNumber = client.getPhoneNumber();
 	}
 
 	
