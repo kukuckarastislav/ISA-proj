@@ -14,6 +14,19 @@ insert into role(name)
 values ('ROLE_INSTRUCTOR');
 
 
+-- aditional service tj itemPrice klasa u modelu
+insert into item_price(description, name, price)
+values ('Have fun with 5G','Wi-Fi', 10.0);
+insert into item_price(description, name, price)
+values ('Be cool','Air Condition', 15.0);
+insert into item_price(description, name, price)
+values ('Instructor will sing to you','Singing', 7.0);
+insert into item_price(description, name, price)
+values ('Food included', 'Food', 20.0);
+insert into item_price(description, name, price)
+values ('Parking for your car','Parking', 25.0);
+
+
 -- Admin
 insert into USERS (username, password, last_password_reset_date, enabled, approved)
 values ('isaprojectftn+admin@gmail.com','$2a$10$3xqAvzqpGKgBJrzIzpBQf.lm3RaR3R0.SAZsE6JovkCKv.9.9QgPG','2022-01-03 21:02:17.307', true, true);   -- password: admin
@@ -62,13 +75,19 @@ values ('Kuca', 'mala kuca', 'hrana', 500, 'PER_DAY', 5, 'Kopaonik', 'Serbia', 1
 
 -- Instructor Stefan
 insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+stefanI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', false, false);   -- password: pass
+values ('isaprojectftn+stefanI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
 insert into user_role (user_id, role_id)
 values (6, 5);
 insert into instructor (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation)
 values (6, 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 'isaprojectftn+stefanI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Stefan', 'Stefanovic', '030345', 'Hoho instruktor');
 insert into adventure (name, city, country, latitude, longitude, number, street, price, price_type, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
 values ('Penjanje na planinu', 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 5,'PER_HOUR','Pecacemo Ribe', 'Odlican Pecaros', 4, 'Nema skakanja u vodu', 'FREE', 6, 0);
+insert into adventure_additional_services(adventure_id, additional_service_id)
+values (1,1);
+insert into adventure_additional_services(adventure_id, additional_service_id)
+values (1,3);
+insert into adventure_additional_services(adventure_id, additional_service_id)
+values (1,4);
 insert into entity_image (name, path)
 values ('img1.jpg', 'images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img1.jpg');
 insert into entity_image (name, path)
@@ -95,6 +114,10 @@ insert into instructor_terms(instructor_id, term_availability, start_time, end_t
 values (6, 'AVAILABILE', '2022-03-05T8:00:06.235098700', '2022-03-25T8:00:06.235098700');
 insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id)
 values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
+insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
+values (1,3);
+insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
+values (1,4);
 insert into instructor_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, adventure_id)
 values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 100, '2022-03-11T14:00:06.235098700', '2022-03-11T16:00:06.235098700', 2);
 insert into ins_fast_res_history(status_of_fast_reservation, client_id, ins_fast_res_id)
@@ -119,8 +142,7 @@ values ('GPS');
 insert into boat_navigation_equipment(boat_id, navigational_equipment_id)
 values (1,1);
 
-insert into item_price(description, name, price)
-values ('euros per day','Wi-Fi', 10.0);
+
 
 insert into boat_additional_services(boat_id, additional_service_id)
 values (1,1);  
@@ -133,8 +155,7 @@ values ('mreza');
 insert into adventure_additional_equipment(adventure_id, additional_equipment_id)
 values (1,1);
 
-insert into adventure_additional_services(adventure_id, additional_service_id)
-values (1,1);
+
 
 insert into cottage_additional_services(cottage_id, additional_service_id)
 values (1,1);

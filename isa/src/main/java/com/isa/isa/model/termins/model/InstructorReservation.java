@@ -2,9 +2,12 @@ package com.isa.isa.model.termins.model;
 
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.ItemPrice;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="instructor_reservation")
@@ -21,6 +24,10 @@ public class InstructorReservation {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "adventure_id", unique=false)
     private Adventure adventure;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "Instructor_reservation_additional_services", joinColumns = @JoinColumn(name = "instructor_reservation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "additional_service_id", referencedColumnName = "id"))
+    private Set<ItemPrice> additionalServices = new HashSet<ItemPrice>();
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
