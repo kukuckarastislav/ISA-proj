@@ -25,8 +25,8 @@
             </div>
             <div class="col-sm-9">
                 <div v-for="adventure in adventures" :key="adventure">
-                    <a href="">
-                        <div class="card">
+                    
+                        <div class="card" v-on:click="moreDetails(adventure)">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-5">
@@ -45,7 +45,7 @@
                                 </div>
                             </div>         
                         </div>
-                    </a>
+                    
                     <br>
                 </div>
                  
@@ -94,6 +94,9 @@ export default {
 
         }
         return 'http://localhost:8180/'+imgPath;
+    },
+    moreDetails: function(adventure){
+        this.$router.push({ path: '/adventure/'+encodeURIComponent(adventure.name)});
     },
     sortAdventures: function () {
             if (this.sortType == 'NameAZ') {

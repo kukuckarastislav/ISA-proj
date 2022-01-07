@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface AdventureRepository extends JpaRepository<Adventure, Integer> {
     List<Adventure> getByInstructorId(int idInstructor);
+
 }
