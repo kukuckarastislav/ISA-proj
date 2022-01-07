@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.termins.model.BoatFastResHistory;
+import com.isa.isa.model.termins.model.BoatReservations;
 import com.isa.isa.model.termins.model.CottageFastResHistory;
 import com.isa.isa.model.termins.model.CottageReservations;
 import com.isa.isa.model.termins.model.InsFastResHistory;
@@ -42,8 +44,30 @@ public class Client extends Person{
 	@OneToMany (mappedBy = "client",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CottageFastResHistory> cottageFastResHistories = new HashSet<CottageFastResHistory>();
 
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<BoatReservations> boatReservations = new HashSet<BoatReservations>();
+
+	@OneToMany (mappedBy = "client",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<BoatFastResHistory> boatFastResHistories = new HashSet<BoatFastResHistory>();
 
 
+	
+
+	public Set<BoatReservations> getBoatReservations() {
+		return boatReservations;
+	}
+
+	public void setBoatReservations(Set<BoatReservations> boatReservations) {
+		this.boatReservations = boatReservations;
+	}
+
+	public Set<BoatFastResHistory> getBoatFastResHistories() {
+		return boatFastResHistories;
+	}
+
+	public void setBoatFastResHistories(Set<BoatFastResHistory> boatFastResHistories) {
+		this.boatFastResHistories = boatFastResHistories;
+	}
 
 	public Set<CottageReservations> getCottageReservations() {
 		return cottageReservations;
