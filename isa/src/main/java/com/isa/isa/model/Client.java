@@ -1,5 +1,8 @@
 package com.isa.isa.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,11 +10,10 @@ import javax.persistence.OneToMany;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.termins.model.CottageFastResHistory;
+import com.isa.isa.model.termins.model.CottageReservations;
 import com.isa.isa.model.termins.model.InsFastResHistory;
 import com.isa.isa.model.termins.model.InstructorReservation;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Client extends Person{
@@ -34,16 +36,30 @@ public class Client extends Person{
 	private Set<InsFastResHistory> insFastResHistories = new HashSet<InsFastResHistory>();
 
 
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CottageReservations> cottageReservations = new HashSet<CottageReservations>();
+
+	@OneToMany (mappedBy = "client",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CottageFastResHistory> cottageFastResHistories = new HashSet<CottageFastResHistory>();
 
 
 
 
+	public Set<CottageReservations> getCottageReservations() {
+		return cottageReservations;
+	}
 
+	public void setCottageReservations(Set<CottageReservations> cottageReservations) {
+		this.cottageReservations = cottageReservations;
+	}
 
+	public Set<CottageFastResHistory> getCottageFastResHistories() {
+		return cottageFastResHistories;
+	}
 
-
-
-
+	public void setCottageFastResHistories(Set<CottageFastResHistory> cottageFastResHistories) {
+		this.cottageFastResHistories = cottageFastResHistories;
+	}
 
 	public Set<InstructorReservation> getInstructorReservations() {
 		return instructorReservations;

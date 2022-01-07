@@ -1,6 +1,7 @@
 package com.isa.isa.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -45,6 +46,9 @@ public class Cottage {
 	
 	@Column(nullable=false)
 	private String behaviourRules;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<EntityImage> images = new HashSet<EntityImage>();
 
 	
 	@ManyToMany
@@ -56,5 +60,87 @@ public class Cottage {
 
 	@Embedded
 	private Price price;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public CottageOwner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(CottageOwner owner) {
+		this.owner = owner;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getBehaviourRules() {
+		return behaviourRules;
+	}
+
+	public void setBehaviourRules(String behaviourRules) {
+		this.behaviourRules = behaviourRules;
+	}
+
+	public Set<EntityImage> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<EntityImage> images) {
+		this.images = images;
+	}
+
+	public Set<ItemPrice> getAdditionalServices() {
+		return additionalServices;
+	}
+
+	public void setAdditionalServices(Set<ItemPrice> additionalServices) {
+		this.additionalServices = additionalServices;
+	}
+
+	public double getAverageGrade() {
+		return averageGrade;
+	}
+
+	public void setAverageGrade(double averageGrade) {
+		this.averageGrade = averageGrade;
+	}
+
+	public Price getPrice() {
+		return price;
+	}
+
+	public void setPrice(Price price) {
+		this.price = price;
+	}
+	
+	
 	
 }
