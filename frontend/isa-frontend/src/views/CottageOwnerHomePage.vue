@@ -166,9 +166,6 @@ export default {
     deleteAccount: function(){
       this.isDeleting = true;
     },
-  confirmAcountDelete: function(){
-      this.isDeleting = false;
-    },
   discardAcountDelete: function(){
       this.isDeleting = false;
     },
@@ -178,11 +175,29 @@ export default {
       this.passwordData.newPasswordRepeated = '';
       this.isEditingPassword = false;
     },
+    subbmitDeleteRequst: function(){
+      axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .put('http://localhost:8180/api/cottageowner/deleteAccount',this.profile)
+          .then(response => {
+                  if (response) {    
+                    alert(response.data);
+                  }
+                  else alert('Server error.')
+          }).catch(err => {
+              alert('Server not availabe.')
+          }); 
+    },
+    confirmAcountDelete: function(){
+      this.subbmitDeleteRequst();
+      this.isDeleting = false;
+    },
     savePasswordChanges: function(){
       axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
-          .put('http://localhost:8180/api/cottageowner/updatePassword',this.passwordData,this.myConfig)
+          .put('http://localhost:8180/api/cottageowner/deleteAccount',this.passwordData,this.myConfig)
           .then(response => {
                   if (response) {
                   /*this.loginData.username = this.profile.email;

@@ -3,6 +3,8 @@ package com.isa.isa.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.ClientPasswordDto;
+import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.AccountDeleteRequest;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.enums.OwnerType;
+import com.isa.isa.service.AccountDeleteRequestService;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.CottageOwnerService;
 import com.isa.isa.service.InstructorService;
@@ -28,6 +34,8 @@ public class CottageOwnerController {
     private CottageOwnerService cottageOwnerService;
     @Autowired
     private BoatOwnerService boatOwnerService;
+    @Autowired
+    private AccountDeleteRequestService accountDeleteRequestService; 
     
     @GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_COTTAGE_OWNER')")	
@@ -51,9 +59,15 @@ public class CottageOwnerController {
 	
 	@PreAuthorize("hasRole('ROLE_COTTAGE_OWNER')")
 	@PutMapping("/deleteAccount")
-	public Boolean deleteAccount(Principal user) {
-		//CottageOwner client= this.cottageOwnerService.findByEmail(user.getName());
-		return false;
+	public ResponseEntity<String> deleteAccount(Principal user) {
+		CottageOwner client= this.cottageOwnerService.findByEmail(user.getName());
+		if(accountDeleteRequestService.getByUsername(client.getEmail())!=null)
+		{
+			return new ResponseEntity("Request already submitted.", HttpStatus.OK);
+		}
+		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),OwnerType.COTTAGE_OWNER));
+		
+		return new ResponseEntity("Request submitted.", HttpStatus.OK);
 	}
 	
 	

@@ -167,6 +167,7 @@ export default {
       this.isDeleting = true;
     },
   confirmAcountDelete: function(){
+      this.subbmitDeleteRequst();
       this.isDeleting = false;
     },
   discardAcountDelete: function(){
@@ -177,6 +178,20 @@ export default {
       this.passwordData.oldPassword = '';
       this.passwordData.newPasswordRepeated = '';
       this.isEditingPassword = false;
+    },
+    subbmitDeleteRequst: function(){
+      axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .put('http://localhost:8180/api/boatowner/deleteAccount',this.profile)
+          .then(response => {
+                  if (response) {    
+                    alert(response.data);
+                  }
+                  else alert('Server error.')
+          }).catch(err => {
+              alert('Server not availabe.')
+          }); 
     },
     savePasswordChanges: function(){
       axios.defaults.headers.common["Authorization"] =
