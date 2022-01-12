@@ -41,6 +41,9 @@
     <div v-if="role == 'ROLE_COTTAGE_OWNER'">
       <CottageOwnerLinks></CottageOwnerLinks>
     </div>
+    <div v-if="role == 'ROLE_BOAT_OWNER'">
+      <BoatOwnerLinks></BoatOwnerLinks>
+    </div>
     <div v-if="role === 'ROLE_INSTRUCTOR'">
       <InstructorLinks></InstructorLinks>
     </div>
@@ -71,6 +74,7 @@ import CustomerLinks from './views/Customer.vue'
 import AdminLinks from './admin/Admin.vue'
 import CottageOwnerLinks from './views/CottageOwnerLinks.vue'
 import InstructorLinks from './instructor/InstructorLinks.vue'
+import BoatOwnerLinks from './views/BoatOwnerLinks.vue'
 
 export default {
   name: 'App',

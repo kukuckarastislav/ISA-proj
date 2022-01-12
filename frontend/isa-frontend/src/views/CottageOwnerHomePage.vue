@@ -92,7 +92,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: 'CustomerProfile',
+  name: 'CottageOwnerProfile',
   components: {
     
   },

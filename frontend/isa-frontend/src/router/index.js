@@ -4,7 +4,8 @@ import Registration from '../views/Registration.vue'
 import Login from '../views/Login.vue'
 import CustomProfile from '../views/CustomerProfile.vue'
 import ApprovalRegistrations from '../admin/ApprovalRegistrations'
-import CottageOwnerHomePage from '../views/CottageOwnerHomePage.vue'
+import CottageOwnerProfile from '../views/CottageOwnerHomePage.vue'
+import BoatOwnerProfile from '../views/BoatOwnerHomePage.vue'
 import Adventures from '../instructor/Adventures.vue'
 import AdventureView from '../instructor/AdventureView.vue'
 
@@ -13,7 +14,8 @@ const routes = [
   { path: '/registration', name: 'Registration', component: Registration },
   { path: '/login', name: 'Login', component: Login },
   {path: '/customerProfile', name: 'CustomerProfile', component: CustomProfile},
-  {path: '/cottageOwnerProfile', name: 'CottageOwnerHomePage', component: CottageOwnerHomePage},
+  {path: '/cottageOwnerProfile', name: 'CottageOwnerProfile', component: CottageOwnerProfile},
+  {path: '/boatOwnerProfile', name: 'BoatOwnerProfile', component: BoatOwnerProfile},
   { path: '/approval', name: 'ApprovalRegistrations', component: ApprovalRegistrations },
   { path: '/adventures', name: 'Adventures', component: Adventures },
   { path: '/adventure/:adventurename?', name: 'AdventureView', component: AdventureView},

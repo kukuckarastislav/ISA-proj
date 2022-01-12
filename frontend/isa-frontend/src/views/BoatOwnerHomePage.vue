@@ -1,7 +1,7 @@
 <template>
 
-    <div class="container">
-      <div class="row align-items-center justify-content-between">
+    <div class="container" style="width:100%;">
+      <div class="row align-items-center justify-content-between" style="width:50%;">
         <div class="col p-5 align-items-center">
           <h2>Profile</h2>
             <br>
@@ -57,13 +57,12 @@
               </div>
             </div>
 
-           
-
-          
+            <br><br><br>
+            <button  v-if="isViewing && !isEditingPassword" type="button" v-on:click="deleteAccount" class="btn btn-primary">Delete account</button>
+            <label  v-if="isViewing && !isEditingPassword && isDeleting" class="form-label">Do you really want to submit request for account deletion?</label>
+            <button  v-if="isViewing && !isEditingPassword && isDeleting" type="button" v-on:click="confirmAcountDelete" class="btn btn-primary">Yes</button>
+            <button  v-if="isViewing && !isEditingPassword && isDeleting" type="button" v-on:click="discardAcountDelete" class="btn btn-primary">No</button>
             
-            
-
-          
 
             <br><br><br>
             <button v-if="isViewing && !isEditingPassword" type="button" v-on:click="changeProfile" class="btn btn-primary">Change profile</button>
@@ -74,9 +73,17 @@
             <button v-if="isEditing && !isEditingPassword" type="button" v-on:click="discardChanges" class="btn btn-primary">Discard changes</button>
             <button v-if="isEditingPassword" type="button" v-on:click="discardPasswordChanges" class="btn btn-primary">Discard changes</button>
             
+            
 
         </div>
         
+      </div>
+
+
+      <div class="row align-items-center justify-content-between" style="width:50%;">
+        <div></div><!-- div za odabir vikendice-->
+        <div></div><!-- div za dodavanje vikendice, brisanje na profilu vikendice-->
+      
       </div>
     </div>
 
@@ -85,7 +92,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: 'CustomerProfile',
+  name: 'BoatOwnerProfile',
   components: {
     
   },
@@ -109,6 +116,7 @@ export default {
       isEditing: false,
 			isViewing: true,
       isEditingPassword: false,
+      isDeleting: false,
       passwordData:{
           oldPassword: '',
           newPassword: '',
@@ -130,7 +138,7 @@ export default {
       axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
-          .get('http://localhost:8180/api/client/profileInfo',this.myConfig)
+          .get('http://localhost:8180/api/boatowner/profileInfo',this.myConfig)
           .then(response => {this.profile=response.data
                   this.isViewing = true;
                   this.isEditing = false;
@@ -143,7 +151,7 @@ export default {
       axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
-          .put('http://localhost:8180/api/client/updateProfile',this.profile,this.myConfig)
+          .put('http://localhost:8180/api/boatowner/updateProfile',this.profile,this.myConfig)
           .then(response => {this.profile=response.data
                   this.isViewing = true;
                   this.isEditing = false;
@@ -155,6 +163,15 @@ export default {
     changePassword : function(){
       this.isEditingPassword = true;
     },
+    deleteAccount: function(){
+      this.isDeleting = true;
+    },
+  confirmAcountDelete: function(){
+      this.isDeleting = false;
+    },
+  discardAcountDelete: function(){
+      this.isDeleting = false;
+    },
     discardPasswordChanges: function(){
       this.passwordData.newPassword = '';
       this.passwordData.oldPassword = '';
@@ -165,7 +182,7 @@ export default {
       axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
-          .put('http://localhost:8180/api/client/updatePassword',this.passwordData,this.myConfig)
+          .put('http://localhost:8180/api/boatowner/updatePassword',this.passwordData,this.myConfig)
           .then(response => {
                   if (response) {
                   /*this.loginData.username = this.profile.email;
@@ -190,11 +207,12 @@ export default {
           }); 
     }
   },
+    
   mounted: function(){
       axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
-          .get('http://localhost:8180/api/client/profileInfo',this.myConfig)
+          .get('http://localhost:8180/api/boatowner/profileInfo',this.myConfig)
           .then(response => this.profile=response.data).catch(err => {
               alert('DOSLO JE DO GRESKE')
           });    
