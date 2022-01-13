@@ -51,7 +51,7 @@ public class Cottage {
 	private Set<EntityImage> images = new HashSet<EntityImage>();
 
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "cottage_additional_services", joinColumns = @JoinColumn(name = "cottage_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "additional_service_id", referencedColumnName = "id"))
 	private Set<ItemPrice> additionalServices;
 	

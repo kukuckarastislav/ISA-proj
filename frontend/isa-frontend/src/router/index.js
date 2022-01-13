@@ -9,6 +9,7 @@ import BoatOwnerProfile from '../views/BoatOwnerHomePage.vue'
 import Adventures from '../instructor/Adventures.vue'
 import AdventureView from '../instructor/AdventureView.vue'
 import CustomerInstructorPage from '../views/CustomerInstructorPage'
+import CustomerCottagePage from '../views/CustomerCottagePage'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -20,7 +21,8 @@ const routes = [
   { path: '/approval', name: 'ApprovalRegistrations', component: ApprovalRegistrations },
   { path: '/adventures', name: 'Adventures', component: Adventures },
   { path: '/adventure/:adventurename?', name: 'AdventureView', component: AdventureView},
-  {path: '/customerInstructorPage/:id?', name: 'CustomerInstructorPage', component: CustomerInstructorPage}
+  {path: '/customerInstructorPage/:id?', name: 'CustomerInstructorPage', component: CustomerInstructorPage},
+  {path: '/customerCottagePage/:id?', name: 'CustomerCottagePage', component: CustomerCottagePage}
 ]
 
 const router = createRouter({

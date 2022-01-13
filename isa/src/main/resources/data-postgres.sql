@@ -144,6 +144,13 @@ values ('img1.jpg', 'images/CottageOwners/isaprojectftn+petarCO@gmail.com/Kuca/i
 insert into cottage_images (cottage_id, images_id)
 values (2, 6);
 
+-- cottage owner Milan, slike
+insert into entity_image (name, path)
+values ('img1.jpg', 'images/CottageOwners/isaprojectftn+milanCO@gmail.com/Stan/img1.jpg');
+insert into cottage_images (cottage_id, images_id)
+values (1, 7);
+
+
 -- Boat owner Nikola
 insert into USERS (username, password, last_password_reset_date, enabled, approved)
 values ('isaprojectftn+nikolaBO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass

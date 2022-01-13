@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="d-md-flex align-items-center justify-content-center">
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked v-on:click="button1Clicked">
                             <label class="btn btn-outline-primary" for="btnradio1">Cotages</label>
 
                             <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
@@ -74,6 +74,31 @@
         </div>
     </section>
 
+    <section v-if="button1" id="cardss" class="p-5 isa-color-standard">
+        <div class="container">
+            <div class="row g-4">
+
+               
+                <div  v-for="n in cottages" :key="n" class="col-md-6 col-lg-4">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <img v-bind:src="'http://localhost:8180/' + n.images[0].path" class="imgCard" alt=""/>
+                            <h3 class="card-title mb-3">{{n.name}}</h3>
+                            <p class="card-text">
+                            Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}}
+                            </p>
+                            <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showCottage(n.id)">More details</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </section>
+
 
 
     <div class="btn-toolbar justify-content-center isa-color-standard " role="toolbar" aria-label="Toolbar with button groups">
@@ -101,13 +126,16 @@ export default {
       instructors: [],
       button1: true,
       button2: false,
-      button3: false
+      button3: false,
+      cottages: []
     }
   },
   mounted() {
     
     axios.get('http://localhost:8180/api/person/instructors')
 			.then(response => (this.instructors = response.data)).catch(err => (alert(err)));
+     axios.get('http://localhost:8180/api/person/cottages')
+			.then(response => (this.cottages = response.data)).catch(err => (alert(err)));
       
   },
   methods: {
@@ -116,8 +144,16 @@ export default {
                 this.button1 = false
                 this.button2 = false
         },
+        button1Clicked : function(){
+                this.button3 = false
+                this.button1 = true
+                this.button2 = false
+        },
         showInstructor: function(IdNum){
             this.$router.push({ path: '/customerInstructorPage/'+IdNum});
+        },
+        showCottage: function(IdNum){
+            this.$router.push({ path: '/customerCottagePage/'+IdNum});
         }
   }
 

@@ -17,10 +17,12 @@ import com.isa.isa.DTO.AdventureDTO;
 import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.CottageOwnerService;
+import com.isa.isa.service.CottageService;
 import com.isa.isa.service.InstructorService;
 
 
@@ -34,6 +36,8 @@ public class PersonController {
     private CottageOwnerService cottageOwnerService;
     @Autowired
     private BoatOwnerService boatOwnerService;
+    @Autowired
+    private CottageService cottageService;
     
     @PutMapping("/registration")
     public ResponseEntity<UserDTO> registrationStuff(@RequestBody UserDTO userDTO){
@@ -75,6 +79,16 @@ public class PersonController {
     @GetMapping("/instructors/{instructorId}")
     public ResponseEntity<Instructor> getAdventureByInstructorAndName(@PathVariable Integer instructorId) {
         return new ResponseEntity<Instructor>(instructorService.getInstructorById(instructorId), HttpStatus.OK);
+    }
+    
+    @GetMapping("/cottages")
+    public ResponseEntity<ArrayList<Cottage>> getAllCottages() {
+        return new ResponseEntity<ArrayList<Cottage>>(cottageService.getAllCottages(), HttpStatus.OK);
+    }
+    
+    @GetMapping("/cottages/{cottageId}")
+    public ResponseEntity<Cottage> getCottageById(@PathVariable Integer cottageId) {
+        return new ResponseEntity<Cottage>(cottageService.getCottageWithOwner(cottageId), HttpStatus.OK);
     }
 
 }

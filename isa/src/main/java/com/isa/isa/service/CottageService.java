@@ -47,4 +47,14 @@ public class CottageService {
 
         return cottageDTOByOwner;
     }
+	
+	public ArrayList<Cottage> getAllCottages(){
+		//return (ArrayList<Cottage>) cottageRepository.findAll();
+		ArrayList<Cottage> cottages = (ArrayList<Cottage>) cottageRepository.findAllWithOwners();
+		return cottages;
+	}
+	
+	public Cottage getCottageWithOwner(int id) {
+		return cottageRepository.getByIdWithOwner(id);
+	}
 }
