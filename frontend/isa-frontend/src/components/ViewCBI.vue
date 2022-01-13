@@ -14,7 +14,7 @@
                             <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btnradio2">Boats</label>
 
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-on:click="button3Clicked">
                             <label class="btn btn-outline-primary" for="btnradio3">Instructors</label>
                         </div>
                     </div>
@@ -46,20 +46,23 @@
 
 
 
-    <section id="cardss" class="p-5 isa-color-standard">
+    <section v-if="button3" id="cardss" class="p-5 isa-color-standard">
         <div class="container">
             <div class="row g-4">
 
                
-                <div  v-for="n in 10" :key="n" class="col-md-6 col-lg-4">
+                <div  v-for="n in instructors" :key="n" class="col-md-6 col-lg-4">
                     <div class="card bg-light">
                         <div class="card-body text-center">
-                            <img src="../assets/apartman.jpg" class="imgCard" alt=""/>
-                            <h3 class="card-title mb-3">Vikendica</h3>
+                            <img v-bind:src="'http://localhost:8180/' + n.adventures[0].images[0].path" class="imgCard" alt=""/>
+                            <h3 class="card-title mb-3">{{n.firstName}} {{n.lastName}}</h3>
                             <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Assumenda accusamus nobis sed cupiditate iusto? Quibusdam.</p>
-                            <button class="btn isa-btn-more-detail btn-sm" type="button">More details</button>
+                                Adventures:<br><br>
+                            <span v-for="a in n.adventures" :key="a">
+                                {{a.name}} <br>
+                            </span>
+                            </p>
+                            <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showInstructor(n.id)">More details</button>
                         </div>
                     </div>
                 </div>
@@ -89,22 +92,33 @@
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 export default {
   name: 'ViewCBI',
   data: function(){
     return {
-      msgFromBackend: ''
+      msgFromBackend: '',
+      instructors: [],
+      button1: true,
+      button2: false,
+      button3: false
     }
   },
   mounted() {
-    /*
-    axios.get('http://localhost:8180/helloTest')
-			.then(response => (this.msgFromBackend = response.data)).catch(err => (alert(err)));
-      */
+    
+    axios.get('http://localhost:8180/api/person/instructors')
+			.then(response => (this.instructors = response.data)).catch(err => (alert(err)));
+      
   },
   methods: {
-
+        button3Clicked : function(){
+                this.button3 = true
+                this.button1 = false
+                this.button2 = false
+        },
+        showInstructor: function(IdNum){
+            this.$router.push({ path: '/customerInstructorPage/'+IdNum});
+        }
   }
 
 }

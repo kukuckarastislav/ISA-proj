@@ -19,6 +19,9 @@ public class Instructor extends Person{
 
     @Column(name="registrationMotivation", nullable=true)
     private String registrationMotivation;
+    
+    @Column(nullable=true)
+	private double averageGrade;
 
     public String getRegistrationMotivation() {
         return registrationMotivation;
@@ -50,4 +53,14 @@ public class Instructor extends Person{
     public void setInstructorTerms(Set<InstructorTerms> instructorTerms) {
         this.instructorTerms = instructorTerms;
     }
+
+	public double getAverageGrade() {
+		return averageGrade;
+	}
+
+	public void setAverageGrade(double averageGrade) {
+		this.averageGrade = averageGrade;
+	}
+    
+    
 }
