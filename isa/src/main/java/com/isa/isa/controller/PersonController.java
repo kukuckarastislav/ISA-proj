@@ -1,16 +1,24 @@
 package com.isa.isa.controller;
 
+import java.security.Principal;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.isa.DTO.AdventureDTO;
+import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.Instructor;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.CottageOwnerService;
 import com.isa.isa.service.InstructorService;
@@ -56,6 +64,17 @@ public class PersonController {
         }
 
         return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+    }
+    
+    @GetMapping("/instructors")
+    public ResponseEntity<ArrayList<Instructor>> getAllInstructorsWithAdventures() {
+        ArrayList<Instructor> instructors = instructorService.getAllInstructorsWithAdventures();
+        return new ResponseEntity<ArrayList<Instructor>>(instructors, HttpStatus.OK);
+    }
+    
+    @GetMapping("/instructors/{instructorId}")
+    public ResponseEntity<Instructor> getAdventureByInstructorAndName(@PathVariable Integer instructorId) {
+        return new ResponseEntity<Instructor>(instructorService.getInstructorById(instructorId), HttpStatus.OK);
     }
 
 }

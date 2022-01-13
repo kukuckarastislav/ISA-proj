@@ -1,5 +1,6 @@
 package com.isa.isa.model.termins.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.isa.model.Instructor;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class InstructorTerms {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id", unique=false)
     private Instructor instructor;
