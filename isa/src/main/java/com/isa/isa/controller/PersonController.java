@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.isa.DTO.AdventureDTO;
 import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.service.AdventureService;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.BoatService;
 import com.isa.isa.service.CottageOwnerService;
@@ -42,6 +44,8 @@ public class PersonController {
     private CottageService cottageService;
     @Autowired
     private BoatService boatService;
+    @Autowired
+    private AdventureService adventureService;
     
     @PutMapping("/registration")
     public ResponseEntity<UserDTO> registrationStuff(@RequestBody UserDTO userDTO){
@@ -98,6 +102,16 @@ public class PersonController {
     @GetMapping("/boats")
     public ResponseEntity<ArrayList<Boat>> getAllBoats() {
         return  new ResponseEntity<ArrayList<Boat>>(boatService.getAllBoats(), HttpStatus.OK);
+    }
+    
+    @GetMapping("/adventures")
+    public ResponseEntity<ArrayList<Adventure>> getAllAdventures() {
+        return new ResponseEntity<ArrayList<Adventure>>(adventureService.getAllAdventures(), HttpStatus.OK);
+    }
+    
+    @GetMapping("/adventures/{adventureId}")
+    public ResponseEntity<Adventure> getAdventureById(@PathVariable Integer adventureId) {
+        return new ResponseEntity<Adventure>(adventureService.getAdventureWithInstructor(adventureId), HttpStatus.OK);
     }
 
 }

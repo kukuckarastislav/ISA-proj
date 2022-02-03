@@ -10,6 +10,7 @@ import Adventures from '../instructor/Adventures.vue'
 import AdventureView from '../instructor/AdventureView.vue'
 import CustomerInstructorPage from '../views/CustomerInstructorPage'
 import CustomerCottagePage from '../views/CustomerCottagePage'
+import CustomerAdventurePage from '../views/CustomerAdventurePage'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -22,7 +23,8 @@ const routes = [
   { path: '/adventures', name: 'Adventures', component: Adventures },
   { path: '/adventure/:adventurename?', name: 'AdventureView', component: AdventureView},
   {path: '/customerInstructorPage/:id?', name: 'CustomerInstructorPage', component: CustomerInstructorPage},
-  {path: '/customerCottagePage/:id?', name: 'CustomerCottagePage', component: CustomerCottagePage}
+  {path: '/customerCottagePage/:id?', name: 'CustomerCottagePage', component: CustomerCottagePage},
+  {path: '/customerAdventurePage/:id?', name: 'CustomerAdventurePage', component: CustomerAdventurePage}
 ]
 
 const router = createRouter({

@@ -4,6 +4,7 @@ import com.isa.isa.DTO.AdventureDTO;
 import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.EntityImageDTO;
 import com.isa.isa.model.Adventure;
+import com.isa.isa.model.Cottage;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.repository.AdventureRepository;
@@ -63,4 +64,19 @@ public class AdventureService {
         AdventureViewDTO adventureViewDTO = new AdventureViewDTO(adventure, username);
         return adventureViewDTO;
     }
+    
+    public ArrayList<Adventure> getAllAdventures(){
+		//return (ArrayList<Cottage>) cottageRepository.findAll();
+		ArrayList<Adventure> adventures = (ArrayList<Adventure>) adventureRepository.findAllWithInstructors();
+		for (Adventure adventure : adventures) {
+			adventure.getInstructor().setAdventures(null);
+		}
+		return adventures;
+	}
+    
+    public Adventure getAdventureWithInstructor(int id) {
+    	Adventure adventure = adventureRepository.getByIdWithInstructor(id);
+    	adventure.getInstructor().setAdventures(null);
+		return adventure;
+	}
 }

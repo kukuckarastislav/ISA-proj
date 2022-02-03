@@ -16,7 +16,7 @@
                             <label class="btn btn-outline-primary" for="btnradio2">Boats</label>
 
                             <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-on:click="button3Clicked">
-                            <label class="btn btn-outline-primary" for="btnradio3">Instructors</label>
+                            <label class="btn btn-outline-primary" for="btnradio3">Adventures</label>
                         </div>
                     </div>
                 </div>
@@ -52,18 +52,17 @@
             <div class="row g-4">
 
                
-                <div  v-for="n in instructors" :key="n" class="col-md-6 col-lg-4">
+                <div  v-for="n in adventures" :key="n" class="col-md-6 col-lg-4">
                     <div class="card bg-light">
                         <div class="card-body text-center">
-                            <img v-bind:src="'http://localhost:8180/' + n.adventures[0].images[0].path" class="imgCard" alt=""/>
-                            <h3 class="card-title mb-3">{{n.firstName}} {{n.lastName}}</h3>
+                            <img v-bind:src="'http://localhost:8180/' + n.images[0].path" class="imgCard" alt=""/>
+                            <h3 style="margin-top:5%" class="card-title mb-3">{{n.name}}</h3>
                             <p class="card-text">
-                                Adventures:<br><br>
-                            <span v-for="a in n.adventures" :key="a">
-                                {{a.name}} <br>
-                            </span>
+                                Instructor: {{n.instructor.firstName}} {{n.instructor.lastName}}<br>
+                                Description: {{n.description}}<br>
+                                Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}}
                             </p>
-                            <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showInstructor(n.id)">More details</button>
+                            <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showAdventure(n.id)">More details</button>
                         </div>
                     </div>
                 </div>
@@ -151,7 +150,7 @@ export default {
   data: function(){
     return {
       msgFromBackend: '',
-      instructors: [],
+      adventures: [],
       button1: true,
       button2: false,
       button3: false,
@@ -162,8 +161,8 @@ export default {
   },
   mounted() {
     
-    axios.get('http://localhost:8180/api/person/instructors')
-			.then(response => {this.instructors = response.data
+    axios.get('http://localhost:8180/api/person/adventures')
+			.then(response => {this.adventures = response.data
             axios.get('http://localhost:8180/api/person/cottages')
 			.then(response => {this.cottages = response.data
             axios.get('http://localhost:8180/api/person/boats')
@@ -191,8 +190,8 @@ export default {
                 this.button2 = true
                 this.button1 = false
         },
-        showInstructor: function(IdNum){
-            this.$router.push({ path: '/customerInstructorPage/'+IdNum});
+        showAdventure: function(IdNum){
+            this.$router.push({ path: '/customerAdventurePage/'+IdNum});
         },
         showCottage: function(IdNum){
             this.$router.push({ path: '/customerCottagePage/'+IdNum});
