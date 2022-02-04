@@ -108,12 +108,12 @@
                 <div  v-for="n in boats" :key="n" class="col-md-6 col-lg-4">
                     <div class="card bg-light">
                         <div class="card-body text-center">
-                            
+                            <img v-bind:src="'http://localhost:8180/' + n.images[0].path" class="imgCard" alt=""/>
                             <h3 class="card-title mb-3">{{n.name}}</h3>
                             <p class="card-text">
                             Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}}
                             </p>
-                            <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showCottage(n.id)">More details</button>
+                            <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showBoat(n.id)">More details</button>
                         </div>
                     </div>
                 </div>
@@ -195,6 +195,9 @@ export default {
         },
         showCottage: function(IdNum){
             this.$router.push({ path: '/customerCottagePage/'+IdNum});
+        },
+        showBoat: function(IdNum){
+            this.$router.push({ path: '/customerBoatPage/'+IdNum});
         }
   }
 

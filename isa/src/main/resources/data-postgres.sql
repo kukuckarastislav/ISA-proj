@@ -160,6 +160,10 @@ insert into boat_owner (id, city, country, latitude, longitude, number, street, 
 values (7, 'Zrenjanin', 'Serbia', 11, 13, 33, 'Zmaj Jovina', 'isaprojectftn+nikolaBO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Nikola', 'Nikolic', '030346', 'imao sam zelju');
 insert into boat (city, country, latitude, longitude, number, street,price, price_type, behaviour_rules, capacity, engine_number, engine_power, length, max_speed, name, promotional_description, type, owner_id,reservation_cancellation_conditions,average_grade)
 values ('Beograd', 'Serbia', 11, 13, 33, 'Knez Mihajlova', 10, 'PER_HOUR', 'Nema brze voznje', 3, '123', 100, 50, 70, 'Laser 16', 'Najbolji brod', 'Jedrilica', 7, 'FREE',0);
+insert into entity_image (name, path)
+values ('img1.jpg', 'images/BoatOwners/isaprojectftn+nikolaBO@gmail.com/Laser_16/img1.jpg');
+insert into boat_images(boat_id,images_id)
+values (1,8);
 
 
 

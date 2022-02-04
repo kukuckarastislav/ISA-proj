@@ -1,7 +1,9 @@
 package com.isa.isa.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -15,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.isa.isa.model.enums.ReservationCancellationConditions;
@@ -52,6 +55,8 @@ public class Boat {
 	private double averageGrade;
 	@Embedded
 	private Price price;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<EntityImage> images = new HashSet<EntityImage>();
 	
 	public Boat() {
 		
@@ -215,6 +220,14 @@ public class Boat {
 
 	public void setPrice(Price price) {
 		this.price = price;
+	}
+
+	public Set<EntityImage> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<EntityImage> images) {
+		this.images = images;
 	}
 	
 	

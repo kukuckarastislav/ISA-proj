@@ -104,6 +104,11 @@ public class PersonController {
         return  new ResponseEntity<ArrayList<Boat>>(boatService.getAllBoats(), HttpStatus.OK);
     }
     
+    @GetMapping("/boats/{boatId}")
+    public ResponseEntity<Boat> getBoatById(@PathVariable Integer boatId) {
+        return new ResponseEntity<Boat>(boatService.getBoatWithOwner(boatId), HttpStatus.OK);
+    }
+    
     @GetMapping("/adventures")
     public ResponseEntity<ArrayList<Adventure>> getAllAdventures() {
         return new ResponseEntity<ArrayList<Adventure>>(adventureService.getAllAdventures(), HttpStatus.OK);

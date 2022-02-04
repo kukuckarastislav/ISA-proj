@@ -21,4 +21,8 @@ public class BoatService {
 		ArrayList<Boat> boats = (ArrayList<Boat>) boatRepository.findAllWithOwners();
 		return boats;
 	}
+	
+	public Boat getBoatWithOwner(int id) {
+		return boatRepository.getByIdWithOwner(id);
+	}
 }

@@ -11,6 +11,7 @@ import AdventureView from '../instructor/AdventureView.vue'
 import CustomerInstructorPage from '../views/CustomerInstructorPage'
 import CustomerCottagePage from '../views/CustomerCottagePage'
 import CustomerAdventurePage from '../views/CustomerAdventurePage'
+import CustomerBoatPage from '../views/CustomerBoatPage'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -24,7 +25,8 @@ const routes = [
   { path: '/adventure/:adventurename?', name: 'AdventureView', component: AdventureView},
   {path: '/customerInstructorPage/:id?', name: 'CustomerInstructorPage', component: CustomerInstructorPage},
   {path: '/customerCottagePage/:id?', name: 'CustomerCottagePage', component: CustomerCottagePage},
-  {path: '/customerAdventurePage/:id?', name: 'CustomerAdventurePage', component: CustomerAdventurePage}
+  {path: '/customerAdventurePage/:id?', name: 'CustomerAdventurePage', component: CustomerAdventurePage},
+  {path: '/customerBoatPage/:id?', name: 'CustomerBoatPage', component: CustomerBoatPage}
 ]
 
 const router = createRouter({
