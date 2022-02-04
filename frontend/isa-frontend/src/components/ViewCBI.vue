@@ -38,9 +38,12 @@
                         <button class="btn btn-dark btn-lg" type="button">Search</button>
                     </div>
                 </div>
-                <div class="form-check form-switch">
+               <!-- <div class="form-check form-switch">
                     <label class="form-check-label isa-text-color-darkBlue" for="flexSwitchCheckDefault">Default switch checkbox input</label>
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                </div> -->
+                <div style="text-align:left; background-color:white">
+                <button style="background-color:white; border:none;"><img style="height:2em;"  src="../assets/filter.svg"></button>
                 </div>
             </div>
         </section>
