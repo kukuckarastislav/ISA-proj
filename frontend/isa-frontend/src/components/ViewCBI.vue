@@ -35,7 +35,7 @@
                         <input type="text" class="form-control" placeholder="parametar pretrage 1" />
                         <input type="text" class="form-control" placeholder="parametar pretrage 2" />
                         <input type="text" class="form-control" placeholder="parametar pretrage 3" />
-                        <button class="btn btn-dark btn-lg" type="button">Search</button>
+                        <button class="btn btn-dark btn-lg" type="button" v-on:click="searchBy()">Search</button>
                     </div>
                 </div>
                <!-- <div class="form-check form-switch">
@@ -43,8 +43,20 @@
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
                 </div> -->
                 <div style="text-align:left; background-color:white">
-                <button style="background-color:white; border:none;"><img style="height:2em;"  src="../assets/filter.svg"></button>
+                <button style="background-color:white; border:none;" v-on:click="openFilters()"><img style="height:2em;"  src="../assets/filter.svg"></button>
                 </div>
+                <div v-if="showFilters" style="color:black; text-align:center">
+                    <b>Sort by: </b>
+                    <select class="form-select d-inline" aria-label="Default select example" style="width:7em; margin-left:10em" v-model="sortBy">
+                    <option value="1">Name</option>
+                    <option value="2">Address</option>
+                    <option value="3">Grade</option>
+                    </select>
+                    <select class="form-select d-inline" aria-label="Default select example" style="width:9em; margin-left:10em" v-model="sortInOrder">
+                    <option value="1">Ascending</option>
+                    <option value="2">Descending</option>
+                    </select>
+                    </div>
             </div>
         </section>
 
@@ -159,7 +171,10 @@ export default {
       button3: false,
       cottages: [],
       boats: [],
-      isFetching: true
+      isFetching: true,
+      showFilters: false,
+      sortBy:1,
+	  sortInOrder:1	
     }
   },
   mounted() {
@@ -201,6 +216,146 @@ export default {
         },
         showBoat: function(IdNum){
             this.$router.push({ path: '/customerBoatPage/'+IdNum});
+        },
+        openFilters: function(){
+            this.showFilters = ! this.showFilters;
+        },
+        searchBy: function(){
+            if(this.button1){
+                if (this.showFilters){
+
+                    if(this.sortBy=="3" && this.sortInOrder=="1"){
+										this.cottages.sort(function (a, b) {
+											  return a.averageGrade - b.averageGrade;
+												});
+									} else if(this.showFilters && this.sortBy=="3" && this.sortInOrder=="2"){
+										this.cottages.sort(function (a, b) {
+											  return b.averageGrade - a.averageGrade;
+												});
+									}  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
+										this.cottages.sort(function (a, b) {
+											  return a.name.replace(/\s+/g, '').localeCompare(b.name.replace(/\s+/g, ''))
+												});
+									} else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
+										this.cottages.sort(function (a, b) {
+											  return b.name.replace(/\s+/g, '').localeCompare(a.name.replace(/\s+/g, ''))
+												});
+									}  else if(this.showFilters && this.sortBy==2 && this.sortInOrder==1){
+										this.cottages.sort(function (a, b) {
+                                            if(a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, '')) == 0)
+                                                {
+                                                    if(a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''))==0){
+                                                        return a.address.street.replace(/\s+/g, '').localeCompare(b.address.street.replace(/\s+/g, ''))==0
+                                                    }
+                                                    return a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''));
+                                                }
+											  return a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, ''))
+												});
+									} else if(this.showFilters && this.sortBy=="2" && this.sortInOrder=="2"){
+										this.cottages.sort(function (a, b) {
+											if(b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, '')) == 0)
+                                                {
+                                                    if(b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''))==0){
+                                                        return b.address.street.replace(/\s+/g, '').localeCompare(a.address.street.replace(/\s+/g, ''))==0
+                                                    }
+                                                    return b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''));
+                                                }
+											  return b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, ''))
+												});
+                                    }
+
+                }
+            }
+            else if(this.button2){
+                     if (this.showFilters){
+
+                    if(this.sortBy=="3" && this.sortInOrder=="1"){
+                                        this.boats.sort(function (a, b) {
+                                              return a.averageGrade - b.averageGrade;
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="3" && this.sortInOrder=="2"){
+                                        this.boats.sort(function (a, b) {
+                                              return b.averageGrade - a.averageGrade;
+                                                });
+                                    }  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
+                                        this.boats.sort(function (a, b) {
+                                              return a.name.replace(/\s+/g, '').localeCompare(b.name.replace(/\s+/g, ''))
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
+                                        this.boats.sort(function (a, b) {
+                                              return b.name.replace(/\s+/g, '').localeCompare(a.name.replace(/\s+/g, ''))
+                                                });
+                                    }  else if(this.showFilters && this.sortBy==2 && this.sortInOrder==1){
+                                        this.boats.sort(function (a, b) {
+                                            if(a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, '')) == 0)
+                                                {
+                                                    if(a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''))==0){
+                                                        return a.address.street.replace(/\s+/g, '').localeCompare(b.address.street.replace(/\s+/g, ''))==0
+                                                    }
+                                                    return a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''));
+                                                }
+                                              return a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, ''))
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="2" && this.sortInOrder=="2"){
+                                        this.boats.sort(function (a, b) {
+                                            if(b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, '')) == 0)
+                                                {
+                                                    if(b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''))==0){
+                                                        return b.address.street.replace(/\s+/g, '').localeCompare(a.address.street.replace(/\s+/g, ''))==0
+                                                    }
+                                                    return b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''));
+                                                }
+                                              return b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, ''))
+                                                });
+                                    }
+
+                }
+            }
+            else if(this.button3){
+                     if (this.showFilters){
+
+                    if(this.sortBy=="3" && this.sortInOrder=="1"){
+                                        this.adventures.sort(function (a, b) {
+                                              return a.averageGrade - b.averageGrade;
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="3" && this.sortInOrder=="2"){
+                                        this.adventures.sort(function (a, b) {
+                                              return b.averageGrade - a.averageGrade;
+                                                });
+                                    }  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
+                                        this.adventures.sort(function (a, b) {
+                                              return a.name.replace(/\s+/g, '').localeCompare(b.name.replace(/\s+/g, ''))
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
+                                        this.adventures.sort(function (a, b) {
+                                              return b.name.replace(/\s+/g, '').localeCompare(a.name.replace(/\s+/g, ''))
+                                                });
+                                    }  else if(this.showFilters && this.sortBy==2 && this.sortInOrder==1){
+                                        this.adventures.sort(function (a, b) {
+                                            if(a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, '')) == 0)
+                                                {
+                                                    if(a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''))==0){
+                                                        return a.address.street.replace(/\s+/g, '').localeCompare(b.address.street.replace(/\s+/g, ''))==0
+                                                    }
+                                                    return a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''));
+                                                }
+                                              return a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, ''))
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="2" && this.sortInOrder=="2"){
+                                        this.adventures.sort(function (a, b) {
+                                            if(b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, '')) == 0)
+                                                {
+                                                    if(b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''))==0){
+                                                        return b.address.street.replace(/\s+/g, '').localeCompare(a.address.street.replace(/\s+/g, ''))==0
+                                                    }
+                                                    return b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''));
+                                                }
+                                              return b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, ''))
+                                                });
+                                    }
+
+                }
+            }
         }
   }
 
