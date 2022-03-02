@@ -46,7 +46,8 @@ public class ItemPrice {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
-	
+
+	public int getId() { return id; }
+
+	public void setId(int id) { this.id = id; }
 }

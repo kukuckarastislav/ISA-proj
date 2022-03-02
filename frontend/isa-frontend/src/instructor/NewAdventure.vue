@@ -38,7 +38,7 @@
     
                 <div class="d-flex justify-content-start">
                     <input type="text" v-model="newAdditionalEq" style="width: 50%;" class="form-control m-2"> 
-                    <button v-on:click="addNewAdditionalEq()" class="btn btn-success m-2">Add</button>
+                    <button v-on:click="addNewAdditionalEq()" class="btn btn-primary m-2">Add</button>
                 </div> 
                 
                 <div class="list-group text-start overflow-auto card" style="height: 150px;">
@@ -85,12 +85,42 @@
           <div class="col">
             <h2 class="text-start">Price list</h2> 
             
-            <div class="list-group text-start overflow-auto card" style="height: 150px;">
-                    <label v-for="additionalEq in allAdditionalEquipment" :key="additionalEq" class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="" v-on:click="clickAdditionalEq(additionalEq)">
-                        {{additionalEq.name}}
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="list-group text-start overflow-auto card" style="height: 200px">
+                    <label v-for="itPrice in allItemPrices" :key="itPrice" class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <input class="form-check-input me-1" type="checkbox" value="" v-on:click="clickItemPrice(itPrice)">
+                            </div>
+                            <div class="col-sm-3">{{itPrice.name}}</div>
+                            <div class="col-sm-6">{{itPrice.description}}</div>
+                            <div class="col-sm-2">{{itPrice.price}}</div>
+                        </div>
                     </label>
+                    </div>
                 </div>
+                <div class="col-sm-5">
+                    <div v-if="addNewItemPriceVisible" class="row">
+                        <div class="priceItem col-sm-6">
+                            <h2 style="font-weight: bold">{{newPriceItem.name}}</h2>
+                            <h5>{{newPriceItem.description}}</h5>
+                            <h2 style="font-weight: bold">${{newPriceItem.price}}</h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <br> 
+                            <input v-model="newPriceItem.name" type="text" class="form-control"> <br>
+                            <input v-model="newPriceItem.description" type="text" class="form-control"> <br>
+                            <input v-model="newPriceItem.price" type="number" class="form-control" min=0> <br>
+                            <button class="btn btn-danger m-2" v-on:click="cancelAddNewItemPrice()">Cancel</button>
+                            <button class="btn btn-primary m-2">Add</button>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <button class="d-flex btn btn-primary" v-on:click="addNewItemPriceVisible=true">Add New Item Price</button>
+                    </div>
+                </div>
+            </div> <br>
             <div class="row row-cols-auto">
               <div v-for="priceItem in adventure.pricelist" :key="priceItem" class="priceItem">
                 <h2 style="font-weight: bold">{{priceItem.name}}</h2>
@@ -163,7 +193,16 @@ export default {
         },
 
         allAdditionalEquipment: [],
-        newAdditionalEq: ""
+        newAdditionalEq: "",
+        allItemPrices: [],
+
+        addNewItemPriceVisible: false,
+        newPriceItem: {
+            id: -1,
+            price: 0,
+            name: "name",
+            description: "description"
+        }
     }
   },
   mounted: function(){
@@ -172,8 +211,13 @@ export default {
   methods: {
     loadData: function(){
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+        console.log("AHHAHAHAHAHAH");
         axios.get('http://localhost:8180/api/additionalequipment/getadditionalequipment').then(resp => {
             this.allAdditionalEquipment = resp.data;
+            console.log(resp.data);
+        });
+        axios.get('http://localhost:8180/api/itemprice/getitemprices').then(resp => {
+            this.allItemPrices = resp.data;
             console.log(resp.data);
         });
     },
@@ -185,16 +229,37 @@ export default {
             if(this.adventure.additionalEquipments[i].id == additionalEq.id){
                 //remove
                 this.adventure.additionalEquipments.splice(i, 1);
+                console.log("removed element from additionEq with id="+additionalEq.id);
                
                 return;
             }
         }
         //add
         this.adventure.additionalEquipments.push(additionalEq);
+        console.log("added element from additionEq with id="+additionalEq.id);
      
     },
     addNewAdditionalEq: function(){
         // poslati na bekend novi add equipment
+    },
+    clickItemPrice: function(itemPrice){
+        for (var i = 0; i < this.adventure.pricelist.length; i++) {
+            if(this.adventure.pricelist[i].id == itemPrice.id){
+                //remove
+                this.adventure.pricelist.splice(i, 1);
+                console.log("removed element from itemPrice with id="+itemPrice.id);
+                return;
+            }
+        }
+        //add
+        this.adventure.pricelist.push(itemPrice);
+        console.log("added element from itemPrice with id="+itemPrice.id);
+    },
+    cancelAddNewItemPrice: function(){
+        this.newPriceItem.price = 0;
+        this.newPriceItem.name = "Name";
+        this.newPriceItem.description = "description";
+        this.addNewItemPriceVisible = false;
     }
   }
 }
