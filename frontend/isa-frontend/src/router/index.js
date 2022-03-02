@@ -12,21 +12,23 @@ import CustomerInstructorPage from '../views/CustomerInstructorPage'
 import CustomerCottagePage from '../views/CustomerCottagePage'
 import CustomerAdventurePage from '../views/CustomerAdventurePage'
 import CustomerBoatPage from '../views/CustomerBoatPage'
+import NewAdventure from '../instructor/NewAdventure'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/registration', name: 'Registration', component: Registration },
   { path: '/login', name: 'Login', component: Login },
-  {path: '/customerProfile', name: 'CustomerProfile', component: CustomProfile},
-  {path: '/cottageOwnerProfile', name: 'CottageOwnerProfile', component: CottageOwnerProfile},
-  {path: '/boatOwnerProfile', name: 'BoatOwnerProfile', component: BoatOwnerProfile},
+  { path: '/customerProfile', name: 'CustomerProfile', component: CustomProfile},
+  { path: '/cottageOwnerProfile', name: 'CottageOwnerProfile', component: CottageOwnerProfile},
+  { path: '/boatOwnerProfile', name: 'BoatOwnerProfile', component: BoatOwnerProfile},
   { path: '/approval', name: 'ApprovalRegistrations', component: ApprovalRegistrations },
   { path: '/adventures', name: 'Adventures', component: Adventures },
   { path: '/adventure/:adventurename?', name: 'AdventureView', component: AdventureView},
-  {path: '/customerInstructorPage/:id?', name: 'CustomerInstructorPage', component: CustomerInstructorPage},
-  {path: '/customerCottagePage/:id?', name: 'CustomerCottagePage', component: CustomerCottagePage},
-  {path: '/customerAdventurePage/:id?', name: 'CustomerAdventurePage', component: CustomerAdventurePage},
-  {path: '/customerBoatPage/:id?', name: 'CustomerBoatPage', component: CustomerBoatPage}
+  { path: '/customerInstructorPage/:id?', name: 'CustomerInstructorPage', component: CustomerInstructorPage},
+  { path: '/customerCottagePage/:id?', name: 'CustomerCottagePage', component: CustomerCottagePage},
+  { path: '/customerAdventurePage/:id?', name: 'CustomerAdventurePage', component: CustomerAdventurePage},
+  { path: '/customerBoatPage/:id?', name: 'CustomerBoatPage', component: CustomerBoatPage },
+  { path: '/newadventure', name: 'NewAdventure', component: NewAdventure },
 ]
 
 const router = createRouter({

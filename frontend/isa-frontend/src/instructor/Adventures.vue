@@ -16,8 +16,10 @@
                             <option value="MaxNumOfPeopleASC">Max number of people Ascend</option>
                             <option value="MaxNumOfPeopleDES">Max number of people Descend</option>
                         </select>
-
-
+                        
+                        <br> <br>
+                        <a href="/newadventure" class="btn btn-primary" style="width: 100%;">Add New Adventure</a>
+                       
                         
    
                     </div>
