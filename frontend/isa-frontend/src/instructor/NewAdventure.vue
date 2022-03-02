@@ -4,15 +4,18 @@
         <div class="row">
             <div class="col-sm-6">
 
-            <CarouselView></CarouselView>
+            <CarouselView v-bind:server="false" v-bind:images="imagesForFront"></CarouselView>
 
-            <button class="btn btn-primary">Add Image</button>
+
+            <input class="form-control" type="file" @change="onFileChange">
             
 
             </div>
             <div class="col-sm-6">
 
-                <h1 class="text-start">name: <input v-model="adventure.name" type="text"> </h1>  <br>
+                <h1 class="text-start">Name:  </h1>
+                <input v-model="adventure.name" class="form-control" type="text">
+                <br>
                 
                 <h5 class="text-start">Description: </h5>
                 <textarea class="form-control" v-model="adventure.description" rows="3"></textarea>
@@ -22,18 +25,26 @@
                 <h5 class="text-start">Behaviour: </h5>
                 <textarea class="form-control" v-model="adventure.behaviourRules" rows="2"></textarea> <br>
 
-                <h5 class="text-start">Max number of people: <input v-model="adventure.maxNumberOfPeople" style="width: 60px;" type="number" min=0></h5>
-                
-                <h5 class="text-start">Reservation Cancellation Conditions: 
-                <select v-model="adventure.reservationCancellationConditions" class="cenaCss">
-                    <option value="FREE" selected>FREE</option>
-                    <option value="FIVE_PERCENT">FIVE_PERCENT</option>
-                    <option value="TEN_PERCENT">TEN_PERCENT</option>
-                    <option value="FIFTEEN_PERCENT">FIFTEEN_PERCENT</option>
-                    <option value="TWENTY_PERCENT">TWENTY_PERCENT</option>
-                </select>
-                </h5>
-                
+                <div class="row">
+                    <div class="col-sm-7"><h5 class="text-start">Max number of people: </h5></div>
+                    <div class="col-sm-5 d-flex"><input class="form-control" v-model="adventure.maxNumberOfPeople" style="width: 60px;" type="number" min=0></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-7"><h5 class="text-start">Reservation Cancellation Conditions: </h5></div>
+                    <div class="col-sm-5 d-flex">
+                        <select v-model="adventure.reservationCancellationConditions" class="form-select cenaCss">
+                            <option value="FREE" selected>FREE</option>
+                            <option value="FIVE_PERCENT">FIVE_PERCENT</option>
+                            <option value="TEN_PERCENT">TEN_PERCENT</option>
+                            <option value="FIFTEEN_PERCENT">FIFTEEN_PERCENT</option>
+                            <option value="TWENTY_PERCENT">TWENTY_PERCENT</option>
+                         </select>
+                    </div>
+                </div>
+            
+
+                <br>    
                 <h5 class="text-start ">Additional Equipments: </h5>
     
                 <div class="d-flex justify-content-start">
@@ -41,12 +52,12 @@
                     <button v-on:click="addNewAdditionalEq()" class="btn btn-primary m-2">Add</button>
                 </div> 
                 
-                <div class="list-group text-start overflow-auto card" style="height: 150px;">
+                <div class="list-group text-start overflow-auto card m-2" style="height: 150px; width: 50%;">
                     <label v-for="additionalEq in allAdditionalEquipment" :key="additionalEq" class="list-group-item">
                         <input class="form-check-input me-1" type="checkbox" value="" v-on:click="clickAdditionalEq(additionalEq)">
                         {{additionalEq.name}}
                     </label>
-                </div>
+                </div> <br>
                 <div v-if="adventure.additionalEquipments.length > 0" class="card">
                   <div class="card-body">
                       <span v-for="addEq in adventure.additionalEquipments" :key="addEq" class="badge bg-primary m-1">{{addEq.name}}</span> 
@@ -153,7 +164,8 @@
           </div>
         </div>
 
-
+        <br> <br>
+        <button class="btn btn-primary m-5 p-3">Create New Adventure</button>
 
     </div>
 
@@ -202,11 +214,16 @@ export default {
             price: 0,
             name: "name",
             description: "description"
-        }
+        },
+
+        imagesForFront: [{path: "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img1.jpg"}],
+        imagesForBackend: [],
+        imageCount: 0
     }
   },
   mounted: function(){
       this.loadData();
+      console.log(this.imagesForFront);
   },
   methods: {
     loadData: function(){
@@ -220,9 +237,6 @@ export default {
             this.allItemPrices = resp.data;
             console.log(resp.data);
         });
-    },
-    setImg: function(image){
-      return 'http://localhost:8180/'+image.path;
     },
     clickAdditionalEq: function(additionalEq){
         for (var i = 0; i < this.adventure.additionalEquipments.length; i++) {
@@ -260,7 +274,23 @@ export default {
         this.newPriceItem.name = "Name";
         this.newPriceItem.description = "description";
         this.addNewItemPriceVisible = false;
-    }
+    },
+    onFileChange: function(e){
+        console.log('fajl select');
+        const file = e.target.files[0];
+        this.createBase64Image(file);
+        this.imageCount++;
+        this.imagesForFront.push({id: this.imageCount, name: "a", path: URL.createObjectURL(file)});
+        console.log('Nice');
+        console.log(this.imagesForFront);
+    },
+    createBase64Image(file){
+        const reader= new FileReader();
+        reader.onload = (e) =>{
+            this.imagesForBackend.push(e.target.result);
+        }
+        reader.readAsDataURL(file);
+    },
   }
 }
 </script>

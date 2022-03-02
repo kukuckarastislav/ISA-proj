@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-6">
 
-            <CarouselView v-bind:images="adventure.images"></CarouselView>
+            <CarouselView v-bind:server="true" v-bind:images="adventure.images"></CarouselView>
             
 
             </div>

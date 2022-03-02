@@ -46,19 +46,22 @@
 <script>
 export default {
   props: [
-      'images'
+      'images',
+      'server'
   ],
   name: 'CarouselView',
   data: function(){
     return {
        imagesDTO: [],
        itImg: 0,
+
     }
   },
     watch: { 
       	images: function(newVal, oldVal) { // watch it
             this.imagesDTO = [];
             let i = 0;
+            console.log('hello');
             for (const img of newVal){
                 if(i==0){
                     this.imagesDTO.push({'img':img, 'visible':true})    
@@ -67,14 +70,24 @@ export default {
                 }
                 i++;
             }
+        },
+        server: function(newVal, oldVal){
+            console.log('promena');
         }
     },
   mounted() {
-   
+   console.log('MOUNTED FROM IMAGESS');
   },
   methods: {
       setImg: function(image){
-          return 'http://localhost:8180/'+image.img.path;
+          if(this.server == true){
+              console.log('i must call server');
+              return 'http://localhost:8180/'+image.img.path;
+          }else{
+              console.log('local img on my pc');
+              return image.img.path;
+          }
+
       },
       slectImage: function(n){
           if(this.itImg + n < 0 || this.itImg + n >= this.imagesDTO.length) return
