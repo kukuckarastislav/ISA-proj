@@ -5,20 +5,27 @@
             <div class="col-sm-6">
 
             <CarouselView v-bind:images="adventure.images"></CarouselView>
+            
 
             </div>
-            <div class="col-sm-6">
+            <div v-if="adventure.name != undefined" class="col-sm-6">
 
                 <h1 class="text-start">{{adventure.name}}</h1> <br>
+
+                <h3 class="text-start stars">
+                  <span v-for="index in Math.round(adventure.averageGrade)" :key="index">&#9733;</span> 
+                  <span v-for="index in Math.round(5-adventure.averageGrade)" :key="index">&#9734;</span> 
+                  {{adventure.averageGrade}}
+                </h3>
                 
                 <h5 class="text-start">Description: {{adventure.description}} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, sit ipsa voluptatem expedita odit consequatur aliquid, nam, tenetur reiciendis optio deleniti quibusdam inventore iure quas hic dolore alias totam modi.</h5>
                 <br>
                 
                 <h5 class="text-start">Behaviour: {{adventure.behaviourRules}}</h5>
                 <h5 class="text-start">Max number of people: {{adventure.maxNumberOfPeople}}</h5>
-
-                <h5 class="text-start">Reservation Cancellation Conditions: <b>{{adventure.reservationCancellationConditions}}</b></h5>
-
+                
+                <h5 class="text-start">Reservation Cancellation Conditions: <b class="stars">{{adventure.reservationCancellationConditions}}</b></h5>
+                
                 <h5 class="text-start">Additional Equipments: </h5>
                 <div v-if="adventure.additionalEquipments.length > 0" class="card">
                   <div class="card-body">
@@ -62,6 +69,20 @@
             </div>
         </div>
         
+        <!-- PriceList -->
+        <br>
+        <div class="row">
+          <div class="col">
+            <h2 class="text-start">Price list</h2>
+            <div class="row row-cols-auto">
+              <div v-for="priceItem in adventure.pricelist" :key="priceItem" class="priceItem">
+                <h2 style="font-weight: bold">{{priceItem.name}}</h2>
+                <h5>{{priceItem.description}}</h5>
+                <h2 style="font-weight: bold">${{priceItem.price}}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
 
         
 
@@ -126,6 +147,22 @@ export default {
 
 
 <style scoped>
+
+.priceItem{
+  font-weight: bold;
+  padding: 20px 0px 0px 0px;
+  margin: 15px;
+  width: 176px;
+  height: 180px;
+
+  background: #E7E7E7;
+  box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 28px;
+}
+
+.stars{
+  color: coral;
+}
 
 .cenaCss{
   color: coral;
