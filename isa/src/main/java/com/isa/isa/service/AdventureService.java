@@ -103,13 +103,16 @@ public class AdventureService {
         adventure.setMaxNumberOfPeople(addNewAdventureDTO.getMaxNumberOfPeople());
         adventure.setReservationCancellationConditions(addNewAdventureDTO.getReservationCancellationConditions());
         adventure.setPrice(addNewAdventureDTO.getPrice());
-        //list
         adventure.setAdditionalEquipments(new HashSet<AdditionalEquipment>(addNewAdventureDTO.getAdditionalEquipments()));
         adventure.setPricelist(new HashSet<ItemPrice>(addNewAdventureDTO.getPricelist()));
-        adventure.setImages(new HashSet<EntityImage>());
+
+        ArrayList<EntityImage> images = entityImageService.createAndSaveImages("Instructors", instructor.getEmail(), addNewAdventureDTO.getName(), addNewAdventureDTO.getImagesForBackend());
+
+        adventure.setImages(new HashSet<EntityImage>(images));
 
         adventureRepository.saveAndFlush(adventure);
 
         return new AdventureViewDTO(adventure, instructor.getEmail(), instructor);
     }
+
 }
