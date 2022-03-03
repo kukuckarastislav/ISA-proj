@@ -18,7 +18,7 @@
                   {{adventure.averageGrade}}
                 </h3>
                 
-                <h5 class="text-start">Description: {{adventure.description}} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, sit ipsa voluptatem expedita odit consequatur aliquid, nam, tenetur reiciendis optio deleniti quibusdam inventore iure quas hic dolore alias totam modi.</h5>
+                <h5 class="text-start">Description: {{adventure.description}} </h5>
                 <br>
                 
                 <h5 class="text-start">Behaviour: {{adventure.behaviourRules}}</h5>
@@ -55,7 +55,7 @@
                               <img src="../assets/abstract-user.png" class="img-fluid rounded-start" >
                             </div>
                             <div class="col-sm-10">
-                                <h5 class="card-title text-start">Instructor IME PREZIME</h5>
+                                <h5 class="card-title text-start">Instructor {{adventure.instructorFirstName}} {{adventure.instructorLastName}}</h5>
                                 <h6 class="card-title text-start">{{adventure.biography}}
                                     
                                 </h6>

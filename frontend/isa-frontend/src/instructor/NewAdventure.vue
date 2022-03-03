@@ -174,7 +174,7 @@
         </div>
 
         <br> <br>
-        <button class="btn btn-primary m-5 p-3">Create New Adventure</button>
+        <button v-on:click="createNewAdventure()" class="btn btn-primary m-5 p-3">Create New Adventure</button>
 
     </div>
 
@@ -201,7 +201,7 @@ export default {
                 longitude: 24.0
             },
             description: "",
-            images: [],
+            imagesForBackend: [],
             maxNumberOfPeople: 0,
             behaviourRules: "",
             pricelist: [],
@@ -306,6 +306,22 @@ export default {
         this.imageCount--;
         this.imagesForFront.splice(index,1);
         this.imagesForBackend.splice(index,1);
+    },
+    createNewAdventure: function(){
+        console.log('NEW ADVENTURE')
+        this.adventure.imagesForBackend = this.imagesForBackend;
+        console.log(this.adventure)
+
+        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+        axios.put('http://localhost:8180/api/adventure/addnewadventure',this.adventure)
+          .then(response => {
+              console.log('Odgoovr');
+              console.log(response.data);
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          }); 
+
+
     }
   }
 }

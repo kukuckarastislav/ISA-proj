@@ -92,10 +92,10 @@ insert into USERS (username, password, last_password_reset_date, enabled, approv
 values ('isaprojectftn+stefanI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
 insert into user_role (user_id, role_id)
 values (6, 5);
-insert into instructor (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade)
-values (6, 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 'isaprojectftn+stefanI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Stefan', 'Stefanovic', '030345', 'Hoho instruktor',0);
+insert into instructor (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade)
+values (6, 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 'isaprojectftn+stefanI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Stefan', 'Stefanovic', '030345', 'moja biografija, ja sam super lik', 'Hoho instruktor',0);
 insert into adventure (name, city, country, latitude, longitude, number, street, price, price_type, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
-values ('Penjanje na planinu', 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 5,'PER_HOUR','Pecacemo Ribe', 'Odlican Pecaros', 4, 'Nema skakanja u vodu', 'FREE', 6, 0);
+values ('Penjanje na planinu', 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 5,'PER_HOUR','Pecacemo Ribe', 'moja biografija, ja sam super lik', 4, 'Nema skakanja u vodu', 'FREE', 6, 0);
 insert into adventure_additional_services(adventure_id, additional_service_id)
 values (1,1);
 insert into adventure_additional_services(adventure_id, additional_service_id)
@@ -115,7 +115,7 @@ values (1, 2);
 insert into adventure_images (adventure_id, images_id)
 values (1, 3);
 insert into adventure (name, city, country, latitude, longitude, number, street, price, price_type, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
-values ('Krstarenje', 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 5,'PER_HOUR' ,'Pecacemo Ribe', 'Odlican Pecaros', 4, 'Nema skakanja u vodu', 'FREE', 6, 0);
+values ('Krstarenje', 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 5,'PER_HOUR' ,'Pecacemo Ribe', 'moja biografija, ja sam super lik', 4, 'Nema skakanja u vodu', 'FREE', 6, 0);
 insert into entity_image (name, path)
 values ('img1.jpg', 'images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img1.jpg');
 insert into entity_image (name, path)

@@ -11,6 +11,8 @@ import java.util.Set;
 public class AdventureViewDTO {
 
     private String instructorName;
+    private String instructorFirstName;
+    private String instructorLastName;
     private String name;
     private Address address;
     private String description;
@@ -26,8 +28,10 @@ public class AdventureViewDTO {
 
     public AdventureViewDTO(){}
 
-    public AdventureViewDTO(String instructorName, String name, Address address, String description, String biography, ArrayList<EntityImage> images, int maxNumberOfPeople, String behaviourRules, ArrayList<AdditionalEquipment> additionalEquipments, ArrayList<ItemPrice> pricelist, ReservationCancellationConditions reservationCancellationConditions, double averageGrade, Price price) {
+    public AdventureViewDTO(String instructorName, String instructorFirstName, String instructorLastName, String name, Address address, String description, String biography, ArrayList<EntityImage> images, int maxNumberOfPeople, String behaviourRules, ArrayList<AdditionalEquipment> additionalEquipments, ArrayList<ItemPrice> pricelist, ReservationCancellationConditions reservationCancellationConditions, double averageGrade, Price price) {
         this.instructorName = instructorName;
+        this.instructorFirstName = instructorFirstName;
+        this.instructorLastName = instructorLastName;
         this.name = name;
         this.address = address;
         this.description = description;
@@ -42,8 +46,12 @@ public class AdventureViewDTO {
         this.price = price;
     }
 
-    public AdventureViewDTO(Adventure adventure, String instructorName) {
+    public AdventureViewDTO(Adventure adventure, String instructorName, Instructor instructor) {
         this.instructorName = instructorName;
+        if(instructor != null){
+            this.instructorFirstName = instructor.getFirstName();
+            this.instructorLastName = instructor.getLastName();
+        }
         this.name = adventure.getName();
         this.address = adventure.getAddress();
         this.description = adventure.getDescription();
@@ -169,4 +177,12 @@ public class AdventureViewDTO {
     public void setPrice(Price price) {
         this.price = price;
     }
+
+    public String getInstructorFirstName() { return instructorFirstName; }
+
+    public void setInstructorFirstName(String instructorFirstName) { this.instructorFirstName = instructorFirstName; }
+
+    public String getInstructorLastName() { return instructorLastName; }
+
+    public void setInstructorLastName(String instructorLastName) { this.instructorLastName = instructorLastName; }
 }

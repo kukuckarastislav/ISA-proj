@@ -23,6 +23,8 @@ public class Instructor extends Person{
     @Column(nullable=true)
 	private double averageGrade;
 
+    private String biography;
+
     public String getRegistrationMotivation() {
         return registrationMotivation;
     }
@@ -61,6 +63,12 @@ public class Instructor extends Person{
 	public void setAverageGrade(double averageGrade) {
 		this.averageGrade = averageGrade;
 	}
-    
-    
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
 }
