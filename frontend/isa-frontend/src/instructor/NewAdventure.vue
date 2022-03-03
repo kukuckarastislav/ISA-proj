@@ -3,11 +3,20 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-
+            <!--
             <CarouselView v-bind:server="false" v-bind:images="imagesForFront"></CarouselView>
-
+            -->
 
             <input class="form-control" type="file" @change="onFileChange">
+            <br>
+            <div class="overflow-auto card pb-3" style="height: 660px;">
+                <div v-for="(image, index) in imagesForFront" :key="(image, index)">
+                    <button v-on:click="removeImage(image, index)" class="btn btn-danger rounded-circle removeImageBtn end-0 m-4">X</button>
+                    <img class="ms-3 me-3 mt-3 newImage img-fluid" v-bind:src="image.path" >
+                </div>
+            </div>
+
+
             
 
             </div>
@@ -143,7 +152,7 @@
         </div>
 
         
-
+        <!-- MAPA -->
         <br> <br> <br>
         <div class="row">
           <div class="col">
@@ -216,7 +225,7 @@ export default {
             description: "description"
         },
 
-        imagesForFront: [{path: "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img1.jpg"}],
+        imagesForFront: [],
         imagesForBackend: [],
         imageCount: 0
     }
@@ -280,7 +289,7 @@ export default {
         const file = e.target.files[0];
         this.createBase64Image(file);
         this.imageCount++;
-        this.imagesForFront.push({id: this.imageCount, name: "a", path: URL.createObjectURL(file)});
+        this.imagesForFront.push({id: this.imageCount, name: ""+this.imageCount, path: URL.createObjectURL(file)});
         console.log('Nice');
         console.log(this.imagesForFront);
     },
@@ -290,13 +299,29 @@ export default {
             this.imagesForBackend.push(e.target.result);
         }
         reader.readAsDataURL(file);
+        console.log('Images for beckend');
+        console.log(this.imagesForBackend);
     },
+    removeImage: function(image, index){
+        this.imageCount--;
+        this.imagesForFront.splice(index,1);
+        this.imagesForBackend.splice(index,1);
+    }
   }
 }
 </script>
 
 
 <style scoped>
+
+.removeImageBtn{
+    position: absolute;
+}
+
+.newImage {
+    width: 580px;
+   /* height: 200px; */
+}
 
 .priceItem{
   font-weight: bold;
