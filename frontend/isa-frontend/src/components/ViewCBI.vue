@@ -32,10 +32,10 @@
                 <div class="d-md-flex align-items-center">
 
                     <div class="input-group news-input">
-                        <input type="text" class="form-control" placeholder="parametar pretrage 1" />
-                        <input type="text" class="form-control" placeholder="parametar pretrage 2" />
-                        <input type="text" class="form-control" placeholder="parametar pretrage 3" />
-                        <button class="btn btn-dark btn-lg" type="button" v-on:click="searchBy()">Search</button>
+                        <input v-model="searchedName" type="text" class="form-control" placeholder="Name" />
+                        <input v-model="searchedLocation" type="text" class="form-control" placeholder="Location" />
+                        <input v-model="searchedAdvertiser" type="text" class="form-control" placeholder="Owner/Instructor" />
+                        <button class="btn btn-dark btn-lg" type="button" v-on:click="preSearch()">Search</button>
                     </div>
                 </div>
                <!-- <div class="form-check form-switch">
@@ -174,7 +174,10 @@ export default {
       isFetching: true,
       showFilters: false,
       sortBy:1,
-	  sortInOrder:1	
+	  sortInOrder:1,
+      searchedName: '',
+      searchedLocation: '',
+      searchedAdvertiser: ''
     }
   },
   mounted() {
@@ -197,16 +200,19 @@ export default {
                 this.button3 = true
                 this.button1 = false
                 this.button2 = false
+                this.preSearch();
         },
         button1Clicked : function(){
                 this.button3 = false
                 this.button1 = true
                 this.button2 = false
+                this.preSearch();
         },
         button2Clicked : function(){
                 this.button3 = false
                 this.button2 = true
                 this.button1 = false
+                this.preSearch();
         },
         showAdventure: function(IdNum){
             this.$router.push({ path: '/customerAdventurePage/'+IdNum});
@@ -220,8 +226,45 @@ export default {
         openFilters: function(){
             this.showFilters = ! this.showFilters;
         },
+        preSearch: function(){
+            axios.get('http://localhost:8180/api/person/adventures')
+			.then(response => {this.adventures = response.data
+            axios.get('http://localhost:8180/api/person/cottages')
+			.then(response => {this.cottages = response.data
+            axios.get('http://localhost:8180/api/person/boats')
+			.then(response => {this.boats = response.data
+            this.isFetching = false
+            this.searchBy()}).catch(err => (alert(err)));
+            }).catch(err => (alert(err)));
+            }).catch(err => (alert(err)));
+        },
         searchBy: function(){
             if(this.button1){
+
+            var control=0
+			while(control===0){
+				control=1;
+			for (var i = 0; i < this.cottages.length; i++) {
+				var loc=this.cottages[i].address.country+" "+this.cottages[i].address.city +" "+this.cottages[i].address.street +" "+this.cottages[i].address.number;
+                var owr=this.cottages[i].owner.firstName+" "+this.cottages[i].owner.lastName 
+    				if(this.searchedName && !this.cottages[i].name.toLowerCase().includes(this.searchedName.toLowerCase())){
+								this.cottages.splice(i,1);
+								control=0;
+								break;	
+									}
+                    else if(this.searchedLocation && !loc.toLowerCase().includes(this.searchedLocation.toLowerCase().replace(',',''))){
+								this.cottages.splice(i,1);
+								control=0;
+								break;	
+									}
+                    else if(this.searchedAdvertiser && !owr.toLowerCase().includes(this.searchedAdvertiser.toLowerCase())){
+								this.cottages.splice(i,1);
+								control=0;
+								break;	
+									}  
+            }
+            }
+
                 if (this.showFilters){
 
                     if(this.sortBy=="3" && this.sortInOrder=="1"){
@@ -267,6 +310,32 @@ export default {
                 }
             }
             else if(this.button2){
+
+                    var control=0
+			while(control===0){
+				control=1;
+			for (var i = 0; i < this.boats.length; i++) {
+				var loc=this.boats[i].address.country+" "+this.boats[i].address.city +" "+this.boats[i].address.street +" "+this.boats[i].address.number;
+                var owr=this.boats[i].owner.firstName+" "+this.boats[i].owner.lastName 
+    				if(this.searchedName && !this.boats[i].name.toLowerCase().includes(this.searchedName.toLowerCase())){
+								this.boats.splice(i,1);
+								control=0;
+								break;	
+									}
+                    else if(this.searchedLocation && !loc.toLowerCase().includes(this.searchedLocation.toLowerCase().replace(',',''))){
+								this.boats.splice(i,1);
+								control=0;
+								break;	
+									}
+                    else if(this.searchedAdvertiser && !owr.toLowerCase().includes(this.searchedAdvertiser.toLowerCase())){
+								this.boats.splice(i,1);
+								control=0;
+								break;	
+									}  
+            }
+            }
+
+
                      if (this.showFilters){
 
                     if(this.sortBy=="3" && this.sortInOrder=="1"){
@@ -312,6 +381,32 @@ export default {
                 }
             }
             else if(this.button3){
+
+                var control=0
+			while(control===0){
+				control=1;
+			for (var i = 0; i < this.adventures.length; i++) {
+				var loc=this.adventures[i].address.country+" "+this.adventures[i].address.city +" "+this.adventures[i].address.street +" "+this.adventures[i].address.number;
+                var owr=this.adventures[i].instructor.firstName+" "+this.adventures[i].instructor.lastName 
+    				if(this.searchedName && !this.adventures[i].name.toLowerCase().includes(this.searchedName.toLowerCase())){
+								this.adventures.splice(i,1);
+								control=0;
+								break;	
+									}
+                    else if(this.searchedLocation && !loc.toLowerCase().includes(this.searchedLocation.toLowerCase().replace(',',''))){
+								this.adventures.splice(i,1);
+								control=0;
+								break;	
+									}
+                    else if(this.searchedAdvertiser && !owr.toLowerCase().includes(this.searchedAdvertiser.toLowerCase())){
+								this.adventures.splice(i,1);
+								control=0;
+								break;	
+									}  
+            }
+            }
+
+
                      if (this.showFilters){
 
                     if(this.sortBy=="3" && this.sortInOrder=="1"){
