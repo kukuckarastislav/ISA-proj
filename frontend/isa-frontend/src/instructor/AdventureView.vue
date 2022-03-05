@@ -106,6 +106,15 @@
           </div>
         </div>
 
+        <br><br><br>
+        <div class="row">
+          <div class="col">
+            <h1>Calendar</h1>
+            <FullCalendar :options="calendarOptions" />
+            <br><br><br>
+          </div>
+        </div>
+
 
 
     </div>
@@ -115,15 +124,60 @@
 <script>
 import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
+
+// FULL CALNEDAR
+import '@fullcalendar/core/vdom' // solves problem with Vite
+import FullCalendar from '@fullcalendar/vue3'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
+
 export default {
   name: 'AdventureView',
   components: {
-    CarouselView
+    CarouselView,
+    FullCalendar
   },
   data: function(){
     return {
         adventureName: "",
-        adventure: {}
+        adventure: {},
+
+
+        calendarOptions: {
+          plugins: [ dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin ],
+          initialView: 'dayGridMonth', 
+          selectable: true,
+          droppable: true,
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          events: [
+            {
+              title: 'Evo je prvi event',
+              start: '2022-03-10T10:00:00',
+              end: '2022-03-12T16:00:00',
+              display: 'auto',
+              backgroundColor: "rgb(255,0,0)",
+              borderColor: "rgb(255,0,255)",
+              description: "opis neki",
+              editable: true,
+              overlap: false,
+            },
+            {
+              title: 'Dnevni event',
+              start: '2022-03-12',
+              editable: true,
+            },
+          ]
+        }
+
+
+
+
     }
   },
   mounted: function(){

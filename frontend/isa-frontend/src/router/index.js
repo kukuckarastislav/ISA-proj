@@ -14,6 +14,7 @@ import CustomerAdventurePage from '../views/CustomerAdventurePage'
 import CustomerBoatPage from '../views/CustomerBoatPage'
 import NewAdventure from '../instructor/NewAdventure'
 
+
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/registration', name: 'Registration', component: Registration },
