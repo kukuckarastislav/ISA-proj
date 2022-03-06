@@ -45,6 +45,11 @@
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
                 </div> -->
                 <div style="text-align:left; background-color:white">
+                    <Datepicker style="display: inline-block;zoom: 1.15;position: relative; top:0.25em; margin-right:2%; width:25em" v-model="date" range></Datepicker>
+                    <span style="color:lightgray;border: 1px solid lightgray;font-size: 2.25em; position: relative; top:0.28em;margin-left:6.4%;">&nbsp;Persons&nbsp;</span>
+                    <div style="display: inline-block;margin-right:12%;zoom: 1.15;position: relative; top:0.2em;width:5em" class="form-outline">     
+                    <input type="number" id="typeNumber" min="1" class="form-control rounded-0"  />
+                    </div>
                     <span style="color:lightgray;border: 1px solid lightgray;font-size: 2.22em; position: relative; top:0.25em">&nbsp;Rating </span>
                 <star-rating style="width: 15.5%;border: 1px solid lightgray;display: inline-block;zoom: 0.8;" v-model:rating="rating"/>
                 <br>
@@ -166,11 +171,29 @@
 <script>
 import axios from "axios";
 import StarRating from 'vue-star-rating'
+ import Datepicker from 'vue3-date-time-picker';
+    import 'vue3-date-time-picker/dist/main.css'
+    import { ref, onMounted } from 'vue';
 export default {
   name: 'ViewCBI',
   components: {
-  StarRating
+  StarRating,
+  Datepicker
 },
+setup() {
+        const date = ref();
+
+        // For demo purposes assign range from the current date
+        onMounted(() => {
+            const startDate = new Date();
+            const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+            date.value = [startDate, endDate];
+        })
+        
+        return {
+            date,
+        }
+    },
   data: function(){
     return {
       msgFromBackend: '',
@@ -187,7 +210,8 @@ export default {
       searchedName: '',
       searchedLocation: '',
       searchedAdvertiser: '',
-      rating: 0
+      rating: 0,
+       date: null
     }
   },
   mounted() {
