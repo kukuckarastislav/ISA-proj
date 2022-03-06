@@ -27,7 +27,8 @@
 
         <section class="text-light p-5">
             <div class="container ">
-                    <h3 class="mb-3 mb-md-0 isa-text-color-darkBlue">Neki parametri za pretgragu???</h3>
+                
+                   
                 
                 <div class="d-md-flex align-items-center">
 
@@ -38,11 +39,15 @@
                         <button class="btn btn-dark btn-lg" type="button" v-on:click="preSearch()">Search</button>
                     </div>
                 </div>
+                
                <!-- <div class="form-check form-switch">
                     <label class="form-check-label isa-text-color-darkBlue" for="flexSwitchCheckDefault">Default switch checkbox input</label>
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
                 </div> -->
                 <div style="text-align:left; background-color:white">
+                    <span style="color:lightgray;border: 1px solid lightgray;font-size: 2.22em; position: relative; top:0.25em">&nbsp;Rating </span>
+                <star-rating style="width: 15.5%;border: 1px solid lightgray;display: inline-block;zoom: 0.8;" v-model:rating="rating"/>
+                <br>
                 <button style="background-color:white; border:none;" v-on:click="openFilters()"><img style="height:2em;"  src="../assets/filter.svg"></button>
                 </div>
                 <div v-if="showFilters" style="color:black; text-align:center">
@@ -160,8 +165,12 @@
 
 <script>
 import axios from "axios";
+import StarRating from 'vue-star-rating'
 export default {
   name: 'ViewCBI',
+  components: {
+  StarRating
+},
   data: function(){
     return {
       msgFromBackend: '',
@@ -177,7 +186,8 @@ export default {
 	  sortInOrder:1,
       searchedName: '',
       searchedLocation: '',
-      searchedAdvertiser: ''
+      searchedAdvertiser: '',
+      rating: 0
     }
   },
   mounted() {
