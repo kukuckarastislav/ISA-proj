@@ -126,6 +126,8 @@ insert into adventure_images (adventure_id, images_id)
 values (2, 5);
 insert into instructor_terms(instructor_id, term_availability, start_time, end_time)
 values (6, 'AVAILABILE', '2022-03-05T8:00:06.235098700', '2022-03-25T8:00:06.235098700');
+insert into instructor_terms(instructor_id, term_availability, start_time, end_time)
+values (6, 'UNAVAILABLE', '2022-03-25T8:00:06.235098700', '2022-04-04T8:00:06.235098700');
 insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id)
 values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)

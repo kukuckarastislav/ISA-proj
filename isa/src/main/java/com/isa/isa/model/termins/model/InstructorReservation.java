@@ -83,4 +83,20 @@ public class InstructorReservation {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
+    public Set<ItemPrice> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(Set<ItemPrice> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
+
+    public StatusOfReservation getStatusOfReservation() {
+        return statusOfReservation;
+    }
+
+    public void setStatusOfReservation(StatusOfReservation statusOfReservation) {
+        this.statusOfReservation = statusOfReservation;
+    }
 }

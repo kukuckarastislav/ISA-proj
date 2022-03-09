@@ -189,6 +189,13 @@ export default {
        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
         axios.get('http://localhost:8180/api/adventure/byinstructor/'+encodeURIComponent(this.adventureName)).then(resp => {
             this.adventure = resp.data;
+            this.loadCalendarData();
+            console.log(resp.data);
+        });
+    },
+    loadCalendarData: function(){
+      axios.get('http://localhost:8180/api/instructorterms/'+encodeURIComponent(this.adventure.instructorName)+'/'+encodeURIComponent(this.adventure.name)).then(resp => {
+            this.calendarOptions.events = resp.data;
             console.log(resp.data);
         });
     },

@@ -86,6 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 								.antMatchers("/api/adventure/byinstructor/**").permitAll()		// /api/foo
 								.antMatchers("/resources/**").permitAll()	
 								.antMatchers("/api/person/**").permitAll()// /api/foo
+								.antMatchers("/api/instructorterms/**").permitAll()// /api/foo
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 					// /api/foo
 								
