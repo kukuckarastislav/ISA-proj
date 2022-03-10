@@ -6,6 +6,9 @@
                 <div class="col">
                     <a href="/cottageOwnerProfile" class="nav-link">Profile</a>
                 </div>
+                <div class="col">
+                    <a href="/cottageOwnerCottages" class="nav-link">My Cottages</a>
+                </div>
             </div>
         </div>
     </div>

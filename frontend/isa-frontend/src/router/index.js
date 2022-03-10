@@ -13,7 +13,8 @@ import CustomerCottagePage from '../views/CustomerCottagePage'
 import CustomerAdventurePage from '../views/CustomerAdventurePage'
 import CustomerBoatPage from '../views/CustomerBoatPage'
 import NewAdventure from '../instructor/NewAdventure'
-
+import Cottages from '../cottage_owner/Cottages.vue'
+import CottageView from '../cottage_owner/CottageView.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -30,6 +31,8 @@ const routes = [
   { path: '/customerAdventurePage/:id?', name: 'CustomerAdventurePage', component: CustomerAdventurePage},
   { path: '/customerBoatPage/:id?', name: 'CustomerBoatPage', component: CustomerBoatPage },
   { path: '/newadventure', name: 'NewAdventure', component: NewAdventure },
+  { path: '/cottageOwnerCottages', name: 'Cottages', component: Cottages },
+  { path: '/cottageOwnerCottage/:cottagename?', name: 'CottageView', component: CottageView },
 ]
 
 const router = createRouter({

@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.isa.DTO.AdventureDTO;
+import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.CottageDTO;
 import com.isa.isa.DTO.EntityImageDTO;
+import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.EntityImage;
+import com.isa.isa.model.Instructor;
 import com.isa.isa.repository.CottageOwnerRepository;
 import com.isa.isa.repository.CottageRepository;
 
@@ -46,6 +49,26 @@ public class CottageService {
         }
 
         return cottageDTOByOwner;
+    }
+	
+	public CottageDTO getCottageDTOByOwnerAndName(String username, String cottagename) {
+        Cottage cottage = getCottageByOwnerAndCottageName(username, cottagename);
+        CottageOwner owner = cottageOwnerRepository.getByEmail(username);
+        CottageDTO cottageDto = new CottageDTO(cottage, username);
+        return cottageDto;
+    }
+	
+	public Cottage getCottageByOwnerAndCottageName(String ownerUsername, String cottageName){
+        CottageOwner owner = cottageOwnerRepository.getByEmail(ownerUsername);
+        ArrayList<Cottage> cottageByOwner = (ArrayList<Cottage>)cottageRepository.getByOwnerId(owner.getId());
+        Cottage cottageByName = null;
+        for (Cottage cottage : cottageByOwner) {
+            if(cottage.getName().equals(cottageName)){
+            	cottageByName = cottage;
+                break;
+            }
+        }
+        return cottageByName;
     }
 	
 	public ArrayList<Cottage> getAllCottages(){

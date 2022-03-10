@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.isa.isa.model.Address;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.enums.ReservationCancellationConditions;
 
@@ -21,6 +22,26 @@ public class CottageDTO {
 	    
 	    public CottageDTO() {}
 	    
+	    
+	    public CottageDTO(Cottage cottage, String ownerName) {
+	    	this.cottageOwnerUsername = ownerName;
+			this.name = cottage.getName();
+			this.address = cottage.getAddress();
+			this.description = cottage.getDescription();
+			this.behaviourRules = cottage.getBehaviourRules();
+					
+			ArrayList<EntityImageDTO> imgs = new ArrayList<EntityImageDTO>();
+			ArrayList<EntityImage> imgs2 = new ArrayList<EntityImage>();
+			imgs2.addAll(cottage.getImages());
+			for(EntityImage img : imgs2)
+			{
+				imgs.add(new EntityImageDTO(img));
+			}
+	        this.setImages(imgs);
+	        this.pricelist = new ArrayList<ItemPrice>();
+	        this.pricelist.addAll(cottage.getAdditionalServices());
+			this.averageGrade = cottage.getAverageGrade();
+	    }
 	    
 		public CottageDTO(String cottageOwnerUsername, String name, Address address, String description,
 				String behaviourRules, ArrayList<EntityImageDTO> images, ArrayList<ItemPrice> pricelist,
