@@ -11,6 +11,8 @@ import com.isa.isa.model.Cottage;
 
 public interface BoatRepository extends JpaRepository<Boat, Integer>{
 	
+	public List<Boat> getByOwnerId(int id);
+	
 	@Query("select b from Boat b join fetch b.owner")
 	public List<Boat> findAllWithOwners();
 	

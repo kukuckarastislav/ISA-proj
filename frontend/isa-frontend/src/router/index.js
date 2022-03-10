@@ -15,6 +15,9 @@ import CustomerBoatPage from '../views/CustomerBoatPage'
 import NewAdventure from '../instructor/NewAdventure'
 import Cottages from '../cottage_owner/Cottages.vue'
 import CottageView from '../cottage_owner/CottageView.vue'
+import Boats from '../boat_owner/Boats.vue'
+import BoatView from '../boat_owner/BoatView.vue'
+
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -33,6 +36,8 @@ const routes = [
   { path: '/newadventure', name: 'NewAdventure', component: NewAdventure },
   { path: '/cottageOwnerCottages', name: 'Cottages', component: Cottages },
   { path: '/cottageOwnerCottage/:cottagename?', name: 'CottageView', component: CottageView },
+  { path: '/boatOwnerBoats', name: 'Boats', component: Boats },
+  { path: '/boatOwnerBoat/:boatname?', name: 'BoatView', component: BoatView },
 ]
 
 const router = createRouter({
