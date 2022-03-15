@@ -10,7 +10,7 @@
                     <a href="/" class="nav-link">Calendar</a>
                 </div>
                 <div class="col">
-                    <a href="/" class="nav-link">ToDo2</a>
+                    <a href="/instructorProfile" class="nav-link">My Profile</a>
                 </div>
             </div>
         </div>

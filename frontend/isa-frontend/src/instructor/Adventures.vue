@@ -16,6 +16,8 @@
                             <option value="MaxNumOfPeopleASC">Max number of people Ascend</option>
                             <option value="MaxNumOfPeopleDES">Max number of people Descend</option>
                         </select>
+                        <br>
+                        <input v-model="filterByName" type="text" class="form-control" />
                         
                         <br> <br>
                         <a href="/newadventure" class="btn btn-primary" style="width: 100%;">Add New Adventure</a>
@@ -28,7 +30,7 @@
             <div class="col-sm-9">
                 <div v-for="adventure in adventures" :key="adventure">
                     
-                        <div class="card" v-on:click="moreDetails(adventure)">
+                        <div v-if="showIf(adventure)" class="card" v-on:click="moreDetails(adventure)">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-5">
@@ -69,7 +71,8 @@ export default {
   data: function(){
     return {
         adventures: [],
-        sortType: 'NameAZ'
+        sortType: 'NameAZ',
+        filterByName: ''
     }
   },
   mounted: function(){
@@ -118,7 +121,10 @@ export default {
 			} else if (this.sortType == 'MaxNumOfPeopleDES') {
 				this.adventures.sort((b, a) => (a.maxNumberOfPeople > b.maxNumberOfPeople) ? 1 : ((b.maxNumberOfPeople > a.maxNumberOfPeople) ? -1 : 0));
 			} 
-		},
+	},
+    showIf: function(adventure){
+        return adventure.name.toLowerCase().includes(this.filterByName.toLowerCase())
+    }
   }
 }
 </script>
