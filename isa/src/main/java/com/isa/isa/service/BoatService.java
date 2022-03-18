@@ -1,18 +1,23 @@
 package com.isa.isa.service;
 
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.isa.DTO.AddNewBoatDTO;
+import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.BoatDTO;
-import com.isa.isa.DTO.CottageDTO;
 import com.isa.isa.DTO.EntityImageDTO;
+import com.isa.isa.model.AdditionalEquipment;
+import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.BoatOwner;
-import com.isa.isa.model.Cottage;
-import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.EntityImage;
+import com.isa.isa.model.Instructor;
+import com.isa.isa.model.ItemPrice;
 import com.isa.isa.repository.BoatOwnerRepository;
 import com.isa.isa.repository.BoatRepository;
 
@@ -68,6 +73,39 @@ public class BoatService {
         }
         return boatByName;
     }
+	
+	public BoatDTO addNewBoat(AddNewBoatDTO addNewBoatDTO, Principal user) {
+        BoatOwner owner = boatOwnerRepository.getByEmail(user.getName());
+        if(owner == null) return null;
+
+        // proveriti da li je novo ime avanture jedinstveno
+        if(getBoatByOwnerAndBoatName(user.getName(), addNewBoatDTO.getName()) != null) {
+            System.out.println("Name is not unique for boat and owner");
+            return null;
+        }
+
+        Boat boat = new Boat();
+        boat.setName(addNewBoatDTO.getName());
+        boat.setOwner(owner);
+        boat.setAddress(addNewBoatDTO.getAddress());
+        boat.setAverageGrade(0);
+        boat.setPromotionalDescription(addNewBoatDTO.getDescription());
+        boat.setBehaviourRules(addNewBoatDTO.getBehaviourRules());
+        boat.setCapacity(addNewBoatDTO.getCapasity());
+        boat.setReservationCancellationConditions(addNewBoatDTO.getReservationCancellationConditions());
+        boat.setPrice(addNewBoatDTO.getPrice());
+        boat.setNavigationalEquipment(new HashSet<AdditionalEquipment>(addNewBoatDTO.getAdditionalEquipments()));
+        boat.setAdditionalServices(new HashSet<ItemPrice>(addNewBoatDTO.getPricelist()));
+
+        ArrayList<EntityImage> images = entityImageService.createAndSaveImages("Instructors", instructor.getEmail(), addNewAdventureDTO.getName(), addNewAdventureDTO.getImagesForBackend());
+
+        boat.setImages(new HashSet<EntityImage>(images));
+
+        boatRepository.saveAndFlush(boat);
+
+        return new BoatDTO(boat, owner.getEmail(), owner);
+    }
+	
 	
 	public ArrayList<Boat> getAllBoats(){
 		//return (ArrayList<Cottage>) cottageRepository.findAll();
