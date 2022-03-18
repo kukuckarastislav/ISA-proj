@@ -18,7 +18,7 @@
                             <input :disabled="!isEditingProfile" v-model="profile.phoneNumber" type="text" placeholder="" class="form-control">
                             <br>
                             <label for="exampleInputEmail1" class="form-label">Email address</label>
-                            <input :disabled="!isEditingProfile" v-model="profile.email" type="email" placeholder="youremail@gmail.com" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <input disabled v-model="profile.email" type="email" placeholder="youremail@gmail.com" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                             <br><br>
 
                             <label class="form-label">Address</label>
@@ -148,18 +148,19 @@ export default {
             lastName: '',
             phoneNumber: '',
             address: {
-            country: '',
-            city: '',
-            street: '',
-            number: '',
-            latitude: 0,
-            longitude: 0
-            },  
+                country: '',
+                city: '',
+                street: '',
+                number: '',
+                latitude: 0,
+                longitude: 0
+            },
+            biography: ''  
         },
         copyProfile: {},
 
         biographyEdit: false,
-        copyBiography: '',
+        oldBiography: '',
         biography: '',
         
         isEditingPassword: false,
@@ -176,8 +177,15 @@ export default {
   mounted: function(){
     
   },
+  mounted: function(){
+      this.loadInformation();
+  },
   methods: {
-
+      loadInformation: function(){
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.get('http://localhost:8180/api/instructor/profileInfo')
+            .then(response => {this.profile=response.data; this.biography = this.profile.biography;}).catch(err => {alert('DOSLO JE DO GRESKE')}); 
+      },
       editProfile: function(){
           // Najednostavniji nacin da se uradi Deep-Copy
           this.copyProfile = JSON.parse(JSON.stringify(this.profile));
@@ -189,17 +197,25 @@ export default {
       },
       saveEditProfile: function(){
           this.isEditingProfile = false;
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.put('http://localhost:8180/api/instructor/updateProfile',this.profile).then(response => 
+            {this.profile=response.data}).catch(err => {alert('DOSLO JE DO GRESKE')}); 
       },
       editBiography: function(){
-          this.copyBiography = this.biography;
+          this.oldBiography = this.biography;
           this.biographyEdit = true;
       },
       saveNewBiography: function(){
           this.biographyEdit = false;
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.put('http://localhost:8180/api/instructor/updateBiography', {'oldBiography': this.oldBiography, 'biography': this.biography}).then(response => 
+            {
+                console.log(response.data);
+            }).catch(err => {alert('DOSLO JE DO GRESKE')}); 
       },
       cancelEditBiography: function(){
           this.biographyEdit = false;
-          this.biography = this.copyBiography;
+          this.biography = this.oldBiography;
       },
       editPassword: function(){
           this.isEditingPassword = true;
@@ -212,6 +228,19 @@ export default {
       },
       saveEditPassword: function(){
           this.isEditingPassword = false;
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+          axios.put('http://localhost:8180/api/instructor/updatePassword',this.passwordData)
+          .then(response => {
+                  if (response) {
+                        window.sessionStorage.clear();
+                        this.$router.push('/');
+                        alert('Uspesno promenjena lozinka');
+                  }
+                  else 
+                    alert('DOSLO JE DO GRESKE')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          }); 
       },
       newPassEqual: function(){
           return this.passwordData.newPassword === this.passwordData.newPasswordRepeated;

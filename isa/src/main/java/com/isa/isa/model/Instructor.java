@@ -1,5 +1,6 @@
 package com.isa.isa.model;
 
+import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.termins.model.InstructorTerms;
 
@@ -70,5 +71,13 @@ public class Instructor extends Person{
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public void updateInfo(InstructorDTO instructorDTO){
+        super.setEmail(instructorDTO.getEmail());
+        super.setFirstName(instructorDTO.getFirstName());
+        super.setLastName(instructorDTO.getLastName());
+        super.setAddress(instructorDTO.getAddress());
+        super.setPhoneNumber(instructorDTO.getPhoneNumber());
     }
 }

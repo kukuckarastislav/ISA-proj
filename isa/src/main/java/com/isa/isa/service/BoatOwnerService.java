@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.DTO.ClientPasswordDto;
+import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Client;
-import com.isa.isa.model.CottageOwner;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
 import com.isa.isa.repository.ClientRepository;
@@ -78,7 +77,7 @@ public class BoatOwnerService {
 		return boatOwnerRepository.save(oldOwner);
 	}
 	
-	public Boolean updatePassword(BoatOwner owner, ClientPasswordDto passwordDto) {
+	public Boolean updatePassword(BoatOwner owner, PasswordDto passwordDto) {
 		if (!passwordEncoder.matches(passwordDto.getOldPassword(), owner.getPassword())) return false;
 		if (!passwordDto.getNewPassword().equals(passwordDto.getNewPasswordRepeated())) return false;
 		owner.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));

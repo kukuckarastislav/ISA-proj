@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.ClientDto;
-import com.isa.isa.DTO.ClientPasswordDto;
+import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.model.AccountDeleteRequest;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Client;
@@ -53,7 +53,7 @@ public class BoatOwnerController {
 	
 	@PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
 	@PutMapping("/updatePassword")
-	public Boolean updateClientPassword(@RequestBody ClientPasswordDto passwordDto, Principal user) {
+	public Boolean updateClientPassword(@RequestBody PasswordDto passwordDto, Principal user) {
 		BoatOwner client= this.boatOwnerService.findByEmail(user.getName());
 		return this.boatOwnerService.updatePassword(client, passwordDto);
 	}

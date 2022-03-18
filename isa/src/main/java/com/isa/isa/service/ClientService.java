@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.DTO.ClientPasswordDto;
+import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.Client;
 import com.isa.isa.repository.ClientRepository;
@@ -42,7 +42,7 @@ public class ClientService {
 		return clientRepository.save(oldClient);
 	}
 	
-	public Boolean updatePassword(Client client, ClientPasswordDto passwordDto) {
+	public Boolean updatePassword(Client client, PasswordDto passwordDto) {
 		if (!passwordEncoder.matches(passwordDto.getOldPassword(), client.getPassword())) return false;
 		if (!passwordDto.getNewPassword().equals(passwordDto.getNewPasswordRepeated())) return false;
 		client.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));

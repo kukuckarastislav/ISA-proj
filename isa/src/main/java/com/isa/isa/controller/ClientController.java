@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.ClientDto;
-import com.isa.isa.DTO.ClientPasswordDto;
+import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.model.Client;
 import com.isa.isa.service.ClientService;
 
@@ -37,7 +37,7 @@ public class ClientController {
 	
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	@PutMapping("/updatePassword")
-	public Boolean updateClientPassword(@RequestBody ClientPasswordDto passwordDto, Principal user) {
+	public Boolean updateClientPassword(@RequestBody PasswordDto passwordDto, Principal user) {
 		Client client= this.clientService.findByEmail(user.getName());
 		return this.clientService.updatePassword(client, passwordDto);
 	}

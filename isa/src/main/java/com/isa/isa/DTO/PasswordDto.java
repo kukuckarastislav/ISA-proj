@@ -1,17 +1,17 @@
 package com.isa.isa.DTO;
 
-public class ClientPasswordDto {
+public class PasswordDto {
 	
 	private String oldPassword;
 	private String newPassword;
 	private String newPasswordRepeated;
 	
 	
-	public ClientPasswordDto() {
+	public PasswordDto() {
 		super();
 		
 	}
-	public ClientPasswordDto(String oldPassword, String newPassword, String newPasswordRepeated) {
+	public PasswordDto(String oldPassword, String newPassword, String newPasswordRepeated) {
 		super();
 		this.oldPassword = oldPassword;
 		this.newPassword = newPassword;
@@ -36,6 +36,9 @@ public class ClientPasswordDto {
 	public void setNewPasswordRepeated(String newPasswordRepeated) {
 		this.newPasswordRepeated = newPasswordRepeated;
 	}
-	
-	
+
+
+	public boolean newPasswordEqualRepeted() {
+		return newPassword.equals(newPasswordRepeated);
+	}
 }

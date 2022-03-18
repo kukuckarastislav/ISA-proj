@@ -1,6 +1,7 @@
 package com.isa.isa.model;
 
 import com.isa.isa.DTO.ClientDto;
+import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.UserDTO;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
@@ -135,7 +136,4 @@ public abstract class Person {
 		this.phoneNumber = phoneNumber;
 	}
 
-
-	
-	
 }
