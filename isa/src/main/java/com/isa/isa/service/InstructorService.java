@@ -86,12 +86,8 @@ public class InstructorService {
 
 	public Boolean updatePassword(Principal principalUser, PasswordDto passwordDto) {
 		Instructor instructor = instructorRepository.getByEmail(principalUser.getName());
-		// TODO: koristiti isti algoritam za encode
-		//System.out.println("old: " + passwordEncoder.encode(passwordDto.getOldPassword()));
-		//System.out.println("ins_pass: " + instructor.getPassword());
-		if(//!passwordEncoder.matches(passwordDto.getOldPassword(), instructor.getPassword())
-				instructor.getPassword().equals(passwordEncoder.encode(passwordDto.getOldPassword()))
-				&& passwordDto.newPasswordEqualRepeted()){
+		if(passwordEncoder.matches(passwordDto.getOldPassword(), instructor.getPassword())
+			&& passwordDto.newPasswordEqualRepeted()){
 
 			instructor.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
 			instructorRepository.save(instructor);
@@ -99,10 +95,8 @@ public class InstructorService {
 			User user = userRepository.findByUsername(instructor.getEmail());
 			user.setPassword(instructor.getPassword());
 			userRepository.save(user);
-			System.out.println(" ******************** USPESNO IZMENJANA LOZINKA ******************** ");
 			return true;
 		}else{
-			System.out.println(" ******************** NEUSPESNO IZMENJANA LOZINKA ******************** ");
 			return false;
 		}
 	}
