@@ -1,5 +1,6 @@
 package com.isa.isa.controller;
 
+import com.isa.isa.DTO.AccountDeleteRequestDetailDTO;
 import com.isa.isa.model.AccountDeleteRequest;
 import com.isa.isa.service.AccountDeleteRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,14 @@ public class AccountDeleteRequestController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/allRequests")
-    public ResponseEntity<ArrayList<AccountDeleteRequest>> getAdventureByInstructor(Principal user) {
+    public ResponseEntity<ArrayList<AccountDeleteRequest>> getAllAccountDeleteRequest(Principal user) {
         return new ResponseEntity<ArrayList<AccountDeleteRequest>>(accountDeleteRequestService.getAllRequests(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/allRequestsDetail")
+    public ResponseEntity<ArrayList<AccountDeleteRequestDetailDTO>> getAllAccountDeleteRequestDetailDTO(Principal user) {
+        return new ResponseEntity<ArrayList<AccountDeleteRequestDetailDTO>>(accountDeleteRequestService.getAllRequestsDetailDTO(), HttpStatus.OK);
     }
 
 }

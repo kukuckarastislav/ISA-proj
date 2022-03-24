@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 import com.isa.isa.model.enums.DeleteRequestStatus;
+import com.isa.isa.model.enums.UserTypeISA;
 
 
 @Entity
@@ -25,6 +26,8 @@ public class AccountDeleteRequest {
 	private String adminResponse;
 	@Enumerated(EnumType.STRING)
 	private DeleteRequestStatus deleteRequestStatus;
+	@Enumerated(EnumType.STRING)
+	private UserTypeISA userTypeISA;
 	private String adminUsername; // email admin who respond to request
 
 	public AccountDeleteRequest(){}
@@ -35,8 +38,9 @@ public class AccountDeleteRequest {
 		this.deleteRequestStatus = DeleteRequestStatus.PENDING;
 	}
 
-	public AccountDeleteRequest(String username, String reason, String adminResponse, DeleteRequestStatus deleteRequestStatus, String adminUsername) {
+	public AccountDeleteRequest(String username, UserTypeISA userTypeISA, String reason, String adminResponse, DeleteRequestStatus deleteRequestStatus, String adminUsername) {
 		this.username = username;
+		this.userTypeISA = userTypeISA;
 		this.reason = reason;
 		this.adminResponse = adminResponse;
 		this.deleteRequestStatus = deleteRequestStatus;
@@ -89,5 +93,13 @@ public class AccountDeleteRequest {
 
 	public void setAdminUsername(String adminUsername) {
 		this.adminUsername = adminUsername;
+	}
+
+	public UserTypeISA getUserTypeISA() {
+		return userTypeISA;
+	}
+
+	public void setUserTypeISA(UserTypeISA userTypeISA) {
+		this.userTypeISA = userTypeISA;
 	}
 }

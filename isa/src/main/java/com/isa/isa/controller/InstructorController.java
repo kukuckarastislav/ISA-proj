@@ -1,6 +1,6 @@
 package com.isa.isa.controller;
 
-import com.isa.isa.DTO.AccountDeleteRequestDTO;
+import com.isa.isa.DTO.AccountDeleteRequestFromFrontDTO;
 import com.isa.isa.DTO.BiographyDTO;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.InstructorDTO;
@@ -57,7 +57,7 @@ public class InstructorController {
 
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     @PutMapping("/deleteRequest")
-    public ResponseEntity<Boolean> deleteRequest(@RequestBody AccountDeleteRequestDTO reasonDTO, Principal user) {
+    public ResponseEntity<Boolean> deleteRequest(@RequestBody AccountDeleteRequestFromFrontDTO reasonDTO, Principal user) {
         return new ResponseEntity<Boolean>(accountDeleteRequestService.createAccDeleteRequest(reasonDTO, user), HttpStatus.OK);
     }
 

@@ -1,6 +1,6 @@
 package com.isa.isa.DTO;
 
-public class AccountDeleteRequestDTO {
+public class AccountDeleteRequestFromFrontDTO {
     public String reason;
     public String username;
 }
