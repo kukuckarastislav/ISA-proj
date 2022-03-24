@@ -18,6 +18,7 @@ import CottageView from '../cottage_owner/CottageView.vue'
 import Boats from '../boat_owner/Boats.vue'
 import BoatView from '../boat_owner/BoatView.vue'
 import InstructorProfile from '../instructor/Profile.vue'
+import AccountDeleteRequest from '../admin/AccountDeleteRequest'
 
 
 const routes = [
@@ -40,6 +41,7 @@ const routes = [
   { path: '/boatOwnerBoats', name: 'Boats', component: Boats },
   { path: '/boatOwnerBoat/:boatname?', name: 'BoatView', component: BoatView },
   { path: '/instructorProfile', name: 'InstructorProfile', component: InstructorProfile },
+  { path: '/accountdeleteRequest', name: 'AccountDeleteRequest', component: AccountDeleteRequest },
 ]
 
 const router = createRouter({
