@@ -415,7 +415,6 @@ setup() {
                 }
             }
             else if(this.button3){
-
                 var control=0
 			while(control===0){
 				control=1;
@@ -436,7 +435,25 @@ setup() {
 								this.adventures.splice(i,1);
 								control=0;
 								break;	
-									}  
+									}
+                    else if(this.date){
+                                let inDate=false
+                                for(var j =0; j< this.adventures[i].instructor.instructorTerms.length; j++){
+                                    //console.log(this.adventures[i].instructor.instructorTerms[j].startTime)
+                                   // console.log(new Date())
+                                    if(new Date(this.adventures[i].instructor.instructorTerms[j].startTime) >= this.date[0])
+                                    {console.log("aaa")}
+                                    if (this.adventures[i].instructor.instructorTerms[j].termAvailability==="AVAILABILE" && new Date(this.adventures[i].instructor.instructorTerms[j].startTime) <= this.date[0] && new Date(this.adventures[i].instructor.instructorTerms[j].endTime) >= this.date[1]){
+                                        inDate = true;
+                                        break;
+                                    }
+                                }
+                                if(!inDate){
+                                    this.adventures.splice(i,1);
+								control=0;
+								break;	
+                                }
+									}   
             }
             }
 

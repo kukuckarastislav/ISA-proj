@@ -6,6 +6,8 @@ import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.service.InstructorTermService;
 import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.InstructorRepository;
 
@@ -35,6 +37,9 @@ public class InstructorService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+    private InstructorTermService instructorTermService;
 
     public Instructor save(UserDTO userDTO) {
         Instructor instructor = new Instructor(userDTO);
@@ -110,5 +115,10 @@ public class InstructorService {
 		}
 
 		return null;
+	}
+	
+	public Boolean isInstructorFree(InstructorTermsDTO dto) {
+		if(!instructorTermService.isInstructorFree(dto)) return false;
+		return true;
 	}
 }

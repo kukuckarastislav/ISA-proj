@@ -128,14 +128,14 @@ insert into instructor_terms(instructor_id, term_availability, start_time, end_t
 values (6, 'AVAILABILE', '2022-03-05T8:00:06.235098700', '2022-03-25T8:00:06.235098700');
 insert into instructor_terms(instructor_id, term_availability, start_time, end_time)
 values (6, 'UNAVAILABLE', '2022-03-25T8:00:06.235098700', '2022-04-04T8:00:06.235098700');
-insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id)
-values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
+insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id, instructor_username)
+values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3, 'isaprojectftn+stefanI@gmail.com'); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
 values (1,3);
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
 values (1,4);
-insert into instructor_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, adventure_id)
-values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 100, '2022-03-11T14:00:06.235098700', '2022-03-11T16:00:06.235098700', 2);
+insert into instructor_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, adventure_id, instructor_username)
+values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 100, '2022-03-11T14:00:06.235098700', '2022-03-11T16:00:06.235098700', 2, 'isaprojectftn+stefanI@gmail.com');
 insert into ins_fast_res_history(status_of_fast_reservation, client_id, ins_fast_res_id)
 values ('TAKEN', 3, 1);
 

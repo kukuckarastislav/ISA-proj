@@ -34,15 +34,20 @@ public class InstructorReservation {
 
     @Enumerated(EnumType.STRING)
     private StatusOfReservation statusOfReservation;
+    
+    private String instructorUsername;
 
     public InstructorReservation(){}
 
-    public InstructorReservation(Client client, Adventure adventure, LocalDateTime startTime, LocalDateTime endTime) {
+    public InstructorReservation(Client client, Adventure adventure, LocalDateTime startTime, LocalDateTime endTime,String instructorUsername) {
         this.client = client;
         this.adventure = adventure;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.instructorUsername = instructorUsername;
     }
+    
+    
 
     public int getId() {
         return id;
@@ -99,4 +104,14 @@ public class InstructorReservation {
     public void setStatusOfReservation(StatusOfReservation statusOfReservation) {
         this.statusOfReservation = statusOfReservation;
     }
+
+	public String getInstructorUsername() {
+		return instructorUsername;
+	}
+
+	public void setInstructorUsername(String instructorUsername) {
+		this.instructorUsername = instructorUsername;
+	}
+    
+    
 }

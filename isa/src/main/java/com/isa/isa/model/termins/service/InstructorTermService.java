@@ -4,9 +4,11 @@ package com.isa.isa.model.termins.service;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.termins.DTO.EventDTO;
+import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.model.InstructorTerms;
 import com.isa.isa.model.termins.model.StatusOfReservation;
+import com.isa.isa.model.termins.model.TermAvailability;
 import com.isa.isa.model.termins.repository.InstructorReservationRepository;
 import com.isa.isa.model.termins.repository.InstructorTermRepository;
 import com.isa.isa.repository.AdventureRepository;
@@ -54,4 +56,16 @@ public class InstructorTermService {
 
         return instructorAndAdventureTerm;
     }
+    
+public Boolean isInstructorFree(InstructorTermsDTO dto) {
+		ArrayList<InstructorTerms> terms = (ArrayList<InstructorTerms>) instructorTermRepository.findAllByInstructorId(dto.getId());
+		Boolean retVal = false;
+		for(InstructorTerms term : terms) {
+			if(term.getTermAvailability()==TermAvailability.AVAILABILE && term.getStartTime().isBefore(dto.getStartTime()) && term.getEndTime().isAfter( dto.getEndTime())) {
+				retVal = true;
+				break;
+			}
+		}
+		return retVal;
+	}
 }

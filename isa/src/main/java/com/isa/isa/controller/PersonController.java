@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.service.AdventureService;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.BoatService;
@@ -118,5 +120,10 @@ public class PersonController {
     public ResponseEntity<Adventure> getAdventureById(@PathVariable Integer adventureId) {
         return new ResponseEntity<Adventure>(adventureService.getAdventureWithInstructor(adventureId), HttpStatus.OK);
     }
+    
+    @PostMapping("/adventures/instructorFree")
+    public ResponseEntity<Boolean> checkIfInsturctorFree(@RequestBody InstructorTermsDTO termDTO){
 
+    	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+    }
 }

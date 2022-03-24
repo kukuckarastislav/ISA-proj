@@ -41,11 +41,13 @@ public class InstructorFastReservation {
 	private Set<ItemPrice> additionalServices = new HashSet<ItemPrice>();
 
 	private double price;
+	
+	private String instructorUsername;
 
 	public InstructorFastReservation() {}
 
 
-	public InstructorFastReservation(Set<InsFastResHistory> insFastResHistories, Adventure adventure, LocalDateTime startTime, LocalDateTime endTime, int maxNumberOfPeople, Address address, Set<ItemPrice> additionalServices, double price) {
+	public InstructorFastReservation(Set<InsFastResHistory> insFastResHistories, Adventure adventure, LocalDateTime startTime, LocalDateTime endTime, int maxNumberOfPeople, Address address, Set<ItemPrice> additionalServices, double price, String instructorUsername) {
 		this.insFastResHistories = insFastResHistories;
 		this.adventure = adventure;
 		this.startTime = startTime;
@@ -54,6 +56,7 @@ public class InstructorFastReservation {
 		this.address = address;
 		this.additionalServices = additionalServices;
 		this.price = price;
+		this.instructorUsername = instructorUsername;
 	}
 
 	public int getId() {
@@ -127,4 +130,16 @@ public class InstructorFastReservation {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
+
+	public String getInstructorUsername() {
+		return instructorUsername;
+	}
+
+
+	public void setInstructorUsername(String instructorUsername) {
+		this.instructorUsername = instructorUsername;
+	}
+	
+	
 }
