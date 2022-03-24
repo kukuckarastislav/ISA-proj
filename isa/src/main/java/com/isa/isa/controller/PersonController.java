@@ -124,6 +124,6 @@ public class PersonController {
     @PostMapping("/adventures/instructorFree")
     public ResponseEntity<Boolean> checkIfInsturctorFree(@RequestBody InstructorTermsDTO termDTO){
 
-    	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+    	return new ResponseEntity<Boolean>(instructorService.isInstructorFree(termDTO), HttpStatus.OK);
     }
 }

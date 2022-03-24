@@ -260,6 +260,22 @@ setup() {
         openFilters: function(){
             this.showFilters = ! this.showFilters;
         },
+        checkIfInstructorsFree:  function(adv,sentDate){
+                axios.post('http://localhost:8180/api/person/adventures/instructorFree', {
+                                                        id: adv.instructor.id,
+                                                        startTime: sentDate[0],
+                                                        endTime: sentDate[1],
+                                                        instructorUsername: adv.instructor.email
+                                                        })
+                                                        .then((response) => {
+                                                        if (response.data == false){
+                                                            return 0;}
+                                                        else return 1;
+                                                        
+                                                        }, (error) => {
+                                                        console.log(error);
+                                                        });
+        },
         preSearch: function(){
             axios.get('http://localhost:8180/api/person/adventures')
 			.then(response => {this.adventures = response.data
@@ -272,7 +288,7 @@ setup() {
             }).catch(err => (alert(err)));
             }).catch(err => (alert(err)));
         },
-        searchBy: function(){
+        searchBy:async function(){
             if(this.button1){
 
             var control=0
@@ -437,7 +453,7 @@ setup() {
 								break;	
 									}
                     else if(this.date){
-                                let inDate=false
+                             /*   let inDate=false
                                 for(var j =0; j< this.adventures[i].instructor.instructorTerms.length; j++){
                                     //console.log(this.adventures[i].instructor.instructorTerms[j].startTime)
                                    // console.log(new Date())
@@ -452,7 +468,50 @@ setup() {
                                     this.adventures.splice(i,1);
 								control=0;
 								break;	
+                                }*/
+                               /* axios.post('http://localhost:8180/api/person/adventures/instructorFree', {
+                                                        id: this.adventures[i].instructor.id,
+                                                        startTime: this.date[0],
+                                                        endTime: this.date[1],
+                                                        instructorUsername: this.adventures[i].instructor.email
+                                                        })
+                                                        .then((response) => {
+                                                        if (response.data == false){
+                                                            this.adventures.splice(i,1);
+                                                            control=0;
+                                                           
+                                                        }
+                                                        }, (error) => {
+                                                        console.log(error);
+                                                        });*/
+                                
+
+
+
+
+                               // control = this.checkIfInstructorsFree(this.adventures[i],this.date);
+                               // if (control == 0) {
+                               //     this.adventures.splice(i,1);
+                                //    break;}
+                               const response = await axios.post('http://localhost:8180/api/person/adventures/instructorFree', {
+                                                        id: this.adventures[i].instructor.id,
+                                                        startTime: this.date[0],
+                                                        endTime: this.date[1],
+                                                        instructorUsername: this.adventures[i].instructor.email
+                                                        })
+
+                                if (response.data == false){
+                                    this.adventures.splice(i,1);
+								control=0;
+								break;	
                                 }
+
+
+                              /*  if(!inDate){
+                                    this.adventures.splice(i,1);
+								control=0;
+								break;	
+                                }*/
 									}   
             }
             }

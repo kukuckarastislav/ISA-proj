@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface InstructorReservationRepository extends JpaRepository<InstructorReservation, Integer> {
     List<InstructorReservation> findAllByAdventureId(int id);
+    
+    List<InstructorReservation> getByInstructorUsername(String instructorUsername);
 }

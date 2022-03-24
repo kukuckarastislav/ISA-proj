@@ -6,6 +6,7 @@ public class InstructorTermsDTO {
 	private int id;
 	private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private String instructorUsername;
     
     
     
@@ -13,12 +14,16 @@ public class InstructorTermsDTO {
 		
 	}
 	
-	public InstructorTermsDTO(int id, LocalDateTime startTime, LocalDateTime endTime) {
+	
+	public InstructorTermsDTO(int id, LocalDateTime startTime, LocalDateTime endTime, String instructorUsername) {
 		super();
 		this.id = id;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.instructorUsername = instructorUsername;
 	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -37,6 +42,16 @@ public class InstructorTermsDTO {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
+
+	public String getInstructorUsername() {
+		return instructorUsername;
+	}
+
+	public void setInstructorUsername(String instructorUsername) {
+		this.instructorUsername = instructorUsername;
+	}
+	
+	
     
     
 }

@@ -1,7 +1,9 @@
 package com.isa.isa.model.termins.service;
 
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.model.InstructorTerms;
+import com.isa.isa.model.termins.model.StatusOfReservation;
 import com.isa.isa.model.termins.model.TermAvailability;
 import com.isa.isa.model.termins.repository.InstructorReservationRepository;
 
@@ -17,14 +19,14 @@ public class InstructorReservationService {
     private InstructorReservationRepository instructorReservationRepository;
     
     public Boolean isInstructorFree(InstructorTermsDTO dto) {
-		//ArrayList<InstructorTerms> terms = (ArrayList<InstructorTerms>) instructorTermRepository.findAllByInstructorId(dto.getId());
-		Boolean retVal = false;
-		/*for(InstructorTerms term : terms) {
-			if(term.getTermAvailability()==TermAvailability.AVAILABILE && term.getStartTime().isBefore(dto.getStartTime()) && term.getEndTime().isAfter( dto.getEndTime())) {
-				retVal = true;
+		ArrayList<InstructorReservation> reservations =  (ArrayList<InstructorReservation>) instructorReservationRepository.getByInstructorUsername(dto.getInstructorUsername());
+		Boolean retVal = true;
+		for(InstructorReservation reserv : reservations) {
+			if(reserv.getStatusOfReservation()==StatusOfReservation.ACTIVE && (reserv.getStartTime().isBefore(dto.getEndTime()) && reserv.getEndTime().isAfter( dto.getStartTime()))) {
+				retVal = false;
 				break;
 			}
-		}*/
+		}
 		return retVal;
 	}
 }
