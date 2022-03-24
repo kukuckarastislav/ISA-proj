@@ -66,7 +66,8 @@ public class BoatOwnerController {
 		{
 			return new ResponseEntity("Request already submitted.", HttpStatus.OK);
 		}
-		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),OwnerType.BOAT_OWNER));
+		//TODO: Sa fronta napraviti slanje razloga, nema potrebe da se salje tip korisnika
+		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),"TODO sa fronta napraviti slanje razloga"));
 		
 		return new ResponseEntity("Request submitted.", HttpStatus.OK);
 	}

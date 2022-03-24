@@ -64,7 +64,7 @@ public class CottageOwnerController {
 		{
 			return new ResponseEntity("Request already submitted.", HttpStatus.OK);
 		}
-		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),OwnerType.COTTAGE_OWNER));
+		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),"TODO:  razloga sa fronta posalti"));
 		
 		return new ResponseEntity("Request submitted.", HttpStatus.OK);
 	}

@@ -194,7 +194,10 @@ insert into cottage_additional_services(cottage_id, additional_service_id)
 values (1,1);
 
 
-
+insert into account_delete_request(id,  delete_request_status, reason, username)
+values (1, 'PENDING', 'Ne treba mi vise nalog', 'isaprojectftn+stefanI@gmail.com');
+insert into account_delete_request(id, admin_response, admin_username, delete_request_status, reason, username)
+values (2, 'Ne mozete obrisat vas nalog', 'isaprojectftn+admin@gmail.com', 'REJECTED','i want to delete my acc', 'isaprojectftn+stefanI@gmail.com');
 
 
 

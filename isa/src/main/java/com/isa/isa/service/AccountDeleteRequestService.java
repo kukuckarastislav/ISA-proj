@@ -8,6 +8,8 @@ import com.isa.isa.model.AccountDeleteRequest;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.repository.AccountDeleteRequestRepository;
 
+import java.util.ArrayList;
+
 @Service
 public class AccountDeleteRequestService {
 
@@ -20,6 +22,10 @@ public class AccountDeleteRequestService {
 	
 	public AccountDeleteRequest getByUsername(String username)
 	{
-		return accountDeleteRequestRepository.getByEmail(username);
+		return accountDeleteRequestRepository.getByUsername(username);
 	}
+
+    public ArrayList<AccountDeleteRequest> getAllRequests() {
+		return (ArrayList<AccountDeleteRequest>) accountDeleteRequestRepository.findAll();
+    }
 }
