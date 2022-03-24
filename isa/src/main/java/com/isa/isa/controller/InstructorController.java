@@ -1,8 +1,10 @@
 package com.isa.isa.controller;
 
+import com.isa.isa.DTO.AccountDeleteRequestDTO;
 import com.isa.isa.DTO.BiographyDTO;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.InstructorDTO;
+import com.isa.isa.service.AccountDeleteRequestService;
 import com.isa.isa.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ public class InstructorController {
 
     @Autowired
     private InstructorService instructorService;
+
+    @Autowired
+    private AccountDeleteRequestService accountDeleteRequestService;
 
     @GetMapping("/profileInfo")
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
@@ -48,6 +53,12 @@ public class InstructorController {
             return new ResponseEntity<String>(updatedBio, HttpStatus.OK);
         }
         return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+    }
+
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    @PutMapping("/deleteRequest")
+    public ResponseEntity<Boolean> deleteRequest(@RequestBody AccountDeleteRequestDTO reasonDTO, Principal user) {
+        return new ResponseEntity<Boolean>(accountDeleteRequestService.createAccDeleteRequest(reasonDTO, user), HttpStatus.OK);
     }
 
 }

@@ -16,8 +16,8 @@ import com.isa.isa.model.enums.DeleteRequestStatus;
 public class AccountDeleteRequest {
 
 	@Id
-	@SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 5, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV2")
+	@SequenceGenerator(name = "mySeqAccDelReq", sequenceName = "mySeqAccDelReq", initialValue = 5, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqAccDelReq")
 	private int id;
 
 	private String username;
@@ -32,6 +32,7 @@ public class AccountDeleteRequest {
 	public AccountDeleteRequest(String username, String reason) {
 		this.username = username;
 		this.reason = reason;
+		this.deleteRequestStatus = DeleteRequestStatus.PENDING;
 	}
 
 	public AccountDeleteRequest(String username, String reason, String adminResponse, DeleteRequestStatus deleteRequestStatus, String adminUsername) {
