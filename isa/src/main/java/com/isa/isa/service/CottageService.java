@@ -95,13 +95,14 @@ public class CottageService {
 //        cottage.setNavigationalEquipment(new HashSet<AdditionalEquipment>(addNewCottageDTO.getAdditionalEquipments()));
         cottage.setAdditionalServices(new HashSet<ItemPrice>(addNewCottageDTO.getPricelist()));
 
-        ArrayList<EntityImage> images = entityImageService.createAndSaveImages("Boat", owner.getEmail(), addNewAdventureDTO.getName(), addNewAdventureDTO.getImagesForBackend());
+        ArrayList<EntityImage> images = entityImageService.createAndSaveImages("Boat", owner.getEmail(), addNewCottageDTO.getName(), addNewCottageDTO.getImagesForBackend());
 
         cottage.setImages(new HashSet<EntityImage>(images));
 
         cottageRepository.saveAndFlush(cottage);
 
-        return new CottageDTO(cottage, owner.getEmail(), owner);
+        return null;
+        //return new CottageDTO(cottage, owner.getEmail(), owner);
     }
 	
 	public ArrayList<Cottage> getAllCottages(){

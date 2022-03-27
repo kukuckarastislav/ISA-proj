@@ -94,16 +94,17 @@ public class BoatService {
         boat.setCapacity(addNewBoatDTO.getCapasity());
         boat.setReservationCancellationConditions(addNewBoatDTO.getReservationCancellationConditions());
         boat.setPrice(addNewBoatDTO.getPrice());
-        boat.setNavigationalEquipment(new HashSet<AdditionalEquipment>(addNewBoatDTO.getAdditionalEquipments()));
+        //boat.setNavigationalEquipment(new HashSet<AdditionalEquipment>(addNewBoatDTO.getAdditionalEquipments()));
         boat.setAdditionalServices(new HashSet<ItemPrice>(addNewBoatDTO.getPricelist()));
 
-        ArrayList<EntityImage> images = entityImageService.createAndSaveImages("Instructors", instructor.getEmail(), addNewAdventureDTO.getName(), addNewAdventureDTO.getImagesForBackend());
+        ArrayList<EntityImage> images = entityImageService.createAndSaveImages("Instructors", owner.getEmail(), addNewBoatDTO.getName(), addNewBoatDTO.getImagesForBackend());
 
         boat.setImages(new HashSet<EntityImage>(images));
 
         boatRepository.saveAndFlush(boat);
 
-        return new BoatDTO(boat, owner.getEmail(), owner);
+        return null;
+        //return new BoatDTO(boat, owner.getEmail(), owner);
     }
 	
 	
