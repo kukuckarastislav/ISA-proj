@@ -48,7 +48,7 @@
                     <Datepicker style="display: inline-block;zoom: 1.15;position: relative; top:0.25em; margin-right:2%; width:25em" v-model="date" range></Datepicker>
                     <span style="color:lightgray;border: 1px solid lightgray;font-size: 2.25em; position: relative; top:0.28em;margin-left:6.4%;">&nbsp;Persons&nbsp;</span>
                     <div style="display: inline-block;margin-right:12%;zoom: 1.15;position: relative; top:0.2em;width:5em" class="form-outline">     
-                    <input type="number" id="typeNumber" min="1" class="form-control rounded-0"  />
+                    <input type="number" id="typeNumber" min="1" class="form-control rounded-0" v-model="peopleNumber" />
                     </div>
                     <span style="color:lightgray;border: 1px solid lightgray;font-size: 2.22em; position: relative; top:0.25em">&nbsp;Rating </span>
                 <star-rating style="width: 15.5%;border: 1px solid lightgray;display: inline-block;zoom: 0.8;" v-model:rating="rating"/>
@@ -61,6 +61,7 @@
                     <option value="1">Name</option>
                     <option value="2">Address</option>
                     <option value="3">Grade</option>
+                    <option value="4">Price</option>
                     </select>
                     <select class="form-select d-inline" aria-label="Default select example" style="width:9em; margin-left:10em" v-model="sortInOrder">
                     <option value="1">Ascending</option>
@@ -211,7 +212,8 @@ setup() {
       searchedLocation: '',
       searchedAdvertiser: '',
       rating: 0,
-       date: null
+       date: null,
+       peopleNumber: ''
     }
   },
   mounted() {
@@ -452,47 +454,17 @@ setup() {
 								control=0;
 								break;	
 									}
-                    else if(this.date){
-                             /*   let inDate=false
-                                for(var j =0; j< this.adventures[i].instructor.instructorTerms.length; j++){
-                                    //console.log(this.adventures[i].instructor.instructorTerms[j].startTime)
-                                   // console.log(new Date())
-                                    if(new Date(this.adventures[i].instructor.instructorTerms[j].startTime) >= this.date[0])
-                                    {console.log("aaa")}
-                                    if (this.adventures[i].instructor.instructorTerms[j].termAvailability==="AVAILABILE" && new Date(this.adventures[i].instructor.instructorTerms[j].startTime) <= this.date[0] && new Date(this.adventures[i].instructor.instructorTerms[j].endTime) >= this.date[1]){
-                                        inDate = true;
-                                        break;
-                                    }
-                                }
-                                if(!inDate){
-                                    this.adventures.splice(i,1);
+                    else if(this.peopleNumber && this.adventures[i].maxNumberOfPeople < this.peopleNumber){
+								this.adventures.splice(i,1);
 								control=0;
 								break;	
-                                }*/
-                               /* axios.post('http://localhost:8180/api/person/adventures/instructorFree', {
-                                                        id: this.adventures[i].instructor.id,
-                                                        startTime: this.date[0],
-                                                        endTime: this.date[1],
-                                                        instructorUsername: this.adventures[i].instructor.email
-                                                        })
-                                                        .then((response) => {
-                                                        if (response.data == false){
-                                                            this.adventures.splice(i,1);
-                                                            control=0;
-                                                           
-                                                        }
-                                                        }, (error) => {
-                                                        console.log(error);
-                                                        });*/
-                                
-
-
-
-
-                               // control = this.checkIfInstructorsFree(this.adventures[i],this.date);
-                               // if (control == 0) {
-                               //     this.adventures.splice(i,1);
-                                //    break;}
+									}
+                    else if (this.rating && this.adventures[i].averageGrade < this.rating){
+                       this.adventures.splice(i,1);
+								control=0;
+								break;	
+                    }
+                    else if(this.date){                     
                                const response = await axios.post('http://localhost:8180/api/person/adventures/instructorFree', {
                                                         id: this.adventures[i].instructor.id,
                                                         startTime: this.date[0],
@@ -505,13 +477,6 @@ setup() {
 								control=0;
 								break;	
                                 }
-
-
-                              /*  if(!inDate){
-                                    this.adventures.splice(i,1);
-								control=0;
-								break;	
-                                }*/
 									}   
             }
             }
@@ -556,6 +521,14 @@ setup() {
                                                     return b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''));
                                                 }
                                               return b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, ''))
+                                                });
+                                    }else if(this.showFilters && this.sortBy=="4" && this.sortInOrder=="2"){
+                                        this.adventures.sort(function (a, b) {
+                                              return b.price.price - a.price.price;
+                                                });
+                                    }else if(this.showFilters && this.sortBy=="4" && this.sortInOrder=="1"){
+                                        this.adventures.sort(function (a, b) {
+                                              return a.price.price - b.price.price;
                                                 });
                                     }
 
