@@ -101,8 +101,7 @@ public class CottageService {
 
         cottageRepository.saveAndFlush(cottage);
 
-        return null;
-        //return new CottageDTO(cottage, owner.getEmail(), owner);
+        return new CottageDTO(cottage, owner.getEmail());
     }
 	
 	public ArrayList<Cottage> getAllCottages(){
