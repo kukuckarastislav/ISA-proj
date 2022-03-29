@@ -315,10 +315,11 @@ export default {
         console.log(this.boat)
 
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        axios.put('http://localhost:8180/api/boat/addnewboat',this.boat)
+        axios.post('http://localhost:8180/api/boats/addnewboat',this.boat)
           .then(response => {
               console.log('Odgoovr');
               console.log(response.data);
+              alert("You created new boat")
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           }); 

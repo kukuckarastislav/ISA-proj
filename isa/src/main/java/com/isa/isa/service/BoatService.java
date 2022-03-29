@@ -103,8 +103,8 @@ public class BoatService {
 
         boatRepository.saveAndFlush(boat);
 
-        return null;
-        //return new BoatDTO(boat, owner.getEmail(), owner);
+        
+        return new BoatDTO(boat);
     }
 	
 	
