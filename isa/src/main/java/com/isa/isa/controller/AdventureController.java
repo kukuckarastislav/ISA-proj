@@ -25,6 +25,7 @@ public class AdventureController {
 
     @Autowired
     private AdventureService adventureService;
+    
 
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     @GetMapping("/byinstructor")

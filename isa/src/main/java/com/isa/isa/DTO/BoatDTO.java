@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.isa.isa.model.Address;
 import com.isa.isa.model.Boat;
+import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
@@ -44,13 +45,15 @@ public class BoatDTO {
 		this.enginePower = boat.getEnginePower();
 		this.maxSpeed = boat.getMaxSpeed();
 		this.navigationalEquipment = new ArrayList<NavigationalEquipment>();
-		this.navigationalEquipment.addAll(boat.getNavigationalEquipment());
+		if(boat.getNavigationalEquipment()!=null)
+			this.navigationalEquipment.addAll(boat.getNavigationalEquipment());
 		this.address = boat.getAddress();
 		this.promotionalDescription = boat.getPromotionalDescription();
 		this.capacity = boat.getCapacity();
 		this.behaviourRules = boat.getBehaviourRules();
 		this.additionalServices = new ArrayList<ItemPrice>();
-		this.additionalServices.addAll(boat.getAdditionalServices());
+		if(boat.getAdditionalServices()!=null)
+			this.additionalServices.addAll(boat.getAdditionalServices());
 		this.reservationCancellationConditions = boat.getReservationCancellationConditions();
 		this.averageGrade = boat.getAverageGrade();
 		this.price = boat.getPrice();
@@ -85,7 +88,6 @@ public class BoatDTO {
 		this.price = boat.getPrice();
 		this.images = images;
     }
-	
 	
 	public String getName() {
 		return name;

@@ -9,9 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.isa.DTO.AddNewBoatDTO;
+import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.BoatDTO;
 import com.isa.isa.service.BoatService;
 
@@ -34,5 +38,15 @@ public class BoatController {
     public ResponseEntity<BoatDTO> getBoatByOwnerAndName(Principal user, @PathVariable String boatname) {
 		BoatDTO boatDto = boatService.getBoatDTOByOwnerAndName(user.getName(), boatname);
         return new ResponseEntity<BoatDTO>(boatDto, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
+    @PostMapping("/addnewboat")
+    public ResponseEntity<BoatDTO> addNewBoat(@RequestBody AddNewBoatDTO addNewBoatDTO, Principal user) {
+        System.out.println("Creating new Boat");
+        BoatDTO boatDTO = boatService.addNewBoat(addNewBoatDTO, user);
+        if(boatDTO == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<BoatDTO>(boatDTO, HttpStatus.OK);
     }
 }

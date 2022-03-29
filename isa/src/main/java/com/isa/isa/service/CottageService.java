@@ -1,19 +1,20 @@
 package com.isa.isa.service;
 
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.DTO.AdventureDTO;
-import com.isa.isa.DTO.AdventureViewDTO;
+import com.isa.isa.DTO.AddNewCottageDTO;
 import com.isa.isa.DTO.CottageDTO;
 import com.isa.isa.DTO.EntityImageDTO;
-import com.isa.isa.model.Adventure;
+import com.isa.isa.model.AdditionalEquipment;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.EntityImage;
-import com.isa.isa.model.Instructor;
+import com.isa.isa.model.ItemPrice;
 import com.isa.isa.repository.CottageOwnerRepository;
 import com.isa.isa.repository.CottageRepository;
 
@@ -69,6 +70,39 @@ public class CottageService {
             }
         }
         return cottageByName;
+    }
+	
+	public CottageDTO addNewCottage(AddNewCottageDTO addNewCottageDTO, Principal user) {
+        CottageOwner owner = cottageOwnerRepository.getByEmail(user.getName());
+        if(owner == null) return null;
+
+        // proveriti da li je novo ime avanture jedinstveno
+        if(getCottageByOwnerAndCottageName(user.getName(), addNewCottageDTO.getName()) != null) {
+            System.out.println("Name is not unique for boat and owner");
+            return null;
+        }
+
+        Cottage cottage = new Cottage();
+        cottage.setName(addNewCottageDTO.getName());
+        cottage.setOwner(owner);
+        cottage.setAddress(addNewCottageDTO.getAddress());
+        cottage.setAverageGrade(0);
+        cottage.setDescription(addNewCottageDTO.getDescription());
+        cottage.setBehaviourRules(addNewCottageDTO.getBehaviourRules());
+//        cottage.set(addNewCottageDTO.getCapasity());
+//        cottage.setReservationCancellationConditions(addNewCottageDTO.getReservationCancellationConditions());
+        cottage.setPrice(addNewCottageDTO.getPrice());
+//        cottage.setNavigationalEquipment(new HashSet<AdditionalEquipment>(addNewCottageDTO.getAdditionalEquipments()));
+        cottage.setAdditionalServices(new HashSet<ItemPrice>(addNewCottageDTO.getPricelist()));
+
+        ArrayList<EntityImage> images = entityImageService.createAndSaveImages("Boat", owner.getEmail(), addNewCottageDTO.getName(), addNewCottageDTO.getImagesForBackend());
+
+        cottage.setImages(new HashSet<EntityImage>(images));
+
+        cottageRepository.saveAndFlush(cottage);
+
+        return null;
+        //return new CottageDTO(cottage, owner.getEmail(), owner);
     }
 	
 	public ArrayList<Cottage> getAllCottages(){
