@@ -86,7 +86,12 @@
                             <p class="card-text">
                                 Instructor: {{n.instructor.firstName}} {{n.instructor.lastName}}<br>
                                 Description: {{n.description}}<br>
-                                Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}}
+                                Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}} <br>
+                                Price: ${{n.price.price}}/day <br>
+                                Grade:
+                            <span v-if="n.instructor.averageGrade===0">Not yet rated</span>  
+                            <span v-else>{{n.instructor.averageGrade}}</span><br>
+                            <br>
                             </p>
                             <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showAdventure(n.id)">More details</button>
                         </div>
