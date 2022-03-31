@@ -125,13 +125,18 @@
         <br>
         <br>
         <br>
-        <button v-if="role==='ROLE_CUSTOMER'" type="button" style="zoom:1.5;background-color:coral;border-color:coral" class="btn btn-primary">RESERVE</button>
+        <button v-if="role==='ROLE_CUSTOMER'" type="button" style="zoom:1.5;background-color:coral;border-color:coral" class="btn btn-primary" v-on:click="showModal()">RESERVE</button>
         <br>
         <br>
         <br>
         <br>
 
-
+    <ReserveModal
+      v-show="isModalVisible"
+      @close="closeModal"
+      v-bind:indexList="indexList"
+     
+    />
     </div>
 
 </template>
@@ -139,9 +144,10 @@
 <script>
 import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
+import ReserveModal from '@/components/ReserveModal.vue';
 export default {
   name: "CustomerAdventurePage",
-  components: {CarouselView},
+  components: {CarouselView,ReserveModal},
   data: function () {
     return {
       adventure: {},
@@ -149,7 +155,8 @@ export default {
       adventureId: 0,
       isFetching: true,
       indexList: [],
-      role: ''
+      role: '',
+      isModalVisible: false
     };
   },
   mounted: function () {
@@ -181,7 +188,13 @@ export default {
         return true;
       }
       return false;
-    }
+    },
+    showModal() {
+        this.isModalVisible = true;
+      },
+      closeModal() {
+        this.isModalVisible = false;
+      }
   },
 };
 </script>
