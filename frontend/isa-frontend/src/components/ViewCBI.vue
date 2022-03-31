@@ -296,6 +296,7 @@ setup() {
             }).catch(err => (alert(err)));
         },
         searchBy:async function(){
+            this.$store.commit('increment', this.date)
             if(this.button1){
 
             var control=0
@@ -482,7 +483,9 @@ setup() {
 								control=0;
 								break;	
                                 }
-									}   
+									}
+                                    
+                        
             }
             }
 

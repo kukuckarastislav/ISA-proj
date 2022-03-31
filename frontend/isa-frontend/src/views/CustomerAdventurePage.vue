@@ -134,7 +134,7 @@
     <ReserveModal
       v-show="isModalVisible"
       @close="closeModal"
-      v-bind:indexList="indexList"
+      v-bind:chosenServices="chosenServices"
      
     />
     </div>
@@ -156,7 +156,8 @@ export default {
       isFetching: true,
       indexList: [],
       role: '',
-      isModalVisible: false
+      isModalVisible: false,
+      chosenServices: []
     };
   },
   mounted: function () {
@@ -190,6 +191,10 @@ export default {
       return false;
     },
     showModal() {
+      this.chosenServices=[]
+        for(let k=0;k<this.indexList.length;k++){
+          this.chosenServices.push(this.adventure.pricelist[this.indexList[k]])
+        }
         this.isModalVisible = true;
       },
       closeModal() {

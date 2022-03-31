@@ -17,9 +17,32 @@
 
       <section class="modal-body">
         <slot name="body">
+        Selected date:<br><br>
         <Datepicker style="display: inline-block;zoom: 1.15;position: relative; top:0.25em; margin-right:2%; width:25em" v-model="date" range></Datepicker>
         <br>
+         <br>
+        <div style="max-width:50%; text-align: center;margin: auto; margin-top:2% ">
+    <div style="margin-bottom:5%">Selected services:</div>
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Service</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+   <tbody>
+   <tr v-for="s in chosenServices" :key="s.id">
+      <td>{{s.name}}</td>
+      <td>{{s.price}}$</td>
+     </tr>
+  </tbody>
+  </table><br>
+  </div>
           Total price: $
+          <br>
+          <br>
+          <br>
+          <button type="button" style="zoom:1.2;background-color:coral;border-color:coral" class="btn btn-primary" v-on:click="reserve()">RESERVE</button>
         </slot>
        </section>
 
@@ -34,30 +57,20 @@ import Datepicker from 'vue3-date-time-picker';
     import { ref, onMounted } from 'vue';
 export default {
   name: "ReserveModal",
-  props: ['indexList'],
+  props: ['chosenServices'],
   components: {Datepicker},
   data: function () {
     return {
-      date: null
+      date: this.$store.state.date
     };
   },
-  setup() {
-        const date = ref();
-
-        // For demo purposes assign range from the current date
-        onMounted(() => {
-            const startDate = new Date();
-            const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-            date.value = [startDate, endDate];
-        })
-        
-        return {
-            date,
-        }
-    },
      methods: {
       close() {
+          console.log(this.chosenServices)
         this.$emit('close');
+      },
+      reserve() {
+
       }
     }
 }
