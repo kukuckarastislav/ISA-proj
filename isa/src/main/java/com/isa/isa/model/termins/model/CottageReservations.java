@@ -47,6 +47,8 @@ public class CottageReservations {
 
     @Enumerated(EnumType.STRING)
     private StatusOfReservation statusOfReservation;
+    
+    private double price;
 
     public CottageReservations() {}
     
@@ -105,6 +107,17 @@ public class CottageReservations {
 	public void setStatusOfReservation(StatusOfReservation statusOfReservation) {
 		this.statusOfReservation = statusOfReservation;
 	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	
+	
     
     
 

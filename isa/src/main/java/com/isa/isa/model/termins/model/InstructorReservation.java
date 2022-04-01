@@ -36,6 +36,8 @@ public class InstructorReservation {
     private StatusOfReservation statusOfReservation;
     
     private String instructorUsername;
+    
+    private double price;
 
     public InstructorReservation(){}
 
@@ -46,10 +48,22 @@ public class InstructorReservation {
         this.endTime = endTime;
         this.instructorUsername = instructorUsername;
     }
-    
-    
+        
 
-    public int getId() {
+    public InstructorReservation(int id, Client client, Adventure adventure, LocalDateTime startTime,
+			LocalDateTime endTime, StatusOfReservation statusOfReservation, String instructorUsername, double price) {
+		super();
+		this.id = id;
+		this.client = client;
+		this.adventure = adventure;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.statusOfReservation = statusOfReservation;
+		this.instructorUsername = instructorUsername;
+		this.price = price;
+	}
+
+	public int getId() {
         return id;
     }
 
@@ -112,6 +126,17 @@ public class InstructorReservation {
 	public void setInstructorUsername(String instructorUsername) {
 		this.instructorUsername = instructorUsername;
 	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	
     
+	
     
 }
