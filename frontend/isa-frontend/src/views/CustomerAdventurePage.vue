@@ -135,7 +135,7 @@
       v-show="isModalVisible"
       @close="closeModal"
       v-bind:chosenServices="chosenServices"
-     
+      v-bind:adventure="adventure"
     />
     </div>
 

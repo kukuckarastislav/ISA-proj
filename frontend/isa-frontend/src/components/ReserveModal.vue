@@ -38,7 +38,7 @@
   </tbody>
   </table><br>
   </div>
-          Total price: $
+          Total price: {{totalPrice}}$
           <br>
           <br>
           <br>
@@ -57,22 +57,34 @@ import Datepicker from 'vue3-date-time-picker';
     import { ref, onMounted } from 'vue';
 export default {
   name: "ReserveModal",
-  props: ['chosenServices'],
+  props: ['chosenServices','adventure'],
   components: {Datepicker},
   data: function () {
     return {
-      date: this.$store.state.date
+      date: this.$store.state.date,
+      totalPrice: 0
     };
   },
-     methods: {
-      close() {
-          console.log(this.chosenServices)
-        this.$emit('close');
-      },
-      reserve() {
+  updated() {
+    this.calculatePrice();
+  },
+  methods: {
+    close() {
+        console.log((this.date[1].getTime()-this.date[0].getTime())/ (1000 * 3600))
+      this.$emit('close');
+    },
+    calculatePrice(){
+        this.totalPrice = 0;
+        var numOfHours = (this.date[1].getTime()-this.date[0].getTime())/ (1000 * 3600);
+        for(let i=0;i<this.chosenServices.length;i++){
+          this.totalPrice += this.chosenServices[i].price
+        }
+        this.totalPrice += numOfHours * this.adventure.price.price;
+    },
+    reserve() {
 
-      }
     }
+  }
 }
 </script>
 <style>
