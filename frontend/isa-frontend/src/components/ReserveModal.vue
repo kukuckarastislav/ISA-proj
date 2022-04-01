@@ -52,6 +52,7 @@
 </transition>
 </template>
 <script>
+import axios from "axios";
 import Datepicker from 'vue3-date-time-picker';
     import 'vue3-date-time-picker/dist/main.css'
     import { ref, onMounted } from 'vue';
@@ -82,7 +83,14 @@ export default {
         this.totalPrice += numOfHours * this.adventure.price.price;
     },
     reserve() {
-
+      axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .post('http://localhost:8180/api/client/reserveAdventure',{"startTime":this.date[0], "endTime":this.date[1], "adventure":this.adventure, "additionalServices":this.chosenServices})
+          .then(response => {alert('Uspesno ste rezervisali avanturu.')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          }); 
     }
   }
 }

@@ -1,5 +1,7 @@
 package com.isa.isa.model.termins.service;
 
+import com.isa.isa.model.Client;
+import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.model.InstructorTerms;
@@ -29,4 +31,12 @@ public class InstructorReservationService {
 		}
 		return retVal;
 	}
+    
+    public InstructorReservation reserveAdventureByClient(ClientAdventureReservationDTO dto, Client client) {
+    	InstructorReservation instructorReservation = new InstructorReservation(client,dto.getAdventure(),dto.getStartTime(),dto.getEndTime(),dto.getAdventure().getInstructor().getEmail());
+		instructorReservation.setAdditionalServices(dto.getAdditionalServices());
+		instructorReservation.setStatusOfReservation(StatusOfReservation.ACTIVE);
+    	return instructorReservationRepository.save(instructorReservation);
+	}
+    
 }
