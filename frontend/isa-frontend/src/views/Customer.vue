@@ -4,6 +4,9 @@
         <div class="container">
             <div class="row align-items-center justify-content-between">
                 <div class="col">
+                    <a href="/customerReservations" class="nav-link">My reservations</a>
+                </div>
+                <div class="col">
                     <a href="/customerProfile" class="nav-link">Profile</a>
                 </div>
             </div>
