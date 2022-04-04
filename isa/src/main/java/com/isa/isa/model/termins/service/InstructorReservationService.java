@@ -58,7 +58,7 @@ public class InstructorReservationService {
     	List<InstructorReservation>instructorReservations=instructorReservationRepository.findAllByClientId(clientId);
     	List<ClientMadeReservationsAdventureDTO>retVal = new ArrayList<ClientMadeReservationsAdventureDTO>();
     	for(InstructorReservation reservation:instructorReservations) {
-    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice()));
+    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getAdventure().getName()));
     	}
     	return retVal;
     }

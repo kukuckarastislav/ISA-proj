@@ -1,5 +1,6 @@
 <template>
-<div>
+<div v-if="!isFetching">
+  <div>
      <section class="text-light p-5">
             <div class="container">
                 <div class="row">
@@ -18,6 +19,18 @@
                 </div>
             </div>
         </section>
+  </div>
+  <table  style="border: 1px solid gray; width: 50%; margin-left:25%; margin-top: 5%;" class="table">
+    <tbody>
+      <tr v-for="a in adventures"
+            :key="a.startTime">
+        <td>Image</td>
+        <td>{{a.adventureName}}</td>
+        <td></td>
+        <td>Cancel</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 </template>
@@ -37,12 +50,14 @@ export default {
       button2: false,
       button3: false,
       cottages: [],
-      boats: []
+      boats: [],
+      isFetching: true
     }
   },
   mounted() {
-    
-    axios.get('http://localhost:8180/api/person/adventures')
+    axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+    axios.get('http://localhost:8180/api/client/getAdventures')
 			.then(response => {this.adventures = response.data
             axios.get('http://localhost:8180/api/person/cottages')
 			.then(response => {this.cottages = response.data
@@ -60,6 +75,9 @@ export default {
 
 
 <style scoped>
+td {
+  text-align: left;
+}
 
 
 </style>

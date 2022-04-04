@@ -23,6 +23,7 @@ import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.model.InstructorReservation;
+import com.isa.isa.model.termins.service.InsFastResHistoryService;
 import com.isa.isa.model.termins.service.InstructorReservationService;
 import com.isa.isa.security.service.EmailService;
 import com.isa.isa.service.ClientService;
@@ -43,6 +44,9 @@ public class ClientController {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private InsFastResHistoryService insFastResHistoryService;
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
@@ -90,6 +94,7 @@ public class ClientController {
 		Client client= this.clientService.findByEmail(user.getName());
 		List<ClientMadeReservationsAdventureDTO> retVal = new ArrayList<ClientMadeReservationsAdventureDTO>();
 		retVal.addAll(instructorReservetionService.getAdventureReservationByClient(client.getId()));
+		retVal.addAll(insFastResHistoryService.getFastResevationByClient(client.getId()));
 		return new ResponseEntity<>(retVal,HttpStatus.OK);
 	}
 

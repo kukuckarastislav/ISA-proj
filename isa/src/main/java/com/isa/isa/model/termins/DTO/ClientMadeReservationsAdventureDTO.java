@@ -11,19 +11,25 @@ public class ClientMadeReservationsAdventureDTO {
     private int adventureId;
     private Set<ItemPrice> additionalServices;
     private double price;
+    private String adventureName;
      
 	public ClientMadeReservationsAdventureDTO() {
 	
 	}
+	
+	
 	public ClientMadeReservationsAdventureDTO(LocalDateTime startTime, LocalDateTime endTime, int adventureId,
-			Set<ItemPrice> additionalServices, double price) {
+			Set<ItemPrice> additionalServices, double price, String adventureName) {
 		super();
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.adventureId = adventureId;
 		this.additionalServices = additionalServices;
 		this.price = price;
+		this.adventureName = adventureName;
 	}
+
+
 	public LocalDateTime getStartTime() {
 		return startTime;
 	}
@@ -54,6 +60,18 @@ public class ClientMadeReservationsAdventureDTO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
+
+	public String getAdventureName() {
+		return adventureName;
+	}
+
+
+	public void setAdventureName(String adventureName) {
+		this.adventureName = adventureName;
+	}
+	
+	
     
     
 }
