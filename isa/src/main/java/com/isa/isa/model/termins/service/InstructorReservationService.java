@@ -3,6 +3,7 @@ package com.isa.isa.model.termins.service;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.model.InstructorTerms;
@@ -12,6 +13,7 @@ import com.isa.isa.model.termins.repository.InstructorReservationRepository;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +52,15 @@ public class InstructorReservationService {
     		price+= itemprice.getPrice();
     	}
     	return price;
+    }
+    
+    public List<ClientMadeReservationsAdventureDTO> getAdventureReservationByClient(int clientId){
+    	List<InstructorReservation>instructorReservations=instructorReservationRepository.findAllByClientId(clientId);
+    	List<ClientMadeReservationsAdventureDTO>retVal = new ArrayList<ClientMadeReservationsAdventureDTO>();
+    	for(InstructorReservation reservation:instructorReservations) {
+    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice()));
+    	}
+    	return retVal;
     }
     
 }
