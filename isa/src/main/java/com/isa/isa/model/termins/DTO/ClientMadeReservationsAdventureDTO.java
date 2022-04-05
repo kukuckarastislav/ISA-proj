@@ -12,14 +12,15 @@ public class ClientMadeReservationsAdventureDTO {
     private Set<ItemPrice> additionalServices;
     private double price;
     private String adventureName;
+    private String imagePath;
      
 	public ClientMadeReservationsAdventureDTO() {
 	
 	}
-	
-	
+
+
 	public ClientMadeReservationsAdventureDTO(LocalDateTime startTime, LocalDateTime endTime, int adventureId,
-			Set<ItemPrice> additionalServices, double price, String adventureName) {
+			Set<ItemPrice> additionalServices, double price, String adventureName, String imagePath) {
 		super();
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -27,6 +28,7 @@ public class ClientMadeReservationsAdventureDTO {
 		this.additionalServices = additionalServices;
 		this.price = price;
 		this.adventureName = adventureName;
+		this.imagePath = imagePath;
 	}
 
 
@@ -69,6 +71,16 @@ public class ClientMadeReservationsAdventureDTO {
 
 	public void setAdventureName(String adventureName) {
 		this.adventureName = adventureName;
+	}
+
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.isa.isa.model.termins.service;
 
 import com.isa.isa.model.Client;
+import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
@@ -58,7 +59,8 @@ public class InstructorReservationService {
     	List<InstructorReservation>instructorReservations=instructorReservationRepository.findAllByClientId(clientId);
     	List<ClientMadeReservationsAdventureDTO>retVal = new ArrayList<ClientMadeReservationsAdventureDTO>();
     	for(InstructorReservation reservation:instructorReservations) {
-    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getAdventure().getName()));
+    		List<EntityImage>images = new ArrayList<> (reservation.getAdventure().getImages());
+    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getAdventure().getName(),images.get(0).getPath()));
     	}
     	return retVal;
     }
