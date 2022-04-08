@@ -1,6 +1,10 @@
 package com.isa.isa.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +100,25 @@ public class ClientController {
 		retVal.addAll(instructorReservetionService.getAdventureReservationByClient(client.getId()));
 		retVal.addAll(insFastResHistoryService.getFastResevationByClient(client.getId()));
 		return new ResponseEntity<>(retVal,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PutMapping("/cancelAdventureReservation")
+	public ResponseEntity<Boolean> cancelAdventureReservation(@RequestBody ClientMadeReservationsAdventureDTO clientMadeReservationsAdventureDTO, Principal user) {
+		if(!ThreeDayDifference(clientMadeReservationsAdventureDTO.getStartTime())) return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		if(clientMadeReservationsAdventureDTO.getIsFast()) {
+			insFastResHistoryService.cancelReservation(clientMadeReservationsAdventureDTO.getReservationId());
+		}
+		else {
+			instructorReservetionService.cancelReservation(clientMadeReservationsAdventureDTO.getReservationId());
+		}
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	private Boolean ThreeDayDifference(LocalDateTime startDate) {
+		Long period = ChronoUnit.DAYS.between(LocalDateTime.now(), startDate);
+		if(period<3) return false;
+		return true;
 	}
 
 }

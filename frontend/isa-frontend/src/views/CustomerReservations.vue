@@ -70,7 +70,7 @@
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
-        <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger">Cancel</button></td>
+        <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelAdventure(a)">Cancel</button></td>
         </tr>
        <tr>
         
@@ -368,6 +368,18 @@ export default {
             console.log(dayDiff)
             if(dayDiff < 3) return true;
             return false;
+        },
+        cancelAdventure:function(adv){
+          axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .put('http://localhost:8180/api/client/cancelAdventureReservation',adv)
+          .then(response => {
+            adv.status='CANCELLED';
+            alert('Uspesno ste otkazali avanturu.')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          }); 
         }
    }
 }

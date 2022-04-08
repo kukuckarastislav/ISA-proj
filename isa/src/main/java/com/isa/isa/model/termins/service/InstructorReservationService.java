@@ -15,6 +15,7 @@ import com.isa.isa.model.termins.repository.InstructorReservationRepository;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,9 +61,18 @@ public class InstructorReservationService {
     	List<ClientMadeReservationsAdventureDTO>retVal = new ArrayList<ClientMadeReservationsAdventureDTO>();
     	for(InstructorReservation reservation:instructorReservations) {
     		List<EntityImage>images = new ArrayList<> (reservation.getAdventure().getImages());
-    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getAdventure().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name()));
+    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getAdventure().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId()));
     	}
     	return retVal;
+    }
+    
+    public void cancelReservation(int reservationId) {
+    	Optional<InstructorReservation> instructorReservationType= instructorReservationRepository.findById(reservationId);
+    	if(instructorReservationType.isPresent()) {
+    		InstructorReservation instructorReservation = instructorReservationType.get();
+    		instructorReservation.setStatusOfReservation(StatusOfReservation.CANCELLED);
+    		instructorReservationRepository.save(instructorReservation);
+    	}
     }
     
 }

@@ -14,14 +14,16 @@ public class ClientMadeReservationsAdventureDTO {
     private String adventureName;
     private String imagePath;
     private String status;
+    private Boolean isFast;
+    private int reservationId;
      
 	public ClientMadeReservationsAdventureDTO() {
 	
 	}
 
-
 	public ClientMadeReservationsAdventureDTO(LocalDateTime startTime, LocalDateTime endTime, int adventureId,
-			Set<ItemPrice> additionalServices, double price, String adventureName, String imagePath, String status) {
+			Set<ItemPrice> additionalServices, double price, String adventureName, String imagePath, String status,
+			Boolean isFast, int reservationId) {
 		super();
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -31,6 +33,8 @@ public class ClientMadeReservationsAdventureDTO {
 		this.adventureName = adventureName;
 		this.imagePath = imagePath;
 		this.status = status;
+		this.isFast = isFast;
+		this.reservationId = reservationId;
 	}
 
 
@@ -93,6 +97,24 @@ public class ClientMadeReservationsAdventureDTO {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Boolean getIsFast() {
+		return isFast;
+	}
+
+	public void setIsFast(Boolean isFast) {
+		this.isFast = isFast;
+	}
+
+	public int getReservationId() {
+		return reservationId;
+	}
+
+	public void setReservationId(int reservationId) {
+		this.reservationId = reservationId;
 	}    
+	
+	
     
 }
