@@ -2,6 +2,7 @@ package com.isa.isa.controller;
 
 import java.security.Principal;
 
+import com.isa.isa.model.enums.UserTypeISA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.PasswordDto;
-import com.isa.isa.model.AccountDeleteRequest;
+import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.CottageOwner;
-import com.isa.isa.model.enums.OwnerType;
-import com.isa.isa.service.AccountDeleteRequestService;
+import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.CottageOwnerService;
 import com.isa.isa.service.InstructorService;
@@ -64,7 +64,7 @@ public class CottageOwnerController {
 		{
 			return new ResponseEntity("Request already submitted.", HttpStatus.OK);
 		}
-		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),OwnerType.COTTAGE_OWNER));
+		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),"TODO:  razloga sa fronta posalti", UserTypeISA.COTTAGE_OWNER));
 		
 		return new ResponseEntity("Request submitted.", HttpStatus.OK);
 	}

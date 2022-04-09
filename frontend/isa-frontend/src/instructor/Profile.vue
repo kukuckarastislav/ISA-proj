@@ -254,6 +254,19 @@ export default {
       },
       sendDeleteAccReq: function(){
           this.isDeletingAcc = false;
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+          axios.put('http://localhost:8180/api/instructor/deleteRequest',{reason: this.deleteRequestMessage, username: this.profile.email})
+          .then(response => {
+                  if (response) {
+                        window.sessionStorage.clear();
+                        this.$router.push('/');
+                        alert('Uspesno poslat zahtev za brisanje');
+                  }
+                  else 
+                    alert('DOSLO JE DO GRESKE')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          }); 
       }
 
   }

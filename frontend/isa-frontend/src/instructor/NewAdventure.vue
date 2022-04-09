@@ -237,7 +237,6 @@ export default {
   methods: {
     loadData: function(){
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        console.log("AHHAHAHAHAHAH");
         axios.get('http://localhost:8180/api/additionalequipment/getadditionalequipment').then(resp => {
             this.allAdditionalEquipment = resp.data;
             console.log(resp.data);
