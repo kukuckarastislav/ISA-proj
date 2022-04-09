@@ -12,6 +12,8 @@ import javax.persistence.SequenceGenerator;
 import com.isa.isa.model.enums.DeleteRequestStatus;
 import com.isa.isa.model.enums.UserTypeISA;
 
+import java.time.LocalDateTime;
+
 
 @Entity
 public class AccountDeleteRequest {
@@ -23,19 +25,24 @@ public class AccountDeleteRequest {
 
 	private String username;
 	private String reason;
-	private String adminResponse;
 	@Enumerated(EnumType.STRING)
 	private DeleteRequestStatus deleteRequestStatus;
 	@Enumerated(EnumType.STRING)
 	private UserTypeISA userTypeISA;
+	private LocalDateTime requestDate;
+
 	private String adminUsername; // email admin who respond to request
+	private String adminResponse;
+	private LocalDateTime adminResponsDate;
 
 	public AccountDeleteRequest(){}
 
-	public AccountDeleteRequest(String username, String reason) {
+	public AccountDeleteRequest(String username, String reason, UserTypeISA userTypeISA) {
 		this.username = username;
 		this.reason = reason;
 		this.deleteRequestStatus = DeleteRequestStatus.PENDING;
+		this.userTypeISA = userTypeISA;
+		this.requestDate = LocalDateTime.now();
 	}
 
 	public AccountDeleteRequest(String username, UserTypeISA userTypeISA, String reason, String adminResponse, DeleteRequestStatus deleteRequestStatus, String adminUsername) {
@@ -101,5 +108,21 @@ public class AccountDeleteRequest {
 
 	public void setUserTypeISA(UserTypeISA userTypeISA) {
 		this.userTypeISA = userTypeISA;
+	}
+
+	public LocalDateTime getAdminResponsDate() {
+		return adminResponsDate;
+	}
+
+	public void setAdminResponsDate(LocalDateTime adminResponsDate) {
+		this.adminResponsDate = adminResponsDate;
+	}
+
+	public LocalDateTime getRequestDate() {
+		return requestDate;
+	}
+
+	public void setRequestDate(LocalDateTime requestDate) {
+		this.requestDate = requestDate;
 	}
 }

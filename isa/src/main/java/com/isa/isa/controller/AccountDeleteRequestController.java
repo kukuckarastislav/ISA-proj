@@ -1,15 +1,14 @@
 package com.isa.isa.controller;
 
 import com.isa.isa.DTO.AccountDeleteRequestDetailDTO;
+import com.isa.isa.DTO.AdminResponseToAccDelReqDTO;
 import com.isa.isa.model.AccountDeleteRequest;
 import com.isa.isa.service.AccountDeleteRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -31,6 +30,12 @@ public class AccountDeleteRequestController {
     @GetMapping("/allRequestsDetail")
     public ResponseEntity<ArrayList<AccountDeleteRequestDetailDTO>> getAllAccountDeleteRequestDetailDTO(Principal user) {
         return new ResponseEntity<ArrayList<AccountDeleteRequestDetailDTO>>(accountDeleteRequestService.getAllRequestsDetailDTO(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("admin-response")
+    public boolean adminResponsToUserDeleteRequest(@RequestBody AdminResponseToAccDelReqDTO adminResponseToAccDelReqDTO, Principal user){
+        return accountDeleteRequestService.setAdminRespons(adminResponseToAccDelReqDTO, user.getName());
     }
 
 }

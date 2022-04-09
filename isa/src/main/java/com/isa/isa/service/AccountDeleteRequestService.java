@@ -2,14 +2,18 @@ package com.isa.isa.service;
 
 import com.isa.isa.DTO.AccountDeleteRequestDetailDTO;
 import com.isa.isa.DTO.AccountDeleteRequestFromFrontDTO;
+import com.isa.isa.DTO.AdminResponseToAccDelReqDTO;
 import com.isa.isa.model.*;
+import com.isa.isa.model.enums.DeleteRequestStatus;
 import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class AccountDeleteRequestService {
@@ -44,7 +48,7 @@ public class AccountDeleteRequestService {
 
 	public Boolean createAccDeleteRequest(AccountDeleteRequestFromFrontDTO reasonDTO, Principal user) {
 		if(!reasonDTO.username.equals(user.getName())) return false;
-		AccountDeleteRequest accountDeleteRequest = new AccountDeleteRequest(user.getName(), reasonDTO.reason);
+		AccountDeleteRequest accountDeleteRequest = new AccountDeleteRequest(user.getName(), reasonDTO.reason, UserTypeISA.INSTRUCTOR);
 		accountDeleteRequestRepository.saveAndFlush(accountDeleteRequest);
 		return true;
 	}
@@ -82,4 +86,25 @@ public class AccountDeleteRequestService {
 
 		return null;
 	}
+
+    public boolean setAdminRespons(AdminResponseToAccDelReqDTO adminResponseToAccDelReqDTO, String adminEmail) {
+		Optional<AccountDeleteRequest> accountDeleteRequestOptional = accountDeleteRequestRepository.findById(adminResponseToAccDelReqDTO.getIdRequest());
+		AccountDeleteRequest accountDeleteRequest = accountDeleteRequestOptional.get();
+		if(accountDeleteRequest != null || accountDeleteRequest.getId() == 0){
+			if(adminResponseToAccDelReqDTO.getDeleteRequestStatus() != DeleteRequestStatus.PENDING){
+				accountDeleteRequest.setAdminUsername(adminEmail);
+				accountDeleteRequest.setAdminResponse(adminResponseToAccDelReqDTO.getAdminResponse());
+				accountDeleteRequest.setDeleteRequestStatus(adminResponseToAccDelReqDTO.getDeleteRequestStatus());
+				accountDeleteRequest.setAdminResponsDate(LocalDateTime.now());
+				accountDeleteRequestRepository.save(accountDeleteRequest);
+				System.out.println("Admin response successfully");
+				return true;
+			}else{
+				System.out.println("Error: status is invalid");
+			}
+		}else{
+			System.out.println("Error: id: accountDeleteRequest is not found");
+		}
+		return false;
+    }
 }

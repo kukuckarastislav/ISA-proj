@@ -2,6 +2,7 @@ package com.isa.isa.controller;
 
 import java.security.Principal;
 
+import com.isa.isa.model.enums.UserTypeISA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,7 +68,7 @@ public class BoatOwnerController {
 			return new ResponseEntity("Request already submitted.", HttpStatus.OK);
 		}
 		//TODO: Sa fronta napraviti slanje razloga, nema potrebe da se salje tip korisnika
-		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),"TODO sa fronta napraviti slanje razloga"));
+		accountDeleteRequestService.save(new AccountDeleteRequest(client.getEmail(),"TODO sa fronta napraviti slanje razloga", UserTypeISA.BOAT_OWNER));
 		
 		return new ResponseEntity("Request submitted.", HttpStatus.OK);
 	}

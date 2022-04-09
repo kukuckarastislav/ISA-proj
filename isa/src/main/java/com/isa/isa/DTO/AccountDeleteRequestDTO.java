@@ -4,6 +4,8 @@ import com.isa.isa.model.AccountDeleteRequest;
 import com.isa.isa.model.enums.DeleteRequestStatus;
 import com.isa.isa.model.enums.UserTypeISA;
 
+import java.time.LocalDateTime;
+
 public class AccountDeleteRequestDTO {
     private int id;
     private String username;
@@ -12,6 +14,8 @@ public class AccountDeleteRequestDTO {
     private DeleteRequestStatus deleteRequestStatus;
     private String adminUsername;
     private UserTypeISA userTypeISA;
+    private LocalDateTime adminResponsDate;
+    private LocalDateTime requestDate;
 
     public AccountDeleteRequestDTO(){}
 
@@ -33,6 +37,8 @@ public class AccountDeleteRequestDTO {
         this.deleteRequestStatus = accountDeleteRequest.getDeleteRequestStatus();
         this.adminUsername = accountDeleteRequest.getAdminUsername();
         this.userTypeISA = accountDeleteRequest.getUserTypeISA();
+        this.adminResponsDate = accountDeleteRequest.getAdminResponsDate();
+        this.requestDate = accountDeleteRequest.getRequestDate();
     }
 
     public int getId() {
@@ -89,5 +95,21 @@ public class AccountDeleteRequestDTO {
 
     public void setUserTypeISA(UserTypeISA userTypeISA) {
         this.userTypeISA = userTypeISA;
+    }
+
+    public LocalDateTime getAdminResponsDate() {
+        return adminResponsDate;
+    }
+
+    public void setAdminResponsDate(LocalDateTime adminResponsDate) {
+        this.adminResponsDate = adminResponsDate;
+    }
+
+    public LocalDateTime getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(LocalDateTime requestDate) {
+        this.requestDate = requestDate;
     }
 }

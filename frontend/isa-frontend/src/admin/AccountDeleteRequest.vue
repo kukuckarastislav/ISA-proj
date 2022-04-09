@@ -29,7 +29,7 @@
                         <label class="form-check-label m-1" for="idboat_owner"> Boat Owners</label>
                         <br> <br>
                       
-                        <input v-on:click="onlyMyResponseClickEvent()" v-model="showRequests.onlyMyResponse" class="form-check-input m-2" type="checkbox" id="idCCottage" checked>
+                        <input v-model="showRequests.onlyMyResponse" class="form-check-input m-2" type="checkbox" id="idCCottage" checked>
                         <label class="form-check-label m-1" for="idCCottage"> Only my response</label>
   
    
@@ -47,6 +47,7 @@
                                     <h5 class="card-title text-start">{{user.typeOfUser}}</h5> 
                                     <br>
                                     <h6 class="card-subtitle mb-2 text-muted text-start">Email: {{user.email}}</h6>
+                                    <h6 class="card-title text-start">Date: {{convertDate(user.accountDeleteRequestDTO.requestDate)}}</h6>
                                     <h6 class="card-title text-start">Country: {{user.address.country}}</h6>
                                     <h6 class="card-title text-start">City: {{user.address.city}}</h6>
                                     <h6 class="card-title text-start">Street: {{user.address.street}} {{user.address.number}}</h6>
@@ -54,10 +55,9 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <div>
-                                        <p class="card-text text-start">{{user.accountDeleteRequestDTO.reason}} Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                        <p class="card-text text-start">{{user.accountDeleteRequestDTO.reason}}</p>
                                         <div v-if="user.accountDeleteRequestDTO.deleteRequestStatus === 'PENDING'">
-                                            <button v-on:click="approve(user)" class="btn btn-success m-2">Approve</button>
-                                            <button v-on:click="setModalData(user)" data-bs-target="#enroll" data-bs-toggle="modal" class="btn btn-danger m-2">Reject</button>
+                                            <button v-on:click="setModalData(user)" data-bs-target="#enroll" data-bs-toggle="modal" class="btn btn-primary m-2">Respond</button>
                                         </div>
                                         <div v-else>
                                             <div class="card">
@@ -65,6 +65,7 @@
                                                     
                                                     <div class="card-text text-start rejectedCss fw-bold" v-if="user.accountDeleteRequestDTO.deleteRequestStatus === 'REJECTED'">REJECTED</div>
                                                     <div class="card-text text-start approvedCss fw-bold" v-if="user.accountDeleteRequestDTO.deleteRequestStatus === 'APPROVED'">APPROVED</div>
+                                                    <p class="card-text text-start"><b>{{convertDate(user.accountDeleteRequestDTO.adminResponsDate)}}</b></p>
                                                     <p class="card-text text-start">By: {{user.accountDeleteRequestDTO.adminUsername}}</p>
                                                     <p class="card-text text-start">{{user.accountDeleteRequestDTO.adminResponse}} </p>
                                                 </div>
@@ -94,21 +95,24 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="enrollLabel">Rejecting user {{rejectingUser.name}}</h5>
+            <h5 class="modal-title" id="enrollLabel">Write to {{adminResponse.name}}</h5>
             <button
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              v-on:click="resetModal()"
             ></button>
           </div>
           <div class="modal-body">
-            <p class="lead">Write reason for rejecting user: {{rejectingUser.email}}</p>
+            <p class="lead">Write message to user: {{adminResponse.email}}</p>
                <div class="mb-3">
-                <textarea class="form-control" v-model="rejectingUser.message" rows="3"></textarea>
+                <textarea class="form-control" v-model="adminResponse.message" rows="3"></textarea>
               </div>
           </div>
           <div class="modal-footer">
+               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" v-on:click="reject()">Reject</button>
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal" v-on:click="approve()">Approve</button>
             <button v-on:click="resetModal()"
               type="button"
               class="btn btn-secondary"
@@ -116,7 +120,6 @@
             >
               Cancel
             </button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" v-on:click="reject()">Rejection</button>
           </div>
         </div>
       </div>
@@ -137,17 +140,18 @@ export default {
             pending: true,
             approved: true,
             rejected: true,
-            onlyMyResponse: true,
+            onlyMyResponse: false,
             instructor: true,
             cottage_owner: true,
             boat_owner: true,
             client: true
         },
-        rejectingUser:{
+        adminResponse:{
             name: '',
             email: '',
             message: '',
-            user: {}
+            user: {},
+            deleteRequestStatus: 'PENDING'
         },
         users: [],
     }
@@ -162,14 +166,17 @@ export default {
             this.users = resp.data;
             console.log(resp.data);
         });
+        this.resetModal();
     },
-    approve: function(user){
-
+    sendAdminResponse: function(status){
+        alert('SLANJE RESPONSA');
+        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
         axios
-          .post('http://localhost:8180/auth/setapproved', {
-              "email": user.email,
-              "message": '',
-              "enabled": true,
+          .post('http://localhost:8180/api/deleteRequest/admin-response', {
+              idRequest: this.adminResponse.user.accountDeleteRequestDTO.id,
+              username: this.adminResponse.user.email,
+              adminResponse: this.adminResponse.message,
+              deleteRequestStatus: status
           })
           .then(response => {
               console.log(response)
@@ -178,33 +185,24 @@ export default {
             }).catch(err => {
               alert('DOSLO JE DO GRESKE')
             });
+    },
+    approve: function(){
+        this.sendAdminResponse('APPROVED');
     },
     reject: function(){
-          axios
-          .post('http://localhost:8180/auth/setapproved', {
-              "email": this.rejectingUser.user.email,
-              "message": this.rejectingUser.message,
-              "enabled": false
-          })
-          .then(response => {
-              console.log(response)
-              this.loadData();
-
-            }).catch(err => {
-              alert('DOSLO JE DO GRESKE')
-            });
+        this.sendAdminResponse('REJECTED');
     },
     setModalData: function(user){
-        this.rejectingUser.name = user.firstName + ' ' + user.lastName;
-        this.rejectingUser.email = user.email;
-        this.rejectingUser.message = '';
-        this.rejectingUser.user = user;
+        this.adminResponse.name = user.firstName + ' ' + user.lastName;
+        this.adminResponse.email = user.email;
+        this.adminResponse.message = '';
+        this.adminResponse.user = user;
     },
     resetModal: function(){
-        this.rejectingUser.name = '';
-        this.rejectingUser.email = '';
-        this.rejectingUser.message = '';
-        this.rejectingUser.user = {};
+        this.adminResponse.name = '';
+        this.adminResponse.email = '';
+        this.adminResponse.message = '';
+        this.adminResponse.user = {};
     },
     showIfNeed: function(accDelRequest){
         return this.showByStatus(accDelRequest) && this.showOnlyMyRespons(accDelRequest) && this.showByUserType(accDelRequest)
@@ -217,13 +215,17 @@ export default {
         return false;
     },
     showOnlyMyRespons: function(accDelRequest){
-        /*
-        TODO
+        
         if(this.showRequests.onlyMyResponse){
-            if(accDelRequest.accountDeleteRequestDTO.adminUsername === 'isaprojectftn+admin@gmail.com')
+            if(accDelRequest.accountDeleteRequestDTO.adminUsername !== null &&
+                accDelRequest.accountDeleteRequestDTO.adminUsername === 'isaprojectftn+admin@gmail.com'){
+                return true;
+            }else{
+                return false;
+            }
         }
-        */
-        return true
+        
+        return true;
     },
     showByUserType: function(accDelRequest){
         if( accDelRequest.accountDeleteRequestDTO.userTypeISA === 'INSTRUCTOR' && this.showRequests.instructor) return true;
@@ -233,8 +235,8 @@ export default {
 
         return false;
     },
-    onlyMyResponseClickEvent: function(){
-        //alert('' + this.showRequests.onlyMyResponse)
+    convertDate: function(date){
+        return new Date(date).toLocaleString();
     }
   }
 }
