@@ -1,8 +1,10 @@
 package com.isa.isa.model.termins.service;
 
+import com.isa.isa.model.Client;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.model.InsFastResHistory;
+import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.model.StatusOfFastReservation;
 import com.isa.isa.model.termins.model.StatusOfReservation;
@@ -38,5 +40,10 @@ public class InsFastResHistoryService {
     		insFastResHistory.setStatusOfFastReservation(StatusOfFastReservation.CANCELLED);
     		insFastResHistoryRepository.save(insFastResHistory);
     	}
+    }
+    
+    public void makeReservation(Client client, InstructorFastReservation instructorFastReservation) {
+    	InsFastResHistory insFastResHistory = new InsFastResHistory(client,instructorFastReservation,StatusOfFastReservation.TAKEN);
+    	insFastResHistoryRepository.save(insFastResHistory);
     }
 }

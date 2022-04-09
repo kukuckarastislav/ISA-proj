@@ -1,7 +1,9 @@
 package com.isa.isa.security.service;
 
 import com.isa.isa.DTO.UserApproveDTO;
+import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 
 import org.springframework.mail.MailException;
@@ -16,4 +18,6 @@ public interface EmailService {
     void sendNotificaitionRejected(User user, UserApproveDTO userApproveDTO) throws MailException, InterruptedException;
     
     void sendReservationConfirmation(Client client, ClientAdventureReservationDTO clientAdventureReservationDTO) throws MailException, InterruptedException;
+    
+    public void sendAdventureActionReservationConfirmation(Client client, Adventure adventure, ClientAdventureFastReservationDTO clientAdventureReservationDTO) throws MailException, InterruptedException;
 }

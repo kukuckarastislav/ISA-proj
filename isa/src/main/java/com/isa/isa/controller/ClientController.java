@@ -22,14 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.PasswordDto;
+import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.service.InsFastResHistoryService;
+import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.model.termins.service.InstructorReservationService;
 import com.isa.isa.security.service.EmailService;
+import com.isa.isa.service.AdventureService;
 import com.isa.isa.service.ClientService;
 import com.isa.isa.service.InstructorService;
 
@@ -51,6 +56,12 @@ public class ClientController {
 	
 	@Autowired
 	private InsFastResHistoryService insFastResHistoryService;
+	
+	@Autowired
+	private InstructorFastReservationService instructorFastReservationService;
+	
+	 @Autowired
+	private AdventureService adventureService;
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
@@ -119,6 +130,26 @@ public class ClientController {
 		Long period = ChronoUnit.DAYS.between(LocalDateTime.now(), startDate);
 		if(period<3) return false;
 		return true;
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/reserveAction")
+	public ResponseEntity<Boolean> reserveAction(@RequestBody ClientAdventureFastReservationDTO clientAdventureFastReservationDTO, Principal user) {
+		
+		Client client= this.clientService.findByEmail(user.getName());
+		Adventure adventure = adventureService.getAdventureWithInstructor(clientAdventureFastReservationDTO.getIdAdventure());
+		InstructorFastReservation instructorFastReservation = instructorFastReservationService.getById(clientAdventureFastReservationDTO.getIdFastReservation());
+		insFastResHistoryService.makeReservation(client, instructorFastReservation);
+		try {
+			emailService.sendAdventureActionReservationConfirmation(client,adventure, clientAdventureFastReservationDTO);
+		} catch (MailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.isa.isa.security.service.impl;
 
 import com.isa.isa.DTO.UserApproveDTO;
+import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.security.model.User;
 import com.isa.isa.security.service.EmailService;
@@ -73,6 +75,18 @@ public class EmailServiceImpl implements EmailService{
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("Successful reservation");
         mail.setText("You've successfully reserved " + clientAdventureReservationDTO.getAdventure().getName()+" from: "+clientAdventureReservationDTO.getStartTime()+ " to: "+clientAdventureReservationDTO.getEndTime());
+        javaMailSender.send(mail);
+
+        System.out.println("Email poslat!");
+	}
+	
+	@Override
+	public void sendAdventureActionReservationConfirmation(Client client, Adventure adventure, ClientAdventureFastReservationDTO clientAdventureFastReservationDTO) throws MailException, InterruptedException{
+	    SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(client.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Successful reservation");
+        mail.setText("You've successfully reserved " + adventure.getName()+" from: "+clientAdventureFastReservationDTO.getStartTime()+ " to: "+clientAdventureFastReservationDTO.getEndTime());
         javaMailSender.send(mail);
 
         System.out.println("Email poslat!");

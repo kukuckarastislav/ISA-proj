@@ -130,7 +130,42 @@
         <br>
         <br>
         <br>
-
+    
+    <div>
+       <h2 class="text-start">Actions</h2>
+         <table v-for="a in actions"
+            :key="a.startTime" style="border: 1px solid gray; width: 50%; margin-left:25%; margin-top: 5%;text-align:left" class="table">
+    <tbody>
+      <tr>
+        <td style="border:none;" colspan="2">{{(new Date(a.startTime)).getDate()}}/{{(new Date(a.startTime)).getMonth()+1}}/{{(new Date(a.startTime)).getFullYear()}} {{(new Date(a.startTime)).getHours()}}:{{(new Date(a.startTime)).getMinutes()}}-{{(new Date(a.endTime)).getDate()}}/{{(new Date(a.endTime)).getMonth()+1}}/{{(new Date(a.endTime)).getFullYear()}} {{(new Date(a.endTime)).getHours()}}:{{(new Date(a.endTime)).getMinutes()}}</td>
+        <td style="border:none;text-align:center">{{a.discount}}% OFF</td>
+      </tr>
+      <tr>
+        
+        <td style="border:none;width:26%;">Price:
+        </td>
+        <td style="border:none;width:24%;" >{{a.newPrice}}$ <span class="strikethrough">{{a.originalPrice}}$</span></td>
+        <td style="border:none;width:50%;"></td>
+        </tr>
+      <tr>
+       
+        <td style="border:none;">People:
+        </td>
+        <td style="border:none;">up to {{a.maxPeople}}</td>
+        <td style="border:none;padding-right:1em;text-align:right"><button v-if="role==='ROLE_CUSTOMER'" v-on:click="reserveAction(a)" style="background-color:coral;border-color:coral" class="btn btn-primary">RESERVE</button></td>
+        </tr>
+       <tr>
+        
+        <td style="border:none;">Additional services:
+        </td>
+        <td style="border:none;"><div style="display: inline-block; border: 1px solid #0d6efd;margin-right:1em;margin-bottom:0.5em" v-for="service in a.additionalServices" :key="service.id">
+          {{service.name}}
+          </div></td>
+        <td style="border:none;"></td>
+        </tr>
+    </tbody>
+  </table>
+      </div>
     <ReserveModal
       v-show="isModalVisible"
       @close="closeModal"
@@ -138,6 +173,7 @@
       v-bind:adventure="adventure"
     />
     </div>
+    
 
 </template>
 
@@ -157,7 +193,8 @@ export default {
       indexList: [],
       role: '',
       isModalVisible: false,
-      chosenServices: []
+      chosenServices: [],
+      actions: []
     };
   },
   mounted: function () {
@@ -171,6 +208,13 @@ export default {
         this.instructor = response.data.instructor;
         this.role = window.sessionStorage.getItem("role")
       if (this.role == null) this.role = ""
+      axios
+          .get('http://localhost:8180/api/person/adventures/' + this.adventureId+'/fastReservations')
+          .then(response => {
+              this.actions = response.data
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
       })
       .catch((err) => alert(err));
   },
@@ -199,6 +243,16 @@ export default {
       },
       closeModal() {
         this.isModalVisible = false;
+      },
+      reserveAction(ac){
+          axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .post('http://localhost:8180/api/client/reserveAction',ac)
+          .then(response => {alert('Uspesno ste rezervisali avanturu.')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
       }
   },
 };
@@ -226,4 +280,22 @@ export default {
   color: coral;
 }
 
+.strikethrough {
+  position: relative;
+}
+.strikethrough:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+  
+  -webkit-transform:rotate(-15deg);
+  -moz-transform:rotate(-15deg);
+  -ms-transform:rotate(-15deg);
+  -o-transform:rotate(-15deg);
+  transform:rotate(-15deg);
+}
 </style>

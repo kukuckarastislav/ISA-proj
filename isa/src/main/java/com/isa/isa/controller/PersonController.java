@@ -2,6 +2,7 @@ package com.isa.isa.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,10 @@ import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.model.InstructorFastReservation;
+import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.service.AdventureService;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.BoatService;
@@ -48,6 +52,8 @@ public class PersonController {
     private BoatService boatService;
     @Autowired
     private AdventureService adventureService;
+    @Autowired
+    private InstructorFastReservationService instructorFastReservationService;
     
     @PutMapping("/registration")
     public ResponseEntity<UserDTO> registrationStuff(@RequestBody UserDTO userDTO){
@@ -126,4 +132,11 @@ public class PersonController {
 
     	return new ResponseEntity<Boolean>(instructorService.isInstructorFree(termDTO), HttpStatus.OK);
     }
+    
+    @GetMapping("/adventures/{adventureId}/fastReservations")
+    public ResponseEntity<ArrayList<ClientAdventureFastReservationDTO>> getAdventureFastReservationsById(@PathVariable Integer adventureId) {
+    	ArrayList<ClientAdventureFastReservationDTO> instructorFastReservations = (ArrayList<ClientAdventureFastReservationDTO>) instructorFastReservationService.getFastReservationsByAdventure(adventureId);
+        return new ResponseEntity<ArrayList<ClientAdventureFastReservationDTO>>(instructorFastReservations, HttpStatus.OK);
+    }
+    
 }

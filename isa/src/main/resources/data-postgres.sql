@@ -81,7 +81,7 @@ values (1,3);
 insert into cottage_reservation_additional_services(cottage_reservation_id, additional_service_id)
 values (1,4);
 insert into cottage_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, cottage_id)
-values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 100, '2022-03-11T14:00:06.235098700', '2022-03-11T16:00:06.235098700', 2);
+values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 100, '2022-07-11T14:00:06.235098700', '2022-07-11T16:00:06.235098700', 2);
 insert into cottage_fast_res_history(status_of_fast_reservation, client_id, cottage_fast_res_id)
 values ('TAKEN', 3, 1);
 
@@ -116,6 +116,8 @@ insert into adventure_images (adventure_id, images_id)
 values (1, 3);
 insert into adventure (name, city, country, latitude, longitude, number, street, price, price_type, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
 values ('Krstarenje', 'Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 5,'PER_HOUR' ,'Pecacemo Ribe', 'moja biografija, ja sam super lik', 4, 'Nema skakanja u vodu', 'FREE', 6, 0);
+insert into adventure_additional_services(adventure_id, additional_service_id)
+values (2,1);
 insert into entity_image (name, path)
 values ('img1.jpg', 'images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img1.jpg');
 insert into entity_image (name, path)
@@ -135,9 +137,11 @@ values (1,3);
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
 values (1,4);
 insert into instructor_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, adventure_id, instructor_username)
-values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 100, '2022-03-11T14:00:06.235098700', '2022-03-11T16:00:06.235098700', 2, 'isaprojectftn+stefanI@gmail.com');
+values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 5, '2022-07-11T14:00:06.235098700', '2022-07-11T16:00:06.235098700', 2, 'isaprojectftn+stefanI@gmail.com');
 insert into ins_fast_res_history(status_of_fast_reservation, client_id, ins_fast_res_id)
-values ('TAKEN', 3, 1);
+values ('CANCELLED', 3, 1);
+insert into instructor_fast_reservation_additional_services(instructor_fast_reservation_id,additional_service_id)
+values (1,1);
 
 
 -- cottage owner petar, izvuceni entity_image da se gore kod stefana ne bi menjalo
