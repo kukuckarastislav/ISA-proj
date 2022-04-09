@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.PasswordDto;
-import com.isa.isa.model.AccountDeleteRequest;
+import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.CottageOwner;
-import com.isa.isa.model.enums.OwnerType;
-import com.isa.isa.service.AccountDeleteRequestService;
+import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.CottageOwnerService;
 import com.isa.isa.service.InstructorService;

@@ -1,9 +1,9 @@
-package com.isa.isa.controller;
+package com.isa.isa.model.AccountDeleteRequest.controller;
 
-import com.isa.isa.DTO.AccountDeleteRequestDetailDTO;
-import com.isa.isa.DTO.AdminResponseToAccDelReqDTO;
-import com.isa.isa.model.AccountDeleteRequest;
-import com.isa.isa.service.AccountDeleteRequestService;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestDetailDTO;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AdminResponseToAccDelReqDTO;
+import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
+import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

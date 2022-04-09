@@ -1,10 +1,12 @@
-package com.isa.isa.service;
+package com.isa.isa.model.AccountDeleteRequest.service;
 
-import com.isa.isa.DTO.AccountDeleteRequestDetailDTO;
-import com.isa.isa.DTO.AccountDeleteRequestFromFrontDTO;
-import com.isa.isa.DTO.AdminResponseToAccDelReqDTO;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestDetailDTO;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestFromFrontDTO;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AdminResponseToAccDelReqDTO;
 import com.isa.isa.model.*;
-import com.isa.isa.model.enums.DeleteRequestStatus;
+import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
+import com.isa.isa.model.AccountDeleteRequest.repository.AccountDeleteRequestRepository;
+import com.isa.isa.model.AccountDeleteRequest.enums.DeleteRequestStatus;
 import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

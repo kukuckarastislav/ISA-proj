@@ -1,9 +1,7 @@
-package com.isa.isa.DTO;
+package com.isa.isa.model.AccountDeleteRequest.DTO;
 
-import com.isa.isa.model.AccountDeleteRequest;
+import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
 import com.isa.isa.model.Address;
-
-import java.time.LocalDateTime;
 
 public class AccountDeleteRequestDetailDTO {
 

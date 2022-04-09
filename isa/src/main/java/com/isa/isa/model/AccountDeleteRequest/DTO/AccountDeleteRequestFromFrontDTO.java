@@ -1,4 +1,4 @@
-package com.isa.isa.DTO;
+package com.isa.isa.model.AccountDeleteRequest.DTO;
 
 public class AccountDeleteRequestFromFrontDTO {
     public String reason;

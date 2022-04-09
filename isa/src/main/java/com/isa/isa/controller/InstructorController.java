@@ -1,10 +1,10 @@
 package com.isa.isa.controller;
 
-import com.isa.isa.DTO.AccountDeleteRequestFromFrontDTO;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestFromFrontDTO;
 import com.isa.isa.DTO.BiographyDTO;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.InstructorDTO;
-import com.isa.isa.service.AccountDeleteRequestService;
+import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
 import com.isa.isa.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

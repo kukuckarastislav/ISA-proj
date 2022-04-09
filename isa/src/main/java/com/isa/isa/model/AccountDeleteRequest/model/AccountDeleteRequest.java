@@ -1,4 +1,4 @@
-package com.isa.isa.model;
+package com.isa.isa.model.AccountDeleteRequest.model;
 
 
 import javax.persistence.Entity;
@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
-import com.isa.isa.model.enums.DeleteRequestStatus;
+import com.isa.isa.model.AccountDeleteRequest.enums.DeleteRequestStatus;
 import com.isa.isa.model.enums.UserTypeISA;
 
 import java.time.LocalDateTime;

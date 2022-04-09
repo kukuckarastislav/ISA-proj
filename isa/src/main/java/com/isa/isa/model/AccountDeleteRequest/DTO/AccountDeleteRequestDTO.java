@@ -1,7 +1,7 @@
-package com.isa.isa.DTO;
+package com.isa.isa.model.AccountDeleteRequest.DTO;
 
-import com.isa.isa.model.AccountDeleteRequest;
-import com.isa.isa.model.enums.DeleteRequestStatus;
+import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
+import com.isa.isa.model.AccountDeleteRequest.enums.DeleteRequestStatus;
 import com.isa.isa.model.enums.UserTypeISA;
 
 import java.time.LocalDateTime;
