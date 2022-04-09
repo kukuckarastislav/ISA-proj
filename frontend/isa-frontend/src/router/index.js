@@ -44,7 +44,7 @@ const routes = [
   { path: '/boatOwnerBoat/:boatname?', name: 'BoatView', component: BoatView },
   { path: '/instructorProfile', name: 'InstructorProfile', component: InstructorProfile },
   { path: '/newboat', name: 'BoatCreation', component: BoatCreation },
-  { path: '/customerReservations', name: 'CustomerReservations', component: CustomerReservations }
+  { path: '/customerReservations', name: 'CustomerReservations', component: CustomerReservations },
   { path: '/accountdeleteRequest', name: 'AccountDeleteRequest', component: AccountDeleteRequest },
 ]
 

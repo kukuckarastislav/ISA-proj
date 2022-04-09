@@ -95,7 +95,11 @@ export default {
   }
 }
 </script>
-<style>
+<style >
+
+
+
+
   .modal-backdrop {
       
     position: fixed;
@@ -186,4 +190,5 @@ export default {
   .modal-fade-leave-active {
     transition: opacity .5s ease;
   }
+  
 </style>
