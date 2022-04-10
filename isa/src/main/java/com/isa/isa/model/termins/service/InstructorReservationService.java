@@ -39,12 +39,23 @@ public class InstructorReservationService {
 	}
     
     public InstructorReservation reserveAdventureByClient(ClientAdventureReservationDTO dto, Client client) {
+    	if(hasClientAlreadyCancelledAdventure(dto, client)) return null;
     	InstructorReservation instructorReservation = new InstructorReservation(client,dto.getAdventure(),dto.getStartTime(),dto.getEndTime(),dto.getAdventure().getInstructor().getEmail());
 		instructorReservation.setAdditionalServices(dto.getAdditionalServices());
 		instructorReservation.setStatusOfReservation(StatusOfReservation.ACTIVE);
 		instructorReservation.setPrice(calculatePrice(dto));
     	return instructorReservationRepository.save(instructorReservation);
 	}
+    
+    private Boolean hasClientAlreadyCancelledAdventure(ClientAdventureReservationDTO dto, Client client) {
+    	List<InstructorReservation> reservations = instructorReservationRepository.findAllByClientIdAndAdventureId(client.getId(),dto.getAdventure().getId());
+    	for(InstructorReservation reserv : reservations) {
+			if(reserv.getStatusOfReservation()==StatusOfReservation.CANCELLED && (reserv.getStartTime().isBefore(dto.getEndTime()) && reserv.getEndTime().isAfter( dto.getStartTime()))) {
+				return true;
+			}
+		}
+    	return false;
+    }
     
     private double calculatePrice(ClientAdventureReservationDTO dto) {
     	double price=0;

@@ -251,7 +251,7 @@ export default {
           .post('http://localhost:8180/api/client/reserveAction',ac)
           .then(response => {alert('Uspesno ste rezervisali avanturu.')
           }).catch(err => {
-              alert('DOSLO JE DO GRESKE')
+              alert('Već ste otkazali ovu akciju.')
           });
       }
   },

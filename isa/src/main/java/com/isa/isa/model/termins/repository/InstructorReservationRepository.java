@@ -11,4 +11,6 @@ public interface InstructorReservationRepository extends JpaRepository<Instructo
     List<InstructorReservation> getByInstructorUsername(String instructorUsername);
     
     List<InstructorReservation> findAllByClientId(int id);
+    
+    List<InstructorReservation> findAllByClientIdAndAdventureId(int clientId, int adventureId);
 }

@@ -42,8 +42,16 @@ public class InsFastResHistoryService {
     	}
     }
     
-    public void makeReservation(Client client, InstructorFastReservation instructorFastReservation) {
+    public Boolean makeReservation(Client client, InstructorFastReservation instructorFastReservation) {
+    	if(hasClientAlreadyCancelled(client,instructorFastReservation)) return false;
     	InsFastResHistory insFastResHistory = new InsFastResHistory(client,instructorFastReservation,StatusOfFastReservation.TAKEN);
     	insFastResHistoryRepository.save(insFastResHistory);
+    	return true;
+    }
+    
+    private Boolean hasClientAlreadyCancelled(Client client, InstructorFastReservation instructorFastReservation) {
+    	InsFastResHistory insFastResHistory = insFastResHistoryRepository.findByClientIdAndInstructorFastReservationId(client.getId(),instructorFastReservation.getId());
+    	if(insFastResHistory==null) return false;
+    	return true;
     }
 }

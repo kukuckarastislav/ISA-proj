@@ -90,7 +90,9 @@ public class ClientController {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
 		Client client= this.clientService.findByEmail(user.getName());
-		instructorReservetionService.reserveAdventureByClient(clientAdventureReservationDTO, client);
+		if(instructorReservetionService.reserveAdventureByClient(clientAdventureReservationDTO, client) == null) {
+			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		}
 		try {
 			emailService.sendReservationConfirmation(client, clientAdventureReservationDTO);
 		} catch (MailException e) {
@@ -139,7 +141,9 @@ public class ClientController {
 		Client client= this.clientService.findByEmail(user.getName());
 		Adventure adventure = adventureService.getAdventureWithInstructor(clientAdventureFastReservationDTO.getIdAdventure());
 		InstructorFastReservation instructorFastReservation = instructorFastReservationService.getById(clientAdventureFastReservationDTO.getIdFastReservation());
-		insFastResHistoryService.makeReservation(client, instructorFastReservation);
+		if(!insFastResHistoryService.makeReservation(client, instructorFastReservation)) {
+			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		}
 		try {
 			emailService.sendAdventureActionReservationConfirmation(client,adventure, clientAdventureFastReservationDTO);
 		} catch (MailException e) {
