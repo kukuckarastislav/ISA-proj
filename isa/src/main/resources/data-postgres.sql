@@ -58,8 +58,8 @@ insert into user_role (user_id, role_id)
 values (4, 4);
 insert into cottage_owner (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation) 
 values (4, 'Novi Sad', 'Serbia', 34, 54, 10, 'Bulevar evrope', 'isaprojectftn+milanCO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'milan', 'milanovic', '030345', 'imao sam zelju');
-insert into cottage (name, description, behaviour_rules, price,price_type, owner_id, city, country, latitude, longitude, number, street, average_grade)
-values ('Stan', 'Lep stan', 'zabranjeno glasna muzika', 1000,'PER_DAY', 4, 'Zlatibor', 'Serbia', 11, 13, 33, 'Cara Dusana', 0);
+insert into cottage (name, description, behaviour_rules, price,price_type, owner_id, city, country, latitude, longitude, number, street, average_grade, capacity)
+values ('Stan', 'Lep stan', 'zabranjeno glasna muzika', 1000,'PER_DAY', 4, 'Zlatibor', 'Serbia', 11, 13, 33, 'Cara Dusana', 0, 5);
 
 
 -- Cottage owner petar
@@ -69,8 +69,8 @@ insert into user_role (user_id, role_id)
 values (5, 4);
 insert into cottage_owner (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation)
 values (5, 'Beograd', 'Serbia', 14, 24, 35, 'Knez', 'isaprojectftn+petarCO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'petar', 'petrovic', '030345', 'imao sam zelju da iznamljujem sobe');
-insert into cottage (name, description, behaviour_rules, price, price_type, owner_id, city, country, latitude, longitude, number, street, average_grade)
-values ('Kuca', 'mala kuca', 'hrana', 500, 'PER_DAY', 5, 'Kopaonik', 'Serbia', 11, 13, 33, 'Cara Lazara', 0);
+insert into cottage (name, description, behaviour_rules, price, price_type, owner_id, city, country, latitude, longitude, number, street, average_grade, capacity)
+values ('Kuca', 'mala kuca', 'hrana', 500, 'PER_DAY', 5, 'Kopaonik', 'Serbia', 11, 13, 33, 'Cara Lazara', 0, 4);
 
 insert into cottage_terms(cottage_id, term_availability, start_time, end_time)
 values (2, 'AVAILABILE', '2022-03-07T8:00:06.235098700', '2022-03-20T8:00:06.235098700');

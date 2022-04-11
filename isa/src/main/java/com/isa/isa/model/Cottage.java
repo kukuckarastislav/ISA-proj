@@ -60,6 +60,18 @@ public class Cottage {
 
 	@Embedded
 	private Price price;
+	
+	private int capacity;
+	
+	
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
 
 	public int getId() {
 		return id;
