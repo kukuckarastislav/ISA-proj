@@ -1,46 +1,139 @@
 <template>
+    <div style="height: 60px;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
 
-    <div v-if="!isFetching">
-        <br>
-       <h1> {{cottage.name}} </h1>
-       <span  v-for="i in cottage.images" :key="i">
-                <img  width="350" height = "250" v-bind:src="'http://localhost:8180/' + i.path">
-                </span>
-                <br><br><br>
-        
-        Address: {{cottage.address.country}}, {{cottage.address.city}}, {{cottage.address.street}} {{cottage.address.number}}<br>
-        
-        Grade:
-           <span v-if="cottage.averageGrade===0">Not yet rated</span>  
-           <span v-else>{{cottage.averageGrade}}</span><br>
-       
-           Description: {{cottage.description}}<br>
-           Price: {{cottage.price.price}}$ {{cottage.price.priceType}} <br>
-         
-           <!--Max number of people: {{a.maxNumberOfPeople}}<br> -->
-           Behaviour rules: {{cottage.behaviourRules}} <br>
-           Additional services: <br>
-           <div v-for="prl in cottage.additionalServices" :key="prl">
-                {{prl.name}} {{prl.price}}$ - {{prl.description}} 
-            </div>
+            <CarouselView v-bind:server="true" v-bind:images="boat.images"></CarouselView>
             
-           
+
+            </div>
+            <div v-if="boat.name != undefined" class="col-sm-6">
+
+                <h1 class="text-start">{{boat.name}}</h1> <br>
+
+                <h3 class="text-start stars">
+                  <span v-for="index in Math.round(boat.averageGrade)" :key="index">&#9733;</span> 
+                  <span v-for="index in Math.round(5-boat.averageGrade)" :key="index">&#9734;</span> 
+                  {{boat.averageGrade}}
+                </h3>
+                
+                <h5 class="text-start">Description: {{boat.promotionalDescription}} </h5>
+                <br>
+                
+                <h5 class="text-start">Behaviour: {{boat.behaviourRules}}</h5>
+                <h5 class="text-start">Max number of people: {{boat.capacity}}</h5>
+                
+                <h5 class="text-start">Reservation Cancellation Conditions: <b class="stars">{{boat.reservationCancellationConditions}}</b></h5>
+                
+                <h5 class="text-start">Additional Equipments: </h5>
+                <div v-if="boat.navigationalEquipment.length > 0" class="card">
+                  <div class="card-body">
+                      <span v-for="addEq in boat.navigationalEquipment" :key="addEq" class="badge bg-primary m-1">{{addEq.name}}</span> 
+                  </div>
+                </div>
+
+                <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                      <div v-if="boat.price != undefined" class="card">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col cenaCss">
+                              <h2><b>${{boat.price.price}}</b></h2>
+                              <h6><b>{{boat.price.priceType}}</b></h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+            
+
+                </div>
+            </div>
+        </div>
+
+
+        <br> <br> <br>
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                  <div style="height: 200px;" class="row">
+                      <div class="col-sm-9">
+                          <div style="background-color: gray; height:100%;"> PROSTOR ZA MAPU ?</div>
+                      </div>
+                      <div v-if="boat.address != undefined" class="col-sm-3">
+                          <h6 class="card-title text-start">Country: {{boat.address.country}}</h6>
+                          <h6 class="card-title text-start">City: {{boat.address.city}}</h6>
+                          <h6 class="card-title text-start">Street: {{boat.address.street}} {{boat.address.number}}</h6>
+                      </div>
+                  </div>
+              </div>         
+            </div>
+          </div>
+        </div>
         
-      
+        <!-- PriceList -->
+        <br>
+        <div v-if="role==='ROLE_CUSTOMER'" class="row">
+          <div class="col">
+            <h2 class="text-start">Price list</h2>
+            <div style="text-align:left;color: coral;">Please select additional services you'd like to use:</div>
+            <div class="row row-cols-auto">
+              <div style="cursor: pointer;" v-on:click="selectPriceItem(index)" v-for="(priceItem,index) in boat.additionalServices" :key="priceItem" :id="'priceItem'+index" class="priceItem">
+                <span v-if="inItemList(index)" style="color:green"> Item added</span>
+                <h2 style="font-weight: bold">{{priceItem.name}}</h2>
+                <h5>{{priceItem.description}}</h5>
+                <h2 style="font-weight: bold">${{priceItem.price}}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div v-else class="row">
+          <div class="col">
+            <h2 class="text-start">Price list</h2>
+            <div class="row row-cols-auto">
+              <div v-for="(priceItem,index) in boat.additionalServices" :key="priceItem" :id="'priceItem'+index" class="priceItem">
+                <h2 style="font-weight: bold">{{priceItem.name}}</h2>
+                <h5>{{priceItem.description}}</h5>
+                <h2 style="font-weight: bold">${{priceItem.price}}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <br>
+        <br>
+        <br>
+        <button v-if="role==='ROLE_CUSTOMER'" type="button" style="zoom:1.5;background-color:coral;border-color:coral" class="btn btn-primary">RESERVE</button>
+        <br>
+        <br>
+        <br>
+        <br>
+    
     </div>
+    
 
 </template>
 
 <script>
 import axios from "axios";
+import CarouselView from '@/components/CarouselView.vue'
 export default {
   name: "CustomerBoatPage",
-  components: {},
+  components: {CarouselView},
   data: function () {
     return {
-      cottage: {},
+      boat: {},
       boatId: 0,
-      isFetching: true
+      isFetching: true,
+      indexList: [],
+      role: '',
+      chosenServices: []
     };
   },
   mounted: function () {
@@ -50,16 +143,64 @@ export default {
       .get("http://localhost:8180/api/person/boats/" + this.boatId)
       .then((response) => {
         this.isFetching = false
-        this.cottage = response.data;
+        this.boat = response.data;
+        this.role = window.sessionStorage.getItem("role")
+        if (this.role == null) this.role = ""
       })
       .catch((err) => alert(err));
   },
   methods: {
-    
+    setImg: function (image) {
+      return "http://localhost:8180/" + image.path;
+    },
+    inItemList: function(index){
+      if(this.indexList.includes(index)){
+        return true;
+      }
+      return false;
+    }
   },
 };
 </script>
 
 
 <style scoped>
+.priceItem{
+  font-weight: bold;
+  padding: 20px 0px 0px 0px;
+  margin: 15px;
+  width: 176px;
+  height: 180px;
+
+  background: #E7E7E7;
+  box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 28px;
+}
+
+.stars{
+  color: coral;
+}
+
+.cenaCss{
+  color: coral;
+}
+
+.strikethrough {
+  position: relative;
+}
+.strikethrough:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+  
+  -webkit-transform:rotate(-15deg);
+  -moz-transform:rotate(-15deg);
+  -ms-transform:rotate(-15deg);
+  -o-transform:rotate(-15deg);
+  transform:rotate(-15deg);
+}
 </style>

@@ -55,7 +55,7 @@
                               <img src="../assets/abstract-user.png" class="img-fluid rounded-start" >
                             </div>
                             <div class="col-sm-10">
-                                <h5 class="card-title text-start">Instructor {{adventure.instructorFirstName}} {{adventure.instructorLastName}}</h5>
+                                <h5 class="card-title text-start">Instructor: {{adventure.instructor.firstName}} {{adventure.instructor.lastName}}</h5>
                                 <h6 class="card-title text-start">{{adventure.biography}}
                                     
                                 </h6>

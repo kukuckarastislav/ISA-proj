@@ -15,6 +15,11 @@ import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.termins.DTO.CottageTermsDTO;
+import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.service.CottageFastReservationService;
+import com.isa.isa.model.termins.service.CottageReservationService;
+import com.isa.isa.model.termins.service.CottageTermService;
 import com.isa.isa.repository.CottageOwnerRepository;
 import com.isa.isa.repository.CottageRepository;
 
@@ -30,6 +35,15 @@ public class CottageService {
 
     @Autowired
     private EntityImageService entityImageService;
+    
+    @Autowired
+    private CottageTermService cottageTermService;
+    
+    @Autowired
+    private CottageReservationService cottageReservationService;
+    
+    @Autowired
+    private CottageFastReservationService cottageFastReservationService;
 
 	
 	
@@ -112,5 +126,12 @@ public class CottageService {
 	
 	public Cottage getCottageWithOwner(int id) {
 		return cottageRepository.getByIdWithOwner(id);
+	}
+	
+	public Boolean isCottageFree(CottageTermsDTO dto) {
+		if(!cottageTermService.isCottageFree(dto)) return false;
+		if (!cottageReservationService.isCottageFree(dto)) return false;
+		if (!cottageFastReservationService.isCottageFree(dto)) return false;
+		return true;
 	}
 }

@@ -319,6 +319,29 @@ setup() {
 								this.cottages.splice(i,1);
 								control=0;
 								break;	
+									}
+                     else if(this.peopleNumber && this.cottages[i].capacity < this.peopleNumber){
+								this.cottages.splice(i,1);
+								control=0;
+								break;	
+									}
+                    else if (this.rating && this.cottages[i].averageGrade < this.rating){
+                       this.cottages.splice(i,1);
+								control=0;
+								break;	
+                    }
+                    else if(this.date){                     
+                               const response = await axios.post('http://localhost:8180/api/person/cottages/cottageFree', {
+                                                        id: this.cottages[i].id,
+                                                        startTime: this.date[0],
+                                                        endTime: this.date[1],
+                                                        })
+
+                                if (response.data == false){
+                                    this.cottages.splice(i,1);
+								control=0;
+								break;	
+                                }
 									}  
             }
             }
@@ -363,6 +386,14 @@ setup() {
                                                 }
 											  return b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, ''))
 												});
+                                    } else if(this.showFilters && this.sortBy=="4" && this.sortInOrder=="2"){
+                                        this.cottages.sort(function (a, b) {
+                                              return b.price.price - a.price.price;
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="4" && this.sortInOrder=="1"){
+                                        this.cottages.sort(function (a, b) {
+                                              return a.price.price - b.price.price;
+                                                });
                                     }
 
                 }
