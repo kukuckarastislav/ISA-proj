@@ -1,5 +1,11 @@
 <template>
     <div style="height: 60px;"></div>
+    
+    <div class="options" v-if="role != 'ROLE_CLIENT' && role!=''">
+            <button class="btn"  v-if="role != 'ROLE_ADMIN'">Edit boat</button>
+            <button class="btn" >Delete boat</button>
+        </div>
+
     <div class="container">
         <div class="row">
             <div class="col-sm-6">

@@ -5,6 +5,9 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col">
                     <a href="/boatOwnerProfile" class="nav-link">Profile</a>
+                </div> 
+                <div class="col">
+                    <a href="/boatOwnerBoats" class="nav-link">My boats</a>
                 </div>
             </div>
         </div>

@@ -23,8 +23,6 @@ import CustomerReservations from '../views/CustomerReservations.vue'
 import AccountDeleteRequest from '../admin/AccountDeleteRequest'
 import CottageCreation from '../cottage_owner/CottageCreation.vue'
 
-
-
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/registration', name: 'Registration', component: Registration },
