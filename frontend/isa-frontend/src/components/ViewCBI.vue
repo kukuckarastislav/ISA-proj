@@ -114,9 +114,15 @@
                     <div class="card bg-light">
                         <div class="card-body text-center">
                             <img v-bind:src="'http://localhost:8180/' + n.images[0].path" class="imgCard" alt=""/>
-                            <h3 class="card-title mb-3">{{n.name}}</h3>
+                            <h3 style="margin-top:5%" class="card-title mb-3">{{n.name}}</h3>
                             <p class="card-text">
-                            Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}}
+                            Description: {{n.description}}<br>
+                            Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}} <br>
+                            Price: ${{n.price.price}}/day <br>
+                                Grade:
+                            <span v-if="n.averageGrade===0">Not yet rated</span>  
+                            <span v-else>{{n.averageGrade}}</span><br>
+                            <br>
                             </p>
                             <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showCottage(n.id)">More details</button>
                         </div>

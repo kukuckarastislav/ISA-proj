@@ -51,7 +51,15 @@ public class CottageReservations {
     private double price;
 
     public CottageReservations() {}
-    
+   
+	public CottageReservations(Client client, Cottage cottage, LocalDateTime startTime, LocalDateTime endTime) {
+		super();
+		this.client = client;
+		this.cottage = cottage;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
 	public int getId() {
 		return id;
 	}

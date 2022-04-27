@@ -159,11 +159,11 @@
     </tbody>
   </table>
       </div>
-    <ReserveModal
+    <ReserveModalCottage
       v-show="isModalVisible"
       @close="closeModal"
       v-bind:chosenServices="chosenServices"
-      v-bind:adventure="adventure"
+      v-bind:cottage="cottage"
     />
     </div>
     
@@ -173,15 +173,19 @@
 <script>
 import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
-import ReserveModal from '@/components/ReserveModal.vue';
+import ReserveModalCottage from '@/components/ReserveModalCottage.vue';
 export default {
   name: "CustomerCottagePage",
-  components: {CarouselView,ReserveModal},
+  components: {CarouselView,ReserveModalCottage},
   data: function () {
     return {
       cottage: {},
       cottageId: 0,
-      isFetching: true
+      isFetching: true,
+      role: '',
+      indexList: [],
+      isModalVisible: false,
+      chosenServices: []
     };
   },
   mounted: function () {
@@ -192,13 +196,37 @@ export default {
       .then((response) => {
         this.isFetching = false
         this.cottage = response.data;
+        this.role = window.sessionStorage.getItem("role")
+        if (this.role == null) this.role = ""
       })
       .catch((err) => alert(err));
   },
   methods: {
     setImg: function (image) {
       return "http://localhost:8180/" + image.path;
-    }
+    },
+    selectPriceItem: function(index){
+      if(this.indexList.includes(index)){
+        this.indexList.splice(this.indexList.indexOf(index), 1);
+      }
+      else this.indexList.push(index)
+    },
+    inItemList: function(index){
+      if(this.indexList.includes(index)){
+        return true;
+      }
+      return false;
+    },
+    showModal() {
+      this.chosenServices=[]
+        for(let k=0;k<this.indexList.length;k++){
+          this.chosenServices.push(this.cottage.additionalServices[this.indexList[k]])
+        }
+        this.isModalVisible = true;
+      },
+      closeModal() {
+        this.isModalVisible = false;
+      }
   },
 };
 </script>

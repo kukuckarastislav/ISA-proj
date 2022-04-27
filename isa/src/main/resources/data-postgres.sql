@@ -73,7 +73,7 @@ insert into cottage (name, description, behaviour_rules, price, price_type, owne
 values ('Kuca', 'mala kuca', 'hrana', 500, 'PER_DAY', 5, 'Kopaonik', 'Serbia', 11, 13, 33, 'Cara Lazara', 0, 4);
 
 insert into cottage_terms(cottage_id, term_availability, start_time, end_time)
-values (2, 'AVAILABILE', '2022-04-05T8:00:06.235098700', '2022-07-25T8:00:06.235098700');
+values (1, 'AVAILABILE', '2022-04-05T8:00:06.235098700', '2022-07-25T8:00:06.235098700');
 insert into cottage_reservation(start_time, end_time, status_of_reservation, cottage_id, client_id,price)
 values ('2022-03-11T8:00:06.235098700', '2022-03-15T12:00:06.235098700', 'ACTIVE', 2, 3,170); -- cottage Kuca ima rezervaciju sa clientom: Marijom
 insert into cottage_reservation_additional_services(cottage_reservation_id, additional_service_id)

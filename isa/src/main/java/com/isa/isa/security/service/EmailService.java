@@ -5,6 +5,7 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
 
 import org.springframework.mail.MailException;
 
@@ -20,4 +21,6 @@ public interface EmailService {
     void sendReservationConfirmation(Client client, ClientAdventureReservationDTO clientAdventureReservationDTO) throws MailException, InterruptedException;
     
     public void sendAdventureActionReservationConfirmation(Client client, Adventure adventure, ClientAdventureFastReservationDTO clientAdventureReservationDTO) throws MailException, InterruptedException;
+    
+    void sendCottageReservationConfirmation(Client client, ClientCottageReservationDTO clientCottageReservationDTO) throws MailException, InterruptedException;
 }

@@ -26,16 +26,22 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
+import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
+import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.model.termins.model.InstructorReservation;
+import com.isa.isa.model.termins.service.CottageFastResHistoryService;
+import com.isa.isa.model.termins.service.CottageReservationService;
 import com.isa.isa.model.termins.service.InsFastResHistoryService;
 import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.model.termins.service.InstructorReservationService;
 import com.isa.isa.security.service.EmailService;
 import com.isa.isa.service.AdventureService;
 import com.isa.isa.service.ClientService;
+import com.isa.isa.service.CottageService;
 import com.isa.isa.service.InstructorService;
 
 @RestController
@@ -60,8 +66,17 @@ public class ClientController {
 	@Autowired
 	private InstructorFastReservationService instructorFastReservationService;
 	
-	 @Autowired
+	@Autowired
 	private AdventureService adventureService;
+	 
+	@Autowired
+	private CottageService cottageService;
+	 
+	@Autowired
+	private CottageReservationService cottageReservationService;
+	
+	@Autowired
+	private CottageFastResHistoryService cottageFastResHistoryService;
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
@@ -154,6 +169,39 @@ public class ClientController {
 			e.printStackTrace();
 		}
 		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/reserveCottage")
+	public ResponseEntity<Boolean> reserveCottage(@RequestBody ClientCottageReservationDTO clientCottageReservationDTO, Principal user) {
+		if(!cottageService.isCottageFree(new CottageTermsDTO(clientCottageReservationDTO.getCottage().getId(),clientCottageReservationDTO.getStartTime(),clientCottageReservationDTO.getEndTime()))) {
+			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		}
+		Client client= this.clientService.findByEmail(user.getName());
+		if(cottageReservationService.reserveCottageByClient(clientCottageReservationDTO, client) == null) {
+			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		}
+		try {
+			emailService.sendCottageReservationConfirmation(client, clientCottageReservationDTO);
+		} catch (MailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@GetMapping("/getCottages")
+	public ResponseEntity<List<ClientMadeReservationsCottageDTO>> getCottages(Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		List<ClientMadeReservationsCottageDTO> retVal = new ArrayList<ClientMadeReservationsCottageDTO>();
+		retVal.addAll(cottageReservationService.getCottageReservationByClient(client.getId()));
+		retVal.addAll(cottageFastResHistoryService.getFastResevationByClient(client.getId()));
+		return new ResponseEntity<>(retVal,HttpStatus.OK);
 	}
 
 }
