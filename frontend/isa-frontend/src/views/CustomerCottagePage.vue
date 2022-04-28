@@ -185,7 +185,8 @@ export default {
       role: '',
       indexList: [],
       isModalVisible: false,
-      chosenServices: []
+      chosenServices: [],
+      actions: []
     };
   },
   mounted: function () {
@@ -198,6 +199,13 @@ export default {
         this.cottage = response.data;
         this.role = window.sessionStorage.getItem("role")
         if (this.role == null) this.role = ""
+        axios
+          .get('http://localhost:8180/api/person/cottages/' + this.cottageId+'/fastReservations')
+          .then(response => {
+              this.actions = response.data
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
       })
       .catch((err) => alert(err));
   },
@@ -226,6 +234,9 @@ export default {
       },
       closeModal() {
         this.isModalVisible = false;
+      },
+      reserveAction(ac){
+         
       }
   },
 };

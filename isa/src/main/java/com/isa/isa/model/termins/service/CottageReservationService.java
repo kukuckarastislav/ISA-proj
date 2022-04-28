@@ -3,6 +3,7 @@ package com.isa.isa.model.termins.service;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,5 +78,14 @@ public class CottageReservationService {
     		retVal.add(new ClientMadeReservationsCottageDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getCottage().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getCottage().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId()));
     	}
     	return retVal;
+    }
+	
+	public void cancelReservation(int reservationId) {
+    	Optional<CottageReservations> cottageReservationType= cottageReservationRepository.findById(reservationId);
+    	if(cottageReservationType.isPresent()) {
+    		CottageReservations cottageReservations = cottageReservationType.get();
+    		cottageReservations.setStatusOfReservation(StatusOfReservation.CANCELLED);
+    		cottageReservationRepository.save(cottageReservations);
+    	}
     }
 }

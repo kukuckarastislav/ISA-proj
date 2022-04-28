@@ -25,9 +25,11 @@ import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
+import com.isa.isa.model.termins.service.CottageFastReservationService;
 import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.service.AdventureService;
 import com.isa.isa.service.BoatOwnerService;
@@ -55,6 +57,8 @@ public class PersonController {
     private AdventureService adventureService;
     @Autowired
     private InstructorFastReservationService instructorFastReservationService;
+    @Autowired
+    private CottageFastReservationService cottageFastReservationService;
     
     @PutMapping("/registration")
     public ResponseEntity<UserDTO> registrationStuff(@RequestBody UserDTO userDTO){
@@ -144,6 +148,12 @@ public class PersonController {
     public ResponseEntity<Boolean> checkIfCottageFree(@RequestBody CottageTermsDTO cottageTermsDTO){
 
     	return new ResponseEntity<Boolean>(cottageService.isCottageFree(cottageTermsDTO), HttpStatus.OK);
+    }
+    
+    @GetMapping("/cottages/{cottageId}/fastReservations")
+    public ResponseEntity<ArrayList<ClientCottageFastReservationDTO>> getCottageFastReservationsById(@PathVariable Integer cottageId) {
+    	ArrayList<ClientCottageFastReservationDTO> clientFastReservations = (ArrayList<ClientCottageFastReservationDTO>) cottageFastReservationService.getFastReservationsByCottage(cottageId);
+        return new ResponseEntity<ArrayList<ClientCottageFastReservationDTO>>(clientFastReservations, HttpStatus.OK);
     }
     
 }

@@ -203,5 +203,19 @@ public class ClientController {
 		retVal.addAll(cottageFastResHistoryService.getFastResevationByClient(client.getId()));
 		return new ResponseEntity<>(retVal,HttpStatus.OK);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PutMapping("/cancelCottageReservation")
+	public ResponseEntity<Boolean> cancelCottageReservation(@RequestBody ClientMadeReservationsCottageDTO clientMadeReservationsCottageDTO, Principal user) {
+		if(!ThreeDayDifference(clientMadeReservationsCottageDTO.getStartTime())) return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		if(clientMadeReservationsCottageDTO.getIsFast()) {
+			cottageFastResHistoryService.cancelReservation(clientMadeReservationsCottageDTO.getReservationId());
+		}
+		else {
+			cottageReservationService.cancelReservation(clientMadeReservationsCottageDTO.getReservationId());
+		}
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
 
 }

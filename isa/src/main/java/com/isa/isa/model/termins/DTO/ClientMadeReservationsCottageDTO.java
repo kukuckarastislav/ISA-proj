@@ -51,10 +51,10 @@ public class ClientMadeReservationsCottageDTO {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
-	public int getAdventureId() {
+	public int getCottageId() {
 		return cottageId;
 	}
-	public void setAdventureId(int cottageId) {
+	public void setCottageId(int cottageId) {
 		this.cottageId = cottageId;
 	}
 	public Set<ItemPrice> getAdditionalServices() {
@@ -71,12 +71,12 @@ public class ClientMadeReservationsCottageDTO {
 	}
 
 
-	public String getAdventureName() {
+	public String getCottageName() {
 		return cottageName;
 	}
 
 
-	public void setAdventureName(String cottageName) {
+	public void setCottageName(String cottageName) {
 		this.cottageName = cottageName;
 	}
 

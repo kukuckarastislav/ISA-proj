@@ -121,7 +121,7 @@
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
-        <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelAdventure(a)">Cancel</button></td>
+        <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelCottage(a)">Cancel</button></td>
         </tr>
        <tr>
         
@@ -212,7 +212,7 @@ export default {
                 "Bearer " + window.sessionStorage.getItem("jwt");  
             axios.get('http://localhost:8180/api/client/getAdventures')
 			.then(response => {this.adventures = response.data
-            axios.get('http://localhost:8180/api/person/cottages')
+            axios.get('http://localhost:8180/api/client/getCottages')
 			.then(response => {this.cottages = response.data
             axios.get('http://localhost:8180/api/person/boats')
 			.then(response => {this.boats = response.data
@@ -223,71 +223,50 @@ export default {
         },
         searchBy:async function(){
             if(this.button1){
-
-            var control=0
+               var control=0
 			while(control===0){
 				control=1;
 			for (var i = 0; i < this.cottages.length; i++) {
-				var loc=this.cottages[i].address.country+" "+this.cottages[i].address.city +" "+this.cottages[i].address.street +" "+this.cottages[i].address.number;
-                var owr=this.cottages[i].owner.firstName+" "+this.cottages[i].owner.lastName 
-    				if(this.searchedName && !this.cottages[i].name.toLowerCase().includes(this.searchedName.toLowerCase())){
+    				if(this.searchedName && !this.cottages[i].cottageName.toLowerCase().includes(this.searchedName.toLowerCase())){
 								this.cottages.splice(i,1);
 								control=0;
 								break;	
-									}
-                    else if(this.searchedLocation && !loc.toLowerCase().includes(this.searchedLocation.toLowerCase().replace(',',''))){
+							} else if(this.checked && (this.cottages[i].status==='CANCELLED' || ((new Date(this.cottages[i].endTime)) - (new Date()) < 0))){
 								this.cottages.splice(i,1);
 								control=0;
 								break;	
-									}
-                    else if(this.searchedAdvertiser && !owr.toLowerCase().includes(this.searchedAdvertiser.toLowerCase())){
-								this.cottages.splice(i,1);
-								control=0;
-								break;	
-									}  
-            }
+									}                                                    
+            } 
             }
 
-                if (this.showFilters){
+
+                     if (this.showFilters){
 
                     if(this.sortBy=="3" && this.sortInOrder=="1"){
-										this.cottages.sort(function (a, b) {
-											  return a.averageGrade - b.averageGrade;
-												});
-									} else if(this.showFilters && this.sortBy=="3" && this.sortInOrder=="2"){
-										this.cottages.sort(function (a, b) {
-											  return b.averageGrade - a.averageGrade;
-												});
-									}  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
-										this.cottages.sort(function (a, b) {
-											  return a.name.replace(/\s+/g, '').localeCompare(b.name.replace(/\s+/g, ''))
-												});
-									} else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
-										this.cottages.sort(function (a, b) {
-											  return b.name.replace(/\s+/g, '').localeCompare(a.name.replace(/\s+/g, ''))
-												});
-									}  else if(this.showFilters && this.sortBy==2 && this.sortInOrder==1){
-										this.cottages.sort(function (a, b) {
-                                            if(a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, '')) == 0)
-                                                {
-                                                    if(a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''))==0){
-                                                        return a.address.street.replace(/\s+/g, '').localeCompare(b.address.street.replace(/\s+/g, ''))==0
-                                                    }
-                                                    return a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''));
-                                                }
-											  return a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, ''))
-												});
-									} else if(this.showFilters && this.sortBy=="2" && this.sortInOrder=="2"){
-										this.cottages.sort(function (a, b) {
-											if(b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, '')) == 0)
-                                                {
-                                                    if(b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''))==0){
-                                                        return b.address.street.replace(/\s+/g, '').localeCompare(a.address.street.replace(/\s+/g, ''))==0
-                                                    }
-                                                    return b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''));
-                                                }
-											  return b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, ''))
-												});
+                                        this.cottages.sort(function (a, b) {
+                                              return Math.abs((new Date(a.endTime)) - (new Date(a.startTime))) - Math.abs((new Date(b.endTime)) - (new Date(b.startTime)));
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="3" && this.sortInOrder=="2"){
+                                        this.cottages.sort(function (a, b) {
+                                              return Math.abs((new Date(b.endTime)) - (new Date(b.startTime))) - Math.abs((new Date(a.endTime)) - (new Date(a.startTime)));
+                                                });
+                                    }  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
+                                        this.cottages.sort(function (a, b) {
+                                            console.log(new Date(a.startTime))
+                                              return (new Date(a.startTime))-(new Date(b.startTime));
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
+                                        this.cottages.sort(function (a, b) {
+                                              return -(new Date(a.startTime))-(new Date(b.startTime));
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="2" && this.sortInOrder=="2"){
+                                        this.cottages.sort(function (a, b) {
+                                              return b.price - a.price;
+                                                });
+                                    }else if(this.showFilters && this.sortBy=="2" && this.sortInOrder=="1"){
+                                        this.cottages.sort(function (a, b) {
+                                              return a.price - b.price;
+                                                });
                                     }
 
                 }
@@ -431,6 +410,18 @@ export default {
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           }); 
+        },
+        cancelCottage:function(cott){
+           axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .put('http://localhost:8180/api/client/cancelCottageReservation',cott)
+          .then(response => {
+            cott.status='CANCELLED';
+            alert('Uspesno ste otkazali vikendicu.')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
         }
    }
 }

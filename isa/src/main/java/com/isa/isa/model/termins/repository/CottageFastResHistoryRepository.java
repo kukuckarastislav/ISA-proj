@@ -9,4 +9,5 @@ import com.isa.isa.model.termins.model.CottageFastResHistory;
 public interface CottageFastResHistoryRepository extends JpaRepository<CottageFastResHistory, Integer>{
 	
 	List<CottageFastResHistory> findAllByClientId(int id);
+	List<CottageFastResHistory> findAllByCottageFastReservationId(int cottageFastResId);
 }

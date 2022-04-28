@@ -2,6 +2,7 @@ package com.isa.isa.model.termins.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
 import com.isa.isa.model.termins.model.CottageFastResHistory;
 import com.isa.isa.model.termins.model.InsFastResHistory;
+import com.isa.isa.model.termins.model.StatusOfFastReservation;
 import com.isa.isa.model.termins.repository.CottageFastResHistoryRepository;
 
 @Service
@@ -28,4 +30,13 @@ public class CottageFastResHistoryService {
     	}
     	return retVal;
     }
+	
+	 public void cancelReservation(int reservationId) {
+	    	Optional<CottageFastResHistory> cottageReservationType= cottageFastResHistoryRepository.findById(reservationId);
+	    	if(cottageReservationType.isPresent()) {
+	    		CottageFastResHistory cottageFastResHistory = cottageReservationType.get();
+	    		cottageFastResHistory.setStatusOfFastReservation(StatusOfFastReservation.CANCELLED);
+	    		cottageFastResHistoryRepository.save(cottageFastResHistory);
+	    	}
+	    }
 }
