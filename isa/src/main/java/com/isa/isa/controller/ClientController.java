@@ -24,16 +24,20 @@ import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.Cottage;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.service.CottageFastResHistoryService;
+import com.isa.isa.model.termins.service.CottageFastReservationService;
 import com.isa.isa.model.termins.service.CottageReservationService;
 import com.isa.isa.model.termins.service.InsFastResHistoryService;
 import com.isa.isa.model.termins.service.InstructorFastReservationService;
@@ -77,6 +81,9 @@ public class ClientController {
 	
 	@Autowired
 	private CottageFastResHistoryService cottageFastResHistoryService;
+	
+	@Autowired
+	private CottageFastReservationService cottageFastReservationService;
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
@@ -213,6 +220,28 @@ public class ClientController {
 		}
 		else {
 			cottageReservationService.cancelReservation(clientMadeReservationsCottageDTO.getReservationId());
+		}
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/reserveCottageAction")
+	public ResponseEntity<Boolean> reserveCottageAction(@RequestBody ClientCottageFastReservationDTO clientCottageFastReservationDTO, Principal user) {
+		
+		Client client= this.clientService.findByEmail(user.getName());
+		Cottage cottage = cottageService.getCottageWithOwner(clientCottageFastReservationDTO.getIdCottage());
+		CottageFastReservation cottageFastReservation = cottageFastReservationService.getById(clientCottageFastReservationDTO.getIdFastReservation());
+		if(!cottageFastResHistoryService.makeReservation(client, cottageFastReservation)) {
+			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		}
+		try {
+			emailService.sendCottageActionReservationConfirmation(client,cottage, clientCottageFastReservationDTO);
+		} catch (MailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return new ResponseEntity<>(true,HttpStatus.OK);
 	}

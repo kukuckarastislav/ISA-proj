@@ -236,7 +236,14 @@ export default {
         this.isModalVisible = false;
       },
       reserveAction(ac){
-         
+         axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .post('http://localhost:8180/api/client/reserveCottageAction',ac)
+          .then(response => {alert('Uspesno ste rezervisali vikendicu.')
+          }).catch(err => {
+              alert('Već ste otkazali ovu akciju.')
+          });
       }
   },
 };

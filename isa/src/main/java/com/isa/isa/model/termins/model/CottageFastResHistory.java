@@ -33,6 +33,16 @@ public class CottageFastResHistory {
     private StatusOfFastReservation statusOfFastReservation;
     
     public CottageFastResHistory() {}
+    
+    
+	public CottageFastResHistory(Client client, CottageFastReservation cottageFastReservation,
+			StatusOfFastReservation statusOfFastReservation) {
+		this.client = client;
+		this.cottageFastReservation = cottageFastReservation;
+		this.statusOfFastReservation = statusOfFastReservation;
+	}
+
+
 
 	public int getId() {
 		return id;

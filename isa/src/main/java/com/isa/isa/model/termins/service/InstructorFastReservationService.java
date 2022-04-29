@@ -1,16 +1,5 @@
 package com.isa.isa.model.termins.service;
 
-import com.isa.isa.model.ItemPrice;
-import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
-import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
-import com.isa.isa.model.termins.model.InsFastResHistory;
-import com.isa.isa.model.termins.model.InstructorFastReservation;
-import com.isa.isa.model.termins.model.InstructorReservation;
-import com.isa.isa.model.termins.model.StatusOfFastReservation;
-import com.isa.isa.model.termins.model.StatusOfReservation;
-import com.isa.isa.model.termins.repository.InsFastResHistoryRepository;
-import com.isa.isa.model.termins.repository.InstructorFastReservationRepository;
-
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,6 +8,15 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
+import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.model.InsFastResHistory;
+import com.isa.isa.model.termins.model.InstructorFastReservation;
+import com.isa.isa.model.termins.model.StatusOfFastReservation;
+import com.isa.isa.model.termins.repository.InsFastResHistoryRepository;
+import com.isa.isa.model.termins.repository.InstructorFastReservationRepository;
 
 @Service
 public class InstructorFastReservationService {

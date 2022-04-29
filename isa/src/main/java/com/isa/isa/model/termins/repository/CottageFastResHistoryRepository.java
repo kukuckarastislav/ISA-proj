@@ -10,4 +10,5 @@ public interface CottageFastResHistoryRepository extends JpaRepository<CottageFa
 	
 	List<CottageFastResHistory> findAllByClientId(int id);
 	List<CottageFastResHistory> findAllByCottageFastReservationId(int cottageFastResId);
+	CottageFastResHistory findByClientIdAndCottageFastReservationId(int clientId, int cottageFastReservationId);
 }

@@ -4,18 +4,16 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.isa.model.ItemPrice;
-import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.model.CottageFastResHistory;
 import com.isa.isa.model.termins.model.CottageFastReservation;
-import com.isa.isa.model.termins.model.InsFastResHistory;
-import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.model.termins.model.StatusOfFastReservation;
 import com.isa.isa.model.termins.repository.CottageFastResHistoryRepository;
 import com.isa.isa.model.termins.repository.CottageFastReservationRepository;
@@ -80,5 +78,11 @@ public class CottageFastReservationService {
 			   retVal+= itemprice.getPrice();
 	   	}
 		   return retVal;
+	   }
+	 
+	 public CottageFastReservation getById(int id) {
+	     Optional<CottageFastReservation> cottageFastReservation =cottageFastReservationRepository.findById(id);
+	     if(cottageFastReservation.isPresent()) return cottageFastReservation.get();
+	     return null;
 	   }
 }

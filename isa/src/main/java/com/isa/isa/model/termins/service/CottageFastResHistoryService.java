@@ -7,11 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.isa.model.Client;
 import com.isa.isa.model.EntityImage;
-import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
 import com.isa.isa.model.termins.model.CottageFastResHistory;
-import com.isa.isa.model.termins.model.InsFastResHistory;
+import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.StatusOfFastReservation;
 import com.isa.isa.model.termins.repository.CottageFastResHistoryRepository;
 
@@ -38,5 +38,18 @@ public class CottageFastResHistoryService {
 	    		cottageFastResHistory.setStatusOfFastReservation(StatusOfFastReservation.CANCELLED);
 	    		cottageFastResHistoryRepository.save(cottageFastResHistory);
 	    	}
+	    }
+	 
+	 public Boolean makeReservation(Client client, CottageFastReservation cottageFastReservation) {
+	    	if(hasClientAlreadyCancelled(client,cottageFastReservation)) return false;
+	    	CottageFastResHistory cottageFastResHistory = new CottageFastResHistory(client,cottageFastReservation,StatusOfFastReservation.TAKEN);
+	    	cottageFastResHistoryRepository.save(cottageFastResHistory);
+	    	return true;
+	    }
+	 
+	 private Boolean hasClientAlreadyCancelled(Client client, CottageFastReservation cottageFastReservation) {
+	    	CottageFastResHistory cottageFastResHistory = cottageFastResHistoryRepository.findByClientIdAndCottageFastReservationId(client.getId(), cottageFastReservation.getId());
+		 if(cottageFastResHistory==null) return false;
+	    	return true;
 	    }
 }
