@@ -24,6 +24,7 @@ import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
@@ -154,6 +155,12 @@ public class PersonController {
     public ResponseEntity<ArrayList<ClientCottageFastReservationDTO>> getCottageFastReservationsById(@PathVariable Integer cottageId) {
     	ArrayList<ClientCottageFastReservationDTO> clientFastReservations = (ArrayList<ClientCottageFastReservationDTO>) cottageFastReservationService.getFastReservationsByCottage(cottageId);
         return new ResponseEntity<ArrayList<ClientCottageFastReservationDTO>>(clientFastReservations, HttpStatus.OK);
+    }
+    
+    @PostMapping("/boats/boatFree")
+    public ResponseEntity<Boolean> checkIfBoatFree(@RequestBody BoatTermsDTO boatTermsDTO){
+
+    	return new ResponseEntity<Boolean>(boatService.isBoatFree(boatTermsDTO), HttpStatus.OK);
     }
     
 }

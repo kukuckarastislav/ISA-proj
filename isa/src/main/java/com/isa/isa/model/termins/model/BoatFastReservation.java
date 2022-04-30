@@ -51,4 +51,78 @@ public class BoatFastReservation {
 	public BoatFastReservation() {}
 	
 	private double price;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Set<BoatFastResHistory> getBoatFastResHistories() {
+		return boatFastResHistories;
+	}
+
+	public void setBoatFastResHistories(Set<BoatFastResHistory> boatFastResHistories) {
+		this.boatFastResHistories = boatFastResHistories;
+	}
+
+	public Boat getBoat() {
+		return boat;
+	}
+
+	public void setBoat(Boat boat) {
+		this.boat = boat;
+	}
+
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
+
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
+	}
+
+	public int getMaxNumberOfPeople() {
+		return maxNumberOfPeople;
+	}
+
+	public void setMaxNumberOfPeople(int maxNumberOfPeople) {
+		this.maxNumberOfPeople = maxNumberOfPeople;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Set<ItemPrice> getAdditionalServices() {
+		return additionalServices;
+	}
+
+	public void setAdditionalServices(Set<ItemPrice> additionalServices) {
+		this.additionalServices = additionalServices;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	
 }

@@ -11,13 +11,10 @@ import org.springframework.stereotype.Service;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
-import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
-import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.model.CottageReservations;
-import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.model.StatusOfReservation;
 import com.isa.isa.model.termins.repository.CottageReservationRepository;
 

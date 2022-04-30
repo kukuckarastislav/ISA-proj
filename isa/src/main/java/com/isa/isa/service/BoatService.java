@@ -18,6 +18,11 @@ import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.termins.DTO.BoatTermsDTO;
+import com.isa.isa.model.termins.DTO.CottageTermsDTO;
+import com.isa.isa.model.termins.service.BoatFastReservationService;
+import com.isa.isa.model.termins.service.BoatReservationService;
+import com.isa.isa.model.termins.service.BoatTermService;
 import com.isa.isa.repository.BoatOwnerRepository;
 import com.isa.isa.repository.BoatRepository;
 
@@ -33,6 +38,15 @@ public class BoatService {
 
     @Autowired
     private EntityImageService entityImageService;
+    
+    @Autowired
+    private BoatTermService boatTermService;
+    
+    @Autowired
+    private BoatReservationService boatReservationService;
+    
+    @Autowired
+    private BoatFastReservationService boatFastReservationService;
     
     
     public ArrayList<BoatDTO> getBoatDTOByBoatOwner(String username) {
@@ -116,5 +130,12 @@ public class BoatService {
 	
 	public Boat getBoatWithOwner(int id) {
 		return boatRepository.getByIdWithOwner(id);
+	}
+	
+	public Boolean isBoatFree(BoatTermsDTO dto) {
+		if(!boatTermService.isBoatFree(dto)) return false;
+		if (!boatReservationService.isBoatFree(dto)) return false;
+		if (!boatFastReservationService.isBoatFree(dto)) return false;
+		return true;
 	}
 }

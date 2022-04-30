@@ -172,17 +172,31 @@ insert into boat_images(boat_id,images_id)
 values (1,8);
 
 
-
 insert into navigational_equipment (name)
 values ('GPS');
 
 insert into boat_navigation_equipment(boat_id, navigational_equipment_id)
 values (1,1);
 
-
-
 insert into boat_additional_services(boat_id, additional_service_id)
-values (1,1);  
+values (1,1);
+
+
+insert into boat (city, country, latitude, longitude, number, street,price, price_type, behaviour_rules, capacity, engine_number, engine_power, length, max_speed, name, promotional_description, type, owner_id,reservation_cancellation_conditions,average_grade)
+values ('Novi Sad', 'Serbia', 11, 13, 33, 'Vidovdanska', 20, 'PER_HOUR', 'Nema brze voznje', 5, '123', 100, 50, 70, 'Serenity', 'Oaza mira', 'Jahta', 7, 'FREE',0);
+insert into entity_image (name, path)
+values ('img1.jpg', 'images/BoatOwners/isaprojectftn+nikolaBO@gmail.com/Serenity/img1.jpg');
+insert into boat_images(boat_id,images_id)
+values (2,9);
+insert into boat_navigation_equipment(boat_id, navigational_equipment_id)
+values (2,1);
+insert into boat_additional_services(boat_id, additional_service_id)
+values (2,4);
+insert into boat_terms(boat_id, term_availability, start_time, end_time)
+values (2, 'AVAILABILE', '2022-04-05T8:00:06.235098700', '2022-07-25T8:00:06.235098700');
+
+
+
 
 insert into additional_equipment(name)
 values ('stap');

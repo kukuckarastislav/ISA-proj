@@ -146,9 +146,15 @@
                     <div class="card bg-light">
                         <div class="card-body text-center">
                             <img v-bind:src="'http://localhost:8180/' + n.images[0].path" class="imgCard" alt=""/>
-                            <h3 class="card-title mb-3">{{n.name}}</h3>
+                            <h3 style="margin-top:5%" class="card-title mb-3">{{n.name}}</h3>
                             <p class="card-text">
-                            Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}}
+                            Description: {{n.promotionalDescription}}<br>
+                            Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}} <br>
+                            Price: ${{n.price.price}}/day <br>
+                                Grade:
+                            <span v-if="n.averageGrade===0">Not yet rated</span>  
+                            <span v-else>{{n.averageGrade}}</span><br>
+                            <br>
                             </p>
                             <button class="btn isa-btn-more-detail btn-sm" type="button" v-on:click="showBoat(n.id)">More details</button>
                         </div>
@@ -426,6 +432,28 @@ setup() {
 								this.boats.splice(i,1);
 								control=0;
 								break;	
+									}
+                    else if(this.peopleNumber && this.boats[i].capacity < this.peopleNumber){
+								this.boats.splice(i,1);
+								control=0;
+								break;	
+									}
+                    else if (this.rating && this.boats[i].averageGrade < this.rating){
+                       this.boats.splice(i,1);
+								control=0;
+								break;	
+                    } else if(this.date){                     
+                               const response = await axios.post('http://localhost:8180/api/person/boats/boatFree', {
+                                                        id: this.boats[i].id,
+                                                        startTime: this.date[0],
+                                                        endTime: this.date[1],
+                                                        })
+
+                                if (response.data == false){
+                                    this.boats.splice(i,1);
+								control=0;
+								break;	
+                                }
 									}  
             }
             }
@@ -470,6 +498,14 @@ setup() {
                                                     return b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''));
                                                 }
                                               return b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, ''))
+                                                });
+                                    } else if(this.showFilters && this.sortBy=="4" && this.sortInOrder=="2"){
+                                        this.boats.sort(function (a, b) {
+                                              return b.price.price - a.price.price;
+                                                });
+                                    }else if(this.showFilters && this.sortBy=="4" && this.sortInOrder=="1"){
+                                        this.boats.sort(function (a, b) {
+                                              return a.price.price - b.price.price;
                                                 });
                                     }
 
