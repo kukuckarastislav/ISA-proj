@@ -109,11 +109,53 @@
         <br>
         <br>
         <br>
-        <button v-if="role==='ROLE_CUSTOMER'" type="button" style="zoom:1.5;background-color:coral;border-color:coral" class="btn btn-primary">RESERVE</button>
+        <button v-if="role==='ROLE_CUSTOMER'" type="button" style="zoom:1.5;background-color:coral;border-color:coral" class="btn btn-primary"  v-on:click="showModal()">RESERVE</button>
         <br>
         <br>
         <br>
         <br>
+    
+    <div>
+       <h2 class="text-start">Actions</h2>
+         <table v-for="a in actions"
+            :key="a.startTime" style="border: 1px solid gray; width: 50%; margin-left:25%; margin-top: 5%;text-align:left" class="table">
+    <tbody>
+      <tr>
+        <td style="border:none;" colspan="2">{{(new Date(a.startTime)).getDate()}}/{{(new Date(a.startTime)).getMonth()+1}}/{{(new Date(a.startTime)).getFullYear()}} {{(new Date(a.startTime)).getHours()}}:{{(new Date(a.startTime)).getMinutes()}}-{{(new Date(a.endTime)).getDate()}}/{{(new Date(a.endTime)).getMonth()+1}}/{{(new Date(a.endTime)).getFullYear()}} {{(new Date(a.endTime)).getHours()}}:{{(new Date(a.endTime)).getMinutes()}}</td>
+        <td style="border:none;text-align:center">{{a.discount}}% OFF</td>
+      </tr>
+      <tr>
+        
+        <td style="border:none;width:26%;">Price:
+        </td>
+        <td style="border:none;width:24%;" >{{a.newPrice}}$ <span class="strikethrough">{{a.originalPrice}}$</span></td>
+        <td style="border:none;width:50%;"></td>
+        </tr>
+      <tr>
+       
+        <td style="border:none;">People:
+        </td>
+        <td style="border:none;">up to {{a.maxPeople}}</td>
+        <td style="border:none;padding-right:1em;text-align:right"><button v-if="role==='ROLE_CUSTOMER'" v-on:click="reserveAction(a)" style="background-color:coral;border-color:coral" class="btn btn-primary">RESERVE</button></td>
+        </tr>
+       <tr>
+        
+        <td style="border:none;">Additional services:
+        </td>
+        <td style="border:none;"><div style="display: inline-block; border: 1px solid #0d6efd;margin-right:1em;margin-bottom:0.5em" v-for="service in a.additionalServices" :key="service.id">
+          {{service.name}}
+          </div></td>
+        <td style="border:none;"></td>
+        </tr>
+    </tbody>
+  </table>
+      </div>
+    <ReserveModalBoat
+      v-show="isModalVisible"
+      @close="closeModal"
+      v-bind:chosenServices="chosenServices"
+      v-bind:boat="boat"
+    />
     
     </div>
     
@@ -123,9 +165,10 @@
 <script>
 import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
+import ReserveModalBoat from '@/components/ReserveModalBoat.vue';
 export default {
   name: "CustomerBoatPage",
-  components: {CarouselView},
+  components: {CarouselView,ReserveModalBoat},
   data: function () {
     return {
       boat: {},
@@ -134,7 +177,9 @@ export default {
       indexList: [],
       role: '',
       chosenServices: [],
-      date: this.$store.state.date
+      date: this.$store.state.date,
+      isModalVisible: false,
+      actions: []
     };
   },
   mounted: function () {
@@ -167,7 +212,17 @@ export default {
         return true;
       }
       return false;
-    }
+    },
+    showModal() {
+      this.chosenServices=[]
+        for(let k=0;k<this.indexList.length;k++){
+          this.chosenServices.push(this.boat.additionalServices[this.indexList[k]])
+        }
+        this.isModalVisible = true;
+      },
+      closeModal() {
+        this.isModalVisible = false;
+      }
   },
 };
 </script>

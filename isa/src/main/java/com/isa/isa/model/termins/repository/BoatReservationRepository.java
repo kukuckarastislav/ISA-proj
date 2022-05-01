@@ -9,5 +9,7 @@ import com.isa.isa.model.termins.model.BoatReservations;
 public interface BoatReservationRepository extends JpaRepository<BoatReservations, Integer>{
 	
 	List<BoatReservations> findAllByBoatId(int id);
+	
+	List<BoatReservations> findAllByClientIdAndBoatId(int clientId, int boatId);
 
 }

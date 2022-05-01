@@ -143,10 +143,20 @@ public class BoatService {
 		List<Boat> boats = boatRepository.findAllByOwnerId(boat.getOwner().getId());
 			if((dto.getStartTime()==null) || boats.size()==1) {
 				boat.getAdditionalServices().add(itemPriceRepository.findByName("Captain"));
-			}
-			else if(boatReservationService.isBoatOwnerFree(dto) && boatFastReservationService.isBoatOwnerFree(dto)) {
+			}			
+			else if(checkIsOwnerFreeForEachReservation(dto,boats)) {
 				boat.getAdditionalServices().add(itemPriceRepository.findByName("Captain"));
 			}
 		return boat;
+	}
+	
+	private Boolean checkIsOwnerFreeForEachReservation(BoatTermsDTO dto, List<Boat> boats) {
+		for(Boat b:boats) {
+			BoatTermsDTO tmpDTO = new BoatTermsDTO(b.getId(), dto.getStartTime(), dto.getEndTime());
+			if(!(boatReservationService.isBoatOwnerFree(tmpDTO) && boatFastReservationService.isBoatOwnerFree(tmpDTO))) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

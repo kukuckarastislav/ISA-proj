@@ -25,8 +25,10 @@ import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientBoatReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
@@ -36,6 +38,7 @@ import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.model.termins.model.InstructorReservation;
+import com.isa.isa.model.termins.service.BoatReservationService;
 import com.isa.isa.model.termins.service.CottageFastResHistoryService;
 import com.isa.isa.model.termins.service.CottageFastReservationService;
 import com.isa.isa.model.termins.service.CottageReservationService;
@@ -44,6 +47,7 @@ import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.model.termins.service.InstructorReservationService;
 import com.isa.isa.security.service.EmailService;
 import com.isa.isa.service.AdventureService;
+import com.isa.isa.service.BoatService;
 import com.isa.isa.service.ClientService;
 import com.isa.isa.service.CottageService;
 import com.isa.isa.service.InstructorService;
@@ -84,6 +88,12 @@ public class ClientController {
 	
 	@Autowired
 	private CottageFastReservationService cottageFastReservationService;
+	
+	@Autowired
+	private BoatService boatService;
+	
+	@Autowired
+	private BoatReservationService boatReservationService;
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
@@ -236,6 +246,28 @@ public class ClientController {
 		}
 		try {
 			emailService.sendCottageActionReservationConfirmation(client,cottage, clientCottageFastReservationDTO);
+		} catch (MailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/reserveBoat")
+	public ResponseEntity<Boolean> reserveBoat(@RequestBody ClientBoatReservationDTO clientBoatReservationDTO, Principal user) {
+		if(!boatService.isBoatFree(new BoatTermsDTO(clientBoatReservationDTO.getBoat().getId(),clientBoatReservationDTO.getStartTime(),clientBoatReservationDTO.getEndTime()))) {
+			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		}
+		Client client= this.clientService.findByEmail(user.getName());
+		if(boatReservationService.reserveBoatByClient(clientBoatReservationDTO, client) == null) {
+			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		}
+		try {
+			emailService.sendBoatReservationConfirmation(client, clientBoatReservationDTO);
 		} catch (MailException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

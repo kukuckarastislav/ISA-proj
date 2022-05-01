@@ -50,6 +50,18 @@ public class BoatReservations {
     private double price;
 
     public BoatReservations() {}
+    
+    
+
+	public BoatReservations(Client client, Boat boat, LocalDateTime startTime, LocalDateTime endTime) {
+		super();
+		this.client = client;
+		this.boat = boat;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
+
 
 	public int getId() {
 		return id;
