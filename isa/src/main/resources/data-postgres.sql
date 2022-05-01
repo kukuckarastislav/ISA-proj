@@ -25,6 +25,8 @@ insert into item_price(description, name, price)
 values ('Food included', 'Food', 20.0);
 insert into item_price(description, name, price)
 values ('Parking for your car','Parking', 25.0);
+insert into item_price(description, name, price)
+values ('Owner will grace you with their presence','Captain', 0.0);
 
 
 -- Admin

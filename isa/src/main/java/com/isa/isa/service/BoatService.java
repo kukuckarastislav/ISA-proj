@@ -3,28 +3,25 @@ package com.isa.isa.service;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.isa.DTO.AddNewBoatDTO;
-import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.BoatDTO;
 import com.isa.isa.DTO.EntityImageDTO;
-import com.isa.isa.model.AdditionalEquipment;
-import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.EntityImage;
-import com.isa.isa.model.Instructor;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
-import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.service.BoatFastReservationService;
 import com.isa.isa.model.termins.service.BoatReservationService;
 import com.isa.isa.model.termins.service.BoatTermService;
 import com.isa.isa.repository.BoatOwnerRepository;
 import com.isa.isa.repository.BoatRepository;
+import com.isa.isa.repository.ItemPriceRepository;
 
 
 @Service
@@ -47,6 +44,9 @@ public class BoatService {
     
     @Autowired
     private BoatFastReservationService boatFastReservationService;
+    
+    @Autowired
+    private ItemPriceRepository itemPriceRepository;
     
     
     public ArrayList<BoatDTO> getBoatDTOByBoatOwner(String username) {
@@ -137,5 +137,16 @@ public class BoatService {
 		if (!boatReservationService.isBoatFree(dto)) return false;
 		if (!boatFastReservationService.isBoatFree(dto)) return false;
 		return true;
+	}
+	
+	public Boat isOwnerFree(BoatTermsDTO dto, Boat boat){
+		List<Boat> boats = boatRepository.findAllByOwnerId(boat.getOwner().getId());
+			if((dto.getStartTime()==null) || boats.size()==1) {
+				boat.getAdditionalServices().add(itemPriceRepository.findByName("Captain"));
+			}
+			else if(boatReservationService.isBoatOwnerFree(dto) && boatFastReservationService.isBoatOwnerFree(dto)) {
+				boat.getAdditionalServices().add(itemPriceRepository.findByName("Captain"));
+			}
+		return boat;
 	}
 }

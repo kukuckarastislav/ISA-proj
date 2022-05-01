@@ -133,14 +133,17 @@ export default {
       isFetching: true,
       indexList: [],
       role: '',
-      chosenServices: []
+      chosenServices: [],
+      date: this.$store.state.date
     };
   },
   mounted: function () {
     this.boatId = decodeURI(window.location.pathname.split("/")[2]);
     
     axios
-      .get("http://localhost:8180/api/person/boats/" + this.boatId)
+      .put("http://localhost:8180/api/person/boats/ownerPresence",{ id: this.boatId,
+                                                        startTime: this.date ? this.date[0] : null,
+                                                        endTime: this.date ? this.date[1] : null})
       .then((response) => {
         this.isFetching = false
         this.boat = response.data;
@@ -152,6 +155,12 @@ export default {
   methods: {
     setImg: function (image) {
       return "http://localhost:8180/" + image.path;
+    },
+    selectPriceItem: function(index){
+      if(this.indexList.includes(index)){
+        this.indexList.splice(this.indexList.indexOf(index), 1);
+      }
+      else this.indexList.push(index)
     },
     inItemList: function(index){
       if(this.indexList.includes(index)){

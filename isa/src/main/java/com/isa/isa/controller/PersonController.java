@@ -163,4 +163,11 @@ public class PersonController {
     	return new ResponseEntity<Boolean>(boatService.isBoatFree(boatTermsDTO), HttpStatus.OK);
     }
     
+    @PutMapping("/boats/ownerPresence") 
+    public ResponseEntity<Boat> checkIfBoatOwnersFree(@RequestBody BoatTermsDTO boatTermsDTO) {
+      Boat boat =  boatService.getBoatWithOwner(boatTermsDTO.getId());
+      boat = boatService.isOwnerFree(boatTermsDTO, boat);
+      return new ResponseEntity<Boat>(boat, HttpStatus.OK);
+    }
+    
 }
