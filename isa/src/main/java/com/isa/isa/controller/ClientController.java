@@ -322,5 +322,18 @@ public class ClientController {
 		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PutMapping("/cancelBoatReservation")
+	public ResponseEntity<Boolean> cancelBoatReservation(@RequestBody ClientMadeReservationsBoatDTO clientMadeReservationsBoatDTO, Principal user) {
+		if(!ThreeDayDifference(clientMadeReservationsBoatDTO.getStartTime())) return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		if(clientMadeReservationsBoatDTO.getIsFast()) {
+			boatFastResHistoryService.cancelReservation(clientMadeReservationsBoatDTO.getReservationId());
+		}
+		else {
+			boatReservationService.cancelReservation(clientMadeReservationsBoatDTO.getReservationId());
+		}
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
 
 }

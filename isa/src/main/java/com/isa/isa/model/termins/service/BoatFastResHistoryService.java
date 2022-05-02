@@ -2,6 +2,7 @@ package com.isa.isa.model.termins.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,6 @@ import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsBoatDTO;
 import com.isa.isa.model.termins.model.BoatFastResHistory;
 import com.isa.isa.model.termins.model.BoatFastReservation;
-import com.isa.isa.model.termins.model.CottageFastResHistory;
-import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.StatusOfFastReservation;
 import com.isa.isa.model.termins.repository.BoatFastResHistoryRepository;
 
@@ -43,5 +42,14 @@ public class BoatFastResHistoryService {
     	BoatFastResHistory boatFastResHistory = boatFastResHistoryRepository.findByClientIdAndBoatFastReservationId(client.getId(), boatFastReservation.getId());
 	 if(boatFastResHistory==null) return false;
     	return true;
+    }
+	
+	public void cancelReservation(int reservationId) {
+    	Optional<BoatFastResHistory> boatReservationType= boatFastResHistoryRepository.findById(reservationId);
+    	if(boatReservationType.isPresent()) {
+    		BoatFastResHistory boatFastResHistory = boatReservationType.get();
+    		boatFastResHistory.setStatusOfFastReservation(StatusOfFastReservation.CANCELLED);
+    		boatFastResHistoryRepository.save(boatFastResHistory);
+    	}
     }
 }

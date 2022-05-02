@@ -328,66 +328,46 @@ export default {
 			while(control===0){
 				control=1;
 			for (var i = 0; i < this.boats.length; i++) {
-				var loc=this.boats[i].address.country+" "+this.boats[i].address.city +" "+this.boats[i].address.street +" "+this.boats[i].address.number;
-                var owr=this.boats[i].owner.firstName+" "+this.boats[i].owner.lastName 
-    				if(this.searchedName && !this.boats[i].name.toLowerCase().includes(this.searchedName.toLowerCase())){
+    				if(this.searchedName && !this.boats[i].boatName.toLowerCase().includes(this.searchedName.toLowerCase())){
+								this.boats.splice(i,1);
+								control=0;
+								break;	
+							 } else if(this.checked && (this.boats[i].status==='CANCELLED' || ((new Date(this.boats[i].endTime)) - (new Date()) < 0))){
 								this.boats.splice(i,1);
 								control=0;
 								break;	
 									}
-                    else if(this.searchedLocation && !loc.toLowerCase().includes(this.searchedLocation.toLowerCase().replace(',',''))){
-								this.boats.splice(i,1);
-								control=0;
-								break;	
-									}
-                    else if(this.searchedAdvertiser && !owr.toLowerCase().includes(this.searchedAdvertiser.toLowerCase())){
-								this.boats.splice(i,1);
-								control=0;
-								break;	
-									}  
+              
             }
             }
 
 
                      if (this.showFilters){
 
-                    if(this.sortBy=="3" && this.sortInOrder=="1"){
+                       if(this.sortBy=="3" && this.sortInOrder=="1"){
                                         this.boats.sort(function (a, b) {
-                                              return a.averageGrade - b.averageGrade;
+                                              return Math.abs((new Date(a.endTime)) - (new Date(a.startTime))) - Math.abs((new Date(b.endTime)) - (new Date(b.startTime)));
                                                 });
                                     } else if(this.showFilters && this.sortBy=="3" && this.sortInOrder=="2"){
                                         this.boats.sort(function (a, b) {
-                                              return b.averageGrade - a.averageGrade;
+                                              return Math.abs((new Date(b.endTime)) - (new Date(b.startTime))) - Math.abs((new Date(a.endTime)) - (new Date(a.startTime)));
                                                 });
                                     }  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
                                         this.boats.sort(function (a, b) {
-                                              return a.name.replace(/\s+/g, '').localeCompare(b.name.replace(/\s+/g, ''))
+                                            console.log(new Date(a.startTime))
+                                              return (new Date(a.startTime))-(new Date(b.startTime));
                                                 });
                                     } else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
                                         this.boats.sort(function (a, b) {
-                                              return b.name.replace(/\s+/g, '').localeCompare(a.name.replace(/\s+/g, ''))
-                                                });
-                                    }  else if(this.showFilters && this.sortBy==2 && this.sortInOrder==1){
-                                        this.boats.sort(function (a, b) {
-                                            if(a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, '')) == 0)
-                                                {
-                                                    if(a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''))==0){
-                                                        return a.address.street.replace(/\s+/g, '').localeCompare(b.address.street.replace(/\s+/g, ''))==0
-                                                    }
-                                                    return a.address.city.replace(/\s+/g, '').localeCompare(b.address.city.replace(/\s+/g, ''));
-                                                }
-                                              return a.address.country.replace(/\s+/g, '').localeCompare(b.address.country.replace(/\s+/g, ''))
+                                              return -(new Date(a.startTime))-(new Date(b.startTime));
                                                 });
                                     } else if(this.showFilters && this.sortBy=="2" && this.sortInOrder=="2"){
                                         this.boats.sort(function (a, b) {
-                                            if(b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, '')) == 0)
-                                                {
-                                                    if(b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''))==0){
-                                                        return b.address.street.replace(/\s+/g, '').localeCompare(a.address.street.replace(/\s+/g, ''))==0
-                                                    }
-                                                    return b.address.city.replace(/\s+/g, '').localeCompare(a.address.city.replace(/\s+/g, ''));
-                                                }
-                                              return b.address.country.replace(/\s+/g, '').localeCompare(a.address.country.replace(/\s+/g, ''))
+                                              return b.price - a.price;
+                                                });
+                                    }else if(this.showFilters && this.sortBy=="2" && this.sortInOrder=="1"){
+                                        this.boats.sort(function (a, b) {
+                                              return a.price - b.price;
                                                 });
                                     }
 
@@ -475,7 +455,17 @@ export default {
           });
         },
         cancelBoat:function(b){
-
+            
+           axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .put('http://localhost:8180/api/client/cancelBoatReservation',b)
+          .then(response => {
+            b.status='CANCELLED';
+            alert('Uspesno ste otkazali brod.')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
         }
    }
 }

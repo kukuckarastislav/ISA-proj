@@ -3,6 +3,7 @@ package com.isa.isa.model.termins.service;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,6 +94,15 @@ public class BoatReservationService {
     		retVal.add(new ClientMadeReservationsBoatDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getBoat().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getBoat().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId()));
     	}
     	return retVal;
+    }
+	
+	public void cancelReservation(int reservationId) {
+    	Optional<BoatReservations> boatReservationType= boatReservationRepository.findById(reservationId);
+    	if(boatReservationType.isPresent()) {
+    		BoatReservations boatReservations = boatReservationType.get();
+    		boatReservations.setStatusOfReservation(StatusOfReservation.CANCELLED);
+    		boatReservationRepository.save(boatReservations);
+    	}
     }
 	
 }
