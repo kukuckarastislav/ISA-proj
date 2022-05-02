@@ -2,10 +2,12 @@ package com.isa.isa.security.service;
 
 import com.isa.isa.DTO.UserApproveDTO;
 import com.isa.isa.model.Adventure;
+import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
@@ -30,4 +32,6 @@ public interface EmailService {
     void sendCottageActionReservationConfirmation(Client client, Cottage cottage, ClientCottageFastReservationDTO clientCottageFastReservationDTO) throws MailException, InterruptedException;
     
     void sendBoatReservationConfirmation(Client client, ClientBoatReservationDTO clientBoatReservationDTO) throws MailException, InterruptedException;
+    
+    void sendBoatActionReservationConfirmation(Client client, Boat boat, ClientBoatFastReservationDTO clientBoatFastReservationDTO) throws MailException, InterruptedException;
 }

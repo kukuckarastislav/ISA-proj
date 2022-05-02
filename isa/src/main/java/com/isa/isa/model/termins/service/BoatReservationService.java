@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.isa.model.Client;
+import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
-import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatReservationDTO;
-import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientMadeReservationsBoatDTO;
 import com.isa.isa.model.termins.model.BoatReservations;
-import com.isa.isa.model.termins.model.CottageReservations;
 import com.isa.isa.model.termins.model.StatusOfReservation;
 import com.isa.isa.model.termins.repository.BoatReservationRepository;
 
@@ -84,6 +83,16 @@ public class BoatReservationService {
     		price+= itemprice.getPrice();
     	}
     	return price;
+    }
+	
+	public List<ClientMadeReservationsBoatDTO> getBoatReservationByClient(int clientId){	
+		List<BoatReservations> boatReservations = boatReservationRepository.findAllByClientId(clientId);
+		List<ClientMadeReservationsBoatDTO>retVal = new ArrayList<ClientMadeReservationsBoatDTO>();
+    	for(BoatReservations reservation:boatReservations) {
+    		List<EntityImage>images = new ArrayList<> (reservation.getBoat().getImages());
+    		retVal.add(new ClientMadeReservationsBoatDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getBoat().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getBoat().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId()));
+    	}
+    	return retVal;
     }
 	
 }

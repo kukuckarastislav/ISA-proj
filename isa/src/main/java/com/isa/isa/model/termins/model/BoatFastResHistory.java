@@ -27,11 +27,57 @@ public class BoatFastResHistory {
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "boat_fast_res_id")
-    private CottageFastReservation boatFastReservation;
+    private BoatFastReservation boatFastReservation;
 
     @Enumerated(EnumType.STRING)
     private StatusOfFastReservation statusOfFastReservation;
     
     public BoatFastResHistory() {}
+    
+    
+
+	public BoatFastResHistory(Client client, BoatFastReservation boatFastReservation,
+			StatusOfFastReservation statusOfFastReservation) {
+		super();
+		this.client = client;
+		this.boatFastReservation = boatFastReservation;
+		this.statusOfFastReservation = statusOfFastReservation;
+	}
+
+
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public BoatFastReservation getBoatFastReservation() {
+		return boatFastReservation;
+	}
+
+	public void setBoatFastReservation(BoatFastReservation boatFastReservation) {
+		this.boatFastReservation = boatFastReservation;
+	}
+
+	public StatusOfFastReservation getStatusOfFastReservation() {
+		return statusOfFastReservation;
+	}
+
+	public void setStatusOfFastReservation(StatusOfFastReservation statusOfFastReservation) {
+		this.statusOfFastReservation = statusOfFastReservation;
+	}
+    
+    
 
 }

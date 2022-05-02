@@ -196,6 +196,12 @@ insert into boat_additional_services(boat_id, additional_service_id)
 values (2,4);
 insert into boat_terms(boat_id, term_availability, start_time, end_time)
 values (2, 'AVAILABILE', '2022-04-05T8:00:06.235098700', '2022-07-25T8:00:06.235098700');
+insert into boat_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, boat_id)
+values ('Novi Sad', 'Serbia', 14, 24, 35, 'Vidovdanska', 4, 20, '2022-07-11T14:00:06.235098700', '2022-07-11T16:00:06.235098700', 2);
+insert into boat_fast_reservation_additional_services(boat_fast_reservation_id,additional_service_id)
+values (1,1);
+insert into boat_fast_reservation_additional_services(boat_fast_reservation_id,additional_service_id)
+values (1,6);
 
 
 

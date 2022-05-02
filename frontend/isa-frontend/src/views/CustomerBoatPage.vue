@@ -194,6 +194,13 @@ export default {
         this.boat = response.data;
         this.role = window.sessionStorage.getItem("role")
         if (this.role == null) this.role = ""
+        axios
+          .get('http://localhost:8180/api/person/boats/' + this.boatId+'/fastReservations')
+          .then(response => {
+              this.actions = response.data
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
       })
       .catch((err) => alert(err));
   },
@@ -222,6 +229,16 @@ export default {
       },
       closeModal() {
         this.isModalVisible = false;
+      },
+      reserveAction(ac){
+          axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");  
+     axios
+          .post('http://localhost:8180/api/client/reserveBoatAction',ac)
+          .then(response => {alert('Uspesno ste rezervisali brod.')
+          }).catch(err => {
+              alert('Već ste otkazali ovu akciju.')
+          });
       }
   },
 };

@@ -11,5 +11,7 @@ public interface BoatReservationRepository extends JpaRepository<BoatReservation
 	List<BoatReservations> findAllByBoatId(int id);
 	
 	List<BoatReservations> findAllByClientIdAndBoatId(int clientId, int boatId);
+	
+	List<BoatReservations> findAllByClientId(int id);
 
 }

@@ -23,21 +23,27 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.model.Adventure;
+import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
+import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
+import com.isa.isa.model.termins.DTO.ClientMadeReservationsBoatDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.model.BoatFastReservation;
 import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.model.termins.model.InstructorReservation;
+import com.isa.isa.model.termins.service.BoatFastResHistoryService;
+import com.isa.isa.model.termins.service.BoatFastReservationService;
 import com.isa.isa.model.termins.service.BoatReservationService;
 import com.isa.isa.model.termins.service.CottageFastResHistoryService;
 import com.isa.isa.model.termins.service.CottageFastReservationService;
@@ -94,6 +100,12 @@ public class ClientController {
 	
 	@Autowired
 	private BoatReservationService boatReservationService;
+	
+	@Autowired
+	private BoatFastResHistoryService boatFastResHistoryService;
+	
+	@Autowired
+	private BoatFastReservationService boatFastReservationService;
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
@@ -268,6 +280,38 @@ public class ClientController {
 		}
 		try {
 			emailService.sendBoatReservationConfirmation(client, clientBoatReservationDTO);
+		} catch (MailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@GetMapping("/getBoats")
+	public ResponseEntity<List<ClientMadeReservationsBoatDTO>> getBoats(Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		List<ClientMadeReservationsBoatDTO> retVal = new ArrayList<ClientMadeReservationsBoatDTO>();
+		retVal.addAll(boatReservationService.getBoatReservationByClient(client.getId()));
+		retVal.addAll(boatFastResHistoryService.getFastResevationByClient(client.getId()));
+		return new ResponseEntity<>(retVal,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/reserveBoatAction")
+	public ResponseEntity<Boolean> reserveBoatAction(@RequestBody ClientBoatFastReservationDTO clientBoatFastReservationDTO, Principal user) {
+		
+		Client client= this.clientService.findByEmail(user.getName());
+		Boat boat = boatService.getBoatWithOwner(clientBoatFastReservationDTO.getIdBoat());
+		BoatFastReservation boatFastReservation = boatFastReservationService.getById(clientBoatFastReservationDTO.getIdFastReservation());
+		if(!boatFastResHistoryService.makeReservation(client, boatFastReservation)) {
+			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
+		}
+		try {
+			emailService.sendBoatActionReservationConfirmation(client,boat, clientBoatFastReservationDTO);
 		} catch (MailException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
