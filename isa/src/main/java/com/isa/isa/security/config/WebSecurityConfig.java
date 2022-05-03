@@ -87,6 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 								.antMatchers("/resources/**").permitAll()	
 								.antMatchers("/api/person/**").permitAll()// /api/foo
 								.antMatchers("/api/instructorterms/**").permitAll()// /api/foo
+								.antMatchers("/api/entityImage/**").permitAll()// /api/foo
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 					// /api/foo
 								

@@ -82,7 +82,7 @@ export default {
       setImg: function(image){
           if(this.server == true){
               console.log('i must call server');
-              return 'http://localhost:8180/'+image.img.path;
+              return 'http://localhost:8180/api/entityImage/'+image.img.path;
           }else{
               console.log('local img on my pc');
               return image.img.path;

@@ -4,11 +4,14 @@ import com.isa.isa.DTO.EntityImageDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.Instructor;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,5 +90,71 @@ public class EntityImageService {
 
         return entityImages;
     }
+
+    public byte[] getImageByte(String role, String user, String entity, String imgName){
+        String path = "public" + File.separator + "images" + File.separator + role + File.separator + user + File.separator + entity + File.separator + imgName;
+        ClassPathResource imgFile = new ClassPathResource(path);
+
+        System.out.println("ENTITY IMAGE " + path);
+
+        try {
+            return StreamUtils.copyToByteArray(imgFile.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
+    public byte[] getEntityImage(String role, String user, String entity, String imgName){
+        BufferedImage bufferedImage = readImage(role, user, entity, imgName);
+        String imgStr = "";
+        if(bufferedImage != null){
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            try {
+                ImageIO.write(bufferedImage, "jpg", bos);
+                byte[] imageBytes = bos.toByteArray();
+                bos.close();
+                return imageBytes;
+                //imgStr = Base64.getEncoder().encodeToString(imageBytes);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private BufferedImage readImage(String role, String user, String entity, String imgName){
+        String path = "main" + File.separator + "resources" + File.separator + "public";
+        String imgPath = "images" + File.separator + role + File.separator + user + File.separator + entity + File.separator + imgName;
+
+        File f = null;
+        try {
+            f = new File(new File("./src").getCanonicalPath() + File.separator + path + File.separator + imgPath);
+            if(!f.exists()){
+                System.out.println("ERROR img ne postoji");
+            }else{
+                // file postoji sada treba da ucitamo sliku
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(f);
+                    return img;
+                } catch (IOException e) {
+
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
 
 }
