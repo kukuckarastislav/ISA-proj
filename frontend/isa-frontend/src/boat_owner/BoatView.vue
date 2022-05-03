@@ -137,7 +137,7 @@ export default {
         });
     },
     setImg: function(image){
-      return 'http://localhost:8180/'+image.path;
+      return 'http://localhost:8180/api/entityImage/'+image.path;
     },
   }
 }

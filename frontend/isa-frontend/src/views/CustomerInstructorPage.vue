@@ -15,7 +15,7 @@
             <h4>{{a.name}}</h4>
             <br>
             <span style="margin-left:5%" v-for="i in a.images" :key="i">
-                <img  width="250" height = "150" v-bind:src="'http://localhost:8180/' + i.path">
+                <img  width="250" height = "150" v-bind:src="'http://localhost:8180/api/entityImage/' + i.path">
                 </span>
                 <br><br><br>
            Description: {{a.description}}<br>
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     setImg: function (image) {
-      return "http://localhost:8180/" + image.path;
+      return "http://localhost:8180/api/entityImage/" + image.path;
     },
   },
 };

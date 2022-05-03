@@ -81,7 +81,7 @@
                 <div  v-for="n in adventures" :key="n" class="col-md-6 col-lg-4">
                     <div class="card bg-light">
                         <div class="card-body text-center">
-                            <img v-bind:src="'http://localhost:8180/' + n.images[0].path" class="imgCard" alt=""/>
+                            <img v-bind:src="'http://localhost:8180/api/entityImage/' + n.images[0].path" class="imgCard" alt=""/>
                             <h3 style="margin-top:5%" class="card-title mb-3">{{n.name}}</h3>
                             <p class="card-text">
                                 Instructor: {{n.instructor.firstName}} {{n.instructor.lastName}}<br>
@@ -113,7 +113,7 @@
                 <div  v-for="n in cottages" :key="n" class="col-md-6 col-lg-4">
                     <div class="card bg-light">
                         <div class="card-body text-center">
-                            <img v-bind:src="'http://localhost:8180/' + n.images[0].path" class="imgCard" alt=""/>
+                            <img v-bind:src="'http://localhost:8180/api/entityImage/' + n.images[0].path" class="imgCard" alt=""/>
                             <h3 style="margin-top:5%" class="card-title mb-3">{{n.name}}</h3>
                             <p class="card-text">
                             Description: {{n.description}}<br>
@@ -145,7 +145,7 @@
                 <div  v-for="n in boats" :key="n" class="col-md-6 col-lg-4">
                     <div class="card bg-light">
                         <div class="card-body text-center">
-                            <img v-bind:src="'http://localhost:8180/' + n.images[0].path" class="imgCard" alt=""/>
+                            <img v-bind:src="'http://localhost:8180/api/entityImage/' + n.images[0].path" class="imgCard" alt=""/>
                             <h3 style="margin-top:5%" class="card-title mb-3">{{n.name}}</h3>
                             <p class="card-text">
                             Description: {{n.promotionalDescription}}<br>

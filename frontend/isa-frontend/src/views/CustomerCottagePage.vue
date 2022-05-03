@@ -211,7 +211,7 @@ export default {
   },
   methods: {
     setImg: function (image) {
-      return "http://localhost:8180/" + image.path;
+      return "http://localhost:8180/api/entityImage/" + image.path;
     },
     selectPriceItem: function(index){
       if(this.indexList.includes(index)){

@@ -48,7 +48,7 @@
             :key="a.startTime" style="border: 1px solid gray; width: 50%; margin-left:25%; margin-top: 5%;text-align:left" class="table">
     <tbody>
       <tr>
-        <td style="border:none;width:30%;" rowspan="5"><img style="width:100%;" height="205" v-bind:src="'http://localhost:8180/' + a.imagePath" alt=""/></td>
+        <td style="border:none;width:30%;" rowspan="5"><img style="width:100%;" height="205" v-bind:src="'http://localhost:8180/api/entityImage/' + a.imagePath" alt=""/></td>
         <td style="border:none;width:25%"><b>{{a.adventureName}}</b>
         </td>
         <td style="border:none;"></td>
@@ -99,7 +99,7 @@
             :key="a.startTime" style="border: 1px solid gray; width: 50%; margin-left:25%; margin-top: 5%;text-align:left" class="table">
     <tbody>
       <tr>
-        <td style="border:none;width:30%;" rowspan="5"><img style="width:100%;" height="205" v-bind:src="'http://localhost:8180/' + a.imagePath" alt=""/></td>
+        <td style="border:none;width:30%;" rowspan="5"><img style="width:100%;" height="205" v-bind:src="'http://localhost:8180/api/entityImage/' + a.imagePath" alt=""/></td>
         <td style="border:none;width:25%"><b>{{a.cottageName}}</b>
         </td>
         <td style="border:none;"></td>
@@ -150,7 +150,7 @@
             :key="a.startTime" style="border: 1px solid gray; width: 50%; margin-left:25%; margin-top: 5%;text-align:left" class="table">
     <tbody>
       <tr>
-        <td style="border:none;width:30%;" rowspan="5"><img style="width:100%;" height="205" v-bind:src="'http://localhost:8180/' + a.imagePath" alt=""/></td>
+        <td style="border:none;width:30%;" rowspan="5"><img style="width:100%;" height="205" v-bind:src="'http://localhost:8180/api/entityImage/' + a.imagePath" alt=""/></td>
         <td style="border:none;width:25%"><b>{{a.boatName}}</b>
         </td>
         <td style="border:none;"></td>

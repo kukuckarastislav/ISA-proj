@@ -95,7 +95,7 @@ export default {
             }
 
         }
-        return 'http://localhost:8180/'+imgPath;
+        return 'http://localhost:8180/api/entityImage/'+imgPath;
     },
     moreDetails: function(boat){
         this.$router.push({ path: '/boatOwnerBoat/'+encodeURIComponent(boat.name)});
