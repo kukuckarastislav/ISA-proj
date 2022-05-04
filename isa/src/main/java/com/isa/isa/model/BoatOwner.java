@@ -26,6 +26,9 @@ public class BoatOwner extends Person {
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Revision> revisions = new HashSet<Revision>();
+	
+	@Column(nullable=true)
+	private double averageGrade;
 
 
 	public String getRegistrationMotivation() {
@@ -61,6 +64,15 @@ public class BoatOwner extends Person {
 	public void setRevisions(Set<Revision> revisions) {
 		this.revisions = revisions;
 	}
+
+	public double getAverageGrade() {
+		return averageGrade;
+	}
+
+	public void setAverageGrade(double averageGrade) {
+		this.averageGrade = averageGrade;
+	}
+	
 	
 	
 }
