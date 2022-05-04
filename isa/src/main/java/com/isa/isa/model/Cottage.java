@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.isa.isa.model.enums.AdditionalServices;
+import com.isa.isa.model.termins.model.Revision;
 
 @Entity
 @Table(name="cottage")
@@ -62,6 +63,9 @@ public class Cottage {
 	private Price price;
 	
 	private int capacity;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Revision> revisions = new HashSet<Revision>();
 	
 	
 
@@ -152,6 +156,16 @@ public class Cottage {
 	public void setPrice(Price price) {
 		this.price = price;
 	}
+
+	public Set<Revision> getRevisions() {
+		return revisions;
+	}
+
+	public void setRevisions(Set<Revision> revisions) {
+		this.revisions = revisions;
+	}
+	
+	
 	
 	
 	

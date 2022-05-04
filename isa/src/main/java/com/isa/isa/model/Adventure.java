@@ -1,6 +1,7 @@
 package com.isa.isa.model;
 
 import com.isa.isa.model.enums.ReservationCancellationConditions;
+import com.isa.isa.model.termins.model.Revision;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -57,6 +58,8 @@ public class Adventure {
 	@Embedded
 	private Price price;
 
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Revision> revisions = new HashSet<Revision>();
 	
 	public Adventure() { }
 
@@ -172,4 +175,16 @@ public class Adventure {
 	public void setPrice(Price price) {
 		this.price = price;
 	}
+
+
+	public Set<Revision> getRevisions() {
+		return revisions;
+	}
+
+
+	public void setRevisions(Set<Revision> revisions) {
+		this.revisions = revisions;
+	}
+	
+	
 }

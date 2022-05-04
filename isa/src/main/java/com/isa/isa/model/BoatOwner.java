@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.termins.model.Revision;
 
 @Entity
 @Table(name="boat_owner")
@@ -22,6 +23,9 @@ public class BoatOwner extends Person {
 	
 	@Column(name="registrationMotivation", nullable=true)
 	private String registrationMotivation;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Revision> revisions = new HashSet<Revision>();
 
 
 	public String getRegistrationMotivation() {
@@ -41,4 +45,22 @@ public class BoatOwner extends Person {
 	{
 		super();
 	}
+
+	public Set<Boat> getBoates() {
+		return boates;
+	}
+
+	public void setBoates(Set<Boat> boates) {
+		this.boates = boates;
+	}
+
+	public Set<Revision> getRevisions() {
+		return revisions;
+	}
+
+	public void setRevisions(Set<Revision> revisions) {
+		this.revisions = revisions;
+	}
+	
+	
 }

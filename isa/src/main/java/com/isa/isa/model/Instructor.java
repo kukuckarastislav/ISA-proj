@@ -3,6 +3,7 @@ package com.isa.isa.model;
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.termins.model.InstructorTerms;
+import com.isa.isa.model.termins.model.Revision;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,6 +26,9 @@ public class Instructor extends Person{
 	private double averageGrade;
 
     private String biography;
+    
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Revision> revisions = new HashSet<Revision>();
 
     public String getRegistrationMotivation() {
         return registrationMotivation;
@@ -80,4 +84,14 @@ public class Instructor extends Person{
         super.setAddress(instructorDTO.getAddress());
         super.setPhoneNumber(instructorDTO.getPhoneNumber());
     }
+
+	public Set<Revision> getRevisions() {
+		return revisions;
+	}
+
+	public void setRevisions(Set<Revision> revisions) {
+		this.revisions = revisions;
+	}
+    
+    
 }

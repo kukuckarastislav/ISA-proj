@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.isa.isa.model.enums.ReservationCancellationConditions;
+import com.isa.isa.model.termins.model.Revision;
 
 @Entity
 @Table(name="boat")
@@ -57,6 +58,8 @@ public class Boat {
 	private Price price;
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<EntityImage> images = new HashSet<EntityImage>();
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Revision> revisions = new HashSet<Revision>();
 	
 	public Boat() {
 		
@@ -229,6 +232,15 @@ public class Boat {
 	public void setImages(Set<EntityImage> images) {
 		this.images = images;
 	}
+
+	public Set<Revision> getRevisions() {
+		return revisions;
+	}
+
+	public void setRevisions(Set<Revision> revisions) {
+		this.revisions = revisions;
+	}
+	
 	
 	
 	

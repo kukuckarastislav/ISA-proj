@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.enums.OwnerType;
+import com.isa.isa.model.termins.model.Revision;
 
 @Entity
 @Table(name="cottage_owner")
@@ -22,7 +23,10 @@ public class CottageOwner extends Person{
 	
 	@Column(name="registrationMotivation", nullable=true)
 	private String registrationMotivation;
-
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Revision> revisions = new HashSet<Revision>();
+	
 	public String getRegistrationMotivation() {
 		return registrationMotivation;
 	}
@@ -40,4 +44,22 @@ public class CottageOwner extends Person{
 	{
 		super();
 	}
+
+	public Set<Cottage> getCottages() {
+		return cottages;
+	}
+
+	public void setCottages(Set<Cottage> cottages) {
+		this.cottages = cottages;
+	}
+
+	public Set<Revision> getRevisions() {
+		return revisions;
+	}
+
+	public void setRevisions(Set<Revision> revisions) {
+		this.revisions = revisions;
+	}
+	
+	
 }
