@@ -49,14 +49,6 @@ public class BoatOwner extends Person {
 		super();
 	}
 
-	public Set<Boat> getBoates() {
-		return boates;
-	}
-
-	public void setBoates(Set<Boat> boates) {
-		this.boates = boates;
-	}
-
 	public Set<Revision> getRevisions() {
 		return revisions;
 	}

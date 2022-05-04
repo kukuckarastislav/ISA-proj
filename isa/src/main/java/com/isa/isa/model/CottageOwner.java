@@ -48,13 +48,6 @@ public class CottageOwner extends Person{
 		super();
 	}
 
-	public Set<Cottage> getCottages() {
-		return cottages;
-	}
-
-	public void setCottages(Set<Cottage> cottages) {
-		this.cottages = cottages;
-	}
 
 	public Set<Revision> getRevisions() {
 		return revisions;
