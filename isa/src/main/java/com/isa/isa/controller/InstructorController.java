@@ -5,6 +5,7 @@ import com.isa.isa.DTO.BiographyDTO;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
+import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,7 +59,7 @@ public class InstructorController {
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     @PutMapping("/deleteRequest")
     public ResponseEntity<Boolean> deleteRequest(@RequestBody AccountDeleteRequestFromFrontDTO reasonDTO, Principal user) {
-        return new ResponseEntity<Boolean>(accountDeleteRequestService.createAccDeleteRequest(reasonDTO, user), HttpStatus.OK);
+        return new ResponseEntity<Boolean>(accountDeleteRequestService.createAccDeleteRequest(reasonDTO, user, UserTypeISA.INSTRUCTOR), HttpStatus.OK);
     }
 
 }

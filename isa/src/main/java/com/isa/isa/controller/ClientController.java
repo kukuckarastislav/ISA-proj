@@ -1,9 +1,7 @@
 package com.isa.isa.controller;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +24,9 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestFromFrontDTO;
+import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
+import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
@@ -41,7 +42,6 @@ import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.model.BoatFastReservation;
 import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
-import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.service.BoatFastResHistoryService;
 import com.isa.isa.model.termins.service.BoatFastReservationService;
 import com.isa.isa.model.termins.service.BoatReservationService;
@@ -106,6 +106,9 @@ public class ClientController {
 	
 	@Autowired
 	private BoatFastReservationService boatFastReservationService;
+	
+	@Autowired
+	private AccountDeleteRequestService accountDeleteRequestService;
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
@@ -334,6 +337,12 @@ public class ClientController {
 		}
 		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @PutMapping("/deleteRequest")
+    public ResponseEntity<Boolean> deleteRequest(@RequestBody AccountDeleteRequestFromFrontDTO reasonDTO, Principal user) {
+        return new ResponseEntity<Boolean>(accountDeleteRequestService.createAccDeleteRequest(reasonDTO, user, UserTypeISA.CLIENT), HttpStatus.OK);
+    }
 	
 
 }

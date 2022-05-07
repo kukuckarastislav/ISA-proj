@@ -48,9 +48,9 @@ public class AccountDeleteRequestService {
 		return (ArrayList<AccountDeleteRequest>) accountDeleteRequestRepository.findAll();
     }
 
-	public Boolean createAccDeleteRequest(AccountDeleteRequestFromFrontDTO reasonDTO, Principal user) {
+	public Boolean createAccDeleteRequest(AccountDeleteRequestFromFrontDTO reasonDTO, Principal user, UserTypeISA userType) {
 		if(!reasonDTO.username.equals(user.getName())) return false;
-		AccountDeleteRequest accountDeleteRequest = new AccountDeleteRequest(user.getName(), reasonDTO.reason, UserTypeISA.INSTRUCTOR);
+		AccountDeleteRequest accountDeleteRequest = new AccountDeleteRequest(user.getName(), reasonDTO.reason, userType);
 		accountDeleteRequestRepository.saveAndFlush(accountDeleteRequest);
 		return true;
 	}

@@ -1,83 +1,106 @@
 <template>
-
+    <div style="height: 60px;"></div>
     <div class="container">
-      <div class="row align-items-center justify-content-between">
-        <div class="col p-5 align-items-center">
-          <h2>Profile</h2>
-            <br>
-            <label v-if="!isEditingPassword" class="form-label">First name:</label>
-            <label v-if="isEditingPassword" class="form-label">Current password:</label>
-            <input style="text-align:center" v-if="isEditing && !isEditingPassword" v-model="profile.firstName" type="text" placeholder="" class="form-control">
-            <span style = "cursor: default;" v-if="isViewing && !isEditingPassword" class="form-control">{{profile.firstName}}</span>
-            <input style="text-align:center" v-if="isEditingPassword" v-model="passwordData.oldPassword" type="password" placeholder="" class="form-control">
-            <br>
-            <label v-if="!isEditingPassword" class="form-label">Last name</label>
-            <label v-if="isEditingPassword" class="form-label">New password:</label>
-            <input style="text-align:center" v-if="isEditing  && !isEditingPassword" v-model="profile.lastName" type="text" placeholder="" class="form-control">
-            <span style = "cursor: default;" v-if="isViewing  && !isEditingPassword" class="form-control">{{profile.lastName}}</span>
-            <input style="text-align:center" v-if="isEditingPassword" v-model="passwordData.newPassword" type="password" placeholder="" class="form-control">
-            <br>
-            <label v-if="!isEditingPassword" class="form-label">Phone number</label>
-            <label v-if="isEditingPassword" class="form-label">New password repeated:</label>
-            <input style="text-align:center" v-if="isEditing  && !isEditingPassword" v-model="profile.phoneNumber" type="text" placeholder="" class="form-control">
-            <span style = "cursor: default;" v-if="isViewing  && !isEditingPassword" class="form-control">{{profile.phoneNumber}}</span>
-             <input style="text-align:center" v-if="isEditingPassword" v-model="passwordData.newPasswordRepeated" type="password" placeholder="" class="form-control">
-            <br>
-            <label v-if="!isEditingPassword" for="exampleInputEmail1" class="form-label">Email address</label>
-            <span v-if="!isEditingPassword" style = "cursor: default;"  class="form-control">{{profile.email}}</span>
-            <br><br>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5">
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="form-label">First name</label>
+                            <input :disabled="!isEditingProfile" v-model="profile.firstName" type="text" placeholder="" class="form-control">
+                            <br>
+                            <label class="form-label">Last name</label>
+                            <input :disabled="!isEditingProfile" v-model="profile.lastName" type="text" placeholder="" class="form-control">
+                            <br>
+                            <label class="form-label">Phone number</label>
+                            <input :disabled="!isEditingProfile" v-model="profile.phoneNumber" type="text" placeholder="" class="form-control">
+                            <br>
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input disabled v-model="profile.email" type="email" placeholder="youremail@gmail.com" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <br><br>
 
-            <label v-if="!isEditingPassword" class="form-label">Address</label>
-            <div class="row justify-content-between">
-              <div class="col">
-                 <label v-if="!isEditingPassword" class="form-label">Country</label>
-                <input style="text-align:center" type="text" v-if="isEditing  && !isEditingPassword" v-model="profile.address.country" class="form-control" placeholder="Country">
-                <span style = "cursor: default;" v-if="isViewing  && !isEditingPassword" class="form-control">{{profile.address.country}}</span>
-                <br>
-                <label v-if="!isEditingPassword" class="form-label">City</label>
-                <input style="text-align:center" type="text" v-if="isEditing  && !isEditingPassword" v-model="profile.address.city" class="form-control" placeholder="City">
-                <span style = "cursor: default;" v-if="isViewing  && !isEditingPassword" class="form-control">{{profile.address.city}}</span>
-                <br>
-                <label v-if="!isEditingPassword" class="form-label">Street</label>
-                <input style="text-align:center" type="text" v-if="isEditing  && !isEditingPassword" v-model="profile.address.street" class="form-control" placeholder="street">
-                <span style = "cursor: default;" v-if="isViewing  && !isEditingPassword" class="form-control">{{profile.address.street}}</span>
-              </div>
-              <div class="col">
-                <label v-if="!isEditingPassword" class="form-label">Number</label>
-                <input style="text-align:center" type="text" v-if="isEditing  && !isEditingPassword" v-model="profile.address.number" class="form-control" placeholder="number">
-                <span style = "cursor: default;" v-if="isViewing  && !isEditingPassword" class="form-control">{{profile.address.number}}</span>
-                <br>
-                <label v-if="!isEditingPassword" class="form-label">Latitude</label>
-                <input style="text-align:center" type="number" v-if="isEditing  && !isEditingPassword" v-model="profile.address.latitude" class="form-control" placeholder="latitude">
-                <span style = "cursor: default;" v-if="isViewing  && !isEditingPassword" class="form-control">{{profile.address.latitude}}</span>
-                <br>
-                <label v-if="!isEditingPassword" class="form-label">Longitude</label>
-                <input style="text-align:center" type="number" v-if="isEditing  && !isEditingPassword" v-model="profile.address.longitude" class="form-control" placeholder="longitude">
-                <span style = "cursor: default;" v-if="isViewing  && !isEditingPassword" class="form-control">{{profile.address.longitude}}</span>
-              </div>
+                            <label class="form-label">Address</label>
+                            <div class="row justify-content-between">
+                            <div class="col">
+                                <input :disabled="!isEditingProfile" type="text" v-model="profile.address.country" class="form-control" placeholder="Country">
+                                <br>
+                                <input :disabled="!isEditingProfile" type="text" v-model="profile.address.city" class="form-control" placeholder="City">
+                                <br>
+                                <input :disabled="!isEditingProfile" type="text" v-model="profile.address.street" class="form-control" placeholder="street">
+                            </div>
+                            <div class="col">
+                                <input :disabled="!isEditingProfile" type="text" v-model="profile.address.number" class="form-control" placeholder="number">
+                                <br>
+                                <input :disabled="!isEditingProfile" type="number" v-model="profile.address.latitude" class="form-control" placeholder="latitude">
+                                <br>
+                                <input :disabled="!isEditingProfile" type="number" v-model="profile.address.longitude" class="form-control" placeholder="longitude">
+                            </div>
+                            </div>
+
+                            <br>
+                            <div class="mapaTODO">OVDE CE BITI MAPA</div>
+                            <br>
+
+                            <div class="d-flex justify-content-center">
+                                <button v-if="!isEditingProfile" v-on:click="editProfile()" class="btn btn-primary m-1">Edit Informations</button>
+                                <button v-if="isEditingProfile" v-on:click="cancelEditProfile()" class="btn btn-danger m-1">Cancel</button>
+                                <button v-if="isEditingProfile" v-on:click="saveEditProfile()" class="btn btn-primary m-1">Save</button>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                    <br>
+
+                    <!-- Izmena passworda -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div v-if="isEditingPassword">
+                                <input v-model="passwordData.oldPassword" type="password" placeholder="Your old password" class="form-control"><br>
+                                <input v-model="passwordData.newPassword" type="password" placeholder="Your new password" class="form-control"><br>
+                                <input v-model="passwordData.newPasswordRepeated" type="password" placeholder="Repeat Your new password" class="form-control" v-bind:class="{ 'is-invalid': !newPassEqual() }"><br>
+                            </div>
+                    
+                            <div class="d-flex justify-content-center">
+                                <button v-if="!isEditingPassword" v-on:click="editPassword()" class="btn btn-primary m-1">Change password</button>
+                                <button v-if="isEditingPassword" v-on:click="cancelEditPassword()" class="btn btn-danger m-1">Cancel</button>
+                                <button v-if="isEditingPassword" v-on:click="saveEditPassword()" class="btn btn-primary m-1">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br> <br> <br>
+
+                    <!-- Brisanje profila -->
+                    <div class="card border border-danger">
+                        <div class="card-body border border-danger">
+                            <textarea v-if="isDeletingAcc" class="form-control mb-2" v-model="deleteRequestMessage" rows="4"></textarea>
+                            <div class="d-flex justify-content-center">
+                                <button v-if="!isDeletingAcc" v-on:click="deleteAcc()" class="btn btn-danger m-1">Delete My Account</button>
+                                <button v-if="isDeletingAcc" v-on:click="cancelDeleteAcc()" class="btn btn-light m-1">Cancel</button>
+                                <button v-if="isDeletingAcc" v-on:click="sendDeleteAccReq()" class="btn btn-danger m-1">Delete My Account</button>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    
+                      
+
+
+
+                </div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5">
+                    <!-- Velika slika tj ilustracija -->
+                    <img src="../assets/undraw_certificate_re_yadi.svg" class="img-fluid" />
+                    <br> <br> <br> 
+
+                </div>
             </div>
-
-           
-
-          
-            
-            
-
-          
-
-            <br><br><br>
-            <button v-if="isViewing && !isEditingPassword" type="button" v-on:click="changeProfile" class="btn btn-primary">Change profile</button>
-            <button v-if="isEditing && !isEditingPassword" type="button" v-on:click="saveChanges" class="btn btn-primary">Save changes</button>
-            <button v-if="isEditingPassword" type="button" v-on:click="savePasswordChanges" class="btn btn-primary">Save changes</button>
-            <br><br><br>
-            <button v-if="isViewing && !isEditingPassword" type="button" v-on:click="changePassword" class="btn btn-primary">Change password</button>
-            <button v-if="isEditing && !isEditingPassword" type="button" v-on:click="discardChanges" class="btn btn-primary">Discard changes</button>
-            <button v-if="isEditingPassword" type="button" v-on:click="discardPasswordChanges" class="btn btn-primary">Discard changes</button>
-            
-
         </div>
         
-      </div>
+
     </div>
 
 </template>
@@ -91,119 +114,133 @@ export default {
   },
   data: function(){
     return {
-     profile: {
-        email: '',
-        password: '',
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        address: {
-          country: '',
-          city: '',
-          street: '',
-          number: '',
-          latitude: 0,
-          longitude: 0
-        },  
-      },
-      isEditing: false,
-			isViewing: true,
-      isEditingPassword: false,
-      passwordData:{
-          oldPassword: '',
-          newPassword: '',
-          newPasswordRepeated: ''
-      },
-      loginData: {
-        username: "",
-        password: "",
-      }
-     
-    }
-  },
-  methods: {
-     changeProfile: function(){
-       this.isEditing = true;
-       this.isViewing = false;
-    },
-    discardChanges: function(){
-      axios.defaults.headers.common["Authorization"] =
-                "Bearer " + window.sessionStorage.getItem("jwt");  
-     axios
-          .get('http://localhost:8180/api/client/profileInfo',this.myConfig)
-          .then(response => {this.profile=response.data
-                  this.isViewing = true;
-                  this.isEditing = false;
-          }).catch(err => {
-              alert('DOSLO JE DO GRESKE')
-          }); 
-      
-    },
-    saveChanges: function(){
-      axios.defaults.headers.common["Authorization"] =
-                "Bearer " + window.sessionStorage.getItem("jwt");  
-     axios
-          .put('http://localhost:8180/api/client/updateProfile',this.profile,this.myConfig)
-          .then(response => {this.profile=response.data
-                  this.isViewing = true;
-                  this.isEditing = false;
-          }).catch(err => {
-              alert('DOSLO JE DO GRESKE')
-          }); 
-      
-    },
-    changePassword : function(){
-      this.isEditingPassword = true;
-    },
-    discardPasswordChanges: function(){
-      this.passwordData.newPassword = '';
-      this.passwordData.oldPassword = '';
-      this.passwordData.newPasswordRepeated = '';
-      this.isEditingPassword = false;
-    },
-    savePasswordChanges: function(){
-      axios.defaults.headers.common["Authorization"] =
-                "Bearer " + window.sessionStorage.getItem("jwt");  
-     axios
-          .put('http://localhost:8180/api/client/updatePassword',this.passwordData,this.myConfig)
-          .then(response => {
-                  if (response) {
-                  /*this.loginData.username = this.profile.email;
-                  this.loginData.password = this.passwordData.newPassword;
-                  this.profile.password = this.passwordData.newPassword;
-                    axios
-                        .post("http://localhost:8180/auth/login", this.loginData)
-                        .then((response) =>{
-                          window.sessionStorage.setItem("jwt", response.data.accessToken)
-                          window.sessionStorage.setItem("role", response.data.role)
+        isEditingProfile: false,
+        profile: {
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            phoneNumber: '',
+            address: {
+                country: '',
+                city: '',
+                street: '',
+                number: '',
+                latitude: 0,
+                longitude: 0
+            },
+        },
+        copyProfile: {},
 
-                          alert('Uspesno promenjena lozinka')
-                        });*/
-                        window.sessionStorage.clear();
-                        this.$router.push('/');
-                  alert('Uspesno promenjena lozinka');
-                  }
-                  else alert('DOSLO JE DO GRESKE')
-                  this.isEditingPassword = false;
-          }).catch(err => {
-              alert('DOSLO JE DO GRESKE')
-          }); 
+        
+        isEditingPassword: false,
+        passwordData:{
+            oldPassword: '',
+            newPassword: '',
+            newPasswordRepeated: ''
+        },
+
+        isDeletingAcc: false,
+        deleteRequestMessage: '',
     }
   },
   mounted: function(){
-      axios.defaults.headers.common["Authorization"] =
-                "Bearer " + window.sessionStorage.getItem("jwt");  
-     axios
-          .get('http://localhost:8180/api/client/profileInfo',this.myConfig)
-          .then(response => this.profile=response.data).catch(err => {
+    
+  },
+  mounted: function(){
+      this.loadInformation();
+  },
+  methods: {
+      loadInformation: function(){
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.get('http://localhost:8180/api/client/profileInfo')
+            .then(response => {this.profile=response.data;}).catch(err => {alert('DOSLO JE DO GRESKE')}); 
+      },
+      editProfile: function(){
+          // Najednostavniji nacin da se uradi Deep-Copy
+          this.copyProfile = JSON.parse(JSON.stringify(this.profile));
+          this.isEditingProfile = true;
+      },
+      cancelEditProfile: function(){
+          this.profile = this.copyProfile;
+          this.isEditingProfile = false;
+      },
+      saveEditProfile: function(){
+          this.isEditingProfile = false;
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.put('http://localhost:8180/api/client/updateProfile',this.profile).then(response => 
+            {this.profile=response.data}).catch(err => {alert('DOSLO JE DO GRESKE')}); 
+      },
+      editPassword: function(){
+          this.isEditingPassword = true;
+      },
+      cancelEditPassword: function(){
+          this.passwordData.oldPassword = '';
+          this.passwordData.newPassword = '';
+          this.passwordData.newPasswordRepeated = '';
+          this.isEditingPassword = false;
+      },
+      saveEditPassword: function(){
+          this.isEditingPassword = false;
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+          axios.put('http://localhost:8180/api/client/updatePassword',this.passwordData)
+          .then(response => {
+                  if (response.data) {
+                        window.sessionStorage.clear();
+                        this.$router.push('/');
+                        alert('Uspesno promenjena lozinka');
+                  }
+                  else 
+                    alert('DOSLO JE DO GRESKE')
+          }).catch(err => {
               alert('DOSLO JE DO GRESKE')
-          });    
+          }); 
+      },
+      newPassEqual: function(){
+          return this.passwordData.newPassword === this.passwordData.newPasswordRepeated;
+      },
+      deleteAcc: function(){
+          this.isDeletingAcc = true;
+      },
+      cancelDeleteAcc: function(){
+          this.isDeletingAcc = false;
+          this.deleteRequestMessage = '';
+      },
+      sendDeleteAccReq: function(){
+          this.isDeletingAcc = false;
+          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+          axios.put('http://localhost:8180/api/client/deleteRequest',{reason: this.deleteRequestMessage, username: this.profile.email})
+          .then(response => {
+                  if (response) {
+                        window.sessionStorage.clear();
+                        this.$router.push('/');
+                        alert('Uspesno poslat zahtev za brisanje');
+                  }
+                  else 
+                    alert('DOSLO JE DO GRESKE')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          }); 
+      }
+
   }
 }
 </script>
 
 
 <style scoped>
+
+.tabelaProfila{
+    font-size: 24px;
+}
+
+.mapaTODO{
+  
+  width: 100%;
+  height: 200px;
+  background-color: dimgrey;
+  border-radius: 10px;
+}
 
 
 </style>

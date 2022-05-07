@@ -231,7 +231,7 @@ export default {
           axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
           axios.put('http://localhost:8180/api/instructor/updatePassword',this.passwordData)
           .then(response => {
-                  if (response) {
+                  if (response.data) {
                         window.sessionStorage.clear();
                         this.$router.push('/');
                         alert('Uspesno promenjena lozinka');
