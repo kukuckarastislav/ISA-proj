@@ -9,6 +9,8 @@ import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
 import com.isa.isa.repository.ClientRepository;
@@ -86,5 +88,11 @@ public class BoatOwnerService {
 		user.setPassword(owner.getPassword());
 		userRepository.save(user);
 		return true;
+	}
+	
+	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+		BoatOwner boatOwner = boatOwnerRepository.findById(revisionClientDTO.getOverseerId()).get();
+		boatOwner.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getOverseerGrade(),revisionClientDTO.getOverseerComment()));
+		boatOwnerRepository.saveAndFlush(boatOwner);
 	}
 }

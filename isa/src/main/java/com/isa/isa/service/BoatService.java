@@ -16,6 +16,8 @@ import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
+import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.model.termins.service.BoatFastReservationService;
 import com.isa.isa.model.termins.service.BoatReservationService;
 import com.isa.isa.model.termins.service.BoatTermService;
@@ -158,5 +160,11 @@ public class BoatService {
 			}
 		}
 		return true;
+	}
+	
+	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+		Boat boat = boatRepository.findById(revisionClientDTO.getEntityId()).get();
+		boat.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getEntityGrade(),revisionClientDTO.getEntityComment()));
+		boatRepository.saveAndFlush(boat);
 	}
 }

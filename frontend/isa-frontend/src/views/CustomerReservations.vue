@@ -69,6 +69,7 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
+        <td  v-else-if="HasPassed(a)" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a,'adventure')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelAdventure(a)">Cancel</button></td>
         </tr>
@@ -120,6 +121,7 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
+        <td  v-else-if="HasPassed(a)" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a,'cottage')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelCottage(a)">Cancel</button></td>
         </tr>
@@ -171,6 +173,7 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
+        <td  v-else-if="HasPassed(a)" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a, 'boat')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelBoat(a)">Cancel</button></td>
         </tr>
@@ -195,6 +198,12 @@
     </tbody>
   </table>
   </div>
+   <CustomerReviewModal
+      v-show="isModalVisible"
+      @close="closeModal"
+      v-bind:entity="selectedEntity"
+      v-bind:entityType="entityType"
+    />
 </div>
 
 </template>
@@ -202,10 +211,11 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import CustomerReviewModal from '@/components/CustomerReviewModal.vue';
 export default {
   name: 'CustomerReservations',
   components: {
-    
+    CustomerReviewModal
   },
    data: function(){
     return {
@@ -217,7 +227,10 @@ export default {
       boats: [],
       isFetching: true,
       showFilters: false,
-      checked: false
+      checked: false,
+      isModalVisible: false,
+      selectedEntity: {},
+      entityType: ''
     }
   },
   mounted() {
@@ -303,7 +316,7 @@ export default {
                                                 });
                                     }  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
                                         this.cottages.sort(function (a, b) {
-                                            console.log(new Date(a.startTime))
+                                            //console.log(new Date(a.startTime))
                                               return (new Date(a.startTime))-(new Date(b.startTime));
                                                 });
                                     } else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
@@ -354,7 +367,7 @@ export default {
                                                 });
                                     }  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
                                         this.boats.sort(function (a, b) {
-                                            console.log(new Date(a.startTime))
+                                            //console.log(new Date(a.startTime))
                                               return (new Date(a.startTime))-(new Date(b.startTime));
                                                 });
                                     } else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
@@ -403,7 +416,7 @@ export default {
                                                 });
                                     }  else if(this.showFilters && this.sortBy==1 && this.sortInOrder==1){
                                         this.adventures.sort(function (a, b) {
-                                            console.log(new Date(a.startTime))
+                                            //console.log(new Date(a.startTime))
                                               return (new Date(a.startTime))-(new Date(b.startTime));
                                                 });
                                     } else if(this.showFilters && this.sortBy=="1" && this.sortInOrder=="2"){
@@ -426,8 +439,14 @@ export default {
         LessThanthreeDays:function (adv) {
             var difference = (new Date(adv.startTime))-new Date();
             var dayDiff = difference / (1000 * 60 * 60 * 24)
-            console.log(dayDiff)
+            //console.log(dayDiff)
             if(dayDiff < 3) return true;
+            return false;
+        },
+        HasPassed:function(adv){
+            var difference = (new Date(adv.endTime))-new Date();
+            //console.log(difference)
+            if(difference < 0) return true;
             return false;
         },
         cancelAdventure:function(adv){
@@ -466,7 +485,15 @@ export default {
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           });
-        }
+        },
+      showModal(selEntity, typeEnt) {
+        this.selectedEntity = selEntity;
+        this.entityType = typeEnt;
+        this.isModalVisible = true;
+      },
+      closeModal() {
+        this.isModalVisible = false;
+      },
    }
 }
 </script>

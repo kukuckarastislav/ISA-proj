@@ -7,6 +7,8 @@ import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.model.termins.service.InstructorReservationService;
 import com.isa.isa.model.termins.service.InstructorTermService;
@@ -131,5 +133,11 @@ public class InstructorService {
 		if (!instructorReservationService.isInstructorFree(dto)) return false;
 		if (!instructorFastReservationService.isInstructorFree(dto)) return false;
 		return true;
+	}
+	
+	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+		Instructor instructor = instructorRepository.findById(revisionClientDTO.getOverseerId()).get();
+		instructor.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getOverseerGrade(),revisionClientDTO.getOverseerComment()));
+		instructorRepository.saveAndFlush(instructor);
 	}
 }

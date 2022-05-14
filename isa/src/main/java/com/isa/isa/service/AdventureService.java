@@ -5,6 +5,8 @@ import com.isa.isa.DTO.AdventureDTO;
 import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.EntityImageDTO;
 import com.isa.isa.model.*;
+import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,5 +116,11 @@ public class AdventureService {
 
         return new AdventureViewDTO(adventure, instructor.getEmail(), instructor);
     }
+    
+    public void AddRevision(RevisionClientDTO revisionClientDTO) {
+		Adventure adventure = adventureRepository.findById(revisionClientDTO.getEntityId()).get();
+		adventure.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getEntityGrade(),revisionClientDTO.getEntityComment()));
+		adventureRepository.saveAndFlush(adventure);
+	}
 
 }

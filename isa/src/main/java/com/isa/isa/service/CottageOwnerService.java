@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
 import com.isa.isa.repository.ClientRepository;
@@ -88,6 +91,12 @@ public class CottageOwnerService {
 		user.setPassword(owner.getPassword());
 		userRepository.save(user);
 		return true;
+	}
+	
+	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+		CottageOwner cottageOwner = cottageOwnerRepository.findById(revisionClientDTO.getOverseerId()).get();
+		cottageOwner.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getOverseerGrade(),revisionClientDTO.getOverseerComment()));
+		cottageOwnerRepository.saveAndFlush(cottageOwner);
 	}
 	
 }

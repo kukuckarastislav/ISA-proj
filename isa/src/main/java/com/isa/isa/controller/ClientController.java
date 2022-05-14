@@ -39,6 +39,7 @@ import com.isa.isa.model.termins.DTO.ClientMadeReservationsBoatDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.DTO.RevisionClientDTO;
 import com.isa.isa.model.termins.model.BoatFastReservation;
 import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
@@ -53,8 +54,10 @@ import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.model.termins.service.InstructorReservationService;
 import com.isa.isa.security.service.EmailService;
 import com.isa.isa.service.AdventureService;
+import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.BoatService;
 import com.isa.isa.service.ClientService;
+import com.isa.isa.service.CottageOwnerService;
 import com.isa.isa.service.CottageService;
 import com.isa.isa.service.InstructorService;
 
@@ -109,6 +112,12 @@ public class ClientController {
 	
 	@Autowired
 	private AccountDeleteRequestService accountDeleteRequestService;
+	
+	@Autowired
+	private CottageOwnerService cottageOwnerService;
+	
+	@Autowired
+	private BoatOwnerService boatOwnerService;
 	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
@@ -344,5 +353,30 @@ public class ClientController {
         return new ResponseEntity<Boolean>(accountDeleteRequestService.createAccDeleteRequest(reasonDTO, user, UserTypeISA.CLIENT), HttpStatus.OK);
     }
 	
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/addRevision")
+	public ResponseEntity<Boolean> addRevision(@RequestBody RevisionClientDTO revisionClientDTO, Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		revisionClientDTO.setUserId(client.getId());
+		if(revisionClientDTO.getType().equals("cottage")) {
+			Cottage cottage = cottageService.getCottageWithOwner(revisionClientDTO.getEntityId());
+			revisionClientDTO.setOverseerId(cottage.getOwner().getId());
+			cottageService.AddRevision(revisionClientDTO);
+			cottageOwnerService.AddRevision(revisionClientDTO);
+		} else if(revisionClientDTO.getType().equals("boat")) {
+			Boat boat = boatService.getBoatWithOwner(revisionClientDTO.getEntityId());
+			revisionClientDTO.setOverseerId(boat.getOwner().getId());
+			boatService.AddRevision(revisionClientDTO);
+			boatOwnerService.AddRevision(revisionClientDTO);
+		} else {
+			Adventure adventure = adventureService.getAdventureWithInstructor(revisionClientDTO.getEntityId());
+			revisionClientDTO.setOverseerId(adventure.getInstructor().getId());
+			adventureService.AddRevision(revisionClientDTO);
+			instructorService.AddRevision(revisionClientDTO);
+		}
+		
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
 
 }

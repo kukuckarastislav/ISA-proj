@@ -16,7 +16,24 @@ public class Revision {
 	private int userId;
 	private int grade;
 	private String comment;
-	private int reservationId;
+	
+	
+	
+	public Revision() {
+		super();
+	}
+
+
+
+	public Revision(int userId, int grade, String comment) {
+		super();
+		this.statusOfRevision = StatusOfRevision.PENDING;
+		this.userId = userId;
+		this.grade = grade;
+		this.comment = comment;
+	}
+	
+	
 	
 
 }

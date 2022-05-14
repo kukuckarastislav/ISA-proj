@@ -17,6 +17,8 @@ import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.model.termins.service.CottageFastReservationService;
 import com.isa.isa.model.termins.service.CottageReservationService;
 import com.isa.isa.model.termins.service.CottageTermService;
@@ -133,5 +135,11 @@ public class CottageService {
 		if (!cottageReservationService.isCottageFree(dto)) return false;
 		if (!cottageFastReservationService.isCottageFree(dto)) return false;
 		return true;
+	}
+	
+	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+		Cottage cottage = cottageRepository.findById(revisionClientDTO.getEntityId()).get();
+		cottage.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getEntityGrade(),revisionClientDTO.getEntityComment()));
+		cottageRepository.saveAndFlush(cottage);
 	}
 }
