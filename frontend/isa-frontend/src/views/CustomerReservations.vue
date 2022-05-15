@@ -69,7 +69,7 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
-        <td  v-else-if="HasPassed(a)" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a,'adventure')">Review</button></td>
+        <td  v-else-if="HasPassed(a) && a.isRevised==false" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a,'adventure')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelAdventure(a)">Cancel</button></td>
         </tr>
@@ -121,7 +121,7 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
-        <td  v-else-if="HasPassed(a)" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a,'cottage')">Review</button></td>
+        <td  v-else-if="HasPassed(a) && a.isRevised==false" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a,'cottage')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelCottage(a)">Cancel</button></td>
         </tr>
@@ -173,7 +173,7 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
-        <td  v-else-if="HasPassed(a)" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a, 'boat')">Review</button></td>
+        <td  v-else-if="HasPassed(a) && a.isRevised==false" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a, 'boat')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelBoat(a)">Cancel</button></td>
         </tr>

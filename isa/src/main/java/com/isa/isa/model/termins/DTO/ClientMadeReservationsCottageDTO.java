@@ -17,14 +17,18 @@ public class ClientMadeReservationsCottageDTO {
     private String status;
     private Boolean isFast;
     private int reservationId;
+    private Boolean isRevised;
      
 	public ClientMadeReservationsCottageDTO() {
 	
 	}
 
+	
+
+
 	public ClientMadeReservationsCottageDTO(LocalDateTime startTime, LocalDateTime endTime, int cottageId,
 			Set<ItemPrice> additionalServices, double price, String cottageName, String imagePath, String status,
-			Boolean isFast, int reservationId) {
+			Boolean isFast, int reservationId, Boolean isRevised) {
 		super();
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -36,7 +40,10 @@ public class ClientMadeReservationsCottageDTO {
 		this.status = status;
 		this.isFast = isFast;
 		this.reservationId = reservationId;
+		this.isRevised = isRevised;
 	}
+
+
 
 
 	public LocalDateTime getStartTime() {
@@ -114,6 +121,14 @@ public class ClientMadeReservationsCottageDTO {
 
 	public void setReservationId(int reservationId) {
 		this.reservationId = reservationId;
+	}
+
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
 	}    
 	
 	

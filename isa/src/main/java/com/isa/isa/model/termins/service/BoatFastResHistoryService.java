@@ -26,7 +26,7 @@ public class BoatFastResHistoryService {
     	List<BoatFastResHistory> boatFastResHistories = boatFastResHistoryRepository.findAllByClientId(clientId);
     	for(BoatFastResHistory resHistory:boatFastResHistories) {
     		List<EntityImage>images = new ArrayList<>(resHistory.getBoatFastReservation().getBoat().getImages());
-    		retVal.add(new ClientMadeReservationsBoatDTO(resHistory.getBoatFastReservation().getStartTime(),resHistory.getBoatFastReservation().getEndTime(),resHistory.getBoatFastReservation().getBoat().getId(),resHistory.getBoatFastReservation().getAdditionalServices(),resHistory.getBoatFastReservation().getPrice(),resHistory.getBoatFastReservation().getBoat().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId()));
+    		retVal.add(new ClientMadeReservationsBoatDTO(resHistory.getBoatFastReservation().getStartTime(),resHistory.getBoatFastReservation().getEndTime(),resHistory.getBoatFastReservation().getBoat().getId(),resHistory.getBoatFastReservation().getAdditionalServices(),resHistory.getBoatFastReservation().getPrice(),resHistory.getBoatFastReservation().getBoat().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId(),resHistory.getIsRevised()));
     	}
     	return retVal;
     }

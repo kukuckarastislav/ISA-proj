@@ -28,7 +28,7 @@ public class InsFastResHistoryService {
     	List<InsFastResHistory> insFastResHistories = insFastResHistoryRepository.findAllByClientId(clientId);
     	for(InsFastResHistory resHistory:insFastResHistories) {
     		List<EntityImage>images = new ArrayList<>(resHistory.getInstructorFastReservation().getAdventure().getImages());
-    		retVal.add(new ClientMadeReservationsAdventureDTO(resHistory.getInstructorFastReservation().getStartTime(),resHistory.getInstructorFastReservation().getEndTime(),resHistory.getInstructorFastReservation().getAdventure().getId(),resHistory.getInstructorFastReservation().getAdditionalServices(),resHistory.getInstructorFastReservation().getPrice(),resHistory.getInstructorFastReservation().getAdventure().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId()));
+    		retVal.add(new ClientMadeReservationsAdventureDTO(resHistory.getInstructorFastReservation().getStartTime(),resHistory.getInstructorFastReservation().getEndTime(),resHistory.getInstructorFastReservation().getAdventure().getId(),resHistory.getInstructorFastReservation().getAdditionalServices(),resHistory.getInstructorFastReservation().getPrice(),resHistory.getInstructorFastReservation().getAdventure().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId(),resHistory.getIsRevised()));
     	}
     	return retVal;
     }

@@ -26,7 +26,7 @@ public class CottageFastResHistoryService {
     	List<CottageFastResHistory> cottageFastResHistories = cottageFastResHistoryRepository.findAllByClientId(clientId);
     	for(CottageFastResHistory resHistory:cottageFastResHistories) {
     		List<EntityImage>images = new ArrayList<>(resHistory.getCottageFastReservation().getCottage().getImages());
-    		retVal.add(new ClientMadeReservationsCottageDTO(resHistory.getCottageFastReservation().getStartTime(),resHistory.getCottageFastReservation().getEndTime(),resHistory.getCottageFastReservation().getCottage().getId(),resHistory.getCottageFastReservation().getAdditionalServices(),resHistory.getCottageFastReservation().getPrice(),resHistory.getCottageFastReservation().getCottage().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId()));
+    		retVal.add(new ClientMadeReservationsCottageDTO(resHistory.getCottageFastReservation().getStartTime(),resHistory.getCottageFastReservation().getEndTime(),resHistory.getCottageFastReservation().getCottage().getId(),resHistory.getCottageFastReservation().getAdditionalServices(),resHistory.getCottageFastReservation().getPrice(),resHistory.getCottageFastReservation().getCottage().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId(),resHistory.getIsRevised()));
     	}
     	return retVal;
     }

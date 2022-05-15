@@ -92,6 +92,8 @@ export default {
       axios
           .post('http://localhost:8180/api/client/addRevision', tempReview)
           .then(response => {alert('Uspesno ste ostavili komentar.')
+          this.entity.isRevised = true;
+          this.$emit('close');
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           });

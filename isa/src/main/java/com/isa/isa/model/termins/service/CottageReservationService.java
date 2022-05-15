@@ -72,7 +72,7 @@ public class CottageReservationService {
 		List<ClientMadeReservationsCottageDTO>retVal = new ArrayList<ClientMadeReservationsCottageDTO>();
     	for(CottageReservations reservation:cottageReservations) {
     		List<EntityImage>images = new ArrayList<> (reservation.getCottage().getImages());
-    		retVal.add(new ClientMadeReservationsCottageDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getCottage().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getCottage().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId()));
+    		retVal.add(new ClientMadeReservationsCottageDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getCottage().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getCottage().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId(),reservation.getIsRevised()));
     	}
     	return retVal;
     }
