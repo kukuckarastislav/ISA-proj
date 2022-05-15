@@ -117,7 +117,7 @@ public class AdventureService {
         return new AdventureViewDTO(adventure, instructor.getEmail(), instructor);
     }
     
-    public void AddRevision(RevisionClientDTO revisionClientDTO) {
+    public void addRevision(RevisionClientDTO revisionClientDTO) {
 		Adventure adventure = adventureRepository.findById(revisionClientDTO.getEntityId()).get();
 		adventure.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getEntityGrade(),revisionClientDTO.getEntityComment()));
 		adventureRepository.saveAndFlush(adventure);

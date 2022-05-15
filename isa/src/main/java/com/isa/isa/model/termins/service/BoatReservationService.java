@@ -105,4 +105,10 @@ public class BoatReservationService {
     	}
     }
 	
+	public void addRevision(int reservationId) {
+		 BoatReservations boatReservations = boatReservationRepository.findById(reservationId).get();
+		 boatReservations.setIsRevised(true);
+		 boatReservationRepository.saveAndFlush(boatReservations);
+	 }
+	
 }

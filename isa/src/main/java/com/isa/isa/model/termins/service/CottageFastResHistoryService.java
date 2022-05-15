@@ -52,4 +52,10 @@ public class CottageFastResHistoryService {
 		 if(cottageFastResHistory==null) return false;
 	    	return true;
 	    }
+	 
+	 public void addRevision(int reservationId) {
+		 CottageFastResHistory cottageFastResHistory = cottageFastResHistoryRepository.findById(reservationId).get();
+		 cottageFastResHistory.setIsRevised(true);
+		 cottageFastResHistoryRepository.saveAndFlush(cottageFastResHistory);
+	 }
 }

@@ -85,4 +85,10 @@ public class CottageReservationService {
     		cottageReservationRepository.save(cottageReservations);
     	}
     }
+	
+	 public void addRevision(int reservationId) {
+		 CottageReservations cottageReservations = cottageReservationRepository.findById(reservationId).get();
+		 cottageReservations.setIsRevised(true);
+		 cottageReservationRepository.saveAndFlush(cottageReservations);
+	 }
 }

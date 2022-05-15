@@ -52,4 +52,10 @@ public class BoatFastResHistoryService {
     		boatFastResHistoryRepository.save(boatFastResHistory);
     	}
     }
+	
+	public void addRevision(int reservationId) {
+		 BoatFastResHistory boatFastResHistory = boatFastResHistoryRepository.findById(reservationId).get();
+		 boatFastResHistory.setIsRevised(true);
+		 boatFastResHistoryRepository.saveAndFlush(boatFastResHistory);
+	 }
 }

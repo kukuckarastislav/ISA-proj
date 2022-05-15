@@ -2,6 +2,7 @@ package com.isa.isa.model.termins.DTO;
 
 public class RevisionClientDTO {
 	
+	private Boolean isFast;
 	private int reservationId;
 	private String type;
 	private int entityId;
@@ -15,31 +16,16 @@ public class RevisionClientDTO {
 	
 	
 	
+	
 	public RevisionClientDTO() {
 		super();
 	}
 
 
-
-
-	public RevisionClientDTO(int reservationId, String type, int entityId, String entityComment, int entityGrade,
-			String overseerComment, int overseerGrade) {
+	public RevisionClientDTO(Boolean isFast, int reservationId, String type, int entityId, String entityComment,
+			int entityGrade, String overseerComment, int overseerGrade, int userId, int overseerId) {
 		super();
-		this.reservationId = reservationId;
-		this.type = type;
-		this.entityId = entityId;
-		this.entityComment = entityComment;
-		this.entityGrade = entityGrade;
-		this.overseerComment = overseerComment;
-		this.overseerGrade = overseerGrade;
-	}
-
-
-
-
-	public RevisionClientDTO(int reservationId, String type, int entityId, String entityComment, int entityGrade,
-			String overseerComment, int overseerGrade, int userId) {
-		super();
+		this.isFast = isFast;
 		this.reservationId = reservationId;
 		this.type = type;
 		this.entityId = entityId;
@@ -48,10 +34,8 @@ public class RevisionClientDTO {
 		this.overseerComment = overseerComment;
 		this.overseerGrade = overseerGrade;
 		this.userId = userId;
+		this.overseerId = overseerId;
 	}
-	
-	
-
 
 
 
@@ -194,6 +178,17 @@ public class RevisionClientDTO {
 	public void setOverseerId(int overseerId) {
 		this.overseerId = overseerId;
 	}
+
+
+	public Boolean getIsFast() {
+		return isFast;
+	}
+
+
+	public void setIsFast(Boolean isFast) {
+		this.isFast = isFast;
+	}
+	
 	
 	
 	

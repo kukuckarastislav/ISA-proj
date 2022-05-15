@@ -32,6 +32,8 @@ public class CottageFastResHistory {
     @Enumerated(EnumType.STRING)
     private StatusOfFastReservation statusOfFastReservation;
     
+    private Boolean isRevised;
+    
     public CottageFastResHistory() {}
     
     
@@ -40,6 +42,7 @@ public class CottageFastResHistory {
 		this.client = client;
 		this.cottageFastReservation = cottageFastReservation;
 		this.statusOfFastReservation = statusOfFastReservation;
+		this.isRevised = false;
 	}
 
 
@@ -75,6 +78,18 @@ public class CottageFastResHistory {
 	public void setStatusOfFastReservation(StatusOfFastReservation statusOfFastReservation) {
 		this.statusOfFastReservation = statusOfFastReservation;
 	}
+
+
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+
+
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
+	}
+	
+	
     
     
 }

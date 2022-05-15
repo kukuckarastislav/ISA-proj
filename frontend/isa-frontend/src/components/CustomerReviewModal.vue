@@ -33,7 +33,7 @@
                 </tr>
                 </tbody>
             </table>
-            <button type="button" style = "margin-top:2em; zoom:1.1" class="btn btn-primary">Send review</button>
+            <button type="button" style = "margin-top:2em; zoom:1.1" class="btn btn-primary" v-on:click="sendReview()">Send review</button>
         </slot>
        </section>
 
@@ -71,6 +71,30 @@ export default {
     close() {
         console.log(this.entity)
       this.$emit('close');
+    },
+    sendReview() {
+      axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");
+      const tempReview = new Object();
+      tempReview.isFast = this.entity.isFast;
+      tempReview.reservationId = this.entity.reservationId;
+      tempReview.type = this.entityType;
+      tempReview.entityComment = this.commentEntity;
+      tempReview.entityGrade = this.ratingEntity;
+      tempReview.overseerComment = this.commentOwner;
+      tempReview.overseerGrade = this.ratingOwner;
+
+      if(this.entityType == 'cottage') tempReview.entityId = this.entity.cottageId;
+      else if (this.entityType == 'boat') tempReview.entityId = this.entity.boatId;
+      else tempReview.entityId = this.entity.adventureId;
+
+      
+      axios
+          .post('http://localhost:8180/api/client/addRevision', tempReview)
+          .then(response => {alert('Uspesno ste ostavili komentar.')
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
     }
   }
 }

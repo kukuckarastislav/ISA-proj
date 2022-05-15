@@ -362,18 +362,24 @@ public class ClientController {
 		if(revisionClientDTO.getType().equals("cottage")) {
 			Cottage cottage = cottageService.getCottageWithOwner(revisionClientDTO.getEntityId());
 			revisionClientDTO.setOverseerId(cottage.getOwner().getId());
-			cottageService.AddRevision(revisionClientDTO);
-			cottageOwnerService.AddRevision(revisionClientDTO);
+			cottageService.addRevision(revisionClientDTO);
+			cottageOwnerService.addRevision(revisionClientDTO);
+			if(revisionClientDTO.getIsFast()) cottageFastResHistoryService.addRevision(revisionClientDTO.getReservationId());
+			else cottageReservationService.addRevision(revisionClientDTO.getReservationId());
 		} else if(revisionClientDTO.getType().equals("boat")) {
 			Boat boat = boatService.getBoatWithOwner(revisionClientDTO.getEntityId());
 			revisionClientDTO.setOverseerId(boat.getOwner().getId());
-			boatService.AddRevision(revisionClientDTO);
-			boatOwnerService.AddRevision(revisionClientDTO);
+			boatService.addRevision(revisionClientDTO);
+			boatOwnerService.addRevision(revisionClientDTO);
+			if(revisionClientDTO.getIsFast()) boatFastResHistoryService.addRevision(revisionClientDTO.getReservationId());
+			else boatReservationService.addRevision(revisionClientDTO.getReservationId());
 		} else {
 			Adventure adventure = adventureService.getAdventureWithInstructor(revisionClientDTO.getEntityId());
 			revisionClientDTO.setOverseerId(adventure.getInstructor().getId());
-			adventureService.AddRevision(revisionClientDTO);
-			instructorService.AddRevision(revisionClientDTO);
+			adventureService.addRevision(revisionClientDTO);
+			instructorService.addRevision(revisionClientDTO);
+			if(revisionClientDTO.getIsFast()) insFastResHistoryService.addRevision(revisionClientDTO.getEntityId());
+			else instructorReservetionService.addRevision(revisionClientDTO.getEntityId());
 		}
 		
 		return new ResponseEntity<>(true,HttpStatus.OK);

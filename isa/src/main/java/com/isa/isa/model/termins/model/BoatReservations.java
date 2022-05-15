@@ -48,6 +48,8 @@ public class BoatReservations {
     private StatusOfReservation statusOfReservation;
     
     private double price;
+    
+    private Boolean isRevised;
 
     public BoatReservations() {}
     
@@ -59,6 +61,7 @@ public class BoatReservations {
 		this.boat = boat;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.isRevised = false;
 	}
 
 
@@ -125,6 +128,18 @@ public class BoatReservations {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+
+
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+
+
+
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
 	}
 
 	

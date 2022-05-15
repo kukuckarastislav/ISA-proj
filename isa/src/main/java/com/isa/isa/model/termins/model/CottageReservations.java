@@ -49,6 +49,8 @@ public class CottageReservations {
     private StatusOfReservation statusOfReservation;
     
     private double price;
+    
+    private Boolean isRevised;
 
     public CottageReservations() {}
    
@@ -58,6 +60,7 @@ public class CottageReservations {
 		this.cottage = cottage;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.isRevised = false;
 	}
 
 	public int getId() {
@@ -122,6 +125,14 @@ public class CottageReservations {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
 	}
 
 	

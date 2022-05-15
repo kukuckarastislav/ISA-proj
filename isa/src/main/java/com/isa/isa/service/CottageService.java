@@ -137,7 +137,7 @@ public class CottageService {
 		return true;
 	}
 	
-	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+	public void addRevision(RevisionClientDTO revisionClientDTO) {
 		Cottage cottage = cottageRepository.findById(revisionClientDTO.getEntityId()).get();
 		cottage.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getEntityGrade(),revisionClientDTO.getEntityComment()));
 		cottageRepository.saveAndFlush(cottage);

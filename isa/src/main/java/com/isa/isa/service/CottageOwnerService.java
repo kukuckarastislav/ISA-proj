@@ -93,7 +93,7 @@ public class CottageOwnerService {
 		return true;
 	}
 	
-	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+	public void addRevision(RevisionClientDTO revisionClientDTO) {
 		CottageOwner cottageOwner = cottageOwnerRepository.findById(revisionClientDTO.getOverseerId()).get();
 		cottageOwner.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getOverseerGrade(),revisionClientDTO.getOverseerComment()));
 		cottageOwnerRepository.saveAndFlush(cottageOwner);

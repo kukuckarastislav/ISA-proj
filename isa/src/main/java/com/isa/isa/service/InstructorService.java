@@ -135,7 +135,7 @@ public class InstructorService {
 		return true;
 	}
 	
-	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+	public void addRevision(RevisionClientDTO revisionClientDTO) {
 		Instructor instructor = instructorRepository.findById(revisionClientDTO.getOverseerId()).get();
 		instructor.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getOverseerGrade(),revisionClientDTO.getOverseerComment()));
 		instructorRepository.saveAndFlush(instructor);

@@ -22,6 +22,8 @@ public class InsFastResHistory {
 
     @Enumerated(EnumType.STRING)
     private StatusOfFastReservation statusOfFastReservation;
+    
+    private Boolean isRevised;
 
     public InsFastResHistory(){}
 
@@ -29,6 +31,7 @@ public class InsFastResHistory {
         this.client = client;
         this.instructorFastReservation = instructorFastReservation;
         this.statusOfFastReservation = statusOfFastReservation;
+        this.isRevised = false;
     }
 
     public int getId() {
@@ -62,4 +65,14 @@ public class InsFastResHistory {
     public void setStatusOfFastReservation(StatusOfFastReservation statusOfFastReservation) {
         this.statusOfFastReservation = statusOfFastReservation;
     }
+
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
+	}
+    
+    
 }

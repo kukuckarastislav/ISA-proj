@@ -54,4 +54,10 @@ public class InsFastResHistoryService {
     	if(insFastResHistory==null) return false;
     	return true;
     }
+    
+    public void addRevision(int reservationId) {
+		 InsFastResHistory insFastResHistory = insFastResHistoryRepository.findById(reservationId).get();
+		 insFastResHistory.setIsRevised(true);
+		 insFastResHistoryRepository.saveAndFlush(insFastResHistory);
+	 }
 }

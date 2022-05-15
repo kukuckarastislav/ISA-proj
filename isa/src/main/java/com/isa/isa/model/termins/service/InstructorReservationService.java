@@ -86,4 +86,10 @@ public class InstructorReservationService {
     	}
     }
     
+    public void addRevision(int reservationId) {
+		 InstructorReservation instructorReservation = instructorReservationRepository.findById(reservationId).get();
+		 instructorReservation.setIsRevised(true);
+		 instructorReservationRepository.saveAndFlush(instructorReservation);
+	 }
+    
 }

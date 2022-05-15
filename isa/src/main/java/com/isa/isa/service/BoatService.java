@@ -162,7 +162,7 @@ public class BoatService {
 		return true;
 	}
 	
-	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+	public void addRevision(RevisionClientDTO revisionClientDTO) {
 		Boat boat = boatRepository.findById(revisionClientDTO.getEntityId()).get();
 		boat.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getEntityGrade(),revisionClientDTO.getEntityComment()));
 		boatRepository.saveAndFlush(boat);

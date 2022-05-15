@@ -38,6 +38,8 @@ public class InstructorReservation {
     private String instructorUsername;
     
     private double price;
+    
+    private Boolean isRevised;
 
     public InstructorReservation(){}
 
@@ -47,6 +49,7 @@ public class InstructorReservation {
         this.startTime = startTime;
         this.endTime = endTime;
         this.instructorUsername = instructorUsername;
+        this.isRevised = false;
     }
         
 
@@ -61,6 +64,7 @@ public class InstructorReservation {
 		this.statusOfReservation = statusOfReservation;
 		this.instructorUsername = instructorUsername;
 		this.price = price;
+		this.isRevised = false;
 	}
 
 	public int getId() {
@@ -135,6 +139,15 @@ public class InstructorReservation {
 		this.price = price;
 	}
 
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
+	}
+
+	
 	
     
 	

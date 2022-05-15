@@ -90,7 +90,7 @@ public class BoatOwnerService {
 		return true;
 	}
 	
-	public void AddRevision(RevisionClientDTO revisionClientDTO) {
+	public void addRevision(RevisionClientDTO revisionClientDTO) {
 		BoatOwner boatOwner = boatOwnerRepository.findById(revisionClientDTO.getOverseerId()).get();
 		boatOwner.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getOverseerGrade(),revisionClientDTO.getOverseerComment()));
 		boatOwnerRepository.saveAndFlush(boatOwner);
