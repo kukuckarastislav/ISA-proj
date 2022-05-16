@@ -232,3 +232,13 @@ insert into revision(comment, created_at, grade, status_of_revision, user_id) --
 values ('Bilo je bas cool na ovoj avanturi', '2022-05-16 19:35:30.336347', 4, 0, 3);
 insert into adventure_revisions (adventure_id, revisions_id)
 values (1,1);
+
+insert into revision(comment, created_at, grade, status_of_revision, user_id) --admin_response_date, admin_username,
+values ('Instruktor je prava legenda jako zanimljiv lik brutalan', '2022-05-16 19:40:30.336347', 5, 0, 3);
+insert into instructor_revisions (instructor_id, revisions_id)
+values (6,2);
+
+insert into revision(comment, created_at, grade, status_of_revision, user_id) --admin_response_date, admin_username,
+values ('Kuca je bas luksuzna uzivao sam jako', '2022-05-16 19:36:30.336347', 5, 0, 3);
+insert into cottage_revisions (cottage_id, revisions_id)
+values (2,3);

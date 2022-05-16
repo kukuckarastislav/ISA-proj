@@ -14,6 +14,18 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     "revisionCreatedAt": "2022-05-16T19:35:30.336347",
     "adminUsername": "",
     "adminResponsDate": null
+  },
+  {
+    "entityName": "Kuca",
+    "ownerUsername": "isaprojectftn+petarCO@gmail.com",
+    "idRevision": 2,
+    "statusOfRevision": "PENDING",
+    "clientUsername": "TODO:RESITI",
+    "grade": 5,
+    "comment": "Kuca je bas luksuzna uzivao sam jako",
+    "revisionCreatedAt": "2022-05-16T19:36:30.336347",
+    "adminUsername": "",
+    "adminResponsDate": null
   }
 ]
 ###
