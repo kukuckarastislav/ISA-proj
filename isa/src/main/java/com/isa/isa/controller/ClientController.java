@@ -352,7 +352,9 @@ public class ClientController {
     public ResponseEntity<Boolean> deleteRequest(@RequestBody AccountDeleteRequestFromFrontDTO reasonDTO, Principal user) {
         return new ResponseEntity<Boolean>(accountDeleteRequestService.createAccDeleteRequest(reasonDTO, user, UserTypeISA.CLIENT), HttpStatus.OK);
     }
-	
+
+
+	//TODO: rastereteti ovaj controller prebacivanjem poziva u vezi revizija u controller namenjen revizijama
 	
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	@PostMapping("/addRevision")

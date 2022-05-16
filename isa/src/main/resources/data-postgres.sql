@@ -228,4 +228,7 @@ insert into account_delete_request(id, admin_response, admin_username, delete_re
 values (3, 'Odobreno Vam je brisanje', 'isaprojectftn+admin@gmail.com', 'APPROVED','i want to delete my acc', 'CLIENT','isaprojectftn+marijaC@gmail.com');
 
 
-
+insert into revision(comment, created_at, grade, status_of_revision, user_id) --admin_response_date, admin_username,
+values ('Bilo je bas cool na ovoj avanturi', '2022-05-16 19:35:30.336347', 4, 0, 3);
+insert into adventure_revisions (adventure_id, revisions_id)
+values (1,1);
