@@ -2,6 +2,7 @@ package com.isa.isa.model.revisions.service;
 
 import com.isa.isa.model.*;
 import com.isa.isa.model.revisions.DTO.RevisionAdminViewDTO;
+import com.isa.isa.model.revisions.model.RevisionType;
 import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.repository.*;
 import com.isa.isa.service.ClientService;
@@ -42,20 +43,43 @@ public class RevisionService {
         for(Adventure adventure : adventureRepository.findAllWithInstructors()) {
             for (Revision revision : adventure.getRevisions()) {
                 Client client = clientRepository.getById(revision.getUserId());     //TODO: vraca null ????
-                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(adventure, revision, client));   //TODO: cliente cemo logicki brisati???
+                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(RevisionType.ENTITY, adventure.getName(), adventure.getInstructor().getEmail(), "client TODO", revision));   //TODO: cliente cemo logicki brisati???
             }
 
         }
         for(Boat boat : boatRepository.findAllWithOwners()) {
             for (Revision revision : boat.getRevisions()) {
-                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(boat, revision, clientRepository.getById(revision.getUserId())));
+                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(RevisionType.ENTITY, boat.getName(), boat.getOwner().getEmail(), "client TODO", revision));
             }
         }
         for(Cottage cottage : cottageRepository.findAllWithOwners()) {
             for (Revision revision : cottage.getRevisions()) {
-                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(cottage, revision, clientRepository.getById(revision.getUserId())));
+                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(RevisionType.ENTITY, cottage.getName(), cottage.getOwner().getEmail(), "client TODO", revision));
             }
         }
+        return revisionAdminViewDTOS;
+    }
+
+    public ArrayList<RevisionAdminViewDTO> getRevisionOwnersAdminView() {
+        ArrayList<RevisionAdminViewDTO> revisionAdminViewDTOS = new ArrayList<RevisionAdminViewDTO>();
+
+        for(Instructor instructor : instructorRepository.findAll()) {
+            for (Revision revision : instructor.getRevisions()) {
+                Client client = clientRepository.getById(revision.getUserId());     //TODO: vraca null ????
+                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(RevisionType.OWNER, "", instructor.getEmail(), "client TODO", revision));   //TODO: cliente cemo logicki brisati???
+            }
+        }
+        for(BoatOwner boatOwner : boatOwnerRepository.findAll()) {
+            for (Revision revision : boatOwner.getRevisions()) {
+                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(RevisionType.OWNER, "", boatOwner.getEmail(), "client TODO", revision));
+            }
+        }
+        for(CottageOwner cottageOwner : cottageOwnerRepository.findAll()) {
+            for (Revision revision : cottageOwner.getRevisions()) {
+                revisionAdminViewDTOS.add(new RevisionAdminViewDTO(RevisionType.OWNER, "",cottageOwner.getEmail(), "client TODO", revision));
+            }
+        }
+
         return revisionAdminViewDTOS;
     }
 }

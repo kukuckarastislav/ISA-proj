@@ -4,12 +4,16 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.revisions.model.RevisionType;
 import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.model.termins.model.StatusOfRevision;
+import org.springframework.data.history.RevisionMetadata;
 
 import java.time.LocalDateTime;
 
 public class RevisionAdminViewDTO {
+
+    private RevisionType revisionType;
 
     private String entityName; // name of adventure/cottage/boat
     private String ownerUsername; //name of instructor/cottageOwner/boatOwner
@@ -26,24 +30,11 @@ public class RevisionAdminViewDTO {
 
     public RevisionAdminViewDTO(){}
 
-    public RevisionAdminViewDTO(Adventure adventure, Revision revision, Client client) {
-        this.entityName = adventure.getName();
-        this.ownerUsername = adventure.getInstructor().getEmail();
-        this.clientUsername = "TODO:RESITI";//client.getEmail();
-        initDTO(revision);
-    }
-
-    public RevisionAdminViewDTO(Cottage cottage, Revision revision, Client client) {
-        this.entityName = cottage.getName();
-        this.ownerUsername = cottage.getOwner().getEmail();
-        this.clientUsername = "TODO:RESITI";//client.getEmail();
-        initDTO(revision);
-    }
-
-    public RevisionAdminViewDTO(Boat boat, Revision revision, Client client) {
-        this.entityName = boat.getName();
-        this.ownerUsername = boat.getOwner().getEmail();
-        this.clientUsername = "TODO:RESITI";//client.getEmail();
+    public RevisionAdminViewDTO(RevisionType revisionType, String entityName, String ownerUsername, String clientUsername, Revision revision){
+        this.revisionType = revisionType;
+        this.entityName = entityName;
+        this.ownerUsername = ownerUsername;
+        this.clientUsername = clientUsername;
         initDTO(revision);
     }
 
@@ -140,5 +131,13 @@ public class RevisionAdminViewDTO {
 
     public void setRevisionCreatedAt(LocalDateTime revisionCreatedAt) {
         this.revisionCreatedAt = revisionCreatedAt;
+    }
+
+    public RevisionType getRevisionType() {
+        return revisionType;
+    }
+
+    public void setRevisionType(RevisionType revisionType) {
+        this.revisionType = revisionType;
     }
 }

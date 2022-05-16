@@ -1,31 +1,9 @@
 ### GET adventure/cottage/boat revisions
-GET http://localhost:8180/api/revision
+GET http://localhost:8180/api/revision/entity
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjUyNzIxNjI3LCJleHAiOjE2NTI5MDE2Mjd9.0OEC1cInOFOo-TFpmsmzls3efVNVhDMRykR6StKvjcxQwDzpBB4JuYSpaLCjxu00UFAMxjfSCp4lQNHoqStjgw
+
 ###
-[
-  {
-    "entityName": "Penjanje na planinu",
-    "ownerUsername": "isaprojectftn+stefanI@gmail.com",
-    "idRevision": 1,
-    "statusOfRevision": "PENDING",
-    "clientUsername": "TODO:RESITI",
-    "grade": 4,
-    "comment": "Bilo je bas cool na ovoj avanturi",
-    "revisionCreatedAt": "2022-05-16T19:35:30.336347",
-    "adminUsername": "",
-    "adminResponsDate": null
-  },
-  {
-    "entityName": "Kuca",
-    "ownerUsername": "isaprojectftn+petarCO@gmail.com",
-    "idRevision": 2,
-    "statusOfRevision": "PENDING",
-    "clientUsername": "TODO:RESITI",
-    "grade": 5,
-    "comment": "Kuca je bas luksuzna uzivao sam jako",
-    "revisionCreatedAt": "2022-05-16T19:36:30.336347",
-    "adminUsername": "",
-    "adminResponsDate": null
-  }
-]
+GET http://localhost:8180/api/revision/owners
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjUyNzIxNjI3LCJleHAiOjE2NTI5MDE2Mjd9.0OEC1cInOFOo-TFpmsmzls3efVNVhDMRykR6StKvjcxQwDzpBB4JuYSpaLCjxu00UFAMxjfSCp4lQNHoqStjgw
+
 ###

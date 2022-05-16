@@ -20,10 +20,16 @@ public class RevisionController {
     @Autowired
     private RevisionService revisionService;
 
-    @GetMapping
+    @GetMapping("/entity")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ArrayList<RevisionAdminViewDTO>> getRevisionAdminView(Principal user) {
+    public ResponseEntity<ArrayList<RevisionAdminViewDTO>> getRevisionEntitysAdminView(Principal user) {
         return new ResponseEntity<ArrayList<RevisionAdminViewDTO>>(revisionService.getRevisionAdminView(), HttpStatus.OK);
+    }
+
+    @GetMapping("/owners")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ArrayList<RevisionAdminViewDTO>> getRevisionOwnersAdminView(Principal user) {
+        return new ResponseEntity<ArrayList<RevisionAdminViewDTO>>(revisionService.getRevisionOwnersAdminView(), HttpStatus.OK);
     }
 
 
