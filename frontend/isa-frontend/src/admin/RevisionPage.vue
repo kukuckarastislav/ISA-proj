@@ -77,8 +77,8 @@
                                 <div class="col-sm-6">
                                     <div>                                        
                                         <div v-if="revision.statusOfRevision === 'PENDING'">
-                                            <button class="btn btn-primary m-2">Approve</button>
-                                            <button class="btn btn-danger m-2">Reject</button>
+                                            <button v-on:click="sendAdminResponse(revision, true)" class="btn btn-primary m-2">Approve</button>
+                                            <button v-on:click="sendAdminResponse(revision, false)" class="btn btn-danger m-2">Reject</button>
                                         </div>
                                         <div v-else>
                                             <div class="card m-1">
@@ -160,17 +160,23 @@ export default {
   },
   methods: {
     loadData: function(){
-        this.loadAndShowEntity();
+        if(this.showRevisions.showEntity){
+            this.loadAndShowEntity();
+        }else{
+            this.loadAndShowOwners();
+        }
+        
     },
-    sendAdminResponse: function(status){
+    sendAdminResponse: function(revision, status){
         alert('SLANJE RESPONSA');
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
         axios
-          .post('http://localhost:8180/api/deleteRequest/admin-response', {
-              idRequest: this.adminResponse.revision.accountDeleteRequestDTO.id,
-              revisionname: this.adminResponse.revision.email,
-              adminResponse: this.adminResponse.message,
-              deleteRequestStatus: status
+          .post('http://localhost:8180/api/revision/respons', {
+              adminUsername: 'isaprojectftn+admin@gmail.com', //TODO: da ne bude hardkodirano
+              approve: status,
+              idRevision: revision.idRevision,
+              ownerType: revision.ownerType,
+              revisionType: revision.revisionType
           })
           .then(response => {
               console.log(response)
@@ -179,12 +185,6 @@ export default {
             }).catch(err => {
               alert('DOSLO JE DO GRESKE')
             });
-    },
-    approve: function(){
-        this.sendAdminResponse('APPROVED');
-    },
-    reject: function(){
-        this.sendAdminResponse('REJECTED');
     },
     showIfNeed: function(revision){
         return this.showByStatus(revision) && this.showOnlyMyRespons(revision) && this.showByrevisionType(revision)
