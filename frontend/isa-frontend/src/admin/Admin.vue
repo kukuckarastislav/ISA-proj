@@ -15,6 +15,9 @@
                 <div class="col">
                     <a href="/accountdeleteRequest" class="nav-link">Account Delete Requests</a>
                 </div>
+                 <div class="col">
+                    <a href="/revision" class="nav-link">Revision</a>
+                </div>
             </div>
         </div>
     </div>

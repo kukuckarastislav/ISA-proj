@@ -229,4 +229,6 @@ export default {
   color: coral;
 }
 
+
+
 </style>

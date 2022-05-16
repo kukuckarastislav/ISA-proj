@@ -4,6 +4,7 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.enums.OwnerType;
 import com.isa.isa.model.revisions.model.RevisionType;
 import com.isa.isa.model.termins.model.Revision;
 import com.isa.isa.model.termins.model.StatusOfRevision;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 public class RevisionAdminViewDTO {
 
     private RevisionType revisionType;
+    private OwnerType ownerType;
 
     private String entityName; // name of adventure/cottage/boat
     private String ownerUsername; //name of instructor/cottageOwner/boatOwner
@@ -30,8 +32,9 @@ public class RevisionAdminViewDTO {
 
     public RevisionAdminViewDTO(){}
 
-    public RevisionAdminViewDTO(RevisionType revisionType, String entityName, String ownerUsername, String clientUsername, Revision revision){
+    public RevisionAdminViewDTO(RevisionType revisionType, String entityName, String ownerUsername, OwnerType ownerType, String clientUsername, Revision revision){
         this.revisionType = revisionType;
+        this.ownerType = ownerType;
         this.entityName = entityName;
         this.ownerUsername = ownerUsername;
         this.clientUsername = clientUsername;
@@ -139,5 +142,13 @@ public class RevisionAdminViewDTO {
 
     public void setRevisionType(RevisionType revisionType) {
         this.revisionType = revisionType;
+    }
+
+    public OwnerType getOwnerType() {
+        return ownerType;
+    }
+
+    public void setOwnerType(OwnerType ownerType) {
+        this.ownerType = ownerType;
     }
 }

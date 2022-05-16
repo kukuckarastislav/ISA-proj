@@ -22,6 +22,7 @@ import BoatCreation from '../boat_owner/BoatCreation.vue'
 import CustomerReservations from '../views/CustomerReservations.vue'
 import AccountDeleteRequest from '../admin/AccountDeleteRequest'
 import CottageCreation from '../cottage_owner/CottageCreation.vue'
+import RevisionPage from '../admin/RevisionPage.vue'
 
 
 
@@ -48,7 +49,8 @@ const routes = [
   { path: '/newboat', name: 'BoatCreation', component: BoatCreation },
   { path: '/customerReservations', name: 'CustomerReservations', component: CustomerReservations },
   { path: '/accountdeleteRequest', name: 'AccountDeleteRequest', component: AccountDeleteRequest },
-  { path: '/newcottage', name: 'CottageCreation', component: CottageCreation}
+  { path: '/newcottage', name: 'CottageCreation', component: CottageCreation },
+  { path: '/revision', name: 'RevisionPage', component: RevisionPage },
 
 ]
 
