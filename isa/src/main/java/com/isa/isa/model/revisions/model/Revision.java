@@ -1,4 +1,6 @@
-package com.isa.isa.model.termins.model;
+package com.isa.isa.model.revisions.model;
+
+import com.isa.isa.model.termins.model.StatusOfRevision;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

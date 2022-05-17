@@ -1,7 +1,7 @@
 package com.isa.isa.model;
 
 import com.isa.isa.model.enums.ReservationCancellationConditions;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -185,6 +185,15 @@ public class Adventure {
 	public void setRevisions(Set<Revision> revisions) {
 		this.revisions = revisions;
 	}
-	
-	
+
+
+	public void callculateGrade() {
+		double sum = 0;
+		for(Revision r : revisions){
+			sum += r.getGrade();
+		}
+		if(revisions.size() > 0){
+			averageGrade = sum / revisions.size();
+		}
+	}
 }

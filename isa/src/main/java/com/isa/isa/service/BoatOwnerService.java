@@ -10,7 +10,7 @@ import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
 import com.isa.isa.repository.ClientRepository;

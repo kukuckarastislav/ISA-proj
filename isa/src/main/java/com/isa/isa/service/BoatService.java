@@ -17,7 +17,7 @@ import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.service.BoatFastReservationService;
 import com.isa.isa.model.termins.service.BoatReservationService;
 import com.isa.isa.model.termins.service.BoatTermService;

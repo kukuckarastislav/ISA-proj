@@ -1,14 +1,9 @@
 package com.isa.isa.model.revisions.DTO;
 
-import com.isa.isa.model.Adventure;
-import com.isa.isa.model.Boat;
-import com.isa.isa.model.Client;
-import com.isa.isa.model.Cottage;
 import com.isa.isa.model.enums.OwnerType;
 import com.isa.isa.model.revisions.model.RevisionType;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.model.StatusOfRevision;
-import org.springframework.data.history.RevisionMetadata;
 
 import java.time.LocalDateTime;
 

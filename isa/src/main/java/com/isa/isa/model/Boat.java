@@ -21,7 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.isa.isa.model.enums.ReservationCancellationConditions;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 
 @Entity
 @Table(name="boat")
@@ -87,6 +87,16 @@ public class Boat {
 		this.reservationCancellationConditions = reservationCancellationConditions;
 		this.averageGrade = averageGrade;
 		this.price = price;
+	}
+
+	public void callculateGrade() {
+		double sum = 0;
+		for(Revision r : revisions){
+			sum += r.getGrade();
+		}
+		if(revisions.size() > 0){
+			averageGrade = sum / revisions.size();
+		}
 	}
 
 	public int getId() {
@@ -240,8 +250,8 @@ public class Boat {
 	public void setRevisions(Set<Revision> revisions) {
 		this.revisions = revisions;
 	}
-	
-	
+
+
 	
 	
 	

@@ -2,6 +2,7 @@ package com.isa.isa.repository;
 
 import java.util.List;
 
+import com.isa.isa.model.Adventure;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,4 +21,7 @@ public interface BoatRepository extends JpaRepository<Boat, Integer>{
 	public Boat getByIdWithOwner(Integer boatId);
 	
 	public List<Boat> findAllByOwnerId(int ownerId);
+
+	@Query(value = "Select * from boat where id=(select boat_id from boat_revisions where revisions_id=?1)", nativeQuery = true)
+	Boat getBoatByRevisionId(Integer revisionId);
 }

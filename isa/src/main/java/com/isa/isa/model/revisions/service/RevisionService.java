@@ -6,10 +6,9 @@ import com.isa.isa.model.revisions.DTO.RevisionAdminResponsDTO;
 import com.isa.isa.model.revisions.DTO.RevisionAdminViewDTO;
 import com.isa.isa.model.revisions.model.RevisionType;
 import com.isa.isa.model.revisions.repository.RevisionRepository;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.model.StatusOfRevision;
 import com.isa.isa.repository.*;
-import com.isa.isa.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -106,10 +105,13 @@ public class RevisionService {
 
             rev.setAdminResponsDate(LocalDateTime.now());
             rev.setAdminUsername(revisionAdminResponsDTO.getAdminUsername());
-            if(revisionAdminResponsDTO.isApprove())
+            if(revisionAdminResponsDTO.isApprove()){
                 rev.setStatusOfRevision(StatusOfRevision.APPROVED);
-            else
+                callculateNewGrade(rev, revisionAdminResponsDTO);
+                // poslati email pruzaocu usluge
+            }else{
                 rev.setStatusOfRevision(StatusOfRevision.REJECTED);
+            }
 
             revisionRepository.saveAndFlush(rev);
             return true;
@@ -117,4 +119,57 @@ public class RevisionService {
 
         return false;
     }
+
+    private Boolean callculateNewGrade(Revision revision, RevisionAdminResponsDTO revisionAdminResponsDTO){
+        if(revisionAdminResponsDTO.getRevisionType() == RevisionType.ENTITY){
+            if(revisionAdminResponsDTO.getOwnerType() == OwnerType.INSTRUCTOR){
+                Adventure adventure = adventureRepository.getAdventureByRevisionId(revision.getId());
+                if(adventure != null){
+                    adventure.callculateGrade();
+                    adventureRepository.saveAndFlush(adventure);
+                    return true;
+                }
+            }else if(revisionAdminResponsDTO.getOwnerType() == OwnerType.BOAT_OWNER){
+                Boat boat = boatRepository.getBoatByRevisionId(revision.getId());
+                if(boat != null){
+                    boat.callculateGrade();
+                    boatRepository.saveAndFlush(boat);
+                    return true;
+                }
+            }else if(revisionAdminResponsDTO.getOwnerType() == OwnerType.COTTAGE_OWNER){
+                Cottage cottage = cottageRepository.getCottageByRevisionId(revision.getId());
+                if(cottage != null){
+                    cottage.callculateGrade();
+                    cottageRepository.saveAndFlush(cottage);
+                    return true;
+                }
+            }
+        }else if(revisionAdminResponsDTO.getRevisionType() == RevisionType.OWNER){
+            if(revisionAdminResponsDTO.getOwnerType() == OwnerType.INSTRUCTOR){
+                Instructor instructor = instructorRepository.getInstructorByRevisionId(revision.getId());
+                if(instructor != null){
+                    instructor.callculateGrade();
+                    instructorRepository.saveAndFlush(instructor);
+                    return true;
+                }
+            }else if(revisionAdminResponsDTO.getOwnerType() == OwnerType.BOAT_OWNER){
+                BoatOwner boatOwner = boatOwnerRepository.getBoatOwnerByRevisionId(revision.getId());
+                if(boatOwner != null){
+                    boatOwner.callculateGrade();
+                    boatOwnerRepository.saveAndFlush(boatOwner);
+                    return true;
+                }
+            }else if(revisionAdminResponsDTO.getOwnerType() == OwnerType.COTTAGE_OWNER){
+                CottageOwner cottageOwner = cottageOwnerRepository.getCottageOwnerByRevisionId(revision.getId());
+                if(cottageOwner != null){
+                    cottageOwner.callculateGrade();
+                    cottageOwnerRepository.saveAndFlush(cottageOwner);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.isa.isa.service;
 
-import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.UserDTO;
@@ -8,7 +7,7 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.model.termins.service.InstructorReservationService;
 import com.isa.isa.model.termins.service.InstructorTermService;
@@ -18,7 +17,6 @@ import com.isa.isa.repository.InstructorRepository;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.isa.isa.security.model.User;

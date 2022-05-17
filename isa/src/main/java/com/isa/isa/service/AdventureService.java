@@ -6,17 +6,15 @@ import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.EntityImageDTO;
 import com.isa.isa.model.*;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class AdventureService {

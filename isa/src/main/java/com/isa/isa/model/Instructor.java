@@ -3,7 +3,7 @@ package com.isa.isa.model;
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.termins.model.InstructorTerms;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -92,6 +92,15 @@ public class Instructor extends Person{
 	public void setRevisions(Set<Revision> revisions) {
 		this.revisions = revisions;
 	}
-    
+
+    public void callculateGrade() {
+        double sum = 0;
+        for(Revision r : revisions){
+            sum += r.getGrade();
+        }
+        if(revisions.size() > 0){
+            averageGrade = sum / revisions.size();
+        }
+    }
     
 }

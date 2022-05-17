@@ -19,4 +19,6 @@ public interface AdventureRepository extends JpaRepository<Adventure, Integer> {
     @Query("select a from Adventure a join fetch a.instructor where a.id =?1")
 	public Adventure getByIdWithInstructor(Integer adventureId);
 
+    @Query(value = "Select * from adventure where id=(select adventure_id from adventure_revisions where revisions_id=?1)", nativeQuery = true)
+    Adventure getAdventureByRevisionId(Integer revisionId);
 }

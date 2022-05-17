@@ -11,8 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.isa.isa.DTO.UserDTO;
-import com.isa.isa.model.enums.OwnerType;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 
 @Entity
 @Table(name="cottage_owner")
@@ -64,7 +63,16 @@ public class CottageOwner extends Person{
 	public void setAverageGrade(double averageGrade) {
 		this.averageGrade = averageGrade;
 	}
-	
+
+	public void callculateGrade() {
+		double sum = 0;
+		for(Revision r : revisions){
+			sum += r.getGrade();
+		}
+		if(revisions.size() > 0){
+			averageGrade = sum / revisions.size();
+		}
+	}
 	
 	
 }

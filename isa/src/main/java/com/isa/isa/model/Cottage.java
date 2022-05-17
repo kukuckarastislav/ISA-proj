@@ -1,6 +1,5 @@
 package com.isa.isa.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,8 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.isa.isa.model.enums.AdditionalServices;
-import com.isa.isa.model.termins.model.Revision;
+import com.isa.isa.model.revisions.model.Revision;
 
 @Entity
 @Table(name="cottage")
@@ -66,8 +64,16 @@ public class Cottage {
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Revision> revisions = new HashSet<Revision>();
-	
-	
+
+	public void callculateGrade() {
+		double sum = 0;
+		for(Revision r : revisions){
+			sum += r.getGrade();
+		}
+		if(revisions.size() > 0){
+			averageGrade = sum / revisions.size();
+		}
+	}
 
 	public int getCapacity() {
 		return capacity;
