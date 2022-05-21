@@ -150,6 +150,64 @@
     </tbody>
   </table>
       </div>
+
+
+  <section class="text-light p-5">
+            <div class="container">
+                <div class="row">
+                    <div class="d-md-flex align-items-center justify-content-center">
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked v-on:click="button1Clicked">
+                            <label class="btn btn-outline-primary" for="btnradio1">BOAT REVISIONS</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" v-on:click="button2Clicked">
+                            <label class="btn btn-outline-primary" for="btnradio2">OWNER REVISIONS</label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+      <div v-if="button1">
+      <table v-for="a in boat.revisions"
+            :key="a.id" style="width: 50%; margin-left:25%; margin-top: 5%;text-align:left" class="table border border-primary">
+    <tbody v-if="a.statusOfRevision=='APPROVED'">
+      <tr>
+        <td style="border:none;zoom:0.5"><star-rating style="margin-left:7em" v-model:rating="a.grade" v-bind:show-rating=false v-bind:read-only=true /></td>
+        <td style="border:none;text-align:center">{{(new Date(a.createdAt)).getDate()}}/{{(new Date(a.createdAt)).getMonth()+1}}/{{(new Date(a.createdAt)).getFullYear()}} {{(new Date(a.createdAt)).getHours()}}:{{(new Date(a.createdAt)).getMinutes()}}</td>
+      </tr>
+      <tr>       
+        <td style="border:none;width:26%; text-align:center" colspan="2">{{a.comment}} </td>
+        </tr>
+    </tbody>
+  </table>
+      </div>
+
+  <div v-else>
+      <table v-for="a in boat.owner.revisions"
+            :key="a.id" style=" width: 50%; margin-left:25%; margin-top: 5%;text-align:left" class="table border border-primary">
+    <tbody v-if="a.statusOfRevision=='APPROVED'">
+      <tr>
+        <td style="border:none;zoom:0.5"><star-rating style="margin-left:7em" v-model:rating="a.grade" v-bind:show-rating=false v-bind:read-only=true /></td>
+        <td style="border:none;text-align:center">{{(new Date(a.createdAt)).getDate()}}/{{(new Date(a.createdAt)).getMonth()+1}}/{{(new Date(a.createdAt)).getFullYear()}} {{(new Date(a.createdAt)).getHours()}}:{{(new Date(a.createdAt)).getMinutes()}}</td>
+      </tr>
+      <tr>       
+        <td style="border:none;width:26%; text-align:center" colspan="2">{{a.comment}} </td>
+        </tr>
+    </tbody>
+  </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
     <ReserveModalBoat
       v-show="isModalVisible"
       @close="closeModal"
@@ -166,9 +224,10 @@
 import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
 import ReserveModalBoat from '@/components/ReserveModalBoat.vue';
+import StarRating from 'vue-star-rating'
 export default {
   name: "CustomerBoatPage",
-  components: {CarouselView,ReserveModalBoat},
+  components: {CarouselView,ReserveModalBoat,StarRating},
   data: function () {
     return {
       boat: {},
@@ -179,7 +238,8 @@ export default {
       chosenServices: [],
       date: this.$store.state.date,
       isModalVisible: false,
-      actions: []
+      actions: [],
+      button1: true
     };
   },
   mounted: function () {
@@ -239,6 +299,12 @@ export default {
           }).catch(err => {
               alert('Već ste otkazali ovu akciju.')
           });
+      },
+      button2Clicked() {
+        this.button1 = false;
+      },
+      button1Clicked(){
+        this.button1 = true;
       }
   },
 };
