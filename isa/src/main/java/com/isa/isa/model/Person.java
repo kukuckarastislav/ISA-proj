@@ -1,5 +1,6 @@
 package com.isa.isa.model;
 
+import com.isa.isa.DTO.AdminDTO;
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.UserDTO;
 
@@ -134,4 +135,5 @@ public abstract class Person {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
 }
