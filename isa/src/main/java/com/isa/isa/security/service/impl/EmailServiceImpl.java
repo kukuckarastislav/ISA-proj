@@ -5,6 +5,7 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
@@ -144,6 +145,32 @@ public class EmailServiceImpl implements EmailService{
         javaMailSender.send(mail);
 
         System.out.println("Email poslat!");
+	}
+
+	@Override
+	public void sendNotificationNewRevisionEntity(String email, String clientEmail, Revision revision, String offerNamename) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(email);
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("New Revision!");
+		String text = "Hi, you have new revision for your service:`"+offerNamename+"` by " +clientEmail+" ["+revision.getGrade()+"]"+" `"+revision.getComment()+"` on date:"+revision.getCreatedAt();
+		mail.setText(text);
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
+
+	@Override
+	public void sendNotificationNewRevisionOwnerInstructor(String email, String clientEmail, Revision revision) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(email);
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("New Revision!");
+		String text = "Hi, you have new revision by " +clientEmail+" ["+revision.getGrade()+"]"+" `"+revision.getComment()+"` on date:"+revision.getCreatedAt();
+		mail.setText(text);
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
 	}
 
 }

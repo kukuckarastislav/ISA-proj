@@ -9,6 +9,7 @@ import com.isa.isa.model.revisions.repository.RevisionRepository;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.model.StatusOfRevision;
 import com.isa.isa.repository.*;
+import com.isa.isa.security.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,10 +41,11 @@ public class RevisionService {
     @Autowired
     private CottageRepository cottageRepository;
 
-
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private EmailService emailService;
 
     public ArrayList<RevisionAdminViewDTO> getRevisionAdminView() {
         ArrayList<RevisionAdminViewDTO> revisionAdminViewDTOS = new ArrayList<RevisionAdminViewDTO>();
@@ -107,8 +109,7 @@ public class RevisionService {
             rev.setAdminUsername(revisionAdminResponsDTO.getAdminUsername());
             if(revisionAdminResponsDTO.isApprove()){
                 rev.setStatusOfRevision(StatusOfRevision.APPROVED);
-                callculateNewGrade(rev, revisionAdminResponsDTO);
-                // poslati email pruzaocu usluge
+                callculateNewGradeEndSendEmail(rev, revisionAdminResponsDTO);
             }else{
                 rev.setStatusOfRevision(StatusOfRevision.REJECTED);
             }
@@ -120,50 +121,65 @@ public class RevisionService {
         return false;
     }
 
-    private Boolean callculateNewGrade(Revision revision, RevisionAdminResponsDTO revisionAdminResponsDTO){
+    private Boolean callculateNewGradeEndSendEmail(Revision revision, RevisionAdminResponsDTO revisionAdminResponsDTO){
         if(revisionAdminResponsDTO.getRevisionType() == RevisionType.ENTITY){
             if(revisionAdminResponsDTO.getOwnerType() == OwnerType.INSTRUCTOR){
                 Adventure adventure = adventureRepository.getAdventureByRevisionId(revision.getId());
+                Adventure adventureWithInstrucotr = adventureRepository.getByIdWithInstructor(adventure.getId());
+                Client client = clientRepository.findById(revision.getUserId()).get();
                 if(adventure != null){
                     adventure.callculateGrade();
                     adventureRepository.saveAndFlush(adventure);
+                    emailService.sendNotificationNewRevisionEntity(adventureWithInstrucotr.getInstructor().getEmail(), client.getEmail(), revision, adventure.getName());
                     return true;
                 }
             }else if(revisionAdminResponsDTO.getOwnerType() == OwnerType.BOAT_OWNER){
                 Boat boat = boatRepository.getBoatByRevisionId(revision.getId());
+                Boat BoatWithOwner = boatRepository.getByIdWithOwner(boat.getId());
+                Client client = clientRepository.findById(revision.getUserId()).get();
                 if(boat != null){
                     boat.callculateGrade();
                     boatRepository.saveAndFlush(boat);
+                    emailService.sendNotificationNewRevisionEntity(BoatWithOwner.getOwner().getEmail(), client.getEmail(), revision, boat.getName());
                     return true;
                 }
             }else if(revisionAdminResponsDTO.getOwnerType() == OwnerType.COTTAGE_OWNER){
                 Cottage cottage = cottageRepository.getCottageByRevisionId(revision.getId());
+                Cottage cottageWithOwner = cottageRepository.getByIdWithOwner(cottage.getId());
+                Client client = clientRepository.findById(revision.getUserId()).get();
                 if(cottage != null){
                     cottage.callculateGrade();
                     cottageRepository.saveAndFlush(cottage);
+                    emailService.sendNotificationNewRevisionEntity(cottageWithOwner.getOwner().getEmail(), client.getEmail(), revision, cottage.getName());
                     return true;
                 }
             }
         }else if(revisionAdminResponsDTO.getRevisionType() == RevisionType.OWNER){
             if(revisionAdminResponsDTO.getOwnerType() == OwnerType.INSTRUCTOR){
                 Instructor instructor = instructorRepository.getInstructorByRevisionId(revision.getId());
+                Client client = clientRepository.findById(revision.getUserId()).get();
                 if(instructor != null){
                     instructor.callculateGrade();
                     instructorRepository.saveAndFlush(instructor);
+                    emailService.sendNotificationNewRevisionOwnerInstructor(instructor.getEmail(), client.getEmail(), revision);
                     return true;
                 }
             }else if(revisionAdminResponsDTO.getOwnerType() == OwnerType.BOAT_OWNER){
                 BoatOwner boatOwner = boatOwnerRepository.getBoatOwnerByRevisionId(revision.getId());
+                Client client = clientRepository.findById(revision.getUserId()).get();
                 if(boatOwner != null){
                     boatOwner.callculateGrade();
                     boatOwnerRepository.saveAndFlush(boatOwner);
+                    emailService.sendNotificationNewRevisionOwnerInstructor(boatOwner.getEmail(), client.getEmail(), revision);
                     return true;
                 }
             }else if(revisionAdminResponsDTO.getOwnerType() == OwnerType.COTTAGE_OWNER){
                 CottageOwner cottageOwner = cottageOwnerRepository.getCottageOwnerByRevisionId(revision.getId());
+                Client client = clientRepository.findById(revision.getUserId()).get();
                 if(cottageOwner != null){
                     cottageOwner.callculateGrade();
                     cottageOwnerRepository.saveAndFlush(cottageOwner);
+                    emailService.sendNotificationNewRevisionOwnerInstructor(cottageOwner.getEmail(), client.getEmail(), revision);
                     return true;
                 }
             }

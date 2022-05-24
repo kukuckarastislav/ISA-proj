@@ -5,6 +5,7 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
@@ -34,4 +35,8 @@ public interface EmailService {
     void sendBoatReservationConfirmation(Client client, ClientBoatReservationDTO clientBoatReservationDTO) throws MailException, InterruptedException;
     
     void sendBoatActionReservationConfirmation(Client client, Boat boat, ClientBoatFastReservationDTO clientBoatFastReservationDTO) throws MailException, InterruptedException;
+
+    void sendNotificationNewRevisionEntity(String email, String clientEmail, Revision revision, String offerNamename);
+
+    void sendNotificationNewRevisionOwnerInstructor(String email, String clientEmail, Revision revision);
 }
