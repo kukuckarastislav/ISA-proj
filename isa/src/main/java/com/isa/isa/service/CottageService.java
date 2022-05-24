@@ -14,8 +14,10 @@ import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.service.CottageFastReservationService;
 import com.isa.isa.model.termins.service.CottageReservationService;
@@ -138,6 +140,12 @@ public class CottageService {
 	public void addRevision(RevisionClientDTO revisionClientDTO) {
 		Cottage cottage = cottageRepository.findById(revisionClientDTO.getEntityId()).get();
 		cottage.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getEntityGrade(),revisionClientDTO.getEntityComment()));
+		cottageRepository.saveAndFlush(cottage);
+	}
+	
+	public void addComplaint(ComplaintClientDTO complaintClientDTO) {
+		Cottage cottage = cottageRepository.findById(complaintClientDTO.getEntityId()).get();
+		cottage.getComplaints().add(new Complaint(complaintClientDTO.getEntityComment(),complaintClientDTO.getUserEmail()));
 		cottageRepository.saveAndFlush(cottage);
 	}
 }

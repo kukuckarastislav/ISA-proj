@@ -50,6 +50,8 @@ public class BoatReservations {
     private double price;
     
     private Boolean isRevised;
+    
+    private Boolean isComplainedOf;
 
     public BoatReservations() {}
     
@@ -62,6 +64,7 @@ public class BoatReservations {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.isRevised = false;
+		this.isComplainedOf = false;
 	}
 
 
@@ -140,6 +143,18 @@ public class BoatReservations {
 
 	public void setIsRevised(Boolean isRevised) {
 		this.isRevised = isRevised;
+	}
+
+
+
+	public Boolean getIsComplainedOf() {
+		return isComplainedOf;
+	}
+
+
+
+	public void setIsComplainedOf(Boolean isComplainedOf) {
+		this.isComplainedOf = isComplainedOf;
 	}
 
 	

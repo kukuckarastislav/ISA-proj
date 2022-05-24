@@ -2,6 +2,7 @@ package com.isa.isa.model;
 
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.termins.model.Complaint;
 import com.isa.isa.model.termins.model.InstructorTerms;
 import com.isa.isa.model.revisions.model.Revision;
 
@@ -29,6 +30,10 @@ public class Instructor extends Person{
     
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Revision> revisions = new HashSet<Revision>();
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Complaint> complaints = new HashSet<Complaint>();
+
 
     public String getRegistrationMotivation() {
         return registrationMotivation;
@@ -102,5 +107,15 @@ public class Instructor extends Person{
             averageGrade = sum / revisions.size();
         }
     }
+
+	public Set<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<Complaint> complaints) {
+		this.complaints = complaints;
+	}
+    
+    
     
 }

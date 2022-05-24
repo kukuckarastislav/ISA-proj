@@ -72,7 +72,7 @@ public class CottageReservationService {
 		List<ClientMadeReservationsCottageDTO>retVal = new ArrayList<ClientMadeReservationsCottageDTO>();
     	for(CottageReservations reservation:cottageReservations) {
     		List<EntityImage>images = new ArrayList<> (reservation.getCottage().getImages());
-    		retVal.add(new ClientMadeReservationsCottageDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getCottage().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getCottage().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId(),reservation.getIsRevised()));
+    		retVal.add(new ClientMadeReservationsCottageDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getCottage().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getCottage().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId(),reservation.getIsRevised(),reservation.getIsComplainedOf()));
     	}
     	return retVal;
     }
@@ -89,6 +89,12 @@ public class CottageReservationService {
 	 public void addRevision(int reservationId) {
 		 CottageReservations cottageReservations = cottageReservationRepository.findById(reservationId).get();
 		 cottageReservations.setIsRevised(true);
+		 cottageReservationRepository.saveAndFlush(cottageReservations);
+	 }
+	 
+	 public void addComplaint(int reservationId) {
+		 CottageReservations cottageReservations = cottageReservationRepository.findById(reservationId).get();
+		 cottageReservations.setIsComplainedOf(true);
 		 cottageReservationRepository.saveAndFlush(cottageReservations);
 	 }
 }

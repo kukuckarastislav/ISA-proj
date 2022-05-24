@@ -5,7 +5,9 @@ import com.isa.isa.DTO.AdventureDTO;
 import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.EntityImageDTO;
 import com.isa.isa.model.*;
+import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.InstructorRepository;
@@ -118,6 +120,12 @@ public class AdventureService {
     public void addRevision(RevisionClientDTO revisionClientDTO) {
 		Adventure adventure = adventureRepository.findById(revisionClientDTO.getEntityId()).get();
 		adventure.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getEntityGrade(),revisionClientDTO.getEntityComment()));
+		adventureRepository.saveAndFlush(adventure);
+	}
+    
+    public void addComplaint(ComplaintClientDTO complaintClientDTO) {
+		Adventure adventure = adventureRepository.findById(complaintClientDTO.getEntityId()).get();
+		adventure.getComplaints().add(new Complaint(complaintClientDTO.getEntityComment(),complaintClientDTO.getUserEmail()));
 		adventureRepository.saveAndFlush(adventure);
 	}
 

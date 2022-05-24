@@ -2,6 +2,7 @@ package com.isa.isa.model;
 
 import com.isa.isa.model.enums.ReservationCancellationConditions;
 import com.isa.isa.model.revisions.model.Revision;
+import com.isa.isa.model.termins.model.Complaint;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -60,6 +61,10 @@ public class Adventure {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Revision> revisions = new HashSet<Revision>();
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Complaint> complaints = new HashSet<Complaint>();
+
 	
 	public Adventure() { }
 
@@ -196,4 +201,16 @@ public class Adventure {
 			averageGrade = sum / revisions.size();
 		}
 	}
+
+
+	public Set<Complaint> getComplaints() {
+		return complaints;
+	}
+
+
+	public void setComplaints(Set<Complaint> complaints) {
+		this.complaints = complaints;
+	}
+	
+	
 }

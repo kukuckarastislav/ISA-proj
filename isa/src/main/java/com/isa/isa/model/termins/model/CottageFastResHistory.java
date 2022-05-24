@@ -34,6 +34,8 @@ public class CottageFastResHistory {
     
     private Boolean isRevised;
     
+    private Boolean isComplainedOf;
+    
     public CottageFastResHistory() {}
     
     
@@ -43,6 +45,7 @@ public class CottageFastResHistory {
 		this.cottageFastReservation = cottageFastReservation;
 		this.statusOfFastReservation = statusOfFastReservation;
 		this.isRevised = false;
+		this.isComplainedOf = false;
 	}
 
 
@@ -87,6 +90,16 @@ public class CottageFastResHistory {
 
 	public void setIsRevised(Boolean isRevised) {
 		this.isRevised = isRevised;
+	}
+
+
+	public Boolean getIsComplainedOf() {
+		return isComplainedOf;
+	}
+
+
+	public void setIsComplainedOf(Boolean isComplainedOf) {
+		this.isComplainedOf = isComplainedOf;
 	}
 	
 	

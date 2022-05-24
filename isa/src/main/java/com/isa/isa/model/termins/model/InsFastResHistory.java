@@ -24,6 +24,8 @@ public class InsFastResHistory {
     private StatusOfFastReservation statusOfFastReservation;
     
     private Boolean isRevised;
+    
+    private Boolean isComplainedOf;
 
     public InsFastResHistory(){}
 
@@ -32,6 +34,7 @@ public class InsFastResHistory {
         this.instructorFastReservation = instructorFastReservation;
         this.statusOfFastReservation = statusOfFastReservation;
         this.isRevised = false;
+        this.isComplainedOf = false;
     }
 
     public int getId() {
@@ -73,6 +76,15 @@ public class InsFastResHistory {
 	public void setIsRevised(Boolean isRevised) {
 		this.isRevised = isRevised;
 	}
+
+	public Boolean getIsComplainedOf() {
+		return isComplainedOf;
+	}
+
+	public void setIsComplainedOf(Boolean isComplainedOf) {
+		this.isComplainedOf = isComplainedOf;
+	}
     
+	
     
 }

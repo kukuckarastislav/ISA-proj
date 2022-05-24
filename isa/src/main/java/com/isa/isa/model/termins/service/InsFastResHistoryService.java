@@ -28,7 +28,7 @@ public class InsFastResHistoryService {
     	List<InsFastResHistory> insFastResHistories = insFastResHistoryRepository.findAllByClientId(clientId);
     	for(InsFastResHistory resHistory:insFastResHistories) {
     		List<EntityImage>images = new ArrayList<>(resHistory.getInstructorFastReservation().getAdventure().getImages());
-    		retVal.add(new ClientMadeReservationsAdventureDTO(resHistory.getInstructorFastReservation().getStartTime(),resHistory.getInstructorFastReservation().getEndTime(),resHistory.getInstructorFastReservation().getAdventure().getId(),resHistory.getInstructorFastReservation().getAdditionalServices(),resHistory.getInstructorFastReservation().getPrice(),resHistory.getInstructorFastReservation().getAdventure().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId(),resHistory.getIsRevised()));
+    		retVal.add(new ClientMadeReservationsAdventureDTO(resHistory.getInstructorFastReservation().getStartTime(),resHistory.getInstructorFastReservation().getEndTime(),resHistory.getInstructorFastReservation().getAdventure().getId(),resHistory.getInstructorFastReservation().getAdditionalServices(),resHistory.getInstructorFastReservation().getPrice(),resHistory.getInstructorFastReservation().getAdventure().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId(),resHistory.getIsRevised(),resHistory.getIsComplainedOf()));
     	}
     	return retVal;
     }
@@ -58,6 +58,12 @@ public class InsFastResHistoryService {
     public void addRevision(int reservationId) {
 		 InsFastResHistory insFastResHistory = insFastResHistoryRepository.findById(reservationId).get();
 		 insFastResHistory.setIsRevised(true);
+		 insFastResHistoryRepository.saveAndFlush(insFastResHistory);
+	 }
+    
+    public void addComplaint(int reservationId) {
+		 InsFastResHistory insFastResHistory = insFastResHistoryRepository.findById(reservationId).get();
+		 insFastResHistory.setIsComplainedOf(true);
 		 insFastResHistoryRepository.saveAndFlush(insFastResHistory);
 	 }
 }

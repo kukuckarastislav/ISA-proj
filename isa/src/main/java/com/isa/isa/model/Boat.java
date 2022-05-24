@@ -22,6 +22,7 @@ import javax.persistence.Table;
 
 import com.isa.isa.model.enums.ReservationCancellationConditions;
 import com.isa.isa.model.revisions.model.Revision;
+import com.isa.isa.model.termins.model.Complaint;
 
 @Entity
 @Table(name="boat")
@@ -60,6 +61,9 @@ public class Boat {
 	private Set<EntityImage> images = new HashSet<EntityImage>();
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Revision> revisions = new HashSet<Revision>();
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Complaint> complaints = new HashSet<Complaint>();
+
 	
 	public Boat() {
 		
@@ -251,7 +255,15 @@ public class Boat {
 		this.revisions = revisions;
 	}
 
+	public Set<Complaint> getComplaints() {
+		return complaints;
+	}
 
+	public void setComplaints(Set<Complaint> complaints) {
+		this.complaints = complaints;
+	}
+
+	
 	
 	
 	

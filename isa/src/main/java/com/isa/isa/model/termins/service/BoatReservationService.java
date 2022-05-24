@@ -91,7 +91,7 @@ public class BoatReservationService {
 		List<ClientMadeReservationsBoatDTO>retVal = new ArrayList<ClientMadeReservationsBoatDTO>();
     	for(BoatReservations reservation:boatReservations) {
     		List<EntityImage>images = new ArrayList<> (reservation.getBoat().getImages());
-    		retVal.add(new ClientMadeReservationsBoatDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getBoat().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getBoat().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId(),reservation.getIsRevised()));
+    		retVal.add(new ClientMadeReservationsBoatDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getBoat().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getBoat().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId(),reservation.getIsRevised(),reservation.getIsComplainedOf()));
     	}
     	return retVal;
     }
@@ -108,6 +108,12 @@ public class BoatReservationService {
 	public void addRevision(int reservationId) {
 		 BoatReservations boatReservations = boatReservationRepository.findById(reservationId).get();
 		 boatReservations.setIsRevised(true);
+		 boatReservationRepository.saveAndFlush(boatReservations);
+	 }
+	
+	public void addComplaint(int reservationId) {
+		 BoatReservations boatReservations = boatReservationRepository.findById(reservationId).get();
+		 boatReservations.setIsComplainedOf(true);
 		 boatReservationRepository.saveAndFlush(boatReservations);
 	 }
 	

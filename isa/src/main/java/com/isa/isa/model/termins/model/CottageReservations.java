@@ -51,6 +51,8 @@ public class CottageReservations {
     private double price;
     
     private Boolean isRevised;
+    
+    private Boolean isComplainedOf;
 
     public CottageReservations() {}
    
@@ -61,6 +63,7 @@ public class CottageReservations {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.isRevised = false;
+		this.isComplainedOf = false;
 	}
 
 	public int getId() {
@@ -133,6 +136,14 @@ public class CottageReservations {
 
 	public void setIsRevised(Boolean isRevised) {
 		this.isRevised = isRevised;
+	}
+
+	public Boolean getIsComplainedOf() {
+		return isComplainedOf;
+	}
+
+	public void setIsComplainedOf(Boolean isComplainedOf) {
+		this.isComplainedOf = isComplainedOf;
 	}
 
 	

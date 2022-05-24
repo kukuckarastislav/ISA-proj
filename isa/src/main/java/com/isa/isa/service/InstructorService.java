@@ -5,8 +5,10 @@ import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.model.termins.service.InstructorReservationService;
@@ -136,6 +138,12 @@ public class InstructorService {
 	public void addRevision(RevisionClientDTO revisionClientDTO) {
 		Instructor instructor = instructorRepository.findById(revisionClientDTO.getOverseerId()).get();
 		instructor.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getOverseerGrade(),revisionClientDTO.getOverseerComment()));
+		instructorRepository.saveAndFlush(instructor);
+	}
+	
+	public void addComplaint(ComplaintClientDTO complaintClientDTO) {
+		Instructor instructor = instructorRepository.findById(complaintClientDTO.getOverseerId()).get();
+		instructor.getComplaints().add(new Complaint(complaintClientDTO.getOverseerComment(),complaintClientDTO.getUserEmail()));
 		instructorRepository.saveAndFlush(instructor);
 	}
 }

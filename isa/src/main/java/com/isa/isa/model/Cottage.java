@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.isa.isa.model.revisions.model.Revision;
+import com.isa.isa.model.termins.model.Complaint;
 
 @Entity
 @Table(name="cottage")
@@ -64,6 +65,10 @@ public class Cottage {
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Revision> revisions = new HashSet<Revision>();
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Complaint> complaints = new HashSet<Complaint>();
+
 
 	public void callculateGrade() {
 		double sum = 0;
@@ -169,6 +174,14 @@ public class Cottage {
 
 	public void setRevisions(Set<Revision> revisions) {
 		this.revisions = revisions;
+	}
+
+	public Set<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<Complaint> complaints) {
+		this.complaints = complaints;
 	}
 	
 	

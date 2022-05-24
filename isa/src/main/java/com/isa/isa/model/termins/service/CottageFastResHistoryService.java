@@ -26,7 +26,7 @@ public class CottageFastResHistoryService {
     	List<CottageFastResHistory> cottageFastResHistories = cottageFastResHistoryRepository.findAllByClientId(clientId);
     	for(CottageFastResHistory resHistory:cottageFastResHistories) {
     		List<EntityImage>images = new ArrayList<>(resHistory.getCottageFastReservation().getCottage().getImages());
-    		retVal.add(new ClientMadeReservationsCottageDTO(resHistory.getCottageFastReservation().getStartTime(),resHistory.getCottageFastReservation().getEndTime(),resHistory.getCottageFastReservation().getCottage().getId(),resHistory.getCottageFastReservation().getAdditionalServices(),resHistory.getCottageFastReservation().getPrice(),resHistory.getCottageFastReservation().getCottage().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId(),resHistory.getIsRevised()));
+    		retVal.add(new ClientMadeReservationsCottageDTO(resHistory.getCottageFastReservation().getStartTime(),resHistory.getCottageFastReservation().getEndTime(),resHistory.getCottageFastReservation().getCottage().getId(),resHistory.getCottageFastReservation().getAdditionalServices(),resHistory.getCottageFastReservation().getPrice(),resHistory.getCottageFastReservation().getCottage().getName(),images.get(0).getPath(),resHistory.getStatusOfFastReservation().name(),true,resHistory.getId(),resHistory.getIsRevised(),resHistory.getIsComplainedOf()));
     	}
     	return retVal;
     }
@@ -56,6 +56,12 @@ public class CottageFastResHistoryService {
 	 public void addRevision(int reservationId) {
 		 CottageFastResHistory cottageFastResHistory = cottageFastResHistoryRepository.findById(reservationId).get();
 		 cottageFastResHistory.setIsRevised(true);
+		 cottageFastResHistoryRepository.saveAndFlush(cottageFastResHistory);
+	 }
+	 
+	 public void addComplaint(int reservationId) {
+		 CottageFastResHistory cottageFastResHistory = cottageFastResHistoryRepository.findById(reservationId).get();
+		 cottageFastResHistory.setIsComplainedOf(true);
 		 cottageFastResHistoryRepository.saveAndFlush(cottageFastResHistory);
 	 }
 }

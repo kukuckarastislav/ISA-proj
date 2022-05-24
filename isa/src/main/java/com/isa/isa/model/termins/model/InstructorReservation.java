@@ -40,6 +40,8 @@ public class InstructorReservation {
     private double price;
     
     private Boolean isRevised;
+    
+    private Boolean isComplainedOf;
 
     public InstructorReservation(){}
 
@@ -50,6 +52,7 @@ public class InstructorReservation {
         this.endTime = endTime;
         this.instructorUsername = instructorUsername;
         this.isRevised = false;
+        this.isComplainedOf =false;
     }
         
 
@@ -65,6 +68,7 @@ public class InstructorReservation {
 		this.instructorUsername = instructorUsername;
 		this.price = price;
 		this.isRevised = false;
+		this.isComplainedOf =false;
 	}
 
 	public int getId() {
@@ -145,6 +149,14 @@ public class InstructorReservation {
 
 	public void setIsRevised(Boolean isRevised) {
 		this.isRevised = isRevised;
+	}
+
+	public Boolean getIsComplainedOf() {
+		return isComplainedOf;
+	}
+
+	public void setIsComplainedOf(Boolean isComplainedOf) {
+		this.isComplainedOf = isComplainedOf;
 	}
 
 	

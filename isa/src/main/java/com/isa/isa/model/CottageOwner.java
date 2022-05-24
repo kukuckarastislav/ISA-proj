@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.revisions.model.Revision;
+import com.isa.isa.model.termins.model.Complaint;
 
 @Entity
 @Table(name="cottage_owner")
@@ -28,6 +29,10 @@ public class CottageOwner extends Person{
 	
 	@Column(nullable=true)
 	private double averageGrade;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Complaint> complaints = new HashSet<Complaint>();
+
 	
 	public String getRegistrationMotivation() {
 		return registrationMotivation;
@@ -73,6 +78,16 @@ public class CottageOwner extends Person{
 			averageGrade = sum / revisions.size();
 		}
 	}
+
+	public Set<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<Complaint> complaints) {
+		this.complaints = complaints;
+	}
+	
+	
 	
 	
 }

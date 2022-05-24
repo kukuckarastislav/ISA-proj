@@ -37,6 +37,7 @@ import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsBoatDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
+import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
@@ -382,6 +383,37 @@ public class ClientController {
 			instructorService.addRevision(revisionClientDTO);
 			if(revisionClientDTO.getIsFast()) insFastResHistoryService.addRevision(revisionClientDTO.getEntityId());
 			else instructorReservetionService.addRevision(revisionClientDTO.getEntityId());
+		}
+		
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/addComplaint")
+	public ResponseEntity<Boolean> addComplaint(@RequestBody ComplaintClientDTO complaintClientDTO, Principal user) {
+		complaintClientDTO.setUserEmail(user.getName());
+		if(complaintClientDTO.getType().equals("cottage")) {
+			Cottage cottage = cottageService.getCottageWithOwner(complaintClientDTO.getEntityId());
+			complaintClientDTO.setOverseerId(cottage.getOwner().getId());
+			cottageService.addComplaint(complaintClientDTO);
+			cottageOwnerService.addComplaint(complaintClientDTO);
+			if(complaintClientDTO.getIsFast()) cottageFastResHistoryService.addComplaint(complaintClientDTO.getReservationId());
+			else cottageReservationService.addComplaint(complaintClientDTO.getReservationId());
+		} else if(complaintClientDTO.getType().equals("boat")) {
+			Boat boat = boatService.getBoatWithOwner(complaintClientDTO.getEntityId());
+			complaintClientDTO.setOverseerId(boat.getOwner().getId());
+			boatService.addComplaint(complaintClientDTO);
+			boatOwnerService.addComplaint(complaintClientDTO);
+			if(complaintClientDTO.getIsFast()) boatFastResHistoryService.addComplaint(complaintClientDTO.getReservationId());
+			else boatReservationService.addComplaint(complaintClientDTO.getReservationId());
+		} else {
+			Adventure adventure = adventureService.getAdventureWithInstructor(complaintClientDTO.getEntityId());
+			complaintClientDTO.setOverseerId(adventure.getInstructor().getId());
+			adventureService.addComplaint(complaintClientDTO);
+			instructorService.addComplaint(complaintClientDTO);
+			if(complaintClientDTO.getIsFast()) insFastResHistoryService.addComplaint(complaintClientDTO.getEntityId());
+			else instructorReservetionService.addComplaint(complaintClientDTO.getEntityId());
 		}
 		
 		return new ResponseEntity<>(true,HttpStatus.OK);

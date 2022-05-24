@@ -76,16 +76,16 @@ values ('Kuca', 'mala kuca', 'hrana', 500, 'PER_DAY', 5, 'Kopaonik', 'Serbia', 1
 
 insert into cottage_terms(cottage_id, term_availability, start_time, end_time)
 values (2, 'AVAILABILE', '2022-04-05T8:00:06.235098700', '2022-07-25T8:00:06.235098700');
-insert into cottage_reservation(start_time, end_time, status_of_reservation, cottage_id, client_id,price, is_revised)
-values ('2022-03-11T8:00:06.235098700', '2022-03-15T12:00:06.235098700', 'ACTIVE', 2, 3,170, false); -- cottage Kuca ima rezervaciju sa clientom: Marijom
+insert into cottage_reservation(start_time, end_time, status_of_reservation, cottage_id, client_id,price, is_revised, is_complained_of)
+values ('2022-03-11T8:00:06.235098700', '2022-03-15T12:00:06.235098700', 'ACTIVE', 2, 3,170, false, false); -- cottage Kuca ima rezervaciju sa clientom: Marijom
 insert into cottage_reservation_additional_services(cottage_reservation_id, additional_service_id)
 values (1,3);
 insert into cottage_reservation_additional_services(cottage_reservation_id, additional_service_id)
 values (1,4);
 insert into cottage_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, cottage_id)
 values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 100, '2022-07-11T14:00:06.235098700', '2022-07-12T16:00:06.235098700', 2);
-insert into cottage_fast_res_history(status_of_fast_reservation, client_id, cottage_fast_res_id, is_revised)
-values ('TAKEN', 3, 1, false);
+insert into cottage_fast_res_history(status_of_fast_reservation, client_id, cottage_fast_res_id, is_revised, is_complained_of)
+values ('TAKEN', 3, 1, false, false);
 
 
 
@@ -132,16 +132,16 @@ insert into instructor_terms(instructor_id, term_availability, start_time, end_t
 values (6, 'AVAILABILE', '2022-04-05T8:00:06.235098700', '2022-07-25T8:00:06.235098700');
 insert into instructor_terms(instructor_id, term_availability, start_time, end_time)
 values (6, 'UNAVAILABLE', '2022-03-25T8:00:06.235098700', '2022-04-04T8:00:06.235098700');
-insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id, instructor_username,price, is_revised)
-values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3, 'isaprojectftn+stefanI@gmail.com',170, false); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
+insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id, instructor_username,price, is_revised, is_complained_of)
+values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3, 'isaprojectftn+stefanI@gmail.com',170, false, false); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
 values (1,3);
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
 values (1,4);
 insert into instructor_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, adventure_id, instructor_username)
 values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 5, '2022-07-11T14:00:06.235098700', '2022-07-11T16:00:06.235098700', 2, 'isaprojectftn+stefanI@gmail.com');
-insert into ins_fast_res_history(status_of_fast_reservation, client_id, ins_fast_res_id, is_revised)
-values ('CANCELLED', 3, 1, false);
+insert into ins_fast_res_history(status_of_fast_reservation, client_id, ins_fast_res_id, is_revised, is_complained_of)
+values ('CANCELLED', 3, 1, false, false);
 insert into instructor_fast_reservation_additional_services(instructor_fast_reservation_id,additional_service_id)
 values (1,1);
 

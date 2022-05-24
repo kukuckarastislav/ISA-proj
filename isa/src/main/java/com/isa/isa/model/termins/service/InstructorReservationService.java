@@ -72,7 +72,7 @@ public class InstructorReservationService {
     	List<ClientMadeReservationsAdventureDTO>retVal = new ArrayList<ClientMadeReservationsAdventureDTO>();
     	for(InstructorReservation reservation:instructorReservations) {
     		List<EntityImage>images = new ArrayList<> (reservation.getAdventure().getImages());
-    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getAdventure().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId(),reservation.getIsRevised()));
+    		retVal.add(new ClientMadeReservationsAdventureDTO(reservation.getStartTime(),reservation.getEndTime(),reservation.getAdventure().getId(),reservation.getAdditionalServices(),reservation.getPrice(),reservation.getAdventure().getName(),images.get(0).getPath(),reservation.getStatusOfReservation().name(),false,reservation.getId(),reservation.getIsRevised(),reservation.getIsComplainedOf()));
     	}
     	return retVal;
     }
@@ -89,6 +89,12 @@ public class InstructorReservationService {
     public void addRevision(int reservationId) {
 		 InstructorReservation instructorReservation = instructorReservationRepository.findById(reservationId).get();
 		 instructorReservation.setIsRevised(true);
+		 instructorReservationRepository.saveAndFlush(instructorReservation);
+	 }
+    
+    public void addComplaint(int reservationId) {
+		 InstructorReservation instructorReservation = instructorReservationRepository.findById(reservationId).get();
+		 instructorReservation.setIsComplainedOf(true);
 		 instructorReservationRepository.saveAndFlush(instructorReservation);
 	 }
     

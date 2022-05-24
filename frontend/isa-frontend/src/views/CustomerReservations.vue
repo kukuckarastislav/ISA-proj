@@ -60,7 +60,7 @@
         </td>
         <td style="border:none;"></td>
         {{a.startTime}}
-        <td style="border:none;"></td>
+        <td v-if="HasPassed(a) && a.isRevised==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" style="min-width:5.8em" class="btn btn-primary" v-on:click="showModal(a,'adventure')">Review</button></td>
         </tr>
       <tr>
        
@@ -69,7 +69,6 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
-        <td  v-else-if="HasPassed(a) && a.isRevised==false" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a,'adventure')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelAdventure(a)">Cancel</button></td>
         </tr>
@@ -79,7 +78,7 @@
         </td>
         <td style="border:none;"></td>
         {{a.price}}$
-        <td style="border:none;"></td>
+        <td  v-if="HasPassed(a) && a.isComplainedOf==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" class="btn btn-warning" v-on:click="showComplaintModal(a,'adventure')">Complain</button></td>
         </tr>
         <tr>
        
@@ -112,7 +111,7 @@
         </td>
         <td style="border:none;"></td>
         {{a.startTime}}
-        <td style="border:none;"></td>
+        <td v-if="HasPassed(a) && a.isRevised==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" style="min-width:5.8em" class="btn btn-primary" v-on:click="showModal(a,'cottage')">Review</button></td>
         </tr>
       <tr>
        
@@ -121,7 +120,6 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
-        <td  v-else-if="HasPassed(a) && a.isRevised==false" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a,'cottage')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelCottage(a)">Cancel</button></td>
         </tr>
@@ -131,7 +129,7 @@
         </td>
         <td style="border:none;"></td>
         {{a.price}}$
-        <td style="border:none;"></td>
+        <td  v-if="HasPassed(a) && a.isComplainedOf==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" class="btn btn-warning" v-on:click="showComplaintModal(a,'cottage')">Complain</button></td>
         </tr>
         <tr>
        
@@ -164,7 +162,7 @@
         </td>
         <td style="border:none;"></td>
         {{a.startTime}}
-        <td style="border:none;"></td>
+        <td v-if="HasPassed(a) && a.isRevised==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" style="min-width:5.8em" class="btn btn-primary" v-on:click="showModal(a,'boat')">Review</button></td>
         </tr>
       <tr>
        
@@ -173,7 +171,6 @@
         <td style="border:none;"></td>
         {{a.endTime}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
-        <td  v-else-if="HasPassed(a) && a.isRevised==false" style="border:none;padding-right:1em"><button type="button" class="btn btn-primary" v-on:click="showModal(a, 'boat')">Review</button></td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelBoat(a)">Cancel</button></td>
         </tr>
@@ -183,7 +180,7 @@
         </td>
         <td style="border:none;"></td>
         {{a.price}}$
-        <td style="border:none;"></td>
+        <td  v-if="HasPassed(a) && a.isComplainedOf==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" class="btn btn-warning" v-on:click="showComplaintModal(a,'boat')">Complain</button></td>
         </tr>
         <tr>
        
@@ -204,6 +201,12 @@
       v-bind:entity="selectedEntity"
       v-bind:entityType="entityType"
     />
+    <CustomerComplaintModal
+      v-show="isModalComplaintVisible"
+      @close="closeComplaintModal"
+      v-bind:entity="selectedEntity"
+      v-bind:entityType="entityType"
+    />
 </div>
 
 </template>
@@ -212,10 +215,11 @@
 // @ is an alias to /src
 import axios from "axios";
 import CustomerReviewModal from '@/components/CustomerReviewModal.vue';
+import CustomerComplaintModal from '@/components/CustomerComplaintModal'
 export default {
   name: 'CustomerReservations',
   components: {
-    CustomerReviewModal
+    CustomerReviewModal, CustomerComplaintModal
   },
    data: function(){
     return {
@@ -230,7 +234,8 @@ export default {
       checked: false,
       isModalVisible: false,
       selectedEntity: {},
-      entityType: ''
+      entityType: '',
+      isModalComplaintVisible: false
     }
   },
   mounted() {
@@ -494,6 +499,14 @@ export default {
       closeModal() {
         this.isModalVisible = false;
       },
+      showComplaintModal(selEntity, typeEnt){
+        this.selectedEntity = selEntity;
+        this.entityType = typeEnt;
+        this.isModalComplaintVisible = true;
+      },
+      closeComplaintModal(){
+        this.isModalComplaintVisible = false;
+      }
    }
 }
 </script>

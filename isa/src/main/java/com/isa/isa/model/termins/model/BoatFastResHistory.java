@@ -34,6 +34,8 @@ public class BoatFastResHistory {
     
     private Boolean isRevised;
     
+    private Boolean isComplainedOf;
+    
     public BoatFastResHistory() {}
     
     
@@ -45,6 +47,7 @@ public class BoatFastResHistory {
 		this.boatFastReservation = boatFastReservation;
 		this.statusOfFastReservation = statusOfFastReservation;
 		this.isRevised = false;
+		this.isComplainedOf = false;
 	}
 
 
@@ -92,6 +95,19 @@ public class BoatFastResHistory {
 	public void setIsRevised(Boolean isRevised) {
 		this.isRevised = isRevised;
 	}
+
+
+
+	public Boolean getIsComplainedOf() {
+		return isComplainedOf;
+	}
+
+
+
+	public void setIsComplainedOf(Boolean isComplainedOf) {
+		this.isComplainedOf = isComplainedOf;
+	}
+	
 	
 	
     

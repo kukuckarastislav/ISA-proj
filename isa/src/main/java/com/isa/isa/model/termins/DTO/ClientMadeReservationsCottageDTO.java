@@ -18,6 +18,7 @@ public class ClientMadeReservationsCottageDTO {
     private Boolean isFast;
     private int reservationId;
     private Boolean isRevised;
+    private Boolean isComplainedOf;
      
 	public ClientMadeReservationsCottageDTO() {
 	
@@ -28,7 +29,7 @@ public class ClientMadeReservationsCottageDTO {
 
 	public ClientMadeReservationsCottageDTO(LocalDateTime startTime, LocalDateTime endTime, int cottageId,
 			Set<ItemPrice> additionalServices, double price, String cottageName, String imagePath, String status,
-			Boolean isFast, int reservationId, Boolean isRevised) {
+			Boolean isFast, int reservationId, Boolean isRevised, Boolean isComplainedOf) {
 		super();
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -41,6 +42,7 @@ public class ClientMadeReservationsCottageDTO {
 		this.isFast = isFast;
 		this.reservationId = reservationId;
 		this.isRevised = isRevised;
+		this.isComplainedOf = isComplainedOf;
 	}
 
 
@@ -129,7 +131,22 @@ public class ClientMadeReservationsCottageDTO {
 
 	public void setIsRevised(Boolean isRevised) {
 		this.isRevised = isRevised;
+	}
+
+
+
+
+	public Boolean getIsComplainedOf() {
+		return isComplainedOf;
+	}
+
+
+
+
+	public void setIsComplainedOf(Boolean isComplainedOf) {
+		this.isComplainedOf = isComplainedOf;
 	}    
+	
 	
 	
 

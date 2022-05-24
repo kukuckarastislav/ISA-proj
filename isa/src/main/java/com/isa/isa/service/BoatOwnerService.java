@@ -9,7 +9,9 @@ import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
+import com.isa.isa.model.termins.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
@@ -93,6 +95,12 @@ public class BoatOwnerService {
 	public void addRevision(RevisionClientDTO revisionClientDTO) {
 		BoatOwner boatOwner = boatOwnerRepository.findById(revisionClientDTO.getOverseerId()).get();
 		boatOwner.getRevisions().add(new Revision(revisionClientDTO.getUserId(),revisionClientDTO.getOverseerGrade(),revisionClientDTO.getOverseerComment()));
+		boatOwnerRepository.saveAndFlush(boatOwner);
+	}
+	
+	public void addComplaint(ComplaintClientDTO complaintClientDTO) {
+		BoatOwner boatOwner = boatOwnerRepository.findById(complaintClientDTO.getOverseerId()).get();
+		boatOwner.getComplaints().add(new Complaint(complaintClientDTO.getOverseerComment(),complaintClientDTO.getUserEmail()));
 		boatOwnerRepository.saveAndFlush(boatOwner);
 	}
 }
