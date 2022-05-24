@@ -13,6 +13,8 @@ public class Admin extends Person{
         super(userDTO);
     }
 
+    public Admin(){}
+
     public void updateInfo(AdminDTO adminDTO){
         super.setEmail(adminDTO.getEmail());
         super.setFirstName(adminDTO.getFirstName());

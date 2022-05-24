@@ -23,6 +23,7 @@ import CustomerReservations from '../views/CustomerReservations.vue'
 import AccountDeleteRequest from '../admin/AccountDeleteRequest'
 import CottageCreation from '../cottage_owner/CottageCreation.vue'
 import RevisionPage from '../admin/RevisionPage.vue'
+import AdminProfile from '../admin/Profile.vue'
 
 
 
@@ -51,6 +52,7 @@ const routes = [
   { path: '/accountdeleteRequest', name: 'AccountDeleteRequest', component: AccountDeleteRequest },
   { path: '/newcottage', name: 'CottageCreation', component: CottageCreation },
   { path: '/revision', name: 'RevisionPage', component: RevisionPage },
+  { path: '/adminProfile', name: 'AdminProfile', component: AdminProfile },
 
 ]
 
