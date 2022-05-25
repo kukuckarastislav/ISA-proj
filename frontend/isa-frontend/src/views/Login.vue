@@ -59,6 +59,7 @@ export default {
         .then((response) =>{
           window.sessionStorage.setItem("jwt", response.data.accessToken)
           window.sessionStorage.setItem("role", response.data.role)
+          window.sessionStorage.setItem("email", response.data.email)
           this.$router.push('/');
         });
     },

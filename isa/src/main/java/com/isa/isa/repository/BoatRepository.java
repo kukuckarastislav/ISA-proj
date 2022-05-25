@@ -24,4 +24,7 @@ public interface BoatRepository extends JpaRepository<Boat, Integer>{
 
 	@Query(value = "Select * from boat where id=(select boat_id from boat_revisions where revisions_id=?1)", nativeQuery = true)
 	Boat getBoatByRevisionId(Integer revisionId);
+
+	@Query(value = "Select * from boat where id=(select boat_id from boat_complaints where complaint_id=?1)", nativeQuery = true)
+	Boat getBoatByComplaintId(Integer complaintId);
 }

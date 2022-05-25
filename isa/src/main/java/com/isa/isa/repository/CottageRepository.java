@@ -2,6 +2,7 @@ package com.isa.isa.repository;
 
 import java.util.List;
 
+import com.isa.isa.model.Adventure;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,4 +21,7 @@ public interface CottageRepository extends JpaRepository<Cottage, Integer>{
 
 	@Query(value = "Select * from cottage where id=(select cottage_id from cottage_revisions where revisions_id=?1)", nativeQuery = true)
 	Cottage getCottageByRevisionId(Integer revisionId);
+
+	@Query(value = "Select * from cottage where id=(select cottage_id from cottage_complaints where complaint_id=?1)", nativeQuery = true)
+	Cottage getCottageByComplaintId(Integer complaintId);
 }

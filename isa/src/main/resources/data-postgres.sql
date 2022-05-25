@@ -245,10 +245,18 @@ values (2,3);
 
 insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email)
 values ('Ova avantura nije bila toliko zanimljiva', '2022-05-16 19:36:30.336347', 1,3,'isaprojectftn+stefanI@gmail.com', 1,1,'isaprojectftn+marijaC@gmail.com');
+insert into adventure_complaints(adventure_id, complaints_id)
+values (1,1);
 insert into complaint(admin_email, admin_respons_date, admin_response, comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email)
 values ('isaprojectftn+admin@gmail.com','2022-05-16 19:36:30.336347','Zao nam je zbog toga, imacemo u vidu ... :(','Instruktor mi nije dao jasne instrukcije kako da se penjem na planinu, skoro sam pao sa planine', '2022-05-16 19:36:30.336347', -1,3,'isaprojectftn+stefanI@gmail.com', 0,0,'isaprojectftn+marijaC@gmail.com');
+insert into instructor_complaints(instructor_id, complaints_id)
+values (6,2);
 
 insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email)
 values ('Vikendica nije bila spremljena kad sam dosla, morala sam ja da cistim prvih sat vremena', '2022-05-16 19:36:30.336347', 2,1,'isaprojectftn+petarCO@gmail.com', 1,1,'isaprojectftn+marijaC@gmail.com');
+insert into cottage_complaints(cottage_id, complaints_id)
+values (2,3);
 insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email)
 values ('Vlasnik vikendice pri mom odlasku je proveravao sve zivo kao da sam lopov', '2022-05-16 19:36:30.336347', -1,1,'isaprojectftn+petarCO@gmail.com', 0,1,'isaprojectftn+marijaC@gmail.com');
+insert into cottage_owner_complaints(cottage_owner_id, complaints_id)
+values (5,4);

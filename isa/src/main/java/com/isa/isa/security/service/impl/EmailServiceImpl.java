@@ -5,7 +5,9 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
+import com.isa.isa.model.revisions.model.RevisionType;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
@@ -148,12 +150,12 @@ public class EmailServiceImpl implements EmailService{
 	}
 
 	@Override
-	public void sendNotificationNewRevisionEntity(String email, String clientEmail, Revision revision, String offerNamename) {
+	public void sendNotificationNewRevisionEntity(String email, String clientEmail, Revision revision, String offerName) {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(email);
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("New Revision!");
-		String text = "Hi, you have new revision for your service:`"+offerNamename+"` by " +clientEmail+" ["+revision.getGrade()+"]"+" `"+revision.getComment()+"` on date:"+revision.getCreatedAt();
+		String text = "Hi, you have new revision for your service:`"+offerName+"` by " +clientEmail+" ["+revision.getGrade()+"]"+" `"+revision.getComment()+"` on date:"+revision.getCreatedAt();
 		mail.setText(text);
 		javaMailSender.send(mail);
 
@@ -173,4 +175,47 @@ public class EmailServiceImpl implements EmailService{
 		System.out.println("Email poslat!");
 	}
 
+	@Override
+	public void sendAdminComplaintResponseToClient(Complaint complaint, String offerName) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(complaint.getUserEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Complaint answer");
+		String text = "";
+		if(complaint.getRevisionType() == RevisionType.OWNER){
+			text = "Hi, our team answered your complaint \n"+
+					"Your complaint: `"+complaint.getComment()+"` on date: "+complaint.getCreatedAt()+"\n"+
+					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+		}else{
+			text = "Hi, our team answered your complaint about service`"+offerName+"` \n"+
+					"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
+					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+		}
+		mail.setText(text);
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
+
+	@Override
+	public void sendAdminComplaintResponseToProvider(Complaint complaint, String offerName) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(complaint.getProviderEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Complaint answer");
+		String text = "";
+		if(complaint.getRevisionType() == RevisionType.OWNER){
+			text = "Hi, our team answered complaint about you \n"+
+					"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
+					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+		}else{
+			text = "Hi, our team answered complaint about your service `"+offerName+"` \n"+
+					"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
+					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+		}
+		mail.setText(text);
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
 }

@@ -1,5 +1,6 @@
 package com.isa.isa.model.complaints;
 
+import com.isa.isa.model.complaints.DTO.ComplaintAdminResponseDTO;
 import com.isa.isa.model.complaints.DTO.ComplaintAdminViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,10 @@ public class ComplaintsController {
         return new ResponseEntity<ArrayList<ComplaintAdminViewDTO>>(complaintsService.getRevisionAdminView(), HttpStatus.OK);
     }
 
-
-    /*
     @PostMapping("/respons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Boolean> postAdminRevisionRespons(Principal user, @RequestBody RevisionAdminResponsDTO revisionAdminResponsDTO) {
-        System.out.println("REVISION DTO "+revisionAdminResponsDTO.getAdminUsername());
-        return new ResponseEntity<Boolean>(revisionService.postAdminRevisionRespons(revisionAdminResponsDTO), HttpStatus.OK);
+    public ResponseEntity<Boolean> postAdminComplaintResponse(Principal user, @RequestBody ComplaintAdminResponseDTO complaintAdminResponseDTO) {
+        return new ResponseEntity<Boolean>(complaintsService.postAdminComplaintResponse(complaintAdminResponseDTO), HttpStatus.OK);
     }
-    */
+
 }
