@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import com.isa.isa.model.enums.UserTypeISA;
+import com.isa.isa.model.revisions.model.RevisionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,7 @@ import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
-import com.isa.isa.model.termins.model.Complaint;
+import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.service.BoatFastReservationService;
 import com.isa.isa.model.termins.service.BoatReservationService;
@@ -171,8 +173,8 @@ public class BoatService {
 	}
 	
 	public void addComplaint(ComplaintClientDTO complaintClientDTO) {
-		Boat boat = boatRepository.findById(complaintClientDTO.getEntityId()).get();
-		boat.getComplaints().add(new Complaint(complaintClientDTO.getEntityComment(),complaintClientDTO.getUserEmail()));
+		Boat boat = boatRepository.getByIdWithOwner(complaintClientDTO.getEntityId());
+		boat.getComplaints().add(new Complaint(complaintClientDTO.getEntityComment(),complaintClientDTO.getUserEmail(), UserTypeISA.BOAT_OWNER, boat.getOwner().getEmail(), RevisionType.ENTITY, boat.getId()));
 		boatRepository.saveAndFlush(boat);
 	}
 }

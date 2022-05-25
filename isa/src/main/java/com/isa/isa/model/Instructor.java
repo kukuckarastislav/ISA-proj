@@ -2,7 +2,7 @@ package com.isa.isa.model;
 
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.UserDTO;
-import com.isa.isa.model.termins.model.Complaint;
+import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.termins.model.InstructorTerms;
 import com.isa.isa.model.revisions.model.Revision;
 

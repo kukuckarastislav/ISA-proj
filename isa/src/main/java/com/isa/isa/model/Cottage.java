@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.isa.isa.model.revisions.model.Revision;
-import com.isa.isa.model.termins.model.Complaint;
+import com.isa.isa.model.complaints.model.Complaint;
 
 @Entity
 @Table(name="cottage")

@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.isa.isa.model.enums.UserTypeISA;
+import com.isa.isa.model.revisions.model.RevisionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
-import com.isa.isa.model.termins.model.Complaint;
+import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.service.CottageFastReservationService;
 import com.isa.isa.model.termins.service.CottageReservationService;
@@ -144,8 +146,8 @@ public class CottageService {
 	}
 	
 	public void addComplaint(ComplaintClientDTO complaintClientDTO) {
-		Cottage cottage = cottageRepository.findById(complaintClientDTO.getEntityId()).get();
-		cottage.getComplaints().add(new Complaint(complaintClientDTO.getEntityComment(),complaintClientDTO.getUserEmail()));
+		Cottage cottage = cottageRepository.getByIdWithOwner(complaintClientDTO.getEntityId());
+		cottage.getComplaints().add(new Complaint(complaintClientDTO.getEntityComment(),complaintClientDTO.getUserEmail(), UserTypeISA.COTTAGE_OWNER, cottage.getOwner().getEmail(), RevisionType.ENTITY, cottage.getId()));
 		cottageRepository.saveAndFlush(cottage);
 	}
 }

@@ -2,7 +2,7 @@ package com.isa.isa.model;
 
 import com.isa.isa.model.enums.ReservationCancellationConditions;
 import com.isa.isa.model.revisions.model.Revision;
-import com.isa.isa.model.termins.model.Complaint;
+import com.isa.isa.model.complaints.model.Complaint;
 
 import java.util.HashSet;
 import java.util.Set;

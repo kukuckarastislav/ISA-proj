@@ -52,3 +52,66 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
   }
 ]
 ###
+GET http://localhost:8180/api/complaint
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjUzNTAyNDY2LCJleHAiOjE2NTM2ODI0NjZ9.oYHGVTxy1cwbfMfWG3geFcu8GhURlO4MYHAQAyz5KjJ_CdQDdzgyMsrGyem6TxkADttEkUBGC9MK4eozCmS8Gw
+###
+
+[
+  {
+    "id": 1,
+    "comment": "Ova avantura nije bila toliko zanimljiva",
+    "userEmail": "isaprojectftn+marijaC@gmail.com",
+    "createdAt": "2022-05-16T19:36:30.336347",
+    "providerType": "INSTRUCTOR",
+    "providerEmail": "isaprojectftn+stefanI@gmail.com",
+    "revisionType": "ENTITY",
+    "entityId": 1,
+    "statusOfComplaint": "UNANSWERED",
+    "adminEmail": null,
+    "adminResponse": null,
+    "adminResponsDate": null
+  },
+  {
+    "id": 2,
+    "comment": "Instruktor mi nije dao jasne instrukcije kako da se penjem na planinu, skoro sam pao sa planine",
+    "userEmail": "isaprojectftn+marijaC@gmail.com",
+    "createdAt": "2022-05-16T19:36:30.336347",
+    "providerType": "INSTRUCTOR",
+    "providerEmail": "isaprojectftn+stefanI@gmail.com",
+    "revisionType": "OWNER",
+    "entityId": -1,
+    "statusOfComplaint": "ANSWERED",
+    "adminEmail": "isaprojectftn+admin@gmail.com",
+    "adminResponse": "Zao nam je zbog toga, imacemo u vidu ... :(",
+    "adminResponsDate": "2022-05-16T19:36:30.336347"
+  },
+  {
+    "id": 3,
+    "comment": "Vikendica nije bila spremljena kad sam dosla, morala sam ja da cistim prvih sat vremena",
+    "userEmail": "isaprojectftn+marijaC@gmail.com",
+    "createdAt": "2022-05-16T19:36:30.336347",
+    "providerType": "COTTAGE_OWNER",
+    "providerEmail": "isaprojectftn+petarCO@gmail.com",
+    "revisionType": "ENTITY",
+    "entityId": 2,
+    "statusOfComplaint": "UNANSWERED",
+    "adminEmail": null,
+    "adminResponse": null,
+    "adminResponsDate": null
+  },
+  {
+    "id": 4,
+    "comment": "Vlasnik vikendice pri mom odlasku je proveravao sve zivo kao da sam lopov",
+    "userEmail": "isaprojectftn+marijaC@gmail.com",
+    "createdAt": "2022-05-16T19:36:30.336347",
+    "providerType": "COTTAGE_OWNER",
+    "providerEmail": "isaprojectftn+petarCO@gmail.com",
+    "revisionType": "OWNER",
+    "entityId": -1,
+    "statusOfComplaint": "UNANSWERED",
+    "adminEmail": null,
+    "adminResponse": null,
+    "adminResponsDate": null
+  }
+]
+###

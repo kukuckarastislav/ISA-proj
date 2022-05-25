@@ -1,5 +1,7 @@
 package com.isa.isa.service;
 
+import com.isa.isa.model.enums.UserTypeISA;
+import com.isa.isa.model.revisions.model.RevisionType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +13,7 @@ import com.isa.isa.model.Client;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
-import com.isa.isa.model.termins.model.Complaint;
+import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.repository.AdminRepository;
 import com.isa.isa.repository.BoatOwnerRepository;
@@ -102,7 +104,7 @@ public class CottageOwnerService {
 	
 	public void addComplaint(ComplaintClientDTO complaintClientDTO) {
 		CottageOwner cottageOwner = cottageOwnerRepository.findById(complaintClientDTO.getOverseerId()).get();
-		cottageOwner.getComplaints().add(new Complaint(complaintClientDTO.getOverseerComment(),complaintClientDTO.getUserEmail()));
+		cottageOwner.getComplaints().add(new Complaint(complaintClientDTO.getOverseerComment(),complaintClientDTO.getUserEmail(), UserTypeISA.COTTAGE_OWNER, cottageOwner.getEmail(), RevisionType.OWNER, -1));
 		cottageOwnerRepository.saveAndFlush(cottageOwner);
 	}
 	
