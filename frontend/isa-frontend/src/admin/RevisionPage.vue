@@ -104,7 +104,7 @@
                                         {{revision.grade}}
                                         </h3>
                                         <p class="card-text text-start">{{revision.grade}} {{convertDate(revision.revisionCreatedAt)}}</p>
-                                        <p class="card-text text-start">{{revision.comment}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi repellat voluptates aliquam eius dolore tenetur ea mollitia possimus, doloremque nostrum veritatis earum quo quia aspernatur asperiores? Unde voluptatum odio consectetur!</p>
+                                        <p class="card-text text-start">{{revision.comment}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +172,7 @@ export default {
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
         axios
           .post('http://localhost:8180/api/revision/respons', {
-              adminUsername: 'isaprojectftn+admin@gmail.com', //TODO: da ne bude hardkodirano
+              adminUsername: window.sessionStorage.getItem("email"),
               approve: status,
               idRevision: revision.idRevision,
               ownerType: revision.ownerType,
@@ -200,7 +200,7 @@ export default {
     showOnlyMyRespons: function(revision){
         
         if(this.showRevisions.onlyMyResponse){
-            if(revision.adminUsername === 'isaprojectftn+admin@gmail.com'){     //TODO: namestiti za bilo kog admina
+            if(revision.adminUsername === window.sessionStorage.getItem("email")){
                 return true;
             }else{
                 return false;

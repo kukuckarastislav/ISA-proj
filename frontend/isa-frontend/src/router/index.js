@@ -24,6 +24,7 @@ import AccountDeleteRequest from '../admin/AccountDeleteRequest'
 import CottageCreation from '../cottage_owner/CottageCreation.vue'
 import RevisionPage from '../admin/RevisionPage.vue'
 import AdminProfile from '../admin/Profile.vue'
+import ComplaintPage from '../admin/ComplaintPage.vue'
 
 
 
@@ -53,6 +54,7 @@ const routes = [
   { path: '/newcottage', name: 'CottageCreation', component: CottageCreation },
   { path: '/revision', name: 'RevisionPage', component: RevisionPage },
   { path: '/adminProfile', name: 'AdminProfile', component: AdminProfile },
+  { path: '/adminComplaint', name: 'ComplaintPage', component: ComplaintPage },
 
 ]
 

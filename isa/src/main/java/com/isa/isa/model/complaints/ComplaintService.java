@@ -41,7 +41,8 @@ public class ComplaintService {
     public ArrayList<ComplaintAdminViewDTO> getRevisionAdminView() {
         ArrayList<ComplaintAdminViewDTO> complaintAdminViewDTOS = new ArrayList<>();
         for(Complaint complaint : complaintRepository.findAll()){
-            complaintAdminViewDTOS.add(new ComplaintAdminViewDTO(complaint));
+            String serviceName = getServiceNameByComplaint(complaint);
+            complaintAdminViewDTOS.add(new ComplaintAdminViewDTO(complaint, serviceName));
         }
         return complaintAdminViewDTOS;
     }
@@ -56,22 +57,7 @@ public class ComplaintService {
             complaint.setStatusOfComplaint(StatusOfComplaint.ANSWERED);
             complaintRepository.saveAndFlush(complaint);
             //send email
-            String offerName = "";
-            if(complaint.getRevisionType() == RevisionType.ENTITY){
-                if(complaint.getProviderType() == UserTypeISA.INSTRUCTOR){
-                    Adventure adventure = adventureRepository.getAdventureByComplaintId(complaint.getId());
-                    if(adventure != null)
-                        offerName = adventure.getName();
-                }else if(complaint.getProviderType() == UserTypeISA.BOAT_OWNER){
-                    Boat boat = boatRepository.getBoatByComplaintId(complaint.getId());
-                    if(boat != null)
-                        offerName = boat.getName();
-                }else if(complaint.getProviderType() == UserTypeISA.COTTAGE_OWNER){
-                    Cottage cottage = cottageRepository.getCottageByComplaintId(complaint.getId());
-                    if(cottage != null)
-                        offerName = cottage.getName();
-                }
-            }
+            String offerName = getServiceNameByComplaint(complaint);
             emailService.sendAdminComplaintResponseToClient(complaint, offerName);
             emailService.sendAdminComplaintResponseToProvider(complaint, offerName);
             return true;
@@ -79,6 +65,25 @@ public class ComplaintService {
             System.out.println("Error id of Complaint is invalid");
             return false;
         }
+    }
 
+    private String getServiceNameByComplaint(Complaint complaint){
+        String serviceName = "";
+        if(complaint.getRevisionType() == RevisionType.ENTITY){
+            if(complaint.getProviderType() == UserTypeISA.INSTRUCTOR){
+                Adventure adventure = adventureRepository.getAdventureByComplaintId(complaint.getId());
+                if(adventure != null)
+                    serviceName = adventure.getName();
+            }else if(complaint.getProviderType() == UserTypeISA.BOAT_OWNER){
+                Boat boat = boatRepository.getBoatByComplaintId(complaint.getId());
+                if(boat != null)
+                    serviceName = boat.getName();
+            }else if(complaint.getProviderType() == UserTypeISA.COTTAGE_OWNER){
+                Cottage cottage = cottageRepository.getCottageByComplaintId(complaint.getId());
+                if(cottage != null)
+                    serviceName = cottage.getName();
+            }
+        }
+        return serviceName;
     }
 }

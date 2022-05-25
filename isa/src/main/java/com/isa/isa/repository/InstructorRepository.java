@@ -21,6 +21,6 @@ public interface InstructorRepository extends JpaRepository<Instructor, Integer>
 	@Query(value = "Select * from instructor where id=(select instructor_id from instructor_revisions where revisions_id=?1)", nativeQuery = true)
 	Instructor getInstructorByRevisionId(Integer revisionId);
 
-	@Query(value = "Select * from instructor where id=(select instructor_id from instructor_complaints where complaint_id=?1)", nativeQuery = true)
+	@Query(value = "Select * from instructor where id=(select instructor_id from instructor_complaints where complaints_id=?1)", nativeQuery = true)
 	Instructor getInstructorByComplaintId(Integer complaintId);
 }

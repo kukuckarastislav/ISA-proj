@@ -13,7 +13,7 @@ public interface CottageOwnerRepository extends JpaRepository<CottageOwner, Inte
 	@Query(value = "Select * from cottage_owner where id=(select cottage_owner_id from cottage_owner_revisions where revisions_id=?1)", nativeQuery = true)
 	CottageOwner getCottageOwnerByRevisionId(Integer revisionId);
 
-	@Query(value = "Select * from cottage_owner where id=(select cottage_owner_id from cottage_owner_complaints where complaint_id=?1)", nativeQuery = true)
+	@Query(value = "Select * from cottage_owner where id=(select cottage_owner_id from cottage_owner_complaints where complaints_id=?1)", nativeQuery = true)
 	CottageOwner getCottageOwnerByComplaintId(Integer complaintId);
 
 }

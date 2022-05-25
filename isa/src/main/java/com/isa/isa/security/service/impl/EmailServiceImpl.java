@@ -183,11 +183,11 @@ public class EmailServiceImpl implements EmailService{
 		mail.setSubject("Complaint answer");
 		String text = "";
 		if(complaint.getRevisionType() == RevisionType.OWNER){
-			text = "Hi, our team answered your complaint \n"+
+			text = "Hi, our team answered your complaint about owner `"+complaint.getProviderEmail()+"`\n"+
 					"Your complaint: `"+complaint.getComment()+"` on date: "+complaint.getCreatedAt()+"\n"+
 					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
 		}else{
-			text = "Hi, our team answered your complaint about service`"+offerName+"` \n"+
+			text = "Hi, our team answered your complaint about service`"+offerName+"` from `"+complaint.getProviderEmail()+"` \n"+
 					"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
 					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
 		}

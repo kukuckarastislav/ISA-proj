@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class ComplaintAdminViewDTO {
     private int id;
     private String comment;
+    private String nameOfService;
     private String userEmail;
     private LocalDateTime createdAt;
 
@@ -25,7 +26,7 @@ public class ComplaintAdminViewDTO {
 
     public ComplaintAdminViewDTO(){}
 
-    public ComplaintAdminViewDTO(Complaint complaint){
+    public ComplaintAdminViewDTO(Complaint complaint, String nameOfService){
         this.id = complaint.getId();
         this.comment = complaint.getComment();
         this.userEmail = complaint.getUserEmail();
@@ -38,6 +39,7 @@ public class ComplaintAdminViewDTO {
         this.adminEmail = complaint.getAdminEmail();
         this.adminResponsDate = complaint.getAdminResponsDate();
         this.adminResponse = complaint.getAdminResponse();
+        this.nameOfService = nameOfService;
     }
 
     public ComplaintAdminViewDTO(int id, String comment, String userEmail, LocalDateTime createdAt, UserTypeISA providerType, String providerEmail, RevisionType revisionType, int entityId, StatusOfComplaint statusOfComplaint, String adminEmail, String adminResponse, LocalDateTime adminResponsDate) {
@@ -149,5 +151,13 @@ public class ComplaintAdminViewDTO {
 
     public void setAdminResponse(String adminResponse) {
         this.adminResponse = adminResponse;
+    }
+
+    public String getNameOfService() {
+        return nameOfService;
+    }
+
+    public void setNameOfService(String nameOfService) {
+        this.nameOfService = nameOfService;
     }
 }

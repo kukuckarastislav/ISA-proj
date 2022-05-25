@@ -22,7 +22,7 @@ public interface AdventureRepository extends JpaRepository<Adventure, Integer> {
     @Query(value = "Select * from adventure where id=(select adventure_id from adventure_revisions where revisions_id=?1)", nativeQuery = true)
     Adventure getAdventureByRevisionId(Integer revisionId);
 
-    @Query(value = "Select * from adventure where id=(select adventure_id from adventure_complaints where complaint_id=?1)", nativeQuery = true)
+    @Query(value = "Select * from adventure where id=(select adventure_id from adventure_complaints where complaints_id=?1)", nativeQuery = true)
     Adventure getAdventureByComplaintId(Integer complaintId);
 
 
