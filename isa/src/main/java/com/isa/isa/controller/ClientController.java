@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.ClientDto;
+import com.isa.isa.DTO.ClientSubscriptionDTO;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
@@ -417,6 +419,55 @@ public class ClientController {
 		}
 		
 		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/subscribe")
+	public ResponseEntity<?> subscribe(@RequestBody ClientSubscriptionDTO clientSubscriptionDTO, Principal user) {
+		if(clientSubscriptionDTO.getType().equals("cottage")) {
+			Cottage cottage = cottageService.getCottageWithOwner(clientSubscriptionDTO.getId());
+			clientService.addCottageSubscription(user.getName(), cottage);
+		} else if(clientSubscriptionDTO.getType().equals("boat")) {
+			Boat boat = boatService.getBoatWithOwner(clientSubscriptionDTO.getId());
+			clientService.addBoatSubscription(user.getName(), boat);
+		} else {
+			Adventure adventure = adventureService.getAdventureWithInstructor(clientSubscriptionDTO.getId());
+			clientService.addAdventureSubscription(user.getName(), adventure);
+		}
+		return ResponseEntity.ok().build();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@GetMapping("/getSubscriptionsCottage")
+	public ResponseEntity<List<Cottage>> getSubscriptionsCottage(Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		List<Cottage> cottages = new ArrayList<Cottage>();
+		for(Cottage cottage:  client.getCottageSubscriptions()) {
+			cottages.add(cottageService.getCottageWithOwner(cottage.getId()));
+		}
+		return new ResponseEntity<List<Cottage>>(cottages, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@GetMapping("/getSubscriptionsBoat")
+	public ResponseEntity<List<Boat>> getSubscriptionsBoat(Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		List<Boat> boats = new ArrayList<Boat>();
+		for(Boat boat:  client.getBoatSubscriptions()) {
+			boats.add(boatService.getBoatWithOwner(boat.getId()));
+		}
+		return new ResponseEntity<List<Boat>>(boats, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@GetMapping("/getSubscriptionsAdventure")
+	public ResponseEntity<List<Adventure>> getSubscriptionsAdventure(Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		List<Adventure> adventures = new ArrayList<Adventure>();
+		for(Adventure adventure:  client.getAdventureSubscriptions()) {
+			adventures.add(adventureService.getAdventureWithInstructor(adventure.getId()));
+		}
+		return new ResponseEntity<List<Adventure>>(adventures, HttpStatus.OK);
 	}
 
 }

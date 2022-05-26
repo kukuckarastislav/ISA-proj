@@ -7,6 +7,9 @@
                     <a href="/customerReservations" class="nav-link">My reservations</a>
                 </div>
                 <div class="col">
+                    <a href="/customerSubscriptions" class="nav-link">My subscriptions</a>
+                </div>
+                <div class="col">
                     <a href="/customerProfile" class="nav-link">Profile</a>
                 </div>
             </div>

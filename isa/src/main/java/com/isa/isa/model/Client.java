@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.isa.isa.DTO.ClientDto;
@@ -49,8 +50,15 @@ public class Client extends Person{
 
 	@OneToMany (mappedBy = "client",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatFastResHistory> boatFastResHistories = new HashSet<BoatFastResHistory>();
+	
+	@ManyToMany (targetEntity = Boat.class, fetch = FetchType.EAGER)
+	private Set<Boat> boatSubscriptions = new HashSet<Boat>();
 
-
+	@ManyToMany (targetEntity = Cottage.class, fetch = FetchType.EAGER)
+	private Set<Cottage> cottageSubscriptions = new HashSet<Cottage>();
+	
+	@ManyToMany (targetEntity = Adventure.class, fetch = FetchType.EAGER)
+	private Set<Adventure> adventureSubscriptions = new HashSet<Adventure>();
 	
 
 	public Set<BoatReservations> getBoatReservations() {
@@ -100,4 +108,30 @@ public class Client extends Person{
 	public void setInsFastResHistories(Set<InsFastResHistory> insFastResHistories) {
 		this.insFastResHistories = insFastResHistories;
 	}
+
+	public Set<Boat> getBoatSubscriptions() {
+		return boatSubscriptions;
+	}
+
+	public void setBoatSubscriptions(Set<Boat> boatSubscriptions) {
+		this.boatSubscriptions = boatSubscriptions;
+	}
+
+	public Set<Cottage> getCottageSubscriptions() {
+		return cottageSubscriptions;
+	}
+
+	public void setCottageSubscriptions(Set<Cottage> cottageSubscriptions) {
+		this.cottageSubscriptions = cottageSubscriptions;
+	}
+
+	public Set<Adventure> getAdventureSubscriptions() {
+		return adventureSubscriptions;
+	}
+
+	public void setAdventureSubscriptions(Set<Adventure> adventureSubscriptions) {
+		this.adventureSubscriptions = adventureSubscriptions;
+	}
+	
+	
 }
