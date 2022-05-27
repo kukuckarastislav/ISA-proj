@@ -11,7 +11,7 @@
             <div v-if="cottage.name != undefined" class="col-sm-6">
 
                 <h1 class="text-start">{{cottage.name}} 
-                  <button v-if="role==='ROLE_CUSTOMER'" style="float:right" type="button" class="btn btn-primary" v-on:click="subscribeToActions()">Subscribe to actions</button>
+                  <button v-if="role==='ROLE_CUSTOMER' && !isSubscribed" style="float:right" type="button" class="btn btn-primary" v-on:click="subscribeToActions()">Subscribe to actions</button>
                   </h1>              
                  <br>
 
@@ -245,7 +245,8 @@ export default {
       isModalVisible: false,
       chosenServices: [],
       actions: [],
-      button1: true
+      button1: true,
+      isSubscribed: false
     };
   },
   mounted: function () {
@@ -262,6 +263,23 @@ export default {
           .get('http://localhost:8180/api/person/cottages/' + this.cottageId+'/fastReservations')
           .then(response => {
               this.actions = response.data
+              if (this.role) {
+                  axios.defaults.headers.common["Authorization"] =
+                "Bearer " + window.sessionStorage.getItem("jwt");
+                  axios
+          .post('http://localhost:8180/api/client/isSubscribed',{type:"cottage", id:this.cottageId})
+          .then(response => {
+              this.isSubscribed = response.data
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          });
+
+
+              }
+
+
+
+
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           });
@@ -315,7 +333,9 @@ export default {
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
           .post('http://localhost:8180/api/client/subscribe',{type:"cottage", id:this.cottageId})
-          .then(response => {alert('Uspesno ste se preplatili na akcije za entitet.')
+          .then(response => {
+            this.isSubscribed = true;
+            alert('Uspesno ste se preplatili na akcije za entitet.')
           }).catch(err => {
               alert('Doslo je do greske.')
           });

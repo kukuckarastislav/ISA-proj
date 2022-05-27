@@ -1,6 +1,7 @@
 package com.isa.isa.model;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -182,6 +183,23 @@ public class Cottage {
 
 	public void setComplaints(Set<Complaint> complaints) {
 		this.complaints = complaints;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cottage other = (Cottage) obj;
+		return id == other.id;
 	}
 	
 	

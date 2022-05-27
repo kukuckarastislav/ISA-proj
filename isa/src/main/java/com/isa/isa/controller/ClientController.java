@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -468,6 +469,43 @@ public class ClientController {
 			adventures.add(adventureService.getAdventureWithInstructor(adventure.getId()));
 		}
 		return new ResponseEntity<List<Adventure>>(adventures, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@PostMapping("/isSubscribed")
+	public ResponseEntity<Boolean> isSubscribed(@RequestBody ClientSubscriptionDTO clientSubscriptionDTO, Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		if(clientSubscriptionDTO.getType().equals("cottage")) {
+			for (Cottage cottage : client.getCottageSubscriptions()) {
+				if(cottage.getId()==clientSubscriptionDTO.getId()) return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			}
+		} else if(clientSubscriptionDTO.getType().equals("boat")) {
+			for (Boat boat : client.getBoatSubscriptions()) {
+				if(boat.getId()==clientSubscriptionDTO.getId()) return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			}
+		} else {
+			for (Adventure adventure : client.getAdventureSubscriptions()) {
+				if(adventure.getId()==clientSubscriptionDTO.getId()) return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@DeleteMapping("/unsubscribe")
+	public ResponseEntity<?> unsubscribe(@RequestBody ClientSubscriptionDTO clientSubscriptionDTO, Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		if(clientSubscriptionDTO.getType().equals("cottage")) {
+			Cottage cottage = cottageService.getCottageWithOwner(clientSubscriptionDTO.getId());
+			clientService.removeCottageSubscription(user.getName(), cottage);
+		} else if(clientSubscriptionDTO.getType().equals("boat")) {
+			Boat boat = boatService.getBoatWithOwner(clientSubscriptionDTO.getId());
+			clientService.removeBoatSubscription(user.getName(), boat);
+		} else {
+			Adventure adventure = adventureService.getAdventureWithInstructor(clientSubscriptionDTO.getId());
+			clientService.removeAdventureSubscription(user.getName(), adventure);
+		}
+		return ResponseEntity.ok().build();
 	}
 
 }

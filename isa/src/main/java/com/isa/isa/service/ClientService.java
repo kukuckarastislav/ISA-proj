@@ -1,6 +1,8 @@
 package com.isa.isa.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +73,24 @@ public class ClientService {
 	public void addAdventureSubscription(String email, Adventure adventure) {
 		Client oldClient = findByEmail(email);
 		oldClient.getAdventureSubscriptions().add(adventure);
+		clientRepository.saveAndFlush(oldClient);
+	}
+	
+	public void removeCottageSubscription(String email, Cottage cottage) {
+		Client oldClient = findByEmail(email);
+		oldClient.getCottageSubscriptions().remove(cottage);
+		clientRepository.saveAndFlush(oldClient);
+	}
+	
+	public void removeBoatSubscription(String email, Boat boat) {
+		Client oldClient = findByEmail(email);
+		oldClient.getBoatSubscriptions().remove(boat);
+		clientRepository.saveAndFlush(oldClient);
+	}
+	
+	public void removeAdventureSubscription(String email, Adventure adventure) {
+		Client oldClient = findByEmail(email);
+		oldClient.getAdventureSubscriptions().remove(adventure);
 		clientRepository.saveAndFlush(oldClient);
 	}
 }

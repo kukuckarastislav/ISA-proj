@@ -75,6 +75,7 @@ export default {
       this.$emit('close');
     },
     calculatePrice(){
+        if(!this.date) return;
         this.totalPrice = 0;
         var numOfDays = Math.floor((this.date[1].getTime()-this.date[0].getTime())/ (1000 * 3600* 24));
         for(let i=0;i<this.chosenServices.length;i++){
