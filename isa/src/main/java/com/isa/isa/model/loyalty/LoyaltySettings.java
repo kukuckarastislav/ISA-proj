@@ -1,6 +1,16 @@
 package com.isa.isa.model.loyalty;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class LoyaltySettings {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private int clientScoreForReservation;      // broj poena koji dobija Client kad napravi rezervaciju
     private int ownerScoreForReservation;       // broj poena koji dobija Instructor, Boat owner, cottage owner
