@@ -158,14 +158,15 @@
           <div class="col">
             <div class="card">
               <div class="card-body">
-                  <div style="height: 200px;" class="row">
+                  <div style="height: 400px;" class="row">
                       <div class="col-sm-9">
-                          <div style="background-color: gray; height:100%;"> PROSTOR ZA MAPU ?</div>
+                          <div style="background-color: gray; height:100%;" id = "map"> Boat location</div>
                       </div>
                       <div v-if="boat.address != undefined" class="col-sm-3">
-                          <h6 class="card-title text-start">Country: {{boat.address.country}}</h6>
-                          <h6 class="card-title text-start">City: {{boat.address.city}}</h6>
-                          <h6 class="card-title text-start">Street: {{boat.address.street}} {{boat.address.number}}</h6>
+                          <h6 class="card-title text-start">Country: <input type="text" v-model="boat.address.country"></h6>
+                          <h6 class="card-title text-start">City: <input type="text" v-model="boat.address.city"></h6>
+                          <h6 class="card-title text-start">Street: <input type="text" v-model="boat.address.street"> </h6>
+                          <h6 class="card-title text-start">Street: <input type="text" v-model="boat.address.number"> </h6>
                       </div>
                   </div>
               </div>         
@@ -183,6 +184,16 @@
 <script>
 import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
+import { Map, View,Feature } from 'ol';
+import { Tile as TileLayer,Vector as VectorLayer } from 'ol/layer';
+import {OSM, Vector as VectorSource} from 'ol/source';
+import {fromLonLat,transform} from 'ol/proj';
+import {Geometry} from 'ol/geom'
+import {Point} from 'ol/geom';
+import {Circle, Fill, Style, Icon} from 'ol/style';
+import {defaults} from 'ol/control';
+
+
 export default {
   name: 'BoatCreation',
   components: {
@@ -202,8 +213,8 @@ export default {
                 city: "",
                 street: "",
                 number: "",
-                latitude: 14.0,
-                longitude: 24.0
+                latitude: 0.0,
+                longitude: 0.0
             },
             description: "",
             imagesForBackend: [],
@@ -230,13 +241,84 @@ export default {
             description: "description"
         },
 
+        newLon : 0.0,
+        newLat : 0.0,
         imagesForFront: [],
         imagesForBackend: [],
-        imageCount: 0
+        imageCount: 0,
+        map: {}
     }
   },
+  created() {
+      console.log('created called.');
+    },
   mounted: function(){
       this.loadData();
+
+
+
+    var lat = this.boat.address.latitude;
+        var lng = this.boat.address.longitude;
+var iconGeometry = new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
+var iconFeature = new Feature({
+  geometry: iconGeometry,
+  name: 'Boat',
+  population: 4000,
+  rainfall: 500
+});
+
+var iconStyle = new Style({
+  image: new Icon( /** @type {olx.style.IconOptions} */ ({
+    anchor: [0.5, 46],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png'
+  }))
+});
+
+iconFeature.setStyle(iconStyle);
+
+var vectorSource = new VectorSource({
+  features: [iconFeature]
+});
+
+var vectorLayer = new VectorLayer({
+  source: vectorSource
+});
+
+var rasterLayer = new TileLayer({
+  source: new OSM()
+});
+
+this.map = new Map({
+  layers: [rasterLayer, vectorLayer],
+  target: 'map',
+  controls: defaults({
+    attributionOptions: {
+      collapsible: false,
+    },
+    attribution: false
+  }),
+  view: new View({
+    center: fromLonLat([lng, lat]),
+    zoom: 5
+  })
+});
+
+  this.map.on('singleclick', function (evt) {
+            //  alert("nesto: "+transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326')) 
+             var transformed_xy = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+             this.newLon = transformed_xy[0];//neradi 
+            //  this.boat.address.latitude = transformed_xy[0];
+            //  this.boat.address.longitude = transformed_xy[1];
+             this.newLat = transformed_xy[1];
+             iconGeometry.setCoordinates(evt.coordinate);
+        });
+
+
+
+
+
   },
   methods: {
     loadData: function(){
@@ -312,8 +394,10 @@ export default {
     createNewBoat: function(){
         console.log('NEW BOAT')
         this.boat.imagesForBackend = this.imagesForBackend;
-        console.log(this.boat)
-
+        this.boat.address.longitude = this.map.newLon;
+        this.boat.address.latitude = this.map.newLat;
+        // console.log(this.boat)
+ 
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
         axios.post('http://localhost:8180/api/boats/addnewboat',this.boat)
           .then(response => {
