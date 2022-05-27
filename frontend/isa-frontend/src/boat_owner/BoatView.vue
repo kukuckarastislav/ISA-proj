@@ -186,9 +186,9 @@ export default {
 
         var lat = this.boat.address.latitude;
         var lng = this.boat.address.longitude;
-
+var iconGeometry = new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
 var iconFeature = new Feature({
-  geometry: new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857')),
+  geometry: iconGeometry,
   name: 'The icon',
   population: 4000,
   rainfall: 500
@@ -232,7 +232,11 @@ this.map = new Map({
   })
 });
 
-
+  // this.map.on('singleclick', function (evt) {
+  //           // alert("nesto: "+evt.coordinate) 
+  //           //  var position = evt.coordinate;
+  //            iconGeometry.setCoordinates(evt.coordinate);
+  //       });
 
 
 
