@@ -81,7 +81,9 @@ export default {
   components: {
     AdminLinks,
     CustomerLinks,
-    InstructorLinks
+    InstructorLinks,
+    BoatOwnerLinks,
+    CottageOwnerLinks
   },
   mounted: function(){
       this.updateLinks();
