@@ -166,7 +166,7 @@
                           <h6 class="card-title text-start">Country: <input type="text" v-model="boat.address.country"></h6>
                           <h6 class="card-title text-start">City: <input type="text" v-model="boat.address.city"></h6>
                           <h6 class="card-title text-start">Street: <input type="text" v-model="boat.address.street"> </h6>
-                          <h6 class="card-title text-start">Street: <input type="text" v-model="boat.address.number"> </h6>
+                          <h6 class="card-title text-start">Number: <input type="text" v-model="boat.address.number"> </h6>
                       </div>
                   </div>
               </div>         
