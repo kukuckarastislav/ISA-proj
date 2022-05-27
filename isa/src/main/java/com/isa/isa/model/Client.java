@@ -3,14 +3,11 @@ package com.isa.isa.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.loyalty.Loyalty;
 import com.isa.isa.model.termins.model.BoatFastResHistory;
 import com.isa.isa.model.termins.model.BoatReservations;
 import com.isa.isa.model.termins.model.CottageFastResHistory;
@@ -25,10 +22,12 @@ public class Client extends Person{
 
 	public Client(UserDTO userDTO) {
         super(userDTO);
+		loyalty = new Loyalty();
     }
 	
 	public Client(ClientDto clientDto) {
         super(clientDto);
+		loyalty = new Loyalty();
     }
 
 
@@ -59,7 +58,10 @@ public class Client extends Person{
 	
 	@ManyToMany (targetEntity = Adventure.class, fetch = FetchType.EAGER)
 	private Set<Adventure> adventureSubscriptions = new HashSet<Adventure>();
-	
+
+	@Embedded
+	private Loyalty loyalty;
+
 
 	public Set<BoatReservations> getBoatReservations() {
 		return boatReservations;
@@ -132,6 +134,12 @@ public class Client extends Person{
 	public void setAdventureSubscriptions(Set<Adventure> adventureSubscriptions) {
 		this.adventureSubscriptions = adventureSubscriptions;
 	}
-	
-	
+
+	public Loyalty getLoyalty() {
+		return loyalty;
+	}
+
+	public void setLoyalty(Loyalty loyalty) {
+		this.loyalty = loyalty;
+	}
 }

@@ -3,14 +3,10 @@ package com.isa.isa.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.loyalty.Loyalty;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.complaints.model.Complaint;
 
@@ -38,6 +34,9 @@ public class CottageOwner extends Person{
 		return registrationMotivation;
 	}
 
+	@Embedded
+	private Loyalty loyalty;
+
 	public void setRegistrationMotivation(String registrationMotivation) {
 		this.registrationMotivation = registrationMotivation;
 	}
@@ -45,6 +44,7 @@ public class CottageOwner extends Person{
 	public CottageOwner(UserDTO userDTO) {
         super(userDTO);
 		this.registrationMotivation = userDTO.getRegistrationMotivation();
+		loyalty = new Loyalty();
     }
 	
 	public CottageOwner()
@@ -86,8 +86,21 @@ public class CottageOwner extends Person{
 	public void setComplaints(Set<Complaint> complaints) {
 		this.complaints = complaints;
 	}
-	
-	
-	
-	
+
+
+	public Set<Cottage> getCottages() {
+		return cottages;
+	}
+
+	public void setCottages(Set<Cottage> cottages) {
+		this.cottages = cottages;
+	}
+
+	public Loyalty getLoyalty() {
+		return loyalty;
+	}
+
+	public void setLoyalty(Loyalty loyalty) {
+		this.loyalty = loyalty;
+	}
 }
