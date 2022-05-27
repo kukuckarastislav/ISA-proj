@@ -8,6 +8,8 @@
             
 
             </div>
+            <div style="width: 300px; height: 300px;">
+            </div>
             <div v-if="boat.name != undefined" class="col-sm-6">
 
                 <h1 class="text-start">{{boat.name}}</h1> <br>
@@ -81,9 +83,9 @@
           <div class="col">
             <div class="card">
               <div class="card-body">
-                  <div style="height: 200px;" class="row">
+                  <div style="height: 400px;" class="row">
                       <div class="col-sm-9">
-                          <div style="background-color: gray; height:100%;"> PROSTOR ZA MAPU ?</div>
+                          <div style="background-color: gray; height:100%;" id = "map"> Boat location</div>
                       </div>
                       <div v-if="boat.address != undefined" class="col-sm-3">
                           <h6 class="card-title text-start">Country: {{boat.address.country}}</h6>
@@ -104,6 +106,15 @@
 <script>
 import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
+import { Map, View,Feature } from 'ol';
+import { Tile as TileLayer,Vector as VectorLayer } from 'ol/layer';
+import {OSM, Vector as VectorSource} from 'ol/source';
+import {fromLonLat,transform} from 'ol/proj';
+import {Geometry} from 'ol/geom'
+import {Point} from 'ol/geom';
+import {Circle, Fill, Style, Icon} from 'ol/style';
+import {defaults} from 'ol/control';
+
 
 // FULL CALNEDAR
 import '@fullcalendar/core/vdom' // solves problem with Vite
@@ -127,6 +138,7 @@ export default {
   mounted: function(){
     this.boatName = decodeURI(window.location.pathname.split('/')[2]);
     this.loadData();
+
   },
   methods: {
     loadData: function(){
@@ -134,6 +146,107 @@ export default {
         axios.get('http://localhost:8180/api/boats/byowner/'+encodeURIComponent(this.boatName)).then(resp => {
             this.boat = resp.data;
             console.log(resp.data);
+            console.log("Ucitano je "+this.boat.address.latitude)
+
+
+            var iconFeature = new Feature({
+					geometry: new Point(fromLonLat([this.boat.address.longitude, this.boat.address.latitude])),
+					name: 'boat',
+				  });
+
+        //     this.map = new Map({
+        //     target: 'map',
+        //     controls: defaults({ attribution: false }),
+        //     layers: [
+        //         new TileLayer({
+        //             source: new OSM()
+        //         }),
+        //         new VectorLayer({
+				// 	source: new VectorSource({
+				// 	  features: [iconFeature]
+				// 	}),
+				// 	style: new Style({
+				// 	  image: new Icon({
+				// 		anchor: [0.5, 46],
+				// 		anchorXUnits: 'fraction',
+				// 		anchorYUnits: 'pixels',
+				// 		src: 'icon-marker.png'
+				// 	  })
+				// 	})
+				//   })
+                
+        //         ],
+        //     view: new View({
+        //         center: fromLonLat([this.boat.address.longitude, this.boat.address.latitude]),//this.boat.address.latitude, this.boat.address.longitude
+        //         zoom: 14
+        //     })
+        // })
+
+
+
+        var lat = this.boat.address.latitude;
+        var lng = this.boat.address.longitude;
+var iconGeometry = new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
+var iconFeature = new Feature({
+  geometry: iconGeometry,
+  name: 'The icon',
+  population: 4000,
+  rainfall: 500
+});
+
+var iconStyle = new Style({
+  image: new Icon( /** @type {olx.style.IconOptions} */ ({
+    anchor: [0.5, 46],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png'
+  }))
+});
+
+iconFeature.setStyle(iconStyle);
+
+var vectorSource = new VectorSource({
+  features: [iconFeature]
+});
+
+var vectorLayer = new VectorLayer({
+  source: vectorSource
+});
+
+var rasterLayer = new TileLayer({
+  source: new OSM()
+});
+
+this.map = new Map({
+  layers: [rasterLayer, vectorLayer],
+  target: 'map',
+  controls: defaults({
+    attributionOptions: {
+      collapsible: false,
+    },
+    attribution: false
+  }),
+  view: new View({
+    center: fromLonLat([lng, lat]),
+    zoom: 7
+  })
+});
+
+  // this.map.on('singleclick', function (evt) {
+  //           // alert("nesto: "+evt.coordinate) 
+  //           //  var position = evt.coordinate;
+  //            iconGeometry.setCoordinates(evt.coordinate);
+  //       });
+
+
+
+
+
+
+
+
+
+
         });
     },
     setImg: function(image){

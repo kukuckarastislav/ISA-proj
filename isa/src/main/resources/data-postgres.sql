@@ -167,7 +167,7 @@ values (7, 2);
 insert into boat_owner (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade) 
 values (7, 'Zrenjanin', 'Serbia', 11, 13, 33, 'Zmaj Jovina', 'isaprojectftn+nikolaBO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Nikola', 'Nikolic', '030346', 'imao sam zelju', 0);
 insert into boat (city, country, latitude, longitude, number, street,price, price_type, behaviour_rules, capacity, engine_number, engine_power, length, max_speed, name, promotional_description, type, owner_id,reservation_cancellation_conditions,average_grade)
-values ('Beograd', 'Serbia', 11, 13, 33, 'Knez Mihajlova', 10, 'PER_HOUR', 'Nema brze voznje', 3, '123', 100, 50, 70, 'Laser 16', 'Najbolji brod', 'Jedrilica', 7, 'FREE',0);
+values ('Beograd', 'Serbia', 11.0, 13.0, 33, 'Knez Mihajlova', 10, 'PER_HOUR', 'Nema brze voznje', 3, '123', 100, 50, 70, 'Laser 16', 'Najbolji brod', 'Jedrilica', 7, 'FREE',0);
 insert into entity_image (name, path)
 values ('img1.jpg', 'images/BoatOwners/isaprojectftn+nikolaBO@gmail.com/Laser_16/img1.jpg');
 insert into boat_images(boat_id,images_id)
@@ -185,7 +185,7 @@ values (1,1);
 
 
 insert into boat (city, country, latitude, longitude, number, street,price, price_type, behaviour_rules, capacity, engine_number, engine_power, length, max_speed, name, promotional_description, type, owner_id,reservation_cancellation_conditions,average_grade)
-values ('Novi Sad', 'Serbia', 11, 13, 33, 'Vidovdanska', 20, 'PER_HOUR', 'Nema brze voznje', 5, '123', 100, 50, 70, 'Serenity', 'Oaza mira', 'Jahta', 7, 'FREE',0);
+values ('Novi Sad', 'Serbia', 45.267136, 19.833549, 33, 'Vidovdanska', 20, 'PER_HOUR', 'Nema brze voznje', 5, '123', 100, 50, 70, 'Serenity', 'Oaza mira', 'Jahta', 7, 'FREE',0);
 insert into entity_image (name, path)
 values ('img1.jpg', 'images/BoatOwners/isaprojectftn+nikolaBO@gmail.com/Serenity/img1.jpg');
 insert into boat_images(boat_id,images_id)
