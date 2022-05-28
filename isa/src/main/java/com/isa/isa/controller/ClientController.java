@@ -27,6 +27,7 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
+import com.isa.isa.model.Penalty;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestFromFrontDTO;
 import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
 import com.isa.isa.model.enums.UserTypeISA;
@@ -506,6 +507,13 @@ public class ClientController {
 			clientService.removeAdventureSubscription(user.getName(), adventure);
 		}
 		return ResponseEntity.ok().build();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@GetMapping("/getPenalties")
+	public ResponseEntity<Set<Penalty>> getPenalties(Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		return new ResponseEntity<Set<Penalty>>(client.getPenalties(), HttpStatus.OK);
 	}
 
 }

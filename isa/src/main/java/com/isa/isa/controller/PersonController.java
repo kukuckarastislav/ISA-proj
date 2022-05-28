@@ -1,8 +1,6 @@
 package com.isa.isa.controller;
 
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isa.isa.DTO.AdventureDTO;
-import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
@@ -24,13 +20,13 @@ import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.Report;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
-import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.model.termins.service.BoatFastReservationService;
 import com.isa.isa.model.termins.service.CottageFastReservationService;
 import com.isa.isa.model.termins.service.InstructorFastReservationService;
@@ -40,6 +36,7 @@ import com.isa.isa.service.BoatService;
 import com.isa.isa.service.CottageOwnerService;
 import com.isa.isa.service.CottageService;
 import com.isa.isa.service.InstructorService;
+import com.isa.isa.service.PenaltyService;
 
 
 @RestController
@@ -64,6 +61,9 @@ public class PersonController {
     private CottageFastReservationService cottageFastReservationService;
     @Autowired
     private BoatFastReservationService boatFastReservationService;
+    
+    @Autowired 
+    private PenaltyService penaltyService;
     
     @PutMapping("/registration")
     public ResponseEntity<UserDTO> registrationStuff(@RequestBody UserDTO userDTO){
@@ -178,6 +178,18 @@ public class PersonController {
     public ResponseEntity<ArrayList<ClientBoatFastReservationDTO>> getBoatFastReservationsById(@PathVariable Integer boatId) {
     	ArrayList<ClientBoatFastReservationDTO> clientFastReservations = (ArrayList<ClientBoatFastReservationDTO>) boatFastReservationService.getFastReservationsByBoat(boatId);
         return new ResponseEntity<ArrayList<ClientBoatFastReservationDTO>>(clientFastReservations, HttpStatus.OK);
+    }
+    
+    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+    	Report report = new Report();
+    	report.setClientShowedUp(true);
+    	report.setIdClient(3);
+    	report.setSanctionClient(true);
+    	report.setSanctionApproved(true);
+    	report.setText("Ostavio stan u haosu.");
+    	penaltyService.getPenaltyFromReport(report);
+    	return ResponseEntity.ok().build();
     }
     
 }

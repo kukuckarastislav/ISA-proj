@@ -8,26 +8,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Penalty {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
 	private Client client;
-	private Boolean isDeleted;
 	private String text;
 	
 	public Penalty() {
 		super();
 	}
 
-	public Penalty(Client client, Boolean isDeleted, String text) {
+	public Penalty(Client client, String text) {
 		super();
 		this.client = client;
-		this.isDeleted = isDeleted;
 		this.text = text;
 	}
 
@@ -47,13 +48,6 @@ public class Penalty {
 		this.client = client;
 	}
 
-	public Boolean getIsDeleted() {
-		return isDeleted;
-	}
-
-	public void setIsDeleted(Boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
 
 	public String getText() {
 		return text;

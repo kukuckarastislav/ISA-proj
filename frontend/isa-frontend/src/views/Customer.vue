@@ -12,6 +12,9 @@
                 <div class="col">
                     <a href="/customerProfile" class="nav-link">Profile</a>
                 </div>
+                <div class="col">
+                    <a href="/customerPenalties" class="nav-link">Penalties</a>
+                </div>
             </div>
         </div>
     </div>
