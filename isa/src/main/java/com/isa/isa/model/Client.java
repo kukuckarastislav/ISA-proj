@@ -62,6 +62,8 @@ public class Client extends Person{
 	@Embedded
 	private Loyalty loyalty;
 
+	@OneToMany (mappedBy = "client",fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Penalty> penalties = new HashSet<Penalty>();
 
 	public Set<BoatReservations> getBoatReservations() {
 		return boatReservations;
@@ -142,4 +144,14 @@ public class Client extends Person{
 	public void setLoyalty(Loyalty loyalty) {
 		this.loyalty = loyalty;
 	}
+
+	public Set<Penalty> getPenalties() {
+		return penalties;
+	}
+
+	public void setPenalties(Set<Penalty> penalties) {
+		this.penalties = penalties;
+	}
+	
+	
 }
