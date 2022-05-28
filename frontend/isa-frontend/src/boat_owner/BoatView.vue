@@ -13,18 +13,25 @@
             <div v-if="boat.name != undefined" class="col-sm-6">
 
                 <h1 class="text-start">{{boat.name}}</h1> <br>
-
+                <button class="card" v-on:click="editData(boat)">Edit boat data</button>
                 <h3 class="text-start stars">
                   <span v-for="index in Math.round(boat.averageGrade)" :key="index">&#9733;</span> 
                   <span v-for="index in Math.round(5-boat.averageGrade)" :key="index">&#9734;</span> 
                   {{boat.averageGrade}}
                 </h3>
                 
-                <h5 class="text-start">Description: {{boat.description}} </h5>
+                <h5 class="text-start">Description: {{boat.promotionalDescription}} </h5>
                 <br>
                 
                 <h5 class="text-start">Behaviour: {{boat.behaviourRules}}</h5>
-                <h5 class="text-start">Max number of people: {{boat.maxNumberOfPeople}}</h5>
+
+                <h5 class="text-start">Type:  {{boat.type}}</h5>
+                <h5 class="text-start">EngineNumber:  {{boat.engineNumber}}</h5>
+                <h5 class="text-start">Length:  {{boat.length}}</h5>
+                <h5 class="text-start">EnginePower:  {{boat.enginePower}}</h5>
+                <h5 class="text-start">MaxSpeed:  {{boat.maxSpeed}}</h5>
+
+                <h5 class="text-start">Max number of people: {{boat.capacity}}</h5>
                 
                 <h5 class="text-start">Reservation Cancellation Conditions: <b class="stars">{{boat.reservationCancellationConditions}}</b></h5>
                 
@@ -67,7 +74,7 @@
           <div class="col">
             <h2 class="text-start">Price list</h2>
             <div class="row row-cols-auto">
-              <div v-for="priceItem in boat.pricelist" :key="priceItem" class="priceItem">
+              <div v-for="priceItem in boat.additionalServices" :key="priceItem" class="priceItem">
                 <h2 style="font-weight: bold">{{priceItem.name}}</h2>
                 <h5>{{priceItem.description}}</h5>
                 <h2 style="font-weight: bold">${{priceItem.price}}</h2>
@@ -154,35 +161,6 @@ export default {
 					name: 'boat',
 				  });
 
-        //     this.map = new Map({
-        //     target: 'map',
-        //     controls: defaults({ attribution: false }),
-        //     layers: [
-        //         new TileLayer({
-        //             source: new OSM()
-        //         }),
-        //         new VectorLayer({
-				// 	source: new VectorSource({
-				// 	  features: [iconFeature]
-				// 	}),
-				// 	style: new Style({
-				// 	  image: new Icon({
-				// 		anchor: [0.5, 46],
-				// 		anchorXUnits: 'fraction',
-				// 		anchorYUnits: 'pixels',
-				// 		src: 'icon-marker.png'
-				// 	  })
-				// 	})
-				//   })
-                
-        //         ],
-        //     view: new View({
-        //         center: fromLonLat([this.boat.address.longitude, this.boat.address.latitude]),//this.boat.address.latitude, this.boat.address.longitude
-        //         zoom: 14
-        //     })
-        // })
-
-
 
         var lat = this.boat.address.latitude;
         var lng = this.boat.address.longitude;
@@ -232,25 +210,14 @@ this.map = new Map({
   })
 });
 
-  // this.map.on('singleclick', function (evt) {
-  //           // alert("nesto: "+evt.coordinate) 
-  //           //  var position = evt.coordinate;
-  //            iconGeometry.setCoordinates(evt.coordinate);
-  //       });
-
-
-
-
-
-
-
-
-
 
         });
     },
     setImg: function(image){
       return 'http://localhost:8180/api/entityImage/'+image.path;
+    },
+    editData: function(boat){
+        this.$router.push({ path: '/editMyBoat/'+encodeURIComponent(boat.name)});
     },
   }
 }

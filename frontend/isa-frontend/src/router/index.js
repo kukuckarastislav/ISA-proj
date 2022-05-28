@@ -27,7 +27,7 @@ import AdminProfile from '../admin/Profile.vue'
 import ComplaintPage from '../admin/ComplaintPage.vue'
 import CustomerSubscriptions from '../views/CustomerSubscriptions.vue'
 import LoyaltySettingsPage from '../admin/LoyaltySettingsPage.vue'
-
+import BoatUpdate from '../boat_owner/BoatUpdate'
 
 
 const routes = [
@@ -49,6 +49,7 @@ const routes = [
   { path: '/cottageOwnerCottage/:cottagename?', name: 'CottageView', component: CottageView },
   { path: '/boatOwnerBoats', name: 'Boats', component: Boats },
   { path: '/boatOwnerBoat/:boatname?', name: 'BoatView', component: BoatView },
+  { path: '/editMyBoat/:boatname?', name: 'BoatUpdate', component: BoatUpdate },
   { path: '/instructorProfile', name: 'InstructorProfile', component: InstructorProfile },
   { path: '/newboat', name: 'BoatCreation', component: BoatCreation },
   { path: '/customerReservations', name: 'CustomerReservations', component: CustomerReservations },
