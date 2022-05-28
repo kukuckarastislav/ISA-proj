@@ -1,6 +1,8 @@
 package com.isa.isa.service;
 
+import com.isa.isa.model.Instructor;
 import com.isa.isa.model.enums.UserTypeISA;
+import com.isa.isa.model.loyalty.LoyaltySettings;
 import com.isa.isa.model.revisions.model.RevisionType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,4 +107,12 @@ public class BoatOwnerService {
 		boatOwner.getComplaints().add(new Complaint(complaintClientDTO.getOverseerComment(),complaintClientDTO.getUserEmail(), UserTypeISA.BOAT_OWNER, boatOwner.getEmail(), RevisionType.OWNER, -1));
 		boatOwnerRepository.saveAndFlush(boatOwner);
 	}
+
+    public void updateLoyaltyForAll(LoyaltySettings loyaltySettings) {
+		for(BoatOwner boatOwner : boatOwnerRepository.findAll()){
+			if(boatOwner.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD())){
+				boatOwnerRepository.saveAndFlush(boatOwner);
+			}
+		}
+    }
 }

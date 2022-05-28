@@ -26,6 +26,7 @@ import RevisionPage from '../admin/RevisionPage.vue'
 import AdminProfile from '../admin/Profile.vue'
 import ComplaintPage from '../admin/ComplaintPage.vue'
 import CustomerSubscriptions from '../views/CustomerSubscriptions.vue'
+import LoyaltySettingsPage from '../admin/LoyaltySettingsPage.vue'
 
 
 
@@ -56,7 +57,8 @@ const routes = [
   { path: '/revision', name: 'RevisionPage', component: RevisionPage },
   { path: '/adminProfile', name: 'AdminProfile', component: AdminProfile },
   { path: '/adminComplaint', name: 'ComplaintPage', component: ComplaintPage },
-  { path: '/customerSubscriptions', name: 'CustomerSubscriptions', component: CustomerSubscriptions}
+  { path: '/customerSubscriptions', name: 'CustomerSubscriptions', component: CustomerSubscriptions },
+  { path: '/loyaltySettingsPage', name: 'LoyaltySettingsPage', component: LoyaltySettingsPage}
 ]
 
 const router = createRouter({

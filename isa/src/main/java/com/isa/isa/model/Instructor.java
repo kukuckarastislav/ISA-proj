@@ -3,6 +3,7 @@ package com.isa.isa.model;
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.complaints.model.Complaint;
+import com.isa.isa.model.loyalty.Loyalty;
 import com.isa.isa.model.termins.model.InstructorTerms;
 import com.isa.isa.model.revisions.model.Revision;
 
@@ -34,6 +35,8 @@ public class Instructor extends Person{
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Complaint> complaints = new HashSet<Complaint>();
 
+    @Embedded
+    private Loyalty loyalty;
 
     public String getRegistrationMotivation() {
         return registrationMotivation;
@@ -48,6 +51,7 @@ public class Instructor extends Person{
     public Instructor(UserDTO userDTO) {
         super(userDTO);
         registrationMotivation = userDTO.getRegistrationMotivation();
+        loyalty = new Loyalty();
     }
 
     public Set<Adventure> getAdventures() {
@@ -115,7 +119,12 @@ public class Instructor extends Person{
 	public void setComplaints(Set<Complaint> complaints) {
 		this.complaints = complaints;
 	}
-    
-    
-    
+
+    public Loyalty getLoyalty() {
+        return loyalty;
+    }
+
+    public void setLoyalty(Loyalty loyalty) {
+        this.loyalty = loyalty;
+    }
 }

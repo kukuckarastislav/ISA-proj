@@ -21,6 +21,9 @@
                  <div class="col">
                     <a href="/adminComplaint" class="nav-link">Complaint</a>
                 </div>
+                 <div class="col">
+                    <a href="/loyaltySettingsPage" class="nav-link">Loyalty</a>
+                </div>
                 <div class="col">
                     <a href="/adminProfile" class="nav-link">Profile</a>
                 </div>
