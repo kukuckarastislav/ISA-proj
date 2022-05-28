@@ -1,5 +1,6 @@
 package com.isa.isa.service;
 
+import com.isa.isa.model.loyalty.LoyaltySettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -73,4 +74,12 @@ public class ClientService {
 		oldClient.getAdventureSubscriptions().add(adventure);
 		clientRepository.saveAndFlush(oldClient);
 	}
+
+    public void updateLoyaltyForAll(LoyaltySettings loyaltySettings) {
+		for(Client client : clientRepository.findAll()){
+			if(client.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD())){
+				clientRepository.saveAndFlush(client);
+			}
+		}
+    }
 }

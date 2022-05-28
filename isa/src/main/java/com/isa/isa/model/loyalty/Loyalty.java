@@ -28,4 +28,16 @@ public class Loyalty {
     public void setLoyaltyType(LoyaltyType loyaltyType) {
         this.loyaltyType = loyaltyType;
     }
+
+    public Boolean update(int minimumScoreForSILVER, int minimumScoreForGOLD){
+        if(score >= minimumScoreForGOLD){
+            loyaltyType = LoyaltyType.GOLD;
+            return true;
+        }
+        if(score >= minimumScoreForSILVER){
+            loyaltyType = LoyaltyType.SILVER;
+            return true;
+        }
+        return false;   // nije bilo potrebno menjati :)
+    }
 }

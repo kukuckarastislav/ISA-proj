@@ -6,6 +6,7 @@ import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.enums.UserTypeISA;
+import com.isa.isa.model.loyalty.LoyaltySettings;
 import com.isa.isa.model.revisions.model.RevisionType;
 import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
@@ -148,4 +149,12 @@ public class InstructorService {
 		instructor.getComplaints().add(new Complaint(complaintClientDTO.getOverseerComment(),complaintClientDTO.getUserEmail(), UserTypeISA.INSTRUCTOR, instructor.getEmail(), RevisionType.OWNER, -1));
 		instructorRepository.saveAndFlush(instructor);
 	}
+
+    public void updateLoyaltyForAll(LoyaltySettings loyaltySettings) {
+		for(Instructor instructor : instructorRepository.findAll()){
+			if(instructor.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD())){
+				instructorRepository.saveAndFlush(instructor);
+			}
+		}
+    }
 }
