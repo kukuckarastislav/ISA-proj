@@ -24,7 +24,11 @@ public class LoyaltyController {
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<LoyaltySettings> setLoyaltySettings(Principal user, @RequestBody LoyaltySettings newLoyaltySettings) {
-        return new ResponseEntity<LoyaltySettings>(loyaltyService.setLoyaltySettings(newLoyaltySettings), HttpStatus.OK);
+        var retrieval = loyaltyService.setLoyaltySettings(newLoyaltySettings);
+        if (retrieval != null){
+            return new ResponseEntity<>(retrieval, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

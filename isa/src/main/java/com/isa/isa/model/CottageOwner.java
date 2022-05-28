@@ -87,15 +87,6 @@ public class CottageOwner extends Person{
 		this.complaints = complaints;
 	}
 
-
-	public Set<Cottage> getCottages() {
-		return cottages;
-	}
-
-	public void setCottages(Set<Cottage> cottages) {
-		this.cottages = cottages;
-	}
-
 	public Loyalty getLoyalty() {
 		return loyalty;
 	}

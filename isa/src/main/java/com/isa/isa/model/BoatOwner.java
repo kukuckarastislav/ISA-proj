@@ -88,15 +88,6 @@ public class BoatOwner extends Person {
 		this.complaints = complaints;
 	}
 
-
-	public Set<Boat> getBoates() {
-		return boates;
-	}
-
-	public void setBoates(Set<Boat> boates) {
-		this.boates = boates;
-	}
-
 	public Loyalty getLoyalty() {
 		return loyalty;
 	}
