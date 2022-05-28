@@ -317,7 +317,9 @@ export default {
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
           .post('http://localhost:8180/api/client/reserveCottageAction',ac)
-          .then(response => {alert('Uspesno ste rezervisali vikendicu.')
+          .then(response => {
+            if(response.data) alert('Uspesno ste rezervisali vikendicu.')
+            else alert('Trenutno vam je onemoguceno da pravite rezervacije zbog previlikog broja penala.')
           }).catch(err => {
               alert('Već ste otkazali ovu akciju.')
           });

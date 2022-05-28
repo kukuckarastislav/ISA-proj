@@ -88,7 +88,9 @@ export default {
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
           .post('http://localhost:8180/api/client/reserveCottage',{"startTime":this.date[0], "endTime":this.date[1], "cottage":this.cottage, "additionalServices":this.chosenServices})
-          .then(response => {alert('Uspesno ste rezervisali vikendicu.')
+          .then(response => {
+            if(response.data) alert('Uspesno ste rezervisali vikendicu.')
+            else alert('Trenutno vam je onemoguceno da pravite rezervacije zbog previlikog broja penala.')
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           }); 

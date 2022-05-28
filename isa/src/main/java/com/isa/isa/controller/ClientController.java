@@ -151,6 +151,7 @@ public class ClientController {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
 		Client client= this.clientService.findByEmail(user.getName());
+		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		if(instructorReservetionService.reserveAdventureByClient(clientAdventureReservationDTO, client) == null) {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
@@ -200,6 +201,7 @@ public class ClientController {
 	public ResponseEntity<Boolean> reserveAction(@RequestBody ClientAdventureFastReservationDTO clientAdventureFastReservationDTO, Principal user) {
 		
 		Client client= this.clientService.findByEmail(user.getName());
+		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		Adventure adventure = adventureService.getAdventureWithInstructor(clientAdventureFastReservationDTO.getIdAdventure());
 		InstructorFastReservation instructorFastReservation = instructorFastReservationService.getById(clientAdventureFastReservationDTO.getIdFastReservation());
 		if(!insFastResHistoryService.makeReservation(client, instructorFastReservation)) {
@@ -224,6 +226,7 @@ public class ClientController {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
 		Client client= this.clientService.findByEmail(user.getName());
+		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		if(cottageReservationService.reserveCottageByClient(clientCottageReservationDTO, client) == null) {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
@@ -268,6 +271,7 @@ public class ClientController {
 	public ResponseEntity<Boolean> reserveCottageAction(@RequestBody ClientCottageFastReservationDTO clientCottageFastReservationDTO, Principal user) {
 		
 		Client client= this.clientService.findByEmail(user.getName());
+		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		Cottage cottage = cottageService.getCottageWithOwner(clientCottageFastReservationDTO.getIdCottage());
 		CottageFastReservation cottageFastReservation = cottageFastReservationService.getById(clientCottageFastReservationDTO.getIdFastReservation());
 		if(!cottageFastResHistoryService.makeReservation(client, cottageFastReservation)) {
@@ -292,6 +296,7 @@ public class ClientController {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
 		Client client= this.clientService.findByEmail(user.getName());
+		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		if(boatReservationService.reserveBoatByClient(clientBoatReservationDTO, client) == null) {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
@@ -322,6 +327,7 @@ public class ClientController {
 	public ResponseEntity<Boolean> reserveBoatAction(@RequestBody ClientBoatFastReservationDTO clientBoatFastReservationDTO, Principal user) {
 		
 		Client client= this.clientService.findByEmail(user.getName());
+		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		Boat boat = boatService.getBoatWithOwner(clientBoatFastReservationDTO.getIdBoat());
 		BoatFastReservation boatFastReservation = boatFastReservationService.getById(clientBoatFastReservationDTO.getIdFastReservation());
 		if(!boatFastResHistoryService.makeReservation(client, boatFastReservation)) {

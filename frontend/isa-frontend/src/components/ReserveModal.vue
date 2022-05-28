@@ -87,7 +87,9 @@ export default {
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
           .post('http://localhost:8180/api/client/reserveAdventure',{"startTime":this.date[0], "endTime":this.date[1], "adventure":this.adventure, "additionalServices":this.chosenServices})
-          .then(response => {alert('Uspesno ste rezervisali avanturu.')
+          .then(response => {
+            if(resposne.data) alert('Uspesno ste rezervisali avanturu.')
+            else alert('Trenutno vam je onemoguceno da pravite rezervacije zbog previlikog broja penala.')
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           }); 
