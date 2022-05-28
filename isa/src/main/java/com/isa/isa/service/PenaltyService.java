@@ -3,6 +3,7 @@ package com.isa.isa.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.isa.isa.model.Client;
@@ -30,6 +31,12 @@ public class PenaltyService {
 			return penaltyRepository.save(new Penalty(client,report.getText()));
 		}
 		return null;
+	}
+	
+	//@Scheduled(cron = "0 23 21 28 5 *")
+	@Scheduled(cron = "0 0 0 1 * *")
+	public void deletePenalties() {
+		penaltyRepository.deleteAll();
 	}
 
 }
