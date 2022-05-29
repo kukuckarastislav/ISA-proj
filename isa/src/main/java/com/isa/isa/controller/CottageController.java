@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.AddNewCottageDTO;
 import com.isa.isa.DTO.CottageDTO;
+import com.isa.isa.model.termins.DTO.NewCottageFastReservationDto;
 import com.isa.isa.model.termins.DTO.NewCottageTermDto;
+import com.isa.isa.model.termins.service.CottageReservationService;
 import com.isa.isa.model.termins.service.CottageTermService;
 import com.isa.isa.service.CottageService;
 
@@ -28,6 +30,9 @@ public class CottageController {
     private CottageService cottageService;
 	@Autowired
     private CottageTermService cottageTermService;
+	
+	@Autowired
+	private CottageReservationService cottageReservationService;
 	
 	@PreAuthorize("hasRole('ROLE_COTTAGE_OWNER')")
     @GetMapping("/byowner")
@@ -59,6 +64,14 @@ public class CottageController {
 		String response = this.cottageTermService.defineNewTermForCottage(newCottageTermDto);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('ROLE_COTTAGE_OWNER')")
+	@PostMapping(value = "/addFastCottageReservationTerm")
+    public ResponseEntity<String> defineFastReservationTerm(@RequestBody NewCottageFastReservationDto dto) {
+		String response = this.cottageReservationService.defineNewFastReservationForCottage(dto);
+		
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 }

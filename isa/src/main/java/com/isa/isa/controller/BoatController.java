@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.AddNewBoatDTO;
 import com.isa.isa.DTO.BoatDTO;
+import com.isa.isa.model.termins.DTO.NewBoatFastReservationDto;
 import com.isa.isa.model.termins.DTO.NewBoatTermDto;
-import com.isa.isa.model.termins.model.BoatTerms;
+import com.isa.isa.model.termins.service.BoatReservationService;
 import com.isa.isa.model.termins.service.BoatTermService;
 import com.isa.isa.service.BoatService;
 
@@ -29,6 +30,9 @@ public class BoatController {
     private BoatService boatService;
 	@Autowired
 	private BoatTermService boatTermService;
+	@Autowired
+	private BoatReservationService boatReservationService;
+	
 	
 	@PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
     @GetMapping("/byowner")
@@ -61,4 +65,14 @@ public class BoatController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+	
+	@PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
+	@PostMapping(value = "/addFastBoatReservationTerm")
+    public ResponseEntity<String> defineFastReservationTerm(@RequestBody NewBoatFastReservationDto dto) {
+		String response = this.boatReservationService.defineNewFastReservationForBoat(dto);
+		
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+	
+	
 }

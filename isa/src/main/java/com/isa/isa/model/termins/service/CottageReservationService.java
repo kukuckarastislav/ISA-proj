@@ -2,27 +2,42 @@ package com.isa.isa.model.termins.service;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.isa.model.Client;
+import com.isa.isa.model.Cottage;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
+import com.isa.isa.model.termins.DTO.NewCottageFastReservationDto;
+import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.CottageReservations;
+import com.isa.isa.model.termins.model.CottageTerms;
 import com.isa.isa.model.termins.model.StatusOfReservation;
+import com.isa.isa.model.termins.repository.CottageFastReservationRepository;
 import com.isa.isa.model.termins.repository.CottageReservationRepository;
+import com.isa.isa.model.termins.repository.CottageTermRepository;
+import com.isa.isa.repository.CottageRepository;
 
 @Service
 public class CottageReservationService {
 
 	@Autowired
     private CottageReservationRepository cottageReservationRepository;
+	@Autowired
+    private CottageTermRepository cottageTermRepository;
+	@Autowired
+	private CottageRepository cottageRepository;
+	@Autowired
+	private CottageFastReservationRepository cottageFastReservationRepository;
 	
 	public Boolean isCottageFree(CottageTermsDTO dto) {
 		ArrayList<CottageReservations> reservations =  (ArrayList<CottageReservations>) cottageReservationRepository.findAllByCottageId(dto.getId());
@@ -97,4 +112,68 @@ public class CottageReservationService {
 		 cottageReservations.setIsComplainedOf(true);
 		 cottageReservationRepository.saveAndFlush(cottageReservations);
 	 }
+	 
+	 public String defineNewFastReservationForCottage(NewCottageFastReservationDto dto) {
+			
+			CottageFastReservation newReservation = new CottageFastReservation();
+	        Cottage cottage;
+	        
+	        cottage = cottageRepository.getById(dto.getCottageId());
+	        newReservation.setCottage(cottage);
+	        newReservation.setStartTime(dto.getStartTime());
+	        newReservation.setEndTime(dto.getEndTime());
+	        Set<ItemPrice> hSet = new HashSet<ItemPrice>();
+	        for (ItemPrice x : dto.getAdditionalServices())
+	            hSet.add(x);
+	        newReservation.setAdditionalServices(hSet);
+	        newReservation.setAddress(dto.getAddress());
+	        newReservation.setMaxNumberOfPeople(dto.getCapasity());
+	        newReservation.setPrice(dto.getPrice());
+	        
+	        if(isCottageFastReservationOverlapedWithExistingCottageTerms(getAllTermsForCottage(cottage.getId()),newReservation))
+	        {
+	        	return "Cannot define new fast reseravation because it is overlaped with another term.";
+	        }
+	        if(isCottageFastReservationOverlapedWithExistingCottageReservation(cottageReservationRepository.findAllByCottageId(cottage.getId()),newReservation))
+	        {
+	        	return "Cannot define new fast reseravation because it is overlaped with another reservation.";
+	        }
+	        if(isCottageFastReservationOverlapedWithExistingCottageFastReservation(cottageFastReservationRepository.findAllByCottageId(cottage.getId()),newReservation))
+	        {
+	        	return "Cannot define new fast reseravation because it is overlaped with another reservation.";
+	        }
+	        
+	        cottageFastReservationRepository.save(newReservation);
+	        
+	        return "Cottage reservation successfully defined.";
+		}
+		
+		public List<CottageTerms> getAllTermsForCottage(int cottageId) {
+			List<CottageTerms> allCottageTerms = cottageTermRepository.findAllByCottageId(cottageId);
+	        return allCottageTerms;
+	    }
+		
+		public boolean isCottageFastReservationOverlapedWithExistingCottageTerms(List<CottageTerms> cottageTerms, CottageFastReservation newReservation) {
+		      for (CottageTerms term : cottageTerms)
+		         if (term.getStartTime().isBefore(newReservation.getStartTime()) && term.getEndTime().isAfter(newReservation.getEndTime()))
+		            return true;
+
+		      return false;
+		}
+		
+		public boolean isCottageFastReservationOverlapedWithExistingCottageReservation(List<CottageReservations> cottageReservations, CottageFastReservation newReservation) {
+		      for (CottageReservations reservation : cottageReservations)
+		         if (reservation.getStartTime().isBefore(newReservation.getStartTime()) && reservation.getEndTime().isAfter(newReservation.getEndTime()))
+		            return true;
+
+		      return false;
+		}
+		
+		public boolean isCottageFastReservationOverlapedWithExistingCottageFastReservation(List<CottageFastReservation> cottageReservations, CottageFastReservation newReservation) {
+		      for (CottageFastReservation reservation : cottageReservations)
+		         if (reservation.getStartTime().isBefore(newReservation.getStartTime()) && reservation.getEndTime().isAfter(newReservation.getEndTime()))
+		            return true;
+		
+		      return false;
+		}
 }

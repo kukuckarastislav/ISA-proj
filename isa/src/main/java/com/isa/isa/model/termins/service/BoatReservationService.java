@@ -2,27 +2,42 @@ package com.isa.isa.model.termins.service;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsBoatDTO;
+import com.isa.isa.model.termins.DTO.NewBoatFastReservationDto;
+import com.isa.isa.model.termins.model.BoatFastReservation;
 import com.isa.isa.model.termins.model.BoatReservations;
+import com.isa.isa.model.termins.model.BoatTerms;
 import com.isa.isa.model.termins.model.StatusOfReservation;
+import com.isa.isa.model.termins.repository.BoatFastReservationRepository;
 import com.isa.isa.model.termins.repository.BoatReservationRepository;
+import com.isa.isa.model.termins.repository.BoatTermRepository;
+import com.isa.isa.repository.BoatRepository;
 
 @Service
 public class BoatReservationService {
 
 	@Autowired
     private BoatReservationRepository boatReservationRepository;
+	@Autowired
+    private BoatTermRepository boatTermRepository;
+	@Autowired
+	private BoatRepository boatRepository;
+	@Autowired
+	private BoatFastReservationRepository boatFastReservationRepository;
 	
 	public Boolean isBoatFree(BoatTermsDTO dto) {
 		ArrayList<BoatReservations> reservations =  (ArrayList<BoatReservations>) boatReservationRepository.findAllByBoatId(dto.getId());
@@ -116,5 +131,69 @@ public class BoatReservationService {
 		 boatReservations.setIsComplainedOf(true);
 		 boatReservationRepository.saveAndFlush(boatReservations);
 	 }
+
+	public String defineNewFastReservationForBoat(NewBoatFastReservationDto dto) {
+		
+		BoatFastReservation newReservation = new BoatFastReservation();
+        Boat boat;
+        
+        boat = boatRepository.getById(dto.getBoatId());
+        newReservation.setBoat(boat);
+        newReservation.setStartTime(dto.getStartTime());
+        newReservation.setEndTime(dto.getEndTime());
+        Set<ItemPrice> hSet = new HashSet<ItemPrice>();
+        for (ItemPrice x : dto.getAdditionalServices())
+            hSet.add(x);
+        newReservation.setAdditionalServices(hSet);
+        newReservation.setAddress(dto.getAddress());
+        newReservation.setMaxNumberOfPeople(dto.getMaxNumberOfPeople());
+        newReservation.setPrice(dto.getPrice());
+        
+        if(isBoatFastReservationOverlapedWithExistingBoatTerms(getAllTermsForBoat(boat.getId()),newReservation))
+        {
+        	return "Cannot define new term because it is overlaped with another term.";
+        }
+        if(isBoatFastReservationOverlapedWithExistingBoatReservation(boatReservationRepository.findAllByBoatId(boat.getId()),newReservation))
+        {
+        	return "Cannot define new term because it is overlaped with another reservation.";
+        }
+        if(isBoatFastReservationOverlapedWithExistingBoatFastReservation(boatFastReservationRepository.findAllByBoatId(boat.getId()),newReservation))
+        {
+        	return "Cannot define new term because it is overlaped with another reservation.";
+        }
+        
+        boatFastReservationRepository.save(newReservation);
+        
+        return "Boat term successfully defined.";
+	}
+	
+	public List<BoatTerms> getAllTermsForBoat(int boatId) {
+		List<BoatTerms> allBoatTerms = boatTermRepository.findAllByBoatId(boatId);
+        return allBoatTerms;
+    }
+	
+	public boolean isBoatFastReservationOverlapedWithExistingBoatTerms(List<BoatTerms> boatTerms, BoatFastReservation newReservation) {
+	      for (BoatTerms term : boatTerms)
+	         if (term.getStartTime().isBefore(newReservation.getStartTime()) && term.getEndTime().isAfter(newReservation.getEndTime()))
+	            return true;
+
+	      return false;
+	}
+	
+	public boolean isBoatFastReservationOverlapedWithExistingBoatReservation(List<BoatReservations> boatReservations, BoatFastReservation newReservation) {
+	      for (BoatReservations reservation : boatReservations)
+	         if (reservation.getStartTime().isBefore(newReservation.getStartTime()) && reservation.getEndTime().isAfter(newReservation.getEndTime()))
+	            return true;
+
+	      return false;
+	}
+	
+	public boolean isBoatFastReservationOverlapedWithExistingBoatFastReservation(List<BoatFastReservation> boatReservations, BoatFastReservation newReservation) {
+	      for (BoatFastReservation reservation : boatReservations)
+	         if (reservation.getStartTime().isBefore(newReservation.getStartTime()) && reservation.getEndTime().isAfter(newReservation.getEndTime()))
+	            return true;
+	
+	      return false;
+	}
 	
 }
