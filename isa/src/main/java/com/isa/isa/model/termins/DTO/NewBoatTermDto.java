@@ -1,8 +1,7 @@
-package com.isa.isa.model.termins.model;
+package com.isa.isa.model.termins.DTO;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -11,44 +10,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import com.isa.isa.model.Boat;
+import com.isa.isa.model.termins.model.TermAvailability;
 
-@Entity
-@Table(name="boat_terms")
-public class BoatTerms {
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boat_id", unique=false)
-    private Boat boat;
-
-    @Enumerated(EnumType.STRING)
+public class NewBoatTermDto {
+	
+    private int boatId;
     private TermAvailability termAvailability;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     
-    
-    public BoatTerms() {}
-    public BoatTerms(LocalDateTime startTime, LocalDateTime endTime) {
-    	this.startTime = startTime;
-    	this.endTime = endTime;
-    }
-    
-	public int getId() {
-		return id;
+	public NewBoatTermDto(int boatId, TermAvailability termAvailability, LocalDateTime startTime,
+			LocalDateTime endTime) {
+		super();
+		this.boatId = boatId;
+		this.termAvailability = termAvailability;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public int getBoatId() {
+		return boatId;
 	}
-	public Boat getBoat() {
-		return boat;
-	}
-	public void setBoat(Boat boat) {
-		this.boat = boat;
+	public void setBoatId(int boatId) {
+		this.boatId = boatId;
 	}
 	public TermAvailability getTermAvailability() {
 		return termAvailability;
@@ -68,6 +53,7 @@ public class BoatTerms {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
+
     
     
 }

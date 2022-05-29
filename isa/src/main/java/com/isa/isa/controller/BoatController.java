@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.AddNewBoatDTO;
-import com.isa.isa.DTO.AdventureViewDTO;
 import com.isa.isa.DTO.BoatDTO;
+import com.isa.isa.model.termins.DTO.NewBoatTermDto;
+import com.isa.isa.model.termins.model.BoatTerms;
+import com.isa.isa.model.termins.service.BoatTermService;
 import com.isa.isa.service.BoatService;
 
 @RestController
@@ -25,6 +27,8 @@ public class BoatController {
 	
 	@Autowired
     private BoatService boatService;
+	@Autowired
+	private BoatTermService boatTermService;
 	
 	@PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
     @GetMapping("/byowner")
@@ -48,5 +52,13 @@ public class BoatController {
         if(boatDTO == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<BoatDTO>(boatDTO, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
+	@PostMapping("/defineBoatTerms")
+    public ResponseEntity<String> defineNewTermForBoat(@RequestBody NewBoatTermDto newBoatTermDto, Principal user) {
+		String response = this.boatTermService.defineNewTermForBoat(newBoatTermDto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
