@@ -115,3 +115,120 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
   }
 ]
 ###
+GET http://localhost:8180/api/admin/users
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjUzODM2NTczLCJleHAiOjE2NTQwMTY1NzN9.rVfRY4kcZwsUFHPMqxQpbBhU3NM5PEb6Kqt9G6mn-QEChwMv0AZv-7YC1UFkbzT22gAcul9Otr6VJHl6s3EivA
+###
+
+[
+  {
+    "email": "isaprojectftn+stefanI@gmail.com",
+    "firstName": "Stefan",
+    "lastName": "Stefanovic",
+    "address": {
+      "country": "Slovakia",
+      "city": "Bratislava",
+      "street": "Miskova",
+      "number": "35",
+      "latitude": 14.0,
+      "longitude": 24.0
+    },
+    "phoneNumber": "030345",
+    "loyalty": {
+      "score": 0,
+      "loyaltyType": "REGULAR"
+    },
+    "userTypeISA": "INSTRUCTOR",
+    "numOfPenaltyNow": 0,
+    "averageGrade": 0.0,
+    "biography": "moja biografija, ja sam super lik"
+  },
+  {
+    "email": "isaprojectftn+nikolaBO@gmail.com",
+    "firstName": "Nikola",
+    "lastName": "Nikolic",
+    "address": {
+      "country": "Serbia",
+      "city": "Zrenjanin",
+      "street": "Zmaj Jovina",
+      "number": "33",
+      "latitude": 11.0,
+      "longitude": 13.0
+    },
+    "phoneNumber": "030346",
+    "loyalty": {
+      "score": 0,
+      "loyaltyType": "REGULAR"
+    },
+    "userTypeISA": "BOAT_OWNER",
+    "numOfPenaltyNow": 0,
+    "averageGrade": 0.0,
+    "biography": ""
+  },
+  {
+    "email": "isaprojectftn+milanCO@gmail.com",
+    "firstName": "milan",
+    "lastName": "milanovic",
+    "address": {
+      "country": "Serbia",
+      "city": "Novi Sad",
+      "street": "Bulevar evrope",
+      "number": "10",
+      "latitude": 34.0,
+      "longitude": 54.0
+    },
+    "phoneNumber": "030345",
+    "loyalty": {
+      "score": 0,
+      "loyaltyType": "REGULAR"
+    },
+    "userTypeISA": "COTTAGE_OWNER",
+    "numOfPenaltyNow": 0,
+    "averageGrade": 0.0,
+    "biography": ""
+  },
+  {
+    "email": "isaprojectftn+petarCO@gmail.com",
+    "firstName": "petar",
+    "lastName": "petrovic",
+    "address": {
+      "country": "Serbia",
+      "city": "Beograd",
+      "street": "Knez",
+      "number": "35",
+      "latitude": 14.0,
+      "longitude": 24.0
+    },
+    "phoneNumber": "030345",
+    "loyalty": {
+      "score": 0,
+      "loyaltyType": "REGULAR"
+    },
+    "userTypeISA": "COTTAGE_OWNER",
+    "numOfPenaltyNow": 0,
+    "averageGrade": 0.0,
+    "biography": ""
+  },
+  {
+    "email": "isaprojectftn+marijaC@gmail.com",
+    "firstName": "Marija",
+    "lastName": "Maric",
+    "address": {
+      "country": "Serbia",
+      "city": "Novi Sad",
+      "street": "Zmaj Jovina",
+      "number": "33",
+      "latitude": 11.0,
+      "longitude": 13.0
+    },
+    "phoneNumber": "030348",
+    "loyalty": {
+      "score": 0,
+      "loyaltyType": "REGULAR"
+    },
+    "userTypeISA": "CLIENT",
+    "numOfPenaltyNow": 0,
+    "averageGrade": 0.0,
+    "biography": ""
+  }
+]
+###

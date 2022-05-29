@@ -1,6 +1,7 @@
 package com.isa.isa.controller;
 
 import com.isa.isa.DTO.AdminDTO;
+import com.isa.isa.DTO.AdminViewUserDTO;
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.service.AdminService;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -42,6 +44,12 @@ public class AdminController {
         return adminService.updatePassword(user, passwordDto);
     }
 
+
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ArrayList<AdminViewUserDTO>> getUsers(Principal user) {
+        return new ResponseEntity<ArrayList<AdminViewUserDTO>>(adminService.getUsers(),HttpStatus.OK);
+    }
 
 
 }
