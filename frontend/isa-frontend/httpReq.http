@@ -235,3 +235,43 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
 GET http://localhost:8180/api/instructorterms
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rc3RlZmFuSUBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2NTM4NTM0NjUsImV4cCI6MTY1NDAzMzQ2NX0.zflqTuTA2FWQXmYvdFuVWoK1yhAGPl_MBil0cMZgdmcVig_OrOjkvihEw2W_fVOtAab8JY6_wlckXbhtuQIy0w
 ###
+
+[
+  {
+    "isa_idTerm": 1,
+    "isa_termType": "TERM",
+    "isa_termAvailability": "AVAILABILE",
+    "isa_isTakenFastReservation": false,
+    "title": "AVAILABILE",
+    "start": "2022-04-05T08:00:06.235099",
+    "end": "2022-07-25T08:00:06.235099"
+  },
+  {
+    "isa_idTerm": 2,
+    "isa_termType": "TERM",
+    "isa_termAvailability": "UNAVAILABLE",
+    "isa_isTakenFastReservation": false,
+    "title": "UNAVAILABLE",
+    "start": "2022-03-25T08:00:06.235099",
+    "end": "2022-04-04T08:00:06.235099"
+  },
+  {
+    "isa_idTerm": 1,
+    "isa_termType": "RESERVATION",
+    "isa_termAvailability": null,
+    "isa_isTakenFastReservation": false,
+    "title": "Penjanje na planinu",
+    "start": "2022-03-10T08:00:06.235099",
+    "end": "2022-03-10T12:00:06.235099"
+  },
+  {
+    "isa_idTerm": 1,
+    "isa_termType": "FAST_RESERVATION",
+    "isa_termAvailability": null,
+    "isa_isTakenFastReservation": false,
+    "title": "Krstarenje",
+    "start": "2022-07-11T14:00:06.235099",
+    "end": "2022-07-11T16:00:06.235099"
+  }
+]
+###

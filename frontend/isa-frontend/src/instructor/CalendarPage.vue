@@ -41,7 +41,7 @@ export default {
   },
   data: function(){
     return {
-
+        terms: [],
         calendarOptions: {
           plugins: [ dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin ],
           initialView: 'dayGridMonth', 
@@ -53,6 +53,7 @@ export default {
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           },
           events: [
+              /*
             {
               title: 'Evo je prvi event',
               start: '2022-05-29T10:00:00',
@@ -64,29 +65,54 @@ export default {
               editable: true,
               overlap: false,
             },
+            */
           ]
         }
     }
   },
   mounted: function(){
-    this.calendarOptions.events.push({
-              title: 'Drugi',
-              start: '2022-05-29T10:00:00',
-              end: '2022-05-30T16:00:00',
-              display: 'auto',
-              backgroundColor: "rgb(0,0,200)",
-              borderColor: "rgb(255,0,255)",
-              description: "HAHAH",
-              editable: false,
-              overlap: false,
-            })
+      this.loadData();
   },
   methods: {
     loadData: function(){
        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        axios.get('http://localhost:8180/api/instructor/calendar/').then(resp => {
+        axios.get('http://localhost:8180/api/instructorterms').then(resp => {
             console.log(resp.data);
+            this.terms = resp.data;
+            for (let e of this.terms) {
+                console.log(e);
+                this.calendarOptions.events.push(this.eventTransform(e));
+            }
+
         });
+    },
+    eventTransform: function(e){
+        e.display = 'auto'
+        if(e.isa_termType === 'TERM'){
+            e.textColor = "black"
+            if(e.isa_termAvailability === 'UNAVAILABLE'){
+                e.backgroundColor = "#ffe3e3"
+                e.borderColor = "#ffe3e3"
+            }else if(e.isa_termAvailability === 'AVAILABILE'){
+                e.backgroundColor = "#ecffe3"
+                e.borderColor = "#ecffe3"    
+            }
+        }else if(e.isa_termType === 'RESERVATION'){
+            e.backgroundColor = "#a100ba"
+            e.borderColor = "#a100ba"
+        }else if(e.isa_termType === 'FAST_RESERVATION'){
+            if(e.isa_isTakenFastReservation){
+                e.backgroundColor = "#0057ba"
+                e.borderColor = "#0057ba"
+            }else{
+                e.backgroundColor = "#06ba00"
+                e.borderColor = "#06ba00"
+            }
+        }
+        e.description = "opis neki"
+        e.editable = false
+        e.overlap = false
+        return e;
     },
   }
 }
