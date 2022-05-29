@@ -124,13 +124,14 @@ export default {
   },
   methods: {
     loadData: function(){
+      axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
          axios.get('http://localhost:8180/auth/noenabled').then(resp => {
             this.users = resp.data;
             console.log(resp.data);
         });
     },
     approve: function(user){
-
+        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt"); 
         axios
           .post('http://localhost:8180/auth/setapproved', {
               "email": user.email,
@@ -146,6 +147,7 @@ export default {
             });
     },
     reject: function(){
+        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt"); 
           axios
           .post('http://localhost:8180/auth/setapproved', {
               "email": this.rejectingUser.user.email,

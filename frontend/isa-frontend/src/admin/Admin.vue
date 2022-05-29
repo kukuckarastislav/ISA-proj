@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row align-items-center justify-content-between">
                 <div class="col">
-                    <a href="/users" class="nav-link">Users</a>
+                    <a href="/admin/users" class="nav-link">Users</a>
                 </div>
                 <div class="col">
                     <a href="/" class="nav-link">Registrations</a>

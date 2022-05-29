@@ -195,14 +195,6 @@ export default {
     color: black;
 }
 
-.goldCss{
-    border-color: white;
-    border-width: 2px;
-    border-radius: 8px;
-    background-image: url("../assets/blurry-gradient-gold.svg"); 
-    color: black;
-}
-
 .SettingsCss{
     border-color: white;
     border-width: 2px;
