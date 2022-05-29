@@ -42,6 +42,13 @@ public class CottageTerms {
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
+	
+	public CottageTerms(LocalDateTime startTime,
+			LocalDateTime endTime) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+	
 	public int getId() {
 		return id;
 	}
