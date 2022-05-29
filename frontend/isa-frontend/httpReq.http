@@ -232,3 +232,6 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
   }
 ]
 ###
+GET http://localhost:8180/api/instructorterms
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rc3RlZmFuSUBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2NTM4NTM0NjUsImV4cCI6MTY1NDAzMzQ2NX0.zflqTuTA2FWQXmYvdFuVWoK1yhAGPl_MBil0cMZgdmcVig_OrOjkvihEw2W_fVOtAab8JY6_wlckXbhtuQIy0w
+###

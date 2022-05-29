@@ -5,10 +5,9 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.termins.DTO.EventDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
-import com.isa.isa.model.termins.model.InstructorReservation;
-import com.isa.isa.model.termins.model.InstructorTerms;
-import com.isa.isa.model.termins.model.StatusOfReservation;
-import com.isa.isa.model.termins.model.TermAvailability;
+import com.isa.isa.model.termins.model.*;
+import com.isa.isa.model.termins.repository.InsFastResHistoryRepository;
+import com.isa.isa.model.termins.repository.InstructorFastReservationRepository;
 import com.isa.isa.model.termins.repository.InstructorReservationRepository;
 import com.isa.isa.model.termins.repository.InstructorTermRepository;
 import com.isa.isa.repository.AdventureRepository;
@@ -30,6 +29,12 @@ public class InstructorTermService {
     private InstructorReservationRepository instructorReservationRepository;
 
     @Autowired
+    private InstructorFastReservationRepository instructorFastReservationRepository;
+
+    @Autowired
+    private InsFastResHistoryRepository insFastResHistoryRepository;
+
+    @Autowired
     private InstructorRepository instructorRepository;
 
     @Autowired
@@ -38,6 +43,7 @@ public class InstructorTermService {
 
     public ArrayList<EventDTO> getAdventureTerms(String instructorname, String adventurename) {
         ArrayList<EventDTO> instructorAndAdventureTerm = new ArrayList<EventDTO>();
+        /*
         Instructor instructor = instructorRepository.getByEmail(instructorname);
         if(instructor != null){
             List<InstructorTerms> instructorTerms = instructorTermRepository.findAllByInstructorId(instructor.getId());
@@ -53,7 +59,7 @@ public class InstructorTermService {
                     instructorAndAdventureTerm.add(new EventDTO(insRes.getStartTime(), insRes.getEndTime()));
             }
         }
-
+        */
         return instructorAndAdventureTerm;
     }
     
@@ -68,4 +74,25 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
 		}
 		return retVal;
 	}
+
+    public ArrayList<EventDTO> getTermForInstructorCalendar(String username) {
+        ArrayList<EventDTO> events = new ArrayList<>();
+
+        Instructor instructor = instructorRepository.getByEmail(username);
+        if(instructor == null) return events;
+
+        for(InstructorTerms instructorTerm : instructorTermRepository.findAllByInstructorId(instructor.getId())){
+            events.add(new EventDTO(instructorTerm));
+        }
+
+        for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
+            events.add(new EventDTO(instructorReservation, instructorReservation.getAdventure().getName()));
+        }
+
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
+            events.add(new EventDTO(instructorFastReservation, instructorFastReservation.getAdventure().getName()));
+        }
+
+        return events;
+    }
 }

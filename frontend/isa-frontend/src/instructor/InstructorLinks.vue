@@ -7,7 +7,7 @@
                     <a href="/adventures" class="nav-link">My Adventures</a>
                 </div>
                 <div class="col">
-                    <a href="/" class="nav-link">Calendar</a>
+                    <a href="/instructor/calendar" class="nav-link">Calendar</a>
                 </div>
                 <div class="col">
                     <a href="/instructorProfile" class="nav-link">My Profile</a>

@@ -65,4 +65,12 @@ public class InstructorTerms {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

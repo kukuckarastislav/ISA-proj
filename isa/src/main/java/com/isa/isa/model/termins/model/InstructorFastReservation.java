@@ -141,5 +141,11 @@ public class InstructorFastReservation {
 		this.instructorUsername = instructorUsername;
 	}
 	
-	
+	public Boolean isTaken(){
+		for(InsFastResHistory insFastResHistory : insFastResHistories){
+			if(insFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN)
+				return true;
+		}
+		return false;
+	}
 }

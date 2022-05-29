@@ -1,6 +1,7 @@
 package com.isa.isa.model.termins.controller;
 
 import com.isa.isa.DTO.AdventureDTO;
+import com.isa.isa.model.revisions.DTO.RevisionAdminViewDTO;
 import com.isa.isa.model.termins.DTO.EventDTO;
 import com.isa.isa.model.termins.service.InstructorTermService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,13 @@ public class InstructorTermsController {
         ArrayList<EventDTO> instructorAndAdventureTerms = instructorTermService.getAdventureTerms(instructorname, adventurename);
         return new ResponseEntity<ArrayList<EventDTO>>(instructorAndAdventureTerms, HttpStatus.OK);
     }
+
+    @GetMapping()
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    public ResponseEntity<ArrayList<EventDTO>> getTermForInstructorCalendar(Principal user) {
+        return new ResponseEntity<ArrayList<EventDTO>>(instructorTermService.getTermForInstructorCalendar(user.getName()), HttpStatus.OK);
+    }
+
+
 
 }
