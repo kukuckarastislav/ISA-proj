@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.NewBoatTermDto;
+import com.isa.isa.model.termins.model.BoatFastReservation;
 import com.isa.isa.model.termins.model.BoatReservations;
 import com.isa.isa.model.termins.model.BoatTerms;
+import com.isa.isa.model.termins.model.CottageFastReservation;
+import com.isa.isa.model.termins.model.CottageTerms;
 import com.isa.isa.model.termins.model.TermAvailability;
+import com.isa.isa.model.termins.repository.BoatFastReservationRepository;
 import com.isa.isa.model.termins.repository.BoatReservationRepository;
 import com.isa.isa.model.termins.repository.BoatTermRepository;
 import com.isa.isa.repository.BoatRepository;
@@ -25,6 +29,8 @@ public class BoatTermService {
 	private BoatRepository boatRepository;
 	@Autowired
 	private BoatReservationRepository boatReservationRepository;
+	@Autowired
+	private BoatFastReservationRepository boatFastReservationRepository;
 	
 	public Boolean isBoatFree(BoatTermsDTO dto) {
 		ArrayList<BoatTerms> terms = (ArrayList<BoatTerms>) boatTermRepository.findAllByBoatId(dto.getId());
@@ -56,6 +62,10 @@ public class BoatTermService {
 	        {
 	        	return "Cannot define new term because it is overlaped with another reservation.";
 	        }
+	        if(isBoatTermOverlapedWithExistingBoatFastReservation(boatFastReservationRepository.findAllByBoatId(boat.getId()),newTerm))
+	        {
+	        	return "Cannot define new term because it is overlaped with another reservation.";
+	        }
 	        
 	        boatTermRepository.save(newTerm);
 	        
@@ -80,6 +90,14 @@ public class BoatTermService {
 	         if (reservation.getStartTime().isBefore(newBoatTerm.getStartTime()) && reservation.getEndTime().isAfter(newBoatTerm.getEndTime()))
 	            return true;
 
+	      return false;
+	}
+	
+	public boolean isBoatTermOverlapedWithExistingBoatFastReservation(List<BoatFastReservation> boatReservations, BoatTerms newBoatTerm) {
+	      for (BoatFastReservation reservation : boatReservations)
+	         if (reservation.getStartTime().isBefore(newBoatTerm.getStartTime()) && reservation.getEndTime().isAfter(newBoatTerm.getEndTime()))
+	            return true;
+	
 	      return false;
 	}
 	

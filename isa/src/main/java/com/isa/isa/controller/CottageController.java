@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.AddNewCottageDTO;
 import com.isa.isa.DTO.CottageDTO;
+import com.isa.isa.model.termins.DTO.NewCottageTermDto;
+import com.isa.isa.model.termins.service.CottageTermService;
 import com.isa.isa.service.CottageService;
 
 @RestController
@@ -24,7 +26,8 @@ public class CottageController {
 	
 	@Autowired
     private CottageService cottageService;
-	
+	@Autowired
+    private CottageTermService cottageTermService;
 	
 	@PreAuthorize("hasRole('ROLE_COTTAGE_OWNER')")
     @GetMapping("/byowner")
@@ -48,6 +51,14 @@ public class CottageController {
         if(cottageDTO == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<CottageDTO>(cottageDTO, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('ROLE_COTTAGE_OWNER')")
+	@PostMapping("/defineCottageTerms")
+    public ResponseEntity<String> defineNewTermForBoat(@RequestBody NewCottageTermDto newCottageTermDto, Principal user) {
+		String response = this.cottageTermService.defineNewTermForCottage(newCottageTermDto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
