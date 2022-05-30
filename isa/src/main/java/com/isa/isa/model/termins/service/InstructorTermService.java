@@ -65,7 +65,7 @@ public class InstructorTermService {
     
 public Boolean isInstructorFree(InstructorTermsDTO dto) {
 		ArrayList<InstructorTerms> terms = (ArrayList<InstructorTerms>) instructorTermRepository.findAllByInstructorId(dto.getId());
-		Boolean retVal = false;
+		boolean retVal = false;
 		for(InstructorTerms term : terms) {
 			if(term.getTermAvailability()==TermAvailability.AVAILABILE && term.getStartTime().isBefore(dto.getStartTime()) && term.getEndTime().isAfter( dto.getEndTime())) {
 				retVal = true;
@@ -86,7 +86,8 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
-            events.add(new EventDTO(instructorReservation, instructorReservation.getAdventure().getName()));
+            if(instructorReservation.getStatusOfReservation() == StatusOfReservation.ACTIVE)
+                events.add(new EventDTO(instructorReservation, instructorReservation.getAdventure().getName()));
         }
 
         for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
