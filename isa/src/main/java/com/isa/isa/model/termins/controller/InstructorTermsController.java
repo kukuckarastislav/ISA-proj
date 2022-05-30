@@ -3,15 +3,13 @@ package com.isa.isa.model.termins.controller;
 import com.isa.isa.DTO.AdventureDTO;
 import com.isa.isa.model.revisions.DTO.RevisionAdminViewDTO;
 import com.isa.isa.model.termins.DTO.EventDTO;
+import com.isa.isa.model.termins.DTO.NewInstructorTermDTO;
 import com.isa.isa.model.termins.service.InstructorTermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -36,6 +34,12 @@ public class InstructorTermsController {
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     public ResponseEntity<ArrayList<EventDTO>> getTermForInstructorCalendar(Principal user) {
         return new ResponseEntity<ArrayList<EventDTO>>(instructorTermService.getTermForInstructorCalendar(user.getName()), HttpStatus.OK);
+    }
+
+    @PostMapping("/term")
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    public ResponseEntity<Boolean> createTermForInstructor(Principal user, @RequestBody NewInstructorTermDTO newInstructorTermDTO) {
+        return new ResponseEntity<Boolean>(instructorTermService.createTermForInstructor(user.getName(), newInstructorTermDTO), HttpStatus.OK);
     }
 
 

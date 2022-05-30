@@ -148,4 +148,12 @@ public class InstructorFastReservation {
 		}
 		return false;
 	}
+
+	public Boolean isOverlap(LocalDateTime newStartTime, LocalDateTime newEndTime) {
+		if(this.endTime.isBefore(newStartTime) || newEndTime.isBefore(this.startTime)){
+			return false;
+		}else{
+			return true;
+		}
+	}
 }

@@ -5,6 +5,7 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.termins.DTO.EventDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.DTO.NewInstructorTermDTO;
 import com.isa.isa.model.termins.model.*;
 import com.isa.isa.model.termins.repository.InsFastResHistoryRepository;
 import com.isa.isa.model.termins.repository.InstructorFastReservationRepository;
@@ -16,6 +17,7 @@ import com.isa.isa.service.AdventureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,5 +97,48 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         return events;
+    }
+
+    public Boolean createTermForInstructor(String username, NewInstructorTermDTO newInstructorTermDTO) {
+        Instructor instructor = instructorRepository.getByEmail(username);
+        if(instructor == null) return false;
+
+        if(overlap(newInstructorTermDTO.getStartTime(), newInstructorTermDTO.getEndTime(), instructor)){
+            return false;
+        }
+
+        InstructorTerms instructorTerm = new InstructorTerms(instructor, newInstructorTermDTO.getTermAvailability(), newInstructorTermDTO.getStartTime(), newInstructorTermDTO.getEndTime());
+        instructorTermRepository.saveAndFlush(instructorTerm);
+
+        return true;
+    }
+
+
+
+    private Boolean overlap(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor){
+        for(InstructorTerms instructorTerm : instructorTermRepository.findAllByInstructorId(instructor.getId())){
+            if(instructorTerm.isOverlap(startTime, endTime)){
+                System.out.println("Overlaping with Instructor term");
+                return true;
+            }
+        }
+
+        for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(instructor.getEmail())){
+            if(instructorReservation.getStatusOfReservation() == StatusOfReservation.ACTIVE){
+                if(instructorReservation.isOverlap(startTime, endTime)){
+                    System.out.println("Overlaping with Instructor Reservation");
+                    return true;
+                }
+            }
+        }
+
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(instructor.getEmail())){
+            if(instructorFastReservation.isOverlap(startTime, endTime)){
+                System.out.println("Overlaping with Instructor FAST Reservation");
+                return true;
+            }
+        }
+
+        return false;
     }
 }

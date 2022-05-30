@@ -23,8 +23,8 @@
               <div class="card-body">
                 <h4 class="card-title">Create new Term</h4>
                 <Datepicker v-model="createNewTerm.date" range></Datepicker>
-                <select class="form-select" style="margin-top: 30px;">
-                  <option selected value="AVAILABILE">AVAILABILE</option>
+                <select class="form-select" v-model="createNewTerm.type" style="margin-top: 30px;">
+                  <option value="AVAILABILE">AVAILABILE</option>
                   <option value="UNAVAILABLE">UNAVAILABLE</option>
                 </select> <br>
 
@@ -119,6 +119,7 @@ export default {
         axios.get('http://localhost:8180/api/instructorterms').then(resp => {
             console.log(resp.data);
             this.terms = resp.data;
+            this.calendarOptions.events = [];
             for (let e of this.terms) {
                 console.log(e);
                 this.calendarOptions.events.push(this.eventTransform(e));
@@ -175,9 +176,21 @@ export default {
           this.createNewTerm.valid = false;
           return;
         }
+
+        const startTimeForBackend = new Date(Date.UTC(this.createNewTerm.date[0].getFullYear(), this.createNewTerm.date[0].getMonth(), this.createNewTerm.date[0].getDate(), this.createNewTerm.date[0].getHours(), this.createNewTerm.date[0].getMinutes()))
+        const endTimeForBackend = new Date(Date.UTC(this.createNewTerm.date[1].getFullYear(), this.createNewTerm.date[1].getMonth(), this.createNewTerm.date[1].getDate(), this.createNewTerm.date[1].getHours(), this.createNewTerm.date[1].getMinutes()))
+
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        axios.post('http://localhost:8180/api/instructorterms/term', {}).then(resp => {
-          this.loadData();
+        axios.post('http://localhost:8180/api/instructorterms/term', {
+          "termAvailability":this.createNewTerm.type,
+          "startTime":startTimeForBackend,
+          "endTime":endTimeForBackend,
+        }).then(
+          (resp) => {
+            this.loadData();
+          }, 
+          (err)=>{
+            alert(err)
         });
     },
     overlap: function(){
