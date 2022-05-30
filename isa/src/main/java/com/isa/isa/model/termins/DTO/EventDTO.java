@@ -1,82 +1,96 @@
 package com.isa.isa.model.termins.DTO;
 
-import com.isa.isa.model.termins.model.StatusOfReservation;
-import com.isa.isa.model.termins.model.TermAvailability;
+import com.isa.isa.model.termins.model.*;
 
 import java.time.LocalDateTime;
 
 public class EventDTO {
 
-    /*   JSON object for full-calendar Event
-        {
-              title: 'Evo je prvi event',
-              start: '2022-03-10T10:00:00',
-              end: '2022-03-12T16:00:00',
-              display: 'auto',
-              backgroundColor: "rgb(255,0,0)",
-              borderColor: "rgb(255,0,255)",
-              description: "opis neki",
-              editable: true,
-              overlap: false,
-        },
-    */
+    private int isa_idTerm;            //id nekog termina
+    private TermType isa_termType;     //kog tipa je idTerm dal je terminOwnera / reservaciji /
+    private TermAvailability isa_termAvailability;  // u slucaju da je termType TERM
+    private Boolean isa_isTakenFastReservation;    // u slucaju da je termType: fast reservation
 
-    private String title;
+    private String title;               // naziv termina npr
     private LocalDateTime start;
     private LocalDateTime end;
-    private String display;
-    private String backgroundColor;
-    private String borderColor;
-    private String description;
-    private Boolean editable;
-    private Boolean overlap;
 
     public EventDTO(){}
 
-    public EventDTO(String title, LocalDateTime start, LocalDateTime end, String display, String backgroundColor, String borderColor, String description, Boolean editable, Boolean overlap) {
+    public EventDTO(int isa_idTerm, TermType isa_termType, TermAvailability isa_termAvailability, Boolean isa_statusOfFastReservation, String title, LocalDateTime start, LocalDateTime end) {
+        this.isa_idTerm = isa_idTerm;
+        this.isa_termType = isa_termType;
+        this.isa_termAvailability = isa_termAvailability;
+        this.isa_isTakenFastReservation = isa_statusOfFastReservation;
         this.title = title;
         this.start = start;
         this.end = end;
-        this.display = display;
-        this.backgroundColor = backgroundColor;
-        this.borderColor = borderColor;
-        this.description = description;
-        this.editable = editable;
-        this.overlap = overlap;
     }
 
-    public EventDTO(LocalDateTime startTime, LocalDateTime endTime, TermAvailability termAvailability) {
-        this.start = startTime;
-        this.end = endTime;
-
-        this.display = "auto";
-        this.description = "opis";
-        this.editable = false;
-        this.overlap = true;
-
-        if(termAvailability == TermAvailability.AVAILABILE){
-            this.title = "availabile";
-            this.backgroundColor = "rgb(89, 255, 0)";
-            this.borderColor = "rgb(89, 255, 0)";
-        }else if(termAvailability == TermAvailability.UNAVAILABLE){
-            this.title = "unavailable";
-            this.backgroundColor = "rgb(255, 0, 0)";
-            this.borderColor = "rgb(255, 0, 0)";
+    public EventDTO(InstructorTerms instructorTerm) {
+        this.isa_idTerm = instructorTerm.getId();
+        this.isa_termType = TermType.TERM;
+        this.isa_termAvailability = instructorTerm.getTermAvailability();
+        this.isa_isTakenFastReservation = false;
+        if(this.isa_termAvailability == TermAvailability.AVAILABILE){
+            this.title = "AVAILABILE";
+        }else{
+            this.title = "UNAVAILABLE";
         }
+        this.start = instructorTerm.getStartTime();
+        this.end = instructorTerm.getEndTime();
     }
 
-    public EventDTO(LocalDateTime startTime, LocalDateTime endTime) {
-        this.start = startTime;
-        this.end = endTime;
+    public EventDTO(InstructorFastReservation instructorFastReservation, String title) {
+        this.isa_idTerm = instructorFastReservation.getId();
+        this.isa_termType = TermType.FAST_RESERVATION;
+        this.isa_termAvailability = null;
+        this.isa_isTakenFastReservation = instructorFastReservation.isTaken();
+        this.title = title;
+        this.start = instructorFastReservation.getStartTime();
+        this.end = instructorFastReservation.getEndTime();
+    }
 
-        this.display = "auto";
-        this.description = "opis";
-        this.editable = false;
-        this.overlap = true;
-        this.title = "unavailable";
-        this.backgroundColor = "rgb(255, 0, 0)";
-        this.borderColor = "rgb(255, 0, 0)";
+    public EventDTO(InstructorReservation instructorReservation, String title) {
+        this.isa_idTerm = instructorReservation.getId();
+        this.isa_termType = TermType.RESERVATION;
+        this.isa_termAvailability = null;
+        this.isa_isTakenFastReservation = false;
+        this.title = title;
+        this.start = instructorReservation.getStartTime();
+        this.end = instructorReservation.getEndTime();
+    }
 
+    public int getIsa_idTerm() {
+        return isa_idTerm;
+    }
+
+    public void setIsa_idTerm(int isa_idTerm) {
+        this.isa_idTerm = isa_idTerm;
+    }
+
+    public TermType getIsa_termType() {
+        return isa_termType;
+    }
+
+    public void setIsa_termType(TermType isa_termType) {
+        this.isa_termType = isa_termType;
+    }
+
+    public TermAvailability getIsa_termAvailability() {
+        return isa_termAvailability;
+    }
+
+    public void setIsa_termAvailability(TermAvailability isa_termAvailability) {
+        this.isa_termAvailability = isa_termAvailability;
+    }
+
+    public Boolean getIsa_isTakenFastReservation() {
+        return isa_isTakenFastReservation;
+    }
+
+    public void setIsa_isTakenFastReservation(Boolean isa_isTakenFastReservation) {
+        this.isa_isTakenFastReservation = isa_isTakenFastReservation;
     }
 
     public String getTitle() {
@@ -101,53 +115,5 @@ public class EventDTO {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
-    }
-
-    public String getDisplay() {
-        return display;
-    }
-
-    public void setDisplay(String display) {
-        this.display = display;
-    }
-
-    public String getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public String getBorderColor() {
-        return borderColor;
-    }
-
-    public void setBorderColor(String borderColor) {
-        this.borderColor = borderColor;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getEditable() {
-        return editable;
-    }
-
-    public void setEditable(Boolean editable) {
-        this.editable = editable;
-    }
-
-    public Boolean getOverlap() {
-        return overlap;
-    }
-
-    public void setOverlap(Boolean overlap) {
-        this.overlap = overlap;
     }
 }

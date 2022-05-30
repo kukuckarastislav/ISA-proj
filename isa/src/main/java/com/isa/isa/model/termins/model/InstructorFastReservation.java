@@ -141,5 +141,19 @@ public class InstructorFastReservation {
 		this.instructorUsername = instructorUsername;
 	}
 	
-	
+	public Boolean isTaken(){
+		for(InsFastResHistory insFastResHistory : insFastResHistories){
+			if(insFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN)
+				return true;
+		}
+		return false;
+	}
+
+	public Boolean isOverlap(LocalDateTime newStartTime, LocalDateTime newEndTime) {
+		if(this.endTime.isBefore(newStartTime) || newEndTime.isBefore(this.startTime)){
+			return false;
+		}else{
+			return true;
+		}
+	}
 }

@@ -263,3 +263,56 @@ values (5,4);
 
 insert into loyalty_settings(client_score_for_reservation, owner_score_for_reservation, minimum_score_forsilver, minimum_score_forgold, client_discount_percentagesilver, client_discount_percentagegold, owner_discount_percentagesilver, owner_discount_percentagegold, system_percentage)
 values (30, 20, 120, 420, 5, 10, 5, 15, 20);
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
+-- Instructor Alex
+insert into USERS (username, password, last_password_reset_date, enabled, approved)
+values ('isaprojectftn+alexI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
+insert into user_role (user_id, role_id)
+values (8, 5);
+insert into instructor (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade)
+values (8, 0,0, 'Novi Sad', 'Srbija', 14, 24, 35, 'Bulevar oslobodjenja', 'isaprojectftn+alexI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Alexandar', 'Lux', '030345', 'Odlican instrutktor, naucicu te svim cakama i vestinama, jedva cekam', 'To mi je San od malena, da ucim druge ',0);
+insert into adventure (name, city, country, latitude, longitude, number, street, price, price_type, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
+values ('Obilazak piramide', 'Aleksandrija', 'Egipt', 14, 24, 35, 'piro', 5,'PER_HOUR','Penjamo se na piramidu, budimo faraona', 'Odlican instrutktor, naucicu te svim cakama i vestinama, jedva cekam', 4, 'Nema kradje zlata, i cupova iz piramide', 'FREE', 8, 0);
+insert into adventure_additional_services(adventure_id, additional_service_id)
+values (3,1);
+insert into adventure_additional_services(adventure_id, additional_service_id)
+values (3,3);
+insert into adventure_additional_services(adventure_id, additional_service_id)
+values (3,4);
+insert into entity_image (name, path)
+values ('img1.jpg', 'images/Instructors/isaprojectftn+alexI@gmail.com/Obilazak_piramide/img1.jpg');
+insert into entity_image (name, path)
+values ('img2.jpg', 'images/Instructors/isaprojectftn+alexI@gmail.com/Obilazak_piramide/img2.jpg');
+insert into entity_image (name, path)
+values ('img3.jpg', 'images/Instructors/isaprojectftn+alexI@gmail.com/Obilazak_piramide/img3.jpg');
+insert into adventure_images (adventure_id, images_id)
+values (3, 10);
+insert into adventure_images (adventure_id, images_id)
+values (3, 11);
+insert into adventure_images (adventure_id, images_id)
+values (3, 12);
+insert into instructor_terms(instructor_id, term_availability, start_time, end_time)
+values (8, 'AVAILABILE', '2022-05-30T8:00:06.235098700', '2022-05-31T16:00:06.235098700');
+insert into instructor_terms(instructor_id, term_availability, start_time, end_time)
+values (8, 'UNAVAILABLE', '2022-06-1T0:00:14.235098700', '2022-06-03T23:00:06.235098700');
+insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id, instructor_username,price, is_revised, is_complained_of)
+values ('2022-05-30T10:00:06.235098700', '2022-05-30T16:00:06.235098700', 'ACTIVE', 3, 3, 'isaprojectftn+alexI@gmail.com',170, false, false);
+insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
+values (2,3);
+insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
+values (2,4);
+--insert into instructor_fast_reservation(city, country, latitude, longitude, number, street, max_number_of_people, price, start_time, end_time, adventure_id, instructor_username)
+--values ('Bratislava', 'Slovakia', 14, 24, 35, 'Miskova', 4, 5, '2022-07-11T14:00:06.235098700', '2022-07-11T16:00:06.235098700', 2, 'isaprojectftn+stefanI@gmail.com');
+--insert into ins_fast_res_history(status_of_fast_reservation, client_id, ins_fast_res_id, is_revised, is_complained_of)
+--values ('CANCELLED', 3, 1, false, false);
+--insert into instructor_fast_reservation_additional_services(instructor_fast_reservation_id,additional_service_id)
+--values (1,1);
+--------------------------------------------------------------------------------------------------------------------------
