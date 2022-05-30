@@ -1,12 +1,38 @@
 <template>
-    <div style="height: 60px;"></div>
-    <div class="container">
+    <div style="margin-top: 60px;"></div>
+    <div class="container" style="margin-bottom: 30px;">
 
         <div class="row">
           <div class="col">
             <h1>Calendar</h1>
             <FullCalendar :options="calendarOptions" />
-            <br><br><br>
+            <br>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <button v-if="!createNewTerm.formVisible" class="btn btn-primary mx-2" v-on:click="createNewTerm.formVisible=true">Add Term</button>
+            <button class="btn btn-danger mx-2">Delete Term</button>
+          </div>
+        </div>
+
+        <div v-if="createNewTerm.formVisible" class="row" style="margin-top: 30px;">
+          <div class="col-4">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Create new Term</h4>
+                <Datepicker v-model="createNewTerm.date" range></Datepicker>
+                <select class="form-select" style="margin-top: 30px;">
+                  <option selected value="AVAILABILE">AVAILABILE</option>
+                  <option value="UNAVAILABLE">UNAVAILABLE</option>
+                </select> <br>
+
+                <p class="card-text text-danger">{{createNewTerm.msg}}</p>
+                <button class="btn btn-danger m-1" v-on:click="createNewTerm.formVisible=false">Cancel</button>
+                <button :disabled="!createNewTerm.valid" class="btn btn-success m-1" v-on:click="addNewTerm()">Add</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -15,6 +41,9 @@
 
 <script>
 import axios from "axios";
+
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css'
 
 // FULL CALNEDAR
 import '@fullcalendar/core/vdom' // solves problem with Vite
@@ -37,11 +66,21 @@ import {defaults} from 'ol/control';
 export default {
   name: 'InstructorCalendarPage',
   components: {
-    FullCalendar
+    FullCalendar,
+    Datepicker
   },
   data: function(){
     return {
         terms: [],
+
+        createNewTerm:{
+          date: [],
+          formVisible: false,
+          type: 'AVAILABILE',
+          msg: '',
+          valid: true,
+        },
+
         calendarOptions: {
           plugins: [ dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin ],
           initialView: 'dayGridMonth', 
@@ -72,6 +111,7 @@ export default {
   },
   mounted: function(){
       this.loadData();
+      this.calendarOptions.select = this.selectInCalendar;
   },
   methods: {
     loadData: function(){
@@ -113,6 +153,41 @@ export default {
         e.editable = false
         e.overlap = false
         return e;
+    },
+    showCreateNewTermForm: function(){
+      this.createNewTerm.msg = ''
+      this.createNewTerm.formVisible = true;
+    },
+    selectInCalendar: function(selectedDate){
+      this.createNewTerm.msg = ''
+      this.createNewTerm.valid = true;
+      this.createNewTerm.date[0] = new Date(selectedDate.start)
+      this.createNewTerm.date[1] = new Date(selectedDate.end)
+      this.createNewTerm.formVisible = true;
+      if(this.overlap()){
+          this.createNewTerm.msg = 'Error, new term have overlap with other term'
+          this.createNewTerm.valid = false;
+      }
+    },
+    addNewTerm: function(){
+        if(this.overlap()){
+          this.createNewTerm.msg = 'Error, new term have overlap with other term'
+          this.createNewTerm.valid = false;
+          return;
+        }
+        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+        axios.post('http://localhost:8180/api/instructorterms/term', {}).then(resp => {
+          this.loadData();
+        });
+    },
+    overlap: function(){
+        for(const event of this.calendarOptions.events){
+            if(!((new Date(event.end) < this.createNewTerm.date[0]) || (this.createNewTerm.date[1] < new Date(event.start)))){
+              console.log('OVERLAP')
+              return true;
+            }
+        }
+        return false;
     },
   }
 }
