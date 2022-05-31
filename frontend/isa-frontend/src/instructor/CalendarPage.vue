@@ -12,7 +12,9 @@
 
         <div class="row">
           <div class="col-4">
-            <button v-if="!createNewTerm.formVisible" class="btn btn-primary mx-2" v-on:click="createNewTerm.formVisible=true">Add Term</button>
+            <div class="d-flex justify-content-start">
+            <button v-if="!createNewTerm.formVisible && !showSelectedReservation" class="btn btn-primary mx-2" v-on:click="createNewTerm.formVisible=true">Add Term</button>
+            </div>
           </div>
         </div>
 
@@ -35,11 +37,21 @@
           </div>
         </div>
 
+        <div v-if="showSelectedReservation" class="row" style="margin-top:30px;">
+        <div class="col-1"></div>
+          <div class="col-10">
+              <ReservationViewComponent v-bind:reservation="selectedReservation" />
+              <button class="btn btn-primary m-2" v-on:click="closeSelectedReservation()">Close</button>
+          </div>
+          <div class="col-1"></div>
+        </div>
+
     </div>
 </template>
 
 <script>
 import axios from "axios";
+import ReservationViewComponent from '../instructor/ReservationViewComponent.vue'
 
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
@@ -66,11 +78,15 @@ export default {
   name: 'InstructorCalendarPage',
   components: {
     FullCalendar,
-    Datepicker
+    Datepicker,
+    ReservationViewComponent
   },
   data: function(){
     return {
         terms: [],
+
+        selectedReservation: {},
+        showSelectedReservation: false,
 
         createNewTerm:{
           date: [],
@@ -167,6 +183,7 @@ export default {
       this.createNewTerm.valid = true;
     },
     selectInCalendar: function(selectedDate){
+      if(this.showSelectedReservation) return;
       this.createNewTerm.msg = ''
       this.createNewTerm.valid = true;
       this.createNewTerm.date[0] = new Date(selectedDate.start)
@@ -210,9 +227,33 @@ export default {
         return false;
     },
     eventClickCalendar: function(info){
-        alert('isa_idTerm: ' + info.event._def.extendedProps.isa_idTerm);
-        //info.el.style.backgroundColor = 'red';
+        if(this.createNewTerm.formVisible) return;
+        
+        let e = info.event._def.extendedProps
+        if(e.isa_termType != 'TERM'){
+          this.loadDataSelectedReservation(e)
+        }
     },
+    loadDataSelectedReservation: function(event){
+      //alert('ID ' + event.isa_idTerm)
+      this.selectedReservation = null;
+      this.showSelectedReservation = false; 
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+      axios.get('http://localhost:8180/api/instructorterms/reservation/'+event.isa_termType+'/'+event.isa_idTerm).then(
+        (resp) => {
+          console.log(resp.data)
+          this.selectedReservation = resp.data;
+          this.showSelectedReservation = true; 
+        }, 
+        (err)=>{
+          alert(err)
+      });
+    },
+    closeSelectedReservation: function(){
+       this.selectedReservation = null;
+       this.showSelectedReservation = false; 
+    }
   }
 }
 </script>

@@ -416,3 +416,6 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
   }
 ]
 ###
+GET http://localhost:8180/api/instructorterms/reservation/RESERVATION/2
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWxleElAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjU0MDM1ODQwLCJleHAiOjE2NTQyMTU4NDB9.-J8wHoxJME1fiLc24XKu63POfEUp4VVhSpU43uDO3JRcQDpcwzrcyvRDpX7xaFEjy_iAbyVRy85M_cs0T6-fNA
+###

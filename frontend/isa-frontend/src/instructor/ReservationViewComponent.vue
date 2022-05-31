@@ -1,6 +1,6 @@
 <template>
 
-<div class="card">
+<div class="card" style="background-color: whitesmoke;">
     <div class="card-body">
         <div class="row">
             <div class="col-4">

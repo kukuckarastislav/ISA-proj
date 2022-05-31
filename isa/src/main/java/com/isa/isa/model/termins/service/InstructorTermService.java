@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InstructorTermService {
@@ -157,5 +158,25 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         return instructorReservations;
+    }
+
+    public InstructorReservationDTO getReservationForInstructorById(String username, TermType termType, int idReservation) {
+        Instructor instructor = instructorRepository.getByEmail(username);
+        if(instructor == null) return null;
+
+        if(termType == TermType.RESERVATION){
+            Optional<InstructorReservation> instructorReservationOptional = instructorReservationRepository.findById(idReservation);
+            if(instructorReservationOptional.isPresent()){
+                return new InstructorReservationDTO(instructorReservationOptional.get());
+            }
+        }else if(termType == TermType.FAST_RESERVATION){
+            for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
+                if(instructorFastReservation.getInstructorUsername().equals(username)){
+                    return new InstructorReservationDTO(instructorFastReservation);
+                }
+            }
+        }
+
+        return null;
     }
 }

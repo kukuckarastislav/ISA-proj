@@ -5,6 +5,7 @@ import com.isa.isa.model.revisions.DTO.RevisionAdminViewDTO;
 import com.isa.isa.model.termins.DTO.EventDTO;
 import com.isa.isa.model.termins.DTO.InstructorReservationDTO;
 import com.isa.isa.model.termins.DTO.NewInstructorTermDTO;
+import com.isa.isa.model.termins.model.TermType;
 import com.isa.isa.model.termins.service.InstructorTermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -47,6 +49,12 @@ public class InstructorTermsController {
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     public ResponseEntity<ArrayList<InstructorReservationDTO>> getReservationForInstructor(Principal user){
         return new ResponseEntity<ArrayList<InstructorReservationDTO>>(instructorTermService.getReservationForInstructor(user.getName()), HttpStatus.OK);
+    }
+
+    @GetMapping("/reservation/{type}/{id}")
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    public ResponseEntity<InstructorReservationDTO> getReservationForInstructorById(Principal user, @PathVariable TermType type, @PathVariable int id){
+        return new ResponseEntity<InstructorReservationDTO>(instructorTermService.getReservationForInstructorById(user.getName(),type,id), HttpStatus.OK);
     }
 
 
