@@ -40,8 +40,6 @@ public class ClientDto {
 		this.phoneNumber = client.getPhoneNumber();
 	}
 
-	
-
 	public ClientDto(String email, String password, String firstName, String lastName, Address address,
 			String phoneNumber) {
 		super();

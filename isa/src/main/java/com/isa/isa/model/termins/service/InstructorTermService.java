@@ -4,6 +4,7 @@ package com.isa.isa.model.termins.service;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.termins.DTO.EventDTO;
+import com.isa.isa.model.termins.DTO.InstructorReservationDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
 import com.isa.isa.model.termins.DTO.NewInstructorTermDTO;
 import com.isa.isa.model.termins.model.*;
@@ -139,5 +140,22 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         return false;
+    }
+
+    public ArrayList<InstructorReservationDTO> getReservationForInstructor(String username) {
+        ArrayList<InstructorReservationDTO> instructorReservations = new ArrayList<>();
+
+        Instructor instructor = instructorRepository.getByEmail(username);
+        if(instructor == null) return instructorReservations;
+
+        for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
+            instructorReservations.add(new InstructorReservationDTO(instructorReservation));
+        }
+
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
+            instructorReservations.add(new InstructorReservationDTO(instructorFastReservation));
+        }
+
+        return instructorReservations;
     }
 }

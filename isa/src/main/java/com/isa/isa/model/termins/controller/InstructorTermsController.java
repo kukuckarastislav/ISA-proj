@@ -3,6 +3,7 @@ package com.isa.isa.model.termins.controller;
 import com.isa.isa.DTO.AdventureDTO;
 import com.isa.isa.model.revisions.DTO.RevisionAdminViewDTO;
 import com.isa.isa.model.termins.DTO.EventDTO;
+import com.isa.isa.model.termins.DTO.InstructorReservationDTO;
 import com.isa.isa.model.termins.DTO.NewInstructorTermDTO;
 import com.isa.isa.model.termins.service.InstructorTermService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,11 @@ public class InstructorTermsController {
         return new ResponseEntity<Boolean>(instructorTermService.createTermForInstructor(user.getName(), newInstructorTermDTO), HttpStatus.OK);
     }
 
-
+    @GetMapping("/reservation")
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    public ResponseEntity<ArrayList<InstructorReservationDTO>> getReservationForInstructor(Principal user){
+        return new ResponseEntity<ArrayList<InstructorReservationDTO>>(instructorTermService.getReservationForInstructor(user.getName()), HttpStatus.OK);
+    }
 
 
 

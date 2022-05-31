@@ -275,3 +275,114 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
   }
 ]
 ###
+GET http://localhost:8180/api/instructorterms/reservation
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rc3RlZmFuSUBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2NTQwMDIzNzcsImV4cCI6MTY1NDE4MjM3N30.Qd5djUUpOu6Tvc9t7au--T-ovfq48B4SXoJM-nr8s9Xwvjol_tytX3WatAWyyTvq8cMI5sDP-41AYQpWdxT26g
+###
+[
+  {
+    "instructorUsername": "isaprojectftn+stefanI@gmail.com",
+    "adventureName": "Penjanje na planinu",
+    "idAdventure": 1,
+    "client": {
+      "id": 3,
+      "email": "isaprojectftn+marijaC@gmail.com",
+      "firstName": "Marija",
+      "lastName": "Maric",
+      "address": {
+        "country": "Serbia",
+        "city": "Novi Sad",
+        "street": "Zmaj Jovina",
+        "number": "33",
+        "latitude": 11.0,
+        "longitude": 13.0
+      },
+      "phoneNumber": "030348",
+      "loyalty": {
+        "score": 0,
+        "loyaltyType": "REGULAR"
+      }
+    },
+    "termType": "RESERVATION",
+    "additionalServices": [
+      {
+        "id": 3,
+        "price": 7.0,
+        "name": "Singing",
+        "description": "Instructor will sing to you"
+      },
+      {
+        "id": 4,
+        "price": 20.0,
+        "name": "Food",
+        "description": "Food included"
+      }
+    ],
+    "startTime": "2022-03-10T08:00:06.235099",
+    "endTime": "2022-03-10T12:00:06.235099",
+    "price": 170.0,
+    "statusOfReservation": "ACTIVE",
+    "address": {
+      "country": "Slovakia",
+      "city": "Bratislava",
+      "street": "Miskova",
+      "number": "35",
+      "latitude": 14.0,
+      "longitude": 24.0
+    },
+    "insFastResHistories": null,
+    "taken": false
+  },
+  {
+    "instructorUsername": "isaprojectftn+stefanI@gmail.com",
+    "adventureName": "Krstarenje",
+    "idAdventure": 2,
+    "client": null,
+    "termType": "FAST_RESERVATION",
+    "additionalServices": [
+      {
+        "id": 1,
+        "price": 10.0,
+        "name": "Wi-Fi",
+        "description": "Have fun with 5G"
+      }
+    ],
+    "startTime": "2022-07-11T14:00:06.235099",
+    "endTime": "2022-07-11T16:00:06.235099",
+    "price": 5.0,
+    "statusOfReservation": null,
+    "address": {
+      "country": "Slovakia",
+      "city": "Bratislava",
+      "street": "Miskova",
+      "number": "35",
+      "latitude": 14.0,
+      "longitude": 24.0
+    },
+    "insFastResHistories": [
+      {
+        "client": {
+          "id": 3,
+          "email": "isaprojectftn+marijaC@gmail.com",
+          "firstName": "Marija",
+          "lastName": "Maric",
+          "address": {
+            "country": "Serbia",
+            "city": "Novi Sad",
+            "street": "Zmaj Jovina",
+            "number": "33",
+            "latitude": 11.0,
+            "longitude": 13.0
+          },
+          "phoneNumber": "030348",
+          "loyalty": {
+            "score": 0,
+            "loyaltyType": "REGULAR"
+          }
+        },
+        "statusOfFastReservation": "CANCELLED"
+      }
+    ],
+    "taken": false
+  }
+]
+###
