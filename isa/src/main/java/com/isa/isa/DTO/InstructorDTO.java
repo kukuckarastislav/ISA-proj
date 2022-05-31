@@ -2,6 +2,7 @@ package com.isa.isa.DTO;
 
 import com.isa.isa.model.Address;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.loyalty.Loyalty;
 
 public class InstructorDTO {
 
@@ -12,6 +13,8 @@ public class InstructorDTO {
     private Address address;
     private String phoneNumber;
     private String biography;
+    private Loyalty loyalty;
+    private double averageGrade;
 
     public InstructorDTO(){}
 
@@ -23,16 +26,8 @@ public class InstructorDTO {
         this.address = instructor.getAddress();
         this.phoneNumber = instructor.getPhoneNumber();
         this.biography = instructor.getBiography();
-    }
-
-    public InstructorDTO(String email, String password, String firstName, String lastName, Address address, String phoneNumber, String biography) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.biography = biography;
+        this.loyalty = instructor.getLoyalty();
+        this.averageGrade = instructor.getAverageGrade();
     }
 
     public String getEmail() {
@@ -89,5 +84,21 @@ public class InstructorDTO {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public Loyalty getLoyalty() {
+        return loyalty;
+    }
+
+    public void setLoyalty(Loyalty loyalty) {
+        this.loyalty = loyalty;
+    }
+
+    public double getAverageGrade() {
+        return averageGrade;
+    }
+
+    public void setAverageGrade(double averageGrade) {
+        this.averageGrade = averageGrade;
     }
 }

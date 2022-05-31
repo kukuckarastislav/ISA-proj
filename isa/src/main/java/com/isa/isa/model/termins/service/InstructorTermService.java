@@ -88,8 +88,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
-            if(instructorReservation.getStatusOfReservation() == StatusOfReservation.ACTIVE)
-                events.add(new EventDTO(instructorReservation, instructorReservation.getAdventure().getName()));
+            events.add(new EventDTO(instructorReservation, instructorReservation.getAdventure().getName()));
         }
 
         for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){

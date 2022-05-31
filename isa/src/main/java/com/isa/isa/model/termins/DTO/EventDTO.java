@@ -9,6 +9,7 @@ public class EventDTO {
     private int isa_idTerm;            //id nekog termina
     private TermType isa_termType;     //kog tipa je idTerm dal je terminOwnera / reservaciji /
     private TermAvailability isa_termAvailability;  // u slucaju da je termType TERM
+    private StatusOfReservation isa_statusOfReservation; // status
     private Boolean isa_isTakenFastReservation;    // u slucaju da je termType: fast reservation
 
     private String title;               // naziv termina npr
@@ -17,20 +18,11 @@ public class EventDTO {
 
     public EventDTO(){}
 
-    public EventDTO(int isa_idTerm, TermType isa_termType, TermAvailability isa_termAvailability, Boolean isa_statusOfFastReservation, String title, LocalDateTime start, LocalDateTime end) {
-        this.isa_idTerm = isa_idTerm;
-        this.isa_termType = isa_termType;
-        this.isa_termAvailability = isa_termAvailability;
-        this.isa_isTakenFastReservation = isa_statusOfFastReservation;
-        this.title = title;
-        this.start = start;
-        this.end = end;
-    }
-
     public EventDTO(InstructorTerms instructorTerm) {
         this.isa_idTerm = instructorTerm.getId();
         this.isa_termType = TermType.TERM;
         this.isa_termAvailability = instructorTerm.getTermAvailability();
+        this.isa_statusOfReservation = null;
         this.isa_isTakenFastReservation = false;
         if(this.isa_termAvailability == TermAvailability.AVAILABILE){
             this.title = "AVAILABILE";
@@ -45,6 +37,7 @@ public class EventDTO {
         this.isa_idTerm = instructorFastReservation.getId();
         this.isa_termType = TermType.FAST_RESERVATION;
         this.isa_termAvailability = null;
+        this.isa_statusOfReservation = null;
         this.isa_isTakenFastReservation = instructorFastReservation.isTaken();
         this.title = title;
         this.start = instructorFastReservation.getStartTime();
@@ -55,6 +48,7 @@ public class EventDTO {
         this.isa_idTerm = instructorReservation.getId();
         this.isa_termType = TermType.RESERVATION;
         this.isa_termAvailability = null;
+        this.isa_statusOfReservation = instructorReservation.getStatusOfReservation();
         this.isa_isTakenFastReservation = false;
         this.title = title;
         this.start = instructorReservation.getStartTime();
@@ -115,5 +109,13 @@ public class EventDTO {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    public StatusOfReservation getIsa_statusOfReservation() {
+        return isa_statusOfReservation;
+    }
+
+    public void setIsa_statusOfReservation(StatusOfReservation isa_statusOfReservation) {
+        this.isa_statusOfReservation = isa_statusOfReservation;
     }
 }

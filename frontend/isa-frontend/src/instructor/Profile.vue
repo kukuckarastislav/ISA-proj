@@ -117,6 +117,26 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="row" style="margin-top: 30px;">
+                        <div class="col">
+                            <h3 class="text-start stars">
+                                <span v-for="index in Math.round(profile.averageGrade)" :key="index">&#9733;</span> 
+                                <span v-for="index in Math.round(5-profile.averageGrade)" :key="index">&#9734;</span> 
+                                {{profile.averageGrade}}
+                            </h3>
+                        </div>
+                        <div class="col">
+                            <div class="card" v-bind:class="getCssForLoyalty()">
+                                <div class="card-body">
+                                    <h5 class="card-title text-start">Loyalty</h5> 
+                                    <h6 class="card-title text-start"><b>{{profile.loyalty.loyaltyType}}</b></h6> 
+                                    <h6 class="card-title text-start">Score {{profile.loyalty.score}}</h6> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="row">
@@ -142,6 +162,7 @@ export default {
     return {
         isEditingProfile: false,
         profile: {
+            loyalty: {},
             email: '',
             password: '',
             firstName: '',
@@ -155,7 +176,8 @@ export default {
                 latitude: 0,
                 longitude: 0
             },
-            biography: ''  
+            biography: '' ,
+            averageGrade: 0,
         },
         copyProfile: {},
 
@@ -267,7 +289,13 @@ export default {
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           }); 
-      }
+      },
+      getCssForLoyalty: function(){
+        if(this.profile.loyalty.loyaltyType === 'GOLD') return 'goldCss';
+        if(this.profile.loyalty.loyaltyType === 'SILVER') return 'silverCss';
+        if(this.profile.loyalty.loyaltyType === 'REGULAR') return 'SettingsCss';
+        return '';
+    },
 
   }
 }
@@ -286,6 +314,38 @@ export default {
   height: 200px;
   background-color: dimgrey;
   border-radius: 10px;
+}
+
+
+.stars{
+  color: coral;
+}
+
+.silverCss{
+    border-color: white;
+    border-width: 2px;
+    border-radius: 8px;
+    background: rgb(81, 81, 81);
+    background: linear-gradient(15deg, rgb(82, 82, 82) 0%, rgb(139, 139, 139) 23%, rgb(222, 222, 222) 100%);
+    color: white;
+}
+
+.goldCss{
+    border-color: white;
+    border-width: 2px;
+    border-radius: 8px;
+    background: rgb(168, 129, 4);
+    background: linear-gradient(15deg, rgb(190, 126, 0) 0%, rgb(202, 158, 10) 23%, rgb(238, 255, 0) 100%);
+    color: black;
+}
+
+.SettingsCss{
+    border-color: white;
+    border-width: 2px;
+    border-radius: 8px;
+    background: rgb(36, 23, 0);
+    background: linear-gradient(15deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 23%, rgba(0,146,255,1) 100%);
+    color: white;
 }
 
 

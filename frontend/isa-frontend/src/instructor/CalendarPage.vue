@@ -13,7 +13,6 @@
         <div class="row">
           <div class="col-4">
             <button v-if="!createNewTerm.formVisible" class="btn btn-primary mx-2" v-on:click="createNewTerm.formVisible=true">Add Term</button>
-            <button class="btn btn-danger mx-2">Delete Term</button>
           </div>
         </div>
 
@@ -22,7 +21,7 @@
             <div class="card">
               <div class="card-body">
                 <h4 class="card-title">Create new Term</h4>
-                <Datepicker v-model="createNewTerm.date" range></Datepicker>
+                <Datepicker v-on:click="showCreateNewTermForm()" v-model="createNewTerm.date" range></Datepicker>
                 <select class="form-select" v-model="createNewTerm.type" style="margin-top: 30px;">
                   <option value="AVAILABILE">AVAILABILE</option>
                   <option value="UNAVAILABLE">UNAVAILABLE</option>
@@ -112,6 +111,7 @@ export default {
   mounted: function(){
       this.loadData();
       this.calendarOptions.select = this.selectInCalendar;
+      this.calendarOptions.eventClick = this.eventClickCalendar;
   },
   methods: {
     loadData: function(){
@@ -139,8 +139,14 @@ export default {
                 e.borderColor = "#ecffe3"    
             }
         }else if(e.isa_termType === 'RESERVATION'){
-            e.backgroundColor = "#a100ba"
-            e.borderColor = "#a100ba"
+            if(e.isa_statusOfReservation === 'CANCELLED'){
+                e.backgroundColor = "#35013d"
+                e.borderColor = "#35013d" 
+            }
+            else if(e.isa_statusOfReservation === 'ACTIVE'){
+                e.backgroundColor = "#a100ba"
+                e.borderColor = "#a100ba" 
+            }
         }else if(e.isa_termType === 'FAST_RESERVATION'){
             if(e.isa_isTakenFastReservation){
                 e.backgroundColor = "#0057ba"
@@ -158,12 +164,13 @@ export default {
     showCreateNewTermForm: function(){
       this.createNewTerm.msg = ''
       this.createNewTerm.formVisible = true;
+      this.createNewTerm.valid = true;
     },
     selectInCalendar: function(selectedDate){
       this.createNewTerm.msg = ''
       this.createNewTerm.valid = true;
       this.createNewTerm.date[0] = new Date(selectedDate.start)
-      this.createNewTerm.date[1] = new Date(selectedDate.end)
+      this.createNewTerm.date[1] = new Date(new Date(selectedDate.end) - 1000) // TODO: minuti59
       this.createNewTerm.formVisible = true;
       if(this.overlap()){
           this.createNewTerm.msg = 'Error, new term have overlap with other term'
@@ -201,6 +208,10 @@ export default {
             }
         }
         return false;
+    },
+    eventClickCalendar: function(info){
+        alert('isa_idTerm: ' + info.event._def.extendedProps.isa_idTerm);
+        //info.el.style.backgroundColor = 'red';
     },
   }
 }
