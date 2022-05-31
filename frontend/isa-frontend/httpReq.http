@@ -278,6 +278,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
 GET http://localhost:8180/api/instructorterms/reservation
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rc3RlZmFuSUBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2NTQwMDIzNzcsImV4cCI6MTY1NDE4MjM3N30.Qd5djUUpOu6Tvc9t7au--T-ovfq48B4SXoJM-nr8s9Xwvjol_tytX3WatAWyyTvq8cMI5sDP-41AYQpWdxT26g
 ###
+
 [
   {
     "instructorUsername": "isaprojectftn+stefanI@gmail.com",
@@ -302,19 +303,36 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
         "loyaltyType": "REGULAR"
       }
     },
-    "termType": "RESERVATION",
-    "additionalServices": [
+    "images": [
+      {
+        "id": 2,
+        "name": "img2.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img2.jpg"
+      },
       {
         "id": 3,
-        "price": 7.0,
-        "name": "Singing",
-        "description": "Instructor will sing to you"
+        "name": "img3.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img3.jpg"
       },
+      {
+        "id": 1,
+        "name": "img1.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img1.jpg"
+      }
+    ],
+    "termType": "RESERVATION",
+    "additionalServices": [
       {
         "id": 4,
         "price": 20.0,
         "name": "Food",
         "description": "Food included"
+      },
+      {
+        "id": 3,
+        "price": 7.0,
+        "name": "Singing",
+        "description": "Instructor will sing to you"
       }
     ],
     "startTime": "2022-03-10T08:00:06.235099",
@@ -337,6 +355,18 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     "adventureName": "Krstarenje",
     "idAdventure": 2,
     "client": null,
+    "images": [
+      {
+        "id": 4,
+        "name": "img1.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img1.jpg"
+      },
+      {
+        "id": 5,
+        "name": "img2.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img2.jpg"
+      }
+    ],
     "termType": "FAST_RESERVATION",
     "additionalServices": [
       {

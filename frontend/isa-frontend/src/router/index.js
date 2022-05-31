@@ -30,6 +30,7 @@ import LoyaltySettingsPage from '../admin/LoyaltySettingsPage.vue'
 import CustomerPenalties from '../views/CustomerPenalties.vue'
 import UsersPage from '../admin/UsersPage.vue'
 import InstructorCalendarPage from '../instructor/CalendarPage.vue'
+import Reservation from '../instructor/Reservations.vue'
 
 
 
@@ -64,7 +65,8 @@ const routes = [
   { path: '/loyaltySettingsPage', name: 'LoyaltySettingsPage', component: LoyaltySettingsPage},
   { path: '/customerPenalties', name: 'CustomerPenalties', component: CustomerPenalties },
   { path: '/admin/users', name: 'UsersPage', component: UsersPage },
-  { path: '/instructor/calendar', name: 'InstructorCalendarPage', component: InstructorCalendarPage}
+  { path: '/instructor/calendar', name: 'InstructorCalendarPage', component: InstructorCalendarPage },
+  { path: '/instructor/reservation', name: 'Reservation', component: Reservation}
 ]
 
 const router = createRouter({

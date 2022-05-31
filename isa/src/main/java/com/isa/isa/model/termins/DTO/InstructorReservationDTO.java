@@ -2,6 +2,7 @@ package com.isa.isa.model.termins.DTO;
 
 import com.isa.isa.DTO.ClientViewDTO;
 import com.isa.isa.model.Address;
+import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.model.*;
 
@@ -15,6 +16,8 @@ public class InstructorReservationDTO {
     private String adventureName;
     private int idAdventure;
     private ClientViewDTO client;
+
+    private ArrayList<EntityImage> images;
 
     private TermType termType;  //TERM, RESERVATION, FAST_RESERVATION
 
@@ -51,6 +54,8 @@ public class InstructorReservationDTO {
         this.address = instructorReservation.getAdventure().getAddress();
         this.insFastResHistories = null;
         this.client = new ClientViewDTO(instructorReservation.getClient());
+        this.images = new ArrayList<>();
+        this.images.addAll(instructorReservation.getAdventure().getImages());
     }
 
     public InstructorReservationDTO(InstructorFastReservation instructorFastReservation) {
@@ -71,6 +76,8 @@ public class InstructorReservationDTO {
         }
         this.client = null;
         this.isTaken = instructorFastReservation.isTaken();
+        this.images = new ArrayList<>();
+        this.images.addAll(instructorFastReservation.getAdventure().getImages());
     }
 
     public InstructorReservationDTO(String instructorUsername, String adventureName, int idAdventure, ClientViewDTO client, TermType termType, ArrayList<ItemPrice> additionalServices, LocalDateTime startTime, LocalDateTime endTime, double price, StatusOfReservation statusOfReservation, Address address, Boolean isTaken, ArrayList<FastReservationHistoryDTO> insFastResHistories) {
@@ -194,6 +201,14 @@ public class InstructorReservationDTO {
 
     public void setTaken(Boolean taken) {
         isTaken = taken;
+    }
+
+    public ArrayList<EntityImage> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<EntityImage> images) {
+        this.images = images;
     }
 }
 

@@ -231,7 +231,13 @@ public class Adventure {
 		Adventure other = (Adventure) obj;
 		return id == other.id;
 	}
-	
-	
-	
+
+	public EntityImage getFirstImage() {
+		//TODO: da se dobija slika sa najmanjim brojem
+		for(EntityImage entityImage : images){
+			//int n = Integer.parseInt(entityImage.getName().substring(3).split("\\.")[0]);
+			return entityImage;
+		}
+		return null;
+	}
 }
