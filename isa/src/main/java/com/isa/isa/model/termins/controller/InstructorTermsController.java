@@ -57,6 +57,12 @@ public class InstructorTermsController {
         return new ResponseEntity<InstructorReservationDTO>(instructorTermService.getReservationForInstructorById(user.getName(),type,id), HttpStatus.OK);
     }
 
+    @GetMapping("/adventure/{idAdventure}")
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    public ResponseEntity<ArrayList<EventDTO>> getTermForAdventureCalendar(Principal user, @PathVariable int idAdventure) {
+        return new ResponseEntity<ArrayList<EventDTO>>(instructorTermService.getTermForAdventureCalendar(user.getName(), idAdventure), HttpStatus.OK);
+    }
+
 
 
 }

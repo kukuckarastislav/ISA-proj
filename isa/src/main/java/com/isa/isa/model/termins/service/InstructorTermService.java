@@ -44,6 +44,9 @@ public class InstructorTermService {
     @Autowired
     private AdventureService adventureService;
 
+    @Autowired
+    private AdventureRepository adventureRepository;
+
 
     public ArrayList<EventDTO> getAdventureTerms(String instructorname, String adventurename) {
         ArrayList<EventDTO> instructorAndAdventureTerm = new ArrayList<EventDTO>();
@@ -178,5 +181,35 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         return null;
+    }
+
+    public ArrayList<EventDTO> getTermForAdventureCalendar(String username, int idAdventure) {
+        ArrayList<EventDTO> events = new ArrayList<>();
+
+        Instructor instructor = instructorRepository.getByEmail(username);
+        if(instructor == null) return events;
+
+        for(InstructorTerms instructorTerm : instructorTermRepository.findAllByInstructorId(instructor.getId())){
+            events.add(new EventDTO(instructorTerm));
+        }
+
+        for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
+            EventDTO e = new EventDTO(instructorReservation, instructorReservation.getAdventure().getName());
+            if(instructorReservation.getAdventure().getId() != idAdventure){
+                e.hideData();
+            }
+            events.add(e);
+        }
+
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
+            EventDTO e = new EventDTO(instructorFastReservation, instructorFastReservation.getAdventure().getName());
+            if(instructorFastReservation.getAdventure().getId() != idAdventure){
+                e.hideData();
+            }
+            events.add(e);
+        }
+
+
+        return events;
     }
 }

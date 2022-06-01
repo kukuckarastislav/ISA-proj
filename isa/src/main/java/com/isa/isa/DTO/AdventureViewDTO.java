@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class AdventureViewDTO {
 
+    private int id;
     private String instructorName;
     private String instructorFirstName;
     private String instructorLastName;
@@ -47,6 +48,7 @@ public class AdventureViewDTO {
     }
 
     public AdventureViewDTO(Adventure adventure, String instructorName, Instructor instructor) {
+        this.id = adventure.getId();
         this.instructorName = instructorName;
         if(instructor != null){
             this.instructorFirstName = instructor.getFirstName();
@@ -185,4 +187,12 @@ public class AdventureViewDTO {
     public String getInstructorLastName() { return instructorLastName; }
 
     public void setInstructorLastName(String instructorLastName) { this.instructorLastName = instructorLastName; }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

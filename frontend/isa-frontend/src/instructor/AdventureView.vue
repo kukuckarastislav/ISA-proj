@@ -92,10 +92,10 @@
             <div class="card">
               <div class="card-body">
                   <div style="height: 400px;" class="row">
-                      <div class="col-sm-9">
-                          <div style="background-color: gray; height:100%;" id = "map" > Adventue location</div>
+                      <div class="col-sm-10">
+                          <div style="height:100%;" id = "map" ></div>
                       </div>
-                      <div v-if="adventure.address != undefined" class="col-sm-3">
+                      <div v-if="adventure.address != undefined" class="col-sm-2">
                           <h6 class="card-title text-start">Country: {{adventure.address.country}}</h6>
                           <h6 class="card-title text-start">City: {{adventure.address.city}}</h6>
                           <h6 class="card-title text-start">Street: {{adventure.address.street}} {{adventure.address.number}}</h6>
@@ -116,6 +116,17 @@
         </div>
 
 
+        <!-- SELECTED Reservation -->
+        <div v-if="showSelectedReservation" class="row" style="margin-top:30px;">
+        <div class="col-1"></div>
+          <div class="col-10">
+              <ReservationViewComponent v-bind:reservation="selectedReservation" />
+              <button class="btn btn-primary m-2" v-on:click="closeSelectedReservation()">Close</button>
+          </div>
+          <div class="col-1"></div>
+        </div>
+
+
 
     </div>
 
@@ -124,6 +135,7 @@
 <script>
 import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
+import ReservationViewComponent from '../instructor/ReservationViewComponent.vue'
 
 // FULL CALNEDAR
 import '@fullcalendar/core/vdom' // solves problem with Vite
@@ -147,13 +159,18 @@ export default {
   name: 'AdventureView',
   components: {
     CarouselView,
-    FullCalendar
+    FullCalendar,
+    ReservationViewComponent
   },
   data: function(){
     return {
         adventureName: "",
         adventure: {},
 
+        terms: [],
+
+        selectedReservation: null,
+        showSelectedReservation: false,
 
         calendarOptions: {
           plugins: [ dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin ],
@@ -166,22 +183,7 @@ export default {
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           },
           events: [
-            {
-              title: 'Evo je prvi event',
-              start: '2022-03-10T10:00:00',
-              end: '2022-03-12T16:00:00',
-              display: 'auto',
-              backgroundColor: "rgb(255,0,0)",
-              borderColor: "rgb(255,0,255)",
-              description: "opis neki",
-              editable: true,
-              overlap: false,
-            },
-            {
-              title: 'Dnevni event',
-              start: '2022-03-12',
-              editable: true,
-            },
+            
           ]
         }
 
@@ -193,6 +195,7 @@ export default {
   mounted: function(){
     this.adventureName = decodeURI(window.location.pathname.split('/')[2]);
     this.loadData();
+    this.calendarOptions.eventClick = this.eventClickCalendar;
   },
   methods: {
     loadData: function(){
@@ -263,13 +266,78 @@ export default {
         });
     },
     loadCalendarData: function(){
-      axios.get('http://localhost:8180/api/instructorterms/'+encodeURIComponent(this.adventure.instructorName)+'/'+encodeURIComponent(this.adventure.name)).then(resp => {
-            this.calendarOptions.events = resp.data;
+      axios.get('http://localhost:8180/api/instructorterms/adventure/'+this.adventure.id.toString()).then(resp => {
             console.log(resp.data);
+            this.terms = resp.data;
+            this.calendarOptions.events = [];
+            for (let e of this.terms) {
+                console.log(e);
+                this.calendarOptions.events.push(this.eventTransform(e));
+            }
         });
     },
     setImg: function(image){
       return 'http://localhost:8180/api/entityImage/'+image.path;
+    },
+    eventTransform: function(e){
+        e.display = 'auto'
+        if(e.isa_termType === 'TERM'){
+            e.textColor = "black"
+            if(e.isa_termAvailability === 'UNAVAILABLE'){
+                e.backgroundColor = "#ffe3e3"
+                e.borderColor = "#ffe3e3"
+            }else if(e.isa_termAvailability === 'AVAILABILE'){
+                e.backgroundColor = "#ecffe3"
+                e.borderColor = "#ecffe3"    
+            }
+        }else if(e.isa_termType === 'RESERVATION'){
+            if(e.isa_statusOfReservation === 'CANCELLED'){
+                e.backgroundColor = "#35013d"
+                e.borderColor = "#35013d" 
+            }
+            else if(e.isa_statusOfReservation === 'ACTIVE'){
+                e.backgroundColor = "#a100ba"
+                e.borderColor = "#a100ba" 
+            }
+        }else if(e.isa_termType === 'FAST_RESERVATION'){
+            if(e.isa_isTakenFastReservation){
+                e.backgroundColor = "#0057ba"
+                e.borderColor = "#0057ba"
+            }else{
+                e.backgroundColor = "#06ba00"
+                e.borderColor = "#06ba00"
+            }
+        }
+        e.description = "opis neki"
+        e.editable = false
+        e.overlap = false
+        return e;
+    },
+    eventClickCalendar: function(info){
+        let e = info.event._def.extendedProps
+        if(e.isa_termType != 'TERM'){
+          this.loadDataSelectedReservation(e)
+        }
+    },
+    loadDataSelectedReservation: function(event){
+      //alert('ID ' + event.isa_idTerm)
+      this.selectedReservation = null;
+      this.showSelectedReservation = false; 
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+      axios.get('http://localhost:8180/api/instructorterms/reservation/'+event.isa_termType+'/'+event.isa_idTerm).then(
+        (resp) => {
+          console.log(resp.data)
+          this.selectedReservation = resp.data;
+          this.showSelectedReservation = true; 
+        }, 
+        (err)=>{
+          alert(err)
+      });
+    },
+    closeSelectedReservation: function(){
+       this.selectedReservation = null;
+       this.showSelectedReservation = false; 
     },
   }
 }

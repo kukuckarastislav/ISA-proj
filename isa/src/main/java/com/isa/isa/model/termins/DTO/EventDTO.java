@@ -118,4 +118,10 @@ public class EventDTO {
     public void setIsa_statusOfReservation(StatusOfReservation isa_statusOfReservation) {
         this.isa_statusOfReservation = isa_statusOfReservation;
     }
+
+    public void hideData() {
+        isa_termType = TermType.TERM;
+        isa_termAvailability = TermAvailability.UNAVAILABLE;
+        title = "UNAVAILABLE";
+    }
 }
