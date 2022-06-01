@@ -1,13 +1,11 @@
 package com.isa.isa.model.complaints.model;
 
+import com.isa.isa.model.complaints.DTO.ComplaintForClientDTO;
 import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.model.revisions.model.RevisionType;
 import com.isa.isa.model.termins.model.StatusOfComplaint;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,6 +26,12 @@ public class Complaint {
 	private String adminEmail;
 	private String adminResponse;
 	private LocalDateTime adminResponsDate;
+
+
+	//@Column(nullable=true)
+	private int idReservation;
+	//@Column(nullable=true)
+	private Boolean isFastReservation;
 	
 	public Complaint() {
 		super();
@@ -42,7 +46,36 @@ public class Complaint {
 		this.entityId = entityId;
 		this.createdAt = LocalDateTime.now();
 		this.revisionType = revisionType;
+		this.idReservation = -1;
+		this.isFastReservation = false;
 	}
+
+	public Complaint(String comment, String userEmail, UserTypeISA provideType, String providerEmail, RevisionType revisionType, int entityId, int idReservation, Boolean isFastReservation) {
+		this.statusOfComplaint = StatusOfComplaint.UNANSWERED;
+		this.comment = comment;
+		this.userEmail = userEmail;
+		this.providerType = provideType;
+		this.providerEmail = providerEmail;
+		this.entityId = entityId;
+		this.createdAt = LocalDateTime.now();
+		this.revisionType = revisionType;
+		this.idReservation = idReservation;
+		this.isFastReservation = isFastReservation;
+	}
+
+	public Complaint(String providerEmail, UserTypeISA provideType,  ComplaintForClientDTO complaintForClientDTO) {
+		this.providerEmail = providerEmail;
+		this.statusOfComplaint = StatusOfComplaint.UNANSWERED;
+		this.comment = complaintForClientDTO.getComment();
+		this.userEmail = complaintForClientDTO.getClientEmail();
+		this.providerType = provideType;
+		this.entityId = -1;
+		this.createdAt = LocalDateTime.now();
+		this.revisionType = RevisionType.OWNER;
+		this.idReservation = complaintForClientDTO.getIdReservation();
+		this.isFastReservation = complaintForClientDTO.getFastReservation();
+	}
+
 
 	public int getId() {
 		return id;
@@ -134,5 +167,21 @@ public class Complaint {
 
 	public void setAdminResponse(String adminResponse) {
 		this.adminResponse = adminResponse;
+	}
+
+	public int getIdReservation() {
+		return idReservation;
+	}
+
+	public void setIdReservation(int idReservation) {
+		this.idReservation = idReservation;
+	}
+
+	public Boolean getFastReservation() {
+		return isFastReservation;
+	}
+
+	public void setFastReservation(Boolean fastReservation) {
+		isFastReservation = fastReservation;
 	}
 }

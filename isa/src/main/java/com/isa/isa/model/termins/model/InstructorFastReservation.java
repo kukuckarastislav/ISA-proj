@@ -156,4 +156,13 @@ public class InstructorFastReservation {
 			return true;
 		}
 	}
+
+	public Boolean isTakenByClientWihtUsername(String clientEmail) {
+		for(InsFastResHistory insFastResHistory : insFastResHistories){
+			if(insFastResHistory.getClient().getEmail().equals(clientEmail))
+				if(insFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN)
+					return true;
+		}
+		return false;
+	}
 }

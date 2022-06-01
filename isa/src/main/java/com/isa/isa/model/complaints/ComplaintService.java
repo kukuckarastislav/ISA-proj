@@ -2,15 +2,22 @@ package com.isa.isa.model.complaints;
 
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
+import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.complaints.DTO.ComplaintAdminResponseDTO;
 import com.isa.isa.model.complaints.DTO.ComplaintAdminViewDTO;
+import com.isa.isa.model.complaints.DTO.ComplaintForClientDTO;
 import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.model.revisions.model.RevisionType;
+import com.isa.isa.model.termins.model.InstructorFastReservation;
+import com.isa.isa.model.termins.model.InstructorReservation;
 import com.isa.isa.model.termins.model.StatusOfComplaint;
+import com.isa.isa.model.termins.repository.InstructorFastReservationRepository;
+import com.isa.isa.model.termins.repository.InstructorReservationRepository;
 import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.BoatRepository;
+import com.isa.isa.repository.ClientRepository;
 import com.isa.isa.repository.CottageRepository;
 import com.isa.isa.security.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +44,9 @@ public class ComplaintService {
 
     @Autowired
     private CottageRepository cottageRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     public ArrayList<ComplaintAdminViewDTO> getRevisionAdminView() {
         ArrayList<ComplaintAdminViewDTO> complaintAdminViewDTOS = new ArrayList<>();
@@ -85,5 +95,37 @@ public class ComplaintService {
             }
         }
         return serviceName;
+    }
+
+    @Autowired
+    private InstructorReservationRepository instructorReservationRepository;
+
+    @Autowired private InstructorFastReservationRepository instructorFastReservationRepository;
+
+    public Boolean postInstructorComplaint(String username, ComplaintForClientDTO complaintForClientDTO) {
+
+        Client client = clientRepository.findByEmail(complaintForClientDTO.getClientEmail());
+        if(client == null) return false;
+
+        if(complaintForClientDTO.getFastReservation()){
+            InstructorFastReservation instructorFastReservation = instructorFastReservationRepository.getByIdWithHistory(complaintForClientDTO.getIdReservation());
+            if(instructorFastReservation == null) return false;
+            if(instructorFastReservation.getEndTime().isAfter(LocalDateTime.now())) return false;
+            if(!instructorFastReservation.isTakenByClientWihtUsername(complaintForClientDTO.getClientEmail())) return false;
+
+        }else{
+            InstructorReservation instructorReservation = instructorReservationRepository.findById(complaintForClientDTO.getIdReservation()).get();
+            if(instructorReservation == null) return false;
+            if(instructorReservation.getEndTime().isAfter(LocalDateTime.now())) return false;
+            if(!instructorReservation.getClient().getEmail().equals(complaintForClientDTO.getClientEmail())) return false;
+
+        }
+
+        Complaint instructorComplaint = new Complaint(username, UserTypeISA.INSTRUCTOR, complaintForClientDTO);
+
+        client.getComplaints().add(instructorComplaint);
+        clientRepository.saveAndFlush(client);
+
+        return true;
     }
 }

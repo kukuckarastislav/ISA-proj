@@ -4,6 +4,7 @@ import com.isa.isa.DTO.ClientViewDTO;
 import com.isa.isa.model.Address;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.termins.model.*;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,8 @@ public class InstructorReservationDTO {
     private double price;
     //private Boolean isRevised;
     //private Boolean isComplainedOf;
+
+    private Complaint instructorComplaint;
 
     //if RESERVATION
     private StatusOfReservation statusOfReservation;
@@ -209,6 +212,14 @@ public class InstructorReservationDTO {
 
     public void setImages(ArrayList<EntityImage> images) {
         this.images = images;
+    }
+
+    public Complaint getInstructorComplaint() {
+        return instructorComplaint;
+    }
+
+    public void setInstructorComplaint(Complaint instructorComplaint) {
+        this.instructorComplaint = instructorComplaint;
     }
 }
 

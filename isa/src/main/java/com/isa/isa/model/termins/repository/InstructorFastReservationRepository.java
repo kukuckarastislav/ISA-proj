@@ -14,4 +14,7 @@ public interface InstructorFastReservationRepository extends JpaRepository<Instr
 
 	@Query("select a from InstructorFastReservation a join fetch a.insFastResHistories where a.instructorUsername =?1")
 	List<InstructorFastReservation> getByInstructorUsernameWithHistory(String username);
+
+	@Query("select a from InstructorFastReservation a join fetch a.insFastResHistories where a.id =?1")
+    InstructorFastReservation getByIdWithHistory(int idReservation);
 }

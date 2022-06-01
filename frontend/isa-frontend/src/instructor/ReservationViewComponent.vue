@@ -70,6 +70,57 @@
                 </div>
             </div>
         </div>
+
+        <div class="row" style="margin-top:30px;">
+            <div class="col">
+                <div class="btn-group" >
+                    <button v-on:click="showForm(1)" class="btn btn-outline-primary">Report</button>
+                    <button v-on:click="showForm(2)" class="btn btn-outline-primary">Complaint</button>
+                    <button v-on:click="showForm(3)" class="btn btn-outline-primary">Reservate again</button>
+                    <button v-on:click="showForm(4)" class="btn btn-secondary">Hide</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report -->
+        <div v-if="visibleForm.report" class="row" style="margin-top:30px;">
+            <h4>Report</h4>
+            <div class="col">
+                TODO REPORT
+            </div>
+        </div>
+
+        <!-- Complaint -->
+        <div v-if="visibleForm.complaint" class="row" style="margin-top:30px;">
+            <h4>Complaint</h4>
+            <div class="col" v-if="!reservation.instructorComplaint">
+                <textarea v-model="complaintText" style="width: 100%;" name="complaint" id="" rows="4"></textarea>
+            </div>
+            <div v-if="!reservation.instructorComplaint" class="col-3">
+                <button v-on:click="closeComplaintForm()" class="btn btn-primary m-1">Cancel</button>
+                <button v-on:click="sendComplaint()" class="btn btn-danger m-1" :disabled="complaintText===''">Send</button>
+            </div>
+            <div class="col" v-if="reservation.instructorComplaint">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text text-start">Your Complaint: {{reservation.instructorComplaint.comment}}</p>
+                        <div v-if="reservation.instructorComplaint.statusOfComplaint === 'ANSWERED'">
+                            <p class="card-text text-start"><b>{{convertDate(reservation.instructorComplaint.adminResponsDate)}}</b> By: {{reservation.instructorComplaint.adminEmail}}</p>
+                            <p class="card-text text-start">{{reservation.instructorComplaint.adminResponse}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reservation Again -->
+        <div v-if="visibleForm.reservationAgain" class="row" style="margin-top:30px;">
+            <div class="col">
+                TODO RESERVATION AGAIN
+            </div>
+        </div>
+
+
     </div>         
 </div>
 
@@ -86,7 +137,13 @@ export default {
   },
   data: function(){
     return {
-        
+        visibleForm: {
+            report: false,
+            complaint: false,
+            reservationAgain: false,
+        },
+
+        complaintText: '',
     }
   },
   watch: { 
@@ -137,6 +194,41 @@ export default {
         if(reservation.termType === 'FAST_RESERVATION'){
             reservation.clientView = frh.client
         }
+    },
+    showForm: function(n){
+        this.visibleForm.report = false;
+        this.visibleForm.complaint = false;
+        this.visibleForm.reservationAgain = false;
+        if(n==1){
+            this.visibleForm.report = true;
+        }
+        if(n==2){
+            this.visibleForm.complaint = true;
+        }
+        if(n==3){
+            this.visibleForm.reservationAgain = true;
+        }
+    },
+    sendComplaint: function(){
+        if(new Date(this.reservation.endTime) < new Date()){
+
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.get('http://localhost:8180/api/complaint').then(resp => {
+                this.complaints = resp.data;
+                console.log(resp.data);
+            });
+
+        }else{
+            alert('Error: Reservation is not finished')
+            this.closeComplaintForm()
+        }
+    },
+    closeComplaintForm: function(){
+        this.visibleForm.complaint = false;
+        this.complaintText = '';
+    },
+    convertDate: function(date){
+        return new Date(date).toLocaleString();
     },
   }
 }

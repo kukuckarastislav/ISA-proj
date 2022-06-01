@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.loyalty.Loyalty;
 import com.isa.isa.model.termins.model.BoatFastResHistory;
 import com.isa.isa.model.termins.model.BoatReservations;
@@ -29,6 +30,9 @@ public class Client extends Person{
         super(clientDto);
 		loyalty = new Loyalty();
     }
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Complaint> complaints = new HashSet<Complaint>();
 
 
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -152,6 +156,12 @@ public class Client extends Person{
 	public void setPenalties(Set<Penalty> penalties) {
 		this.penalties = penalties;
 	}
-	
-	
+
+	public Set<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<Complaint> complaints) {
+		this.complaints = complaints;
+	}
 }

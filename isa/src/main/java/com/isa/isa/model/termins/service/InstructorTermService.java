@@ -3,6 +3,7 @@ package com.isa.isa.model.termins.service;
 
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.complaints.ComplaintRepository;
 import com.isa.isa.model.termins.DTO.EventDTO;
 import com.isa.isa.model.termins.DTO.InstructorReservationDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
@@ -46,6 +47,9 @@ public class InstructorTermService {
 
     @Autowired
     private AdventureRepository adventureRepository;
+
+    @Autowired
+    private ComplaintRepository complaintRepository;
 
 
     public ArrayList<EventDTO> getAdventureTerms(String instructorname, String adventurename) {
@@ -147,6 +151,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
     }
 
     public ArrayList<InstructorReservationDTO> getReservationForInstructor(String username) {
+        //TODO: dodati complaintRepository get complaint
         ArrayList<InstructorReservationDTO> instructorReservations = new ArrayList<>();
 
         Instructor instructor = instructorRepository.getByEmail(username);
@@ -164,6 +169,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
     }
 
     public InstructorReservationDTO getReservationForInstructorById(String username, TermType termType, int idReservation) {
+        //TODO: dodati complaintRepository get complaint
         Instructor instructor = instructorRepository.getByEmail(username);
         if(instructor == null) return null;
 
