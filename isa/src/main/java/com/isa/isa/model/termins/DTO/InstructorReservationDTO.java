@@ -16,6 +16,7 @@ public class InstructorReservationDTO {
     private String instructorUsername;
     private String adventureName;
     private int idAdventure;
+    private int IdReservation;
     private ClientViewDTO client;
 
     private ArrayList<EntityImage> images;
@@ -43,6 +44,7 @@ public class InstructorReservationDTO {
     public InstructorReservationDTO(){}
 
     public InstructorReservationDTO(InstructorReservation instructorReservation) {
+        this.IdReservation = instructorReservation.getId();
         termType = TermType.RESERVATION;
         this.isTaken = false;
         this.instructorUsername = instructorReservation.getInstructorUsername();
@@ -62,6 +64,7 @@ public class InstructorReservationDTO {
     }
 
     public InstructorReservationDTO(InstructorFastReservation instructorFastReservation) {
+        this.IdReservation = instructorFastReservation.getId();
         termType = TermType.FAST_RESERVATION;
         this.instructorUsername = instructorFastReservation.getInstructorUsername();
         this.adventureName = instructorFastReservation.getAdventure().getName();
@@ -220,6 +223,14 @@ public class InstructorReservationDTO {
 
     public void setInstructorComplaint(Complaint instructorComplaint) {
         this.instructorComplaint = instructorComplaint;
+    }
+
+    public int getIdReservation() {
+        return IdReservation;
+    }
+
+    public void setIdReservation(int idReservation) {
+        IdReservation = idReservation;
     }
 }
 

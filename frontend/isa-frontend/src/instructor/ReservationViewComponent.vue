@@ -103,9 +103,10 @@
             <div class="col" v-if="reservation.instructorComplaint">
                 <div class="card">
                     <div class="card-body">
+                        <p class="card-text text-start">For client: {{reservation.instructorComplaint.userEmail}} At: {{convertDate(reservation.instructorComplaint.createdAt)}}</p>
                         <p class="card-text text-start">Your Complaint: {{reservation.instructorComplaint.comment}}</p>
                         <div v-if="reservation.instructorComplaint.statusOfComplaint === 'ANSWERED'">
-                            <p class="card-text text-start"><b>{{convertDate(reservation.instructorComplaint.adminResponsDate)}}</b> By: {{reservation.instructorComplaint.adminEmail}}</p>
+                            <p class="card-text text-start"><b>ANSWERED At: {{convertDate(reservation.instructorComplaint.adminResponsDate)}}</b> By: {{reservation.instructorComplaint.adminEmail}}</p>
                             <p class="card-text text-start">{{reservation.instructorComplaint.adminResponse}}</p>
                         </div>
                     </div>
@@ -211,11 +212,28 @@ export default {
     },
     sendComplaint: function(){
         if(new Date(this.reservation.endTime) < new Date()){
+            
+            let instructorComplaint = {
+                "clientEmail" : this.reservation.clientView.email,
+                "comment": this.complaintText,
+                "fastReservation" : false,
+                "idReservation": this.reservation.idReservation
+            }
 
+            if(this.reservation.termType === 'FAST_RESERVATION') {
+                instructorComplaint.fastReservation = true
+            }
+            console.log("RESERVATION", this.reservation)
+            console.log("POSTbody", instructorComplaint)
             axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-            axios.get('http://localhost:8180/api/complaint').then(resp => {
-                this.complaints = resp.data;
-                console.log(resp.data);
+            axios.post('http://localhost:8180/api/complaint/instructor',instructorComplaint).then(resp => {
+                    console.log(resp.data);
+                    if(!resp.data){
+                        alert("Error")
+                    }else{
+                        alert("Successfully")
+                        this.closeComplaintForm()
+                    }
             });
 
         }else{

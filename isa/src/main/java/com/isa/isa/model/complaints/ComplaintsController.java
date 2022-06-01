@@ -31,7 +31,7 @@ public class ComplaintsController {
         return new ResponseEntity<Boolean>(complaintsService.postAdminComplaintResponse(complaintAdminResponseDTO), HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping("/instructor")
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     public ResponseEntity<Boolean> postInstructorComplaint(Principal user, @RequestBody ComplaintForClientDTO complaintForClientDTO) {
         return new ResponseEntity<Boolean>(complaintsService.postInstructorComplaint(user.getName(), complaintForClientDTO), HttpStatus.OK);

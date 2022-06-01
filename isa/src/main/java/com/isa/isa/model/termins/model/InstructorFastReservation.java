@@ -165,4 +165,13 @@ public class InstructorFastReservation {
 		}
 		return false;
 	}
+
+	public Client getClientWhoTake() {
+		for(InsFastResHistory insFastResHistory : insFastResHistories){
+			if(insFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN){
+				return insFastResHistory.getClient();
+			}
+		}
+		return null;
+	}
 }

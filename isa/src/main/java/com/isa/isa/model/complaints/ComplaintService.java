@@ -107,11 +107,15 @@ public class ComplaintService {
         Client client = clientRepository.findByEmail(complaintForClientDTO.getClientEmail());
         if(client == null) return false;
 
+        Complaint complaint = client.getComplaintByReservationId(complaintForClientDTO.getIdReservation(), UserTypeISA.INSTRUCTOR, complaintForClientDTO.getFastReservation());
+        if(complaint != null) return false; // instructor je vec dao zalbu ne moze vise puta
+
         if(complaintForClientDTO.getFastReservation()){
             InstructorFastReservation instructorFastReservation = instructorFastReservationRepository.getByIdWithHistory(complaintForClientDTO.getIdReservation());
             if(instructorFastReservation == null) return false;
             if(instructorFastReservation.getEndTime().isAfter(LocalDateTime.now())) return false;
             if(!instructorFastReservation.isTakenByClientWihtUsername(complaintForClientDTO.getClientEmail())) return false;
+
 
         }else{
             InstructorReservation instructorReservation = instructorReservationRepository.findById(complaintForClientDTO.getIdReservation()).get();

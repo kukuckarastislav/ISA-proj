@@ -2,8 +2,11 @@ package com.isa.isa.model.termins.service;
 
 
 import com.isa.isa.model.Adventure;
+import com.isa.isa.model.Client;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.complaints.ComplaintRepository;
+import com.isa.isa.model.complaints.model.Complaint;
+import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.model.termins.DTO.EventDTO;
 import com.isa.isa.model.termins.DTO.InstructorReservationDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
@@ -14,6 +17,7 @@ import com.isa.isa.model.termins.repository.InstructorFastReservationRepository;
 import com.isa.isa.model.termins.repository.InstructorReservationRepository;
 import com.isa.isa.model.termins.repository.InstructorTermRepository;
 import com.isa.isa.repository.AdventureRepository;
+import com.isa.isa.repository.ClientRepository;
 import com.isa.isa.repository.InstructorRepository;
 import com.isa.isa.service.AdventureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +154,9 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         return false;
     }
 
+    @Autowired
+    private ClientRepository clientRepository;
+
     public ArrayList<InstructorReservationDTO> getReservationForInstructor(String username) {
         //TODO: dodati complaintRepository get complaint
         ArrayList<InstructorReservationDTO> instructorReservations = new ArrayList<>();
@@ -158,11 +165,21 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         if(instructor == null) return instructorReservations;
 
         for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
-            instructorReservations.add(new InstructorReservationDTO(instructorReservation));
+            Client client = clientRepository.findByEmail(instructorReservation.getClient().getEmail());
+            Complaint complaint = client.getComplaintByReservationId(instructorReservation.getId(), UserTypeISA.INSTRUCTOR, false);
+            InstructorReservationDTO instructorReservationDTO = new InstructorReservationDTO(instructorReservation);
+            instructorReservationDTO.setInstructorComplaint(complaint);
+            instructorReservations.add(instructorReservationDTO);
         }
 
         for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
-            instructorReservations.add(new InstructorReservationDTO(instructorFastReservation));
+            InstructorReservationDTO instructorReservationDTO = new InstructorReservationDTO(instructorFastReservation);
+            Client client = instructorFastReservation.getClientWhoTake();
+            if(client != null){
+                Complaint complaint = client.getComplaintByReservationId(instructorFastReservation.getId(), UserTypeISA.INSTRUCTOR, true);
+                instructorReservationDTO.setInstructorComplaint(complaint);
+            }
+            instructorReservations.add(instructorReservationDTO);
         }
 
         return instructorReservations;
@@ -176,12 +193,25 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         if(termType == TermType.RESERVATION){
             Optional<InstructorReservation> instructorReservationOptional = instructorReservationRepository.findById(idReservation);
             if(instructorReservationOptional.isPresent()){
-                return new InstructorReservationDTO(instructorReservationOptional.get());
+                InstructorReservation instructorReservation = instructorReservationOptional.get();
+                //return new InstructorReservationDTO(instructorReservationOptional.get());
+                Client client = clientRepository.findByEmail(instructorReservation.getClient().getEmail());
+                Complaint complaint = client.getComplaintByReservationId(instructorReservation.getId(), UserTypeISA.INSTRUCTOR, false);
+                InstructorReservationDTO instructorReservationDTO = new InstructorReservationDTO(instructorReservation);
+                instructorReservationDTO.setInstructorComplaint(complaint);
+                return instructorReservationDTO;
             }
         }else if(termType == TermType.FAST_RESERVATION){
             for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
                 if(instructorFastReservation.getInstructorUsername().equals(username)){
-                    return new InstructorReservationDTO(instructorFastReservation);
+                    //return new InstructorReservationDTO(instructorFastReservation);
+                    InstructorReservationDTO instructorReservationDTO = new InstructorReservationDTO(instructorFastReservation);
+                    Client client = instructorFastReservation.getClientWhoTake();
+                    if(client != null){
+                        Complaint complaint = client.getComplaintByReservationId(instructorFastReservation.getId(), UserTypeISA.INSTRUCTOR, true);
+                        instructorReservationDTO.setInstructorComplaint(complaint);
+                    }
+                    return instructorReservationDTO;
                 }
             }
         }

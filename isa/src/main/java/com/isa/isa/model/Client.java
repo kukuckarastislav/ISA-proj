@@ -8,6 +8,7 @@ import javax.persistence.*;
 import com.isa.isa.DTO.ClientDto;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.complaints.model.Complaint;
+import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.model.loyalty.Loyalty;
 import com.isa.isa.model.termins.model.BoatFastResHistory;
 import com.isa.isa.model.termins.model.BoatReservations;
@@ -163,5 +164,18 @@ public class Client extends Person{
 
 	public void setComplaints(Set<Complaint> complaints) {
 		this.complaints = complaints;
+	}
+
+	public Complaint getComplaintByReservationId(int idReservation, UserTypeISA providerType, boolean isFastReservation) {
+		for(Complaint complaint : complaints){
+			if(complaint.getProviderType() == providerType){
+				if(complaint.getFastReservation() == isFastReservation){
+					if(complaint.getIdReservation() == idReservation){
+						return complaint;
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
