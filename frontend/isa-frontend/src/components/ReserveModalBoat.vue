@@ -87,7 +87,7 @@ export default {
       axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
-          .post('http://localhost:8180/api/client/reserveBoat',{"startTime":this.date[0], "endTime":this.date[1], "boat":this.boat, "additionalServices":this.chosenServices})
+          .post('http://localhost:8180/api/client/reserveBoat',{"startTime":new Date(Date.UTC(this.date[0].getFullYear(), this.date[0].getMonth(), this.date[0].getDate(), this.date[0].getHours(), this.date[0].getMinutes())), "endTime":new Date(Date.UTC(this.date[1].getFullYear(), this.date[1].getMonth(), this.date[1].getDate(), this.date[1].getHours(), this.date[1].getMinutes())),"boat":this.boat, "additionalServices":this.chosenServices})
           .then(response => {
             if(response.data) alert('Uspesno ste rezervisali brod.')
             else alert('Trenutno vam je onemoguceno da pravite rezervacije zbog previlikog broja penala.')

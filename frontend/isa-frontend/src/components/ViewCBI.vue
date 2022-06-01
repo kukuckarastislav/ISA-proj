@@ -345,8 +345,9 @@ setup() {
                     else if(this.date){                     
                                const response = await axios.post('http://localhost:8180/api/person/cottages/cottageFree', {
                                                         id: this.cottages[i].id,
-                                                        startTime: this.date[0],
-                                                        endTime: this.date[1],
+                                                        startTime: new Date(Date.UTC(this.date[0].getFullYear(), this.date[0].getMonth(), this.date[0].getDate(), this.date[0].getHours(), this.date[0].getMinutes())),
+                                                        endTime: new Date(Date.UTC(this.date[1].getFullYear(), this.date[1].getMonth(), this.date[1].getDate(), this.date[1].getHours(), this.date[1].getMinutes())),
+
                                                         })
 
                                 if (response.data == false){
@@ -445,8 +446,9 @@ setup() {
                     } else if(this.date){                     
                                const response = await axios.post('http://localhost:8180/api/person/boats/boatFree', {
                                                         id: this.boats[i].id,
-                                                        startTime: this.date[0],
-                                                        endTime: this.date[1],
+                                                        startTime: new Date(Date.UTC(this.date[0].getFullYear(), this.date[0].getMonth(), this.date[0].getDate(), this.date[0].getHours(), this.date[0].getMinutes())),
+                                                        endTime: new Date(Date.UTC(this.date[1].getFullYear(), this.date[1].getMonth(), this.date[1].getDate(), this.date[1].getHours(), this.date[1].getMinutes())),
+
                                                         })
 
                                 if (response.data == false){
@@ -546,8 +548,8 @@ setup() {
                     else if(this.date){                     
                                const response = await axios.post('http://localhost:8180/api/person/adventures/instructorFree', {
                                                         id: this.adventures[i].instructor.id,
-                                                        startTime: this.date[0],
-                                                        endTime: this.date[1],
+                                                        startTime: new Date(Date.UTC(this.date[0].getFullYear(), this.date[0].getMonth(), this.date[0].getDate(), this.date[0].getHours(), this.date[0].getMinutes())),
+                                                        endTime: new Date(Date.UTC(this.date[1].getFullYear(), this.date[1].getMonth(), this.date[1].getDate(), this.date[1].getHours(), this.date[1].getMinutes())),
                                                         instructorUsername: this.adventures[i].instructor.email
                                                         })
 

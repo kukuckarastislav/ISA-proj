@@ -87,9 +87,9 @@ export default {
       axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios
-          .post('http://localhost:8180/api/client/reserveAdventure',{"startTime":this.date[0], "endTime":this.date[1], "adventure":this.adventure, "additionalServices":this.chosenServices})
+          .post('http://localhost:8180/api/client/reserveAdventure',{"startTime":new Date(Date.UTC(this.date[0].getFullYear(), this.date[0].getMonth(), this.date[0].getDate(), this.date[0].getHours(), this.date[0].getMinutes())), "endTime":new Date(Date.UTC(this.date[1].getFullYear(), this.date[1].getMonth(), this.date[1].getDate(), this.date[1].getHours(), this.date[1].getMinutes())), "adventure":this.adventure, "additionalServices":this.chosenServices})
           .then(response => {
-            if(resposne.data) alert('Uspesno ste rezervisali avanturu.')
+            if(response.data) alert('Uspesno ste rezervisali avanturu.')
             else alert('Trenutno vam je onemoguceno da pravite rezervacije zbog previlikog broja penala.')
           }).catch(err => {
               alert('DOSLO JE DO GRESKE')
