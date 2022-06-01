@@ -4,6 +4,7 @@ package com.isa.isa.DTO;
 
 import com.isa.isa.model.Address;
 import com.isa.isa.model.Client;
+import com.isa.isa.model.loyalty.Loyalty;
 
 public class ClientDto {
 	
@@ -22,6 +23,8 @@ public class ClientDto {
 
 	
 	private String phoneNumber;
+	
+	private Loyalty loyalty;
 
 	
 	
@@ -38,10 +41,11 @@ public class ClientDto {
 		this.lastName = client.getLastName();
 		this.address = client.getAddress();
 		this.phoneNumber = client.getPhoneNumber();
+		this.loyalty = client.getLoyalty();
 	}
 
 	public ClientDto(String email, String password, String firstName, String lastName, Address address,
-			String phoneNumber) {
+			String phoneNumber,Loyalty loyalt) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -49,6 +53,7 @@ public class ClientDto {
 		this.lastName = lastName;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+		this.loyalty = loyalt;
 	}
 
 
@@ -111,6 +116,15 @@ public class ClientDto {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	public Loyalty getLoyalty() {
+		return loyalty;
+	}
+
+	public void setLoyalty(Loyalty loyalty) {
+		this.loyalty = loyalty;
+	}
+	
 	
 	
 }

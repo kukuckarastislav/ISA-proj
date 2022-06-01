@@ -59,9 +59,9 @@
           <div class="col">
             <div class="card">
               <div class="card-body">
-                  <div style="height: 200px;" class="row">
+                  <div style="height: 300px;" class="row">
                       <div class="col-sm-9">
-                          <div style="background-color: gray; height:100%;"> PROSTOR ZA MAPU ?</div>
+                          <div style="background-color: gray; height:100%;position: relative; top:-0.8em;" id = "map" > Boat location</div>
                       </div>
                       <div v-if="boat.address != undefined" class="col-sm-3">
                           <h6 class="card-title text-start">Country: {{boat.address.country}}</h6>
@@ -225,6 +225,14 @@ import axios from "axios";
 import CarouselView from '@/components/CarouselView.vue'
 import ReserveModalBoat from '@/components/ReserveModalBoat.vue';
 import StarRating from 'vue-star-rating'
+import { Map, View,Feature } from 'ol';
+import { Tile as TileLayer,Vector as VectorLayer } from 'ol/layer';
+import {OSM, Vector as VectorSource} from 'ol/source';
+import {fromLonLat,transform} from 'ol/proj';
+import {Geometry} from 'ol/geom'
+import {Point} from 'ol/geom';
+import {Circle, Fill, Style, Icon} from 'ol/style';
+import {defaults} from 'ol/control';
 export default {
   name: "CustomerBoatPage",
   components: {CarouselView,ReserveModalBoat,StarRating},
@@ -259,7 +267,61 @@ export default {
           .get('http://localhost:8180/api/person/boats/' + this.boatId+'/fastReservations')
           .then(response => {
               this.actions = response.data
-              if (this.role) {
+
+              var iconFeature = new Feature({
+					geometry: new Point(fromLonLat([this.boat.address.longitude, this.boat.address.latitude])),
+					name: 'boat',
+				  });
+
+           var lat = this.boat.address.latitude;
+           var lng = this.boat.address.longitude;
+            var iconGeometry = new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
+            var iconFeature = new Feature({
+            geometry: iconGeometry,
+            name: 'The icon',
+            population: 4000,
+              rainfall: 500
+              });
+
+          var iconStyle = new Style({
+            image: new Icon( /** @type {olx.style.IconOptions} */ ({
+              anchor: [0.5, 46],
+              anchorXUnits: 'fraction',
+              anchorYUnits: 'pixels',
+              src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png'
+            }))
+          });
+
+        iconFeature.setStyle(iconStyle);
+
+        var vectorSource = new VectorSource({
+          features: [iconFeature]
+        });
+
+        var vectorLayer = new VectorLayer({
+          source: vectorSource
+        });
+
+        var rasterLayer = new TileLayer({
+          source: new OSM()
+        });
+
+        this.map = new Map({
+          layers: [rasterLayer, vectorLayer],
+          target: 'map',
+          controls: defaults({
+            attributionOptions: {
+              collapsible: false,
+            },
+            attribution: false
+          }),
+          view: new View({
+            center: fromLonLat([lng, lat]),
+            zoom: 7
+          })
+        });
+
+              if (this.role === 'ROLE_CUSTOMER') {
                   axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");
                   axios
