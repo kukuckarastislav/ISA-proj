@@ -99,6 +99,9 @@ public class AdminService {
 
 			User user = userRepository.findByUsername(admin.getEmail());
 			user.setPassword(admin.getPassword());
+			if(!user.isAdminReady()){
+				user.setAdminReady(true);
+			}
 			userRepository.saveAndFlush(user);
 			return true;
 		}else{

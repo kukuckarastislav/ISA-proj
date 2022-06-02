@@ -44,6 +44,8 @@ public class User implements UserDetails {
     @Column(name = "approved")
     private boolean approved;
 
+    private boolean adminReady;
+
     public boolean isApproved() {
         return approved;
     }
@@ -151,4 +153,11 @@ public class User implements UserDetails {
         return true;
     }
 
+    public boolean isAdminReady() {
+        return adminReady;
+    }
+
+    public void setAdminReady(boolean adminReady) {
+        this.adminReady = adminReady;
+    }
 }

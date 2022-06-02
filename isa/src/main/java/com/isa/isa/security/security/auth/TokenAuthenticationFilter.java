@@ -7,8 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.isa.isa.security.model.Role;
+import com.isa.isa.security.model.User;
+import com.isa.isa.security.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,12 +31,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	private TokenUtils tokenUtils;
 
 	private UserDetailsService userDetailsService;
+	private UserRepository userRepository;
 	
 	protected final Log LOGGER = LogFactory.getLog(getClass());
 
-	public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService) {
+	public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService, UserRepository userRepository) {
 		this.tokenUtils = tokenHelper;
 		this.userDetailsService = userDetailsService;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -44,6 +50,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		
 		// 1. Preuzimanje JWT tokena iz zahteva
 		String authToken = tokenUtils.getToken(request);
+
+		boolean ok = true;
 		
 		try {
 	
@@ -56,7 +64,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 					
 					// 3. Preuzimanje korisnika na osnovu username-a
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-					
+					User user = userRepository.findByUsername(username);
+					ok = isAdminReady(user, request);
+
 					// 4. Provera da li je prosledjeni token validan
 					if (tokenUtils.validateToken(authToken, userDetails)) {
 						
@@ -70,10 +80,41 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 			
 		} catch (ExpiredJwtException ex) {
 			LOGGER.debug("Token expired!");
-		} 
+		}
+
+
 		
 		// prosledi request dalje u sledeci filter
-		chain.doFilter(request, response);
+		if(ok){
+			chain.doFilter(request, response);
+		}else{
+			response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+		}
+	}
+
+	private Boolean isAdminReady(User user, HttpServletRequest request){
+		boolean ok = true;
+		Role role = user.getRole();
+		if(role != null){
+			if(role.isAdmin()){
+				if(!user.isAdminReady()){
+					ok = false;
+					if(request.getMethod().equals("GET")){
+						if(request.getRequestURI().equals("/api/admin/profileInfo")){
+							ok = true;
+						}
+					}else if(request.getMethod().equals("PUT")){
+						if(request.getRequestURI().equals("/api/admin/updateProfile")){
+							ok = true;
+						}else if(request.getRequestURI().equals("/api/admin/updatePassword")){
+							ok = true;
+						}
+					}
+				}
+			}
+		}
+
+		return ok;
 	}
 
 }

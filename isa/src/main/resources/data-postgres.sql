@@ -30,32 +30,32 @@ values ('Owner will grace you with their presence','Captain', 0.0);
 
 
 -- Admin
-insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+admin@gmail.com','$2a$10$3xqAvzqpGKgBJrzIzpBQf.lm3RaR3R0.SAZsE6JovkCKv.9.9QgPG','2022-01-03 21:02:17.307', true, true);   -- password: admin
+insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
+values ('isaprojectftn+admin@gmail.com','$2a$10$3xqAvzqpGKgBJrzIzpBQf.lm3RaR3R0.SAZsE6JovkCKv.9.9QgPG','2022-01-03 21:02:17.307', true, true, true);   -- password: admin
 insert into user_role (user_id, role_id)
 values (1, 1);
 insert into admin (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number)
 values (1, 'Novi Sad', 'Serbia', 34, 54, 10, 'Bulevar evrope', 'isaprojectftn+admin@gmail.com', '$2a$10$3xqAvzqpGKgBJrzIzpBQf.lm3RaR3R0.SAZsE6JovkCKv.9.9QgPG', 'Admin', 'Admin', '030345');
 
 -- Admin2
-insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+administrator@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
+insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
+values ('isaprojectftn+administrator@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true, false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (2, 1);
 insert into admin (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number)
 values (2, 'Beograd', 'Serbia', 35, 564, 13, 'Bulevar evrope', 'isaprojectftn+administrator@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Admin', 'Admin', '030345');
 
 -- Client Mirija
-insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+marijaC@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
+insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
+values ('isaprojectftn+marijaC@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (3, 3);
 insert into client(id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number)
 values (3, 0, 0, 'Novi Sad', 'Serbia', 11, 13, 33, 'Zmaj Jovina', 'isaprojectftn+marijaC@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Marija', 'Maric', '030348');
 
 -- Cottage owner milan
-insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+milanCO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', false, false);   -- password: pass
+insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
+values ('isaprojectftn+milanCO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', false, false,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (4, 4);
 insert into cottage_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade)
@@ -65,8 +65,8 @@ values ('Stan', 'Lep stan', 'zabranjeno glasna muzika', 1000,'PER_DAY', 4, 'Zlat
 
 
 -- Cottage owner petar
-insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+petarCO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
+insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
+values ('isaprojectftn+petarCO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (5, 4);
 insert into cottage_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade)
@@ -90,8 +90,8 @@ values ('TAKEN', 3, 1, false, false);
 
 
 -- Instructor Stefan
-insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+stefanI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
+insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
+values ('isaprojectftn+stefanI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (6, 5);
 insert into instructor (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade)
@@ -164,8 +164,8 @@ values (1, 7);
 
 
 -- Boat owner Nikola
-insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+nikolaBO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
+insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
+values ('isaprojectftn+nikolaBO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (7, 2);
 insert into boat_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade)
@@ -282,8 +282,8 @@ values (3,5);
 
 --------------------------------------------------------------------------------------------------------------------------
 -- Instructor Alex
-insert into USERS (username, password, last_password_reset_date, enabled, approved)
-values ('isaprojectftn+alexI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true);   -- password: pass
+insert into USERS (username, password, last_password_reset_date, enabled, approved, admin_ready)
+values ('isaprojectftn+alexI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true, false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (8, 5);
 insert into instructor (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade)
