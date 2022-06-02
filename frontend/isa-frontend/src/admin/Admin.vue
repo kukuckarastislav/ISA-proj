@@ -10,7 +10,7 @@
                     <a href="/admin/entity" class="nav-link">Entity</a>
                 </div>
                 <div class="col">
-                    <a href="/" class="nav-link">Registrations</a>
+                    <a href="/admin/registration" class="nav-link">Registration</a>
                 </div>
                 <div class="col">
                     <a href="/approval" class="nav-link">Approval Registrations</a>

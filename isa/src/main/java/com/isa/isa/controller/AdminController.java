@@ -66,6 +66,12 @@ public class AdminController {
         return new ResponseEntity<Boolean>(adminService.deleteEntity(adminDeleteEntityDTO),HttpStatus.OK);
     }
 
+    @GetMapping("/test")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String test(){
+        return "IMAM PRAVO PRISTUPA";
+    }
+
 
 
 }

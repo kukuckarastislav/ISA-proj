@@ -757,3 +757,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
   }
 ]
 ###
+###
+GET http://localhost:8180/api/admin/test
+###Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjU0MTgyMTYzLCJleHAiOjE2NTQzNjIxNjN9.JHjmFkogdoBCyBugAx9FhlaRPDYkgHyipSqpJFY3NzFQrWtYOsZJIxoEyH6X78nDyg8Pui3kdS-NO1Fu5r6l9A
+###

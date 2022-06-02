@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,7 @@ import com.isa.isa.security.service.EmailService;
 import com.isa.isa.security.service.UserService;
 import com.isa.isa.security.util.TokenUtils;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 //Kontroler zaduzen za autentifikaciju korisnika
@@ -114,6 +116,28 @@ public class AuthenticationController {
 	}
 
 
+	@PostMapping("/signup/admin")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<User> registerAdmin(Principal adminUser, @RequestBody UserDTO userDTO) {
+
+		User existUser = this.userService.findByUsername(userDTO.getEmail());
+
+		if (existUser != null) {
+			throw new ResourceConflictException(userDTO.getEmail(), "Username already exists");
+		}
+
+		User user = this.userService.save(userDTO);
+		if (userDTO.isCustomer()) {
+			try {
+				emailService.sendNotificaition(user);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+		return new ResponseEntity<>(user, HttpStatus.CREATED);
+	}
 
 
 

@@ -89,13 +89,21 @@ public class UserServiceImpl implements UserService {
 		User u = new User();
 		u.setUsername(userDTO.getEmail());
 		u.setApproved(false);
-		
+
+
 		// pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
 		// treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
 		u.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		
 		userDTO.setPassword(u.getPassword());
 		u.setEnabled(false);
+
+		//TODO: admin regi
+		if(userDTO.isAdmin()){
+			u.setApproved(true);
+			u.setEnabled(true);
+		}
+
 		List<Role> roles = null;
 		if(userDTO.isAdmin()){
 			roles = roleService.findByName("ROLE_ADMIN");
