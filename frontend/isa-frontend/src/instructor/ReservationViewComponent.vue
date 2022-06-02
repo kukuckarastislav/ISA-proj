@@ -116,7 +116,8 @@
                             <div v-if="reservation.report.statusOfReport !== 'PENDING'">
                                 <hr>
                                 <p class="card-text text-start" style="font-weight: bold; color: red;">{{reservation.report.statusOfReport}}</p>
-                                <p class="card-text text-start"><b>ANSWERED At: {{convertDate(reservation.instructorComplaint.adminResponsDate)}}</b> By: {{reservation.instructorComplaint.adminEmail}}</p>
+                                <p class="card-text text-start"><b>ANSWERED At: {{convertDate(reservation.report.adminResponsDate)}}</b> By: {{reservation.report.adminUsername}}</p>
+                                <p class="card-text text-start">{{reservation.report.adminResposne}}</p>
                             </div>
                         </div>
                     </div>

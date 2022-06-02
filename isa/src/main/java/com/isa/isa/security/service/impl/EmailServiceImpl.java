@@ -238,7 +238,7 @@ public class EmailServiceImpl implements EmailService{
 		mail.setTo(report.getClientEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("New Report");
-		String text = "Hi, you have new Report by " +report.getOwnerEmail()+" "+report.getReservationType()+" `"+report.getText()+"` on date:"+report.getCreatedAt()+"\n";
+		String text = "Hi, you have new Report by " +report.getOwnerEmail()+" "+report.getReservationType()+" for `"+reservationName+"` `"+report.getText()+"` on date:"+report.getCreatedAt()+"\n";
 		text += "Admin response: "+report.getStatusOfReport()+" `"+report.getAdminResposne()+"` At:"+report.getAdminResponsDate();
 		mail.setText(text);
 		javaMailSender.send(mail);
@@ -252,7 +252,7 @@ public class EmailServiceImpl implements EmailService{
 		mail.setTo(report.getOwnerEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Report Response");
-		String text = "Hi, admin respond to your Report `"+report.getText()+"` on date:"+report.getCreatedAt()+"\n";
+		String text = "Hi, admin respond to your Report `"+report.getText()+"` on date:"+report.getCreatedAt()+" for `"+reservationName+"`\n";
 		text += "Admin response: "+report.getStatusOfReport()+" `"+report.getAdminResposne()+"` At:"+report.getAdminResponsDate();
 		mail.setText(text);
 		javaMailSender.send(mail);
