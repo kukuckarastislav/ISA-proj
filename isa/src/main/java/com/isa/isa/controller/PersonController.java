@@ -186,7 +186,6 @@ public class PersonController {
     	report.setClientShowedUp(true);
     	report.setIdClient(3);
     	report.setSanctionClient(true);
-    	report.setSanctionApproved(true);
     	report.setText("Ostavio stan u haosu.");
     	penaltyService.getPenaltyFromReport(report);
     	return ResponseEntity.ok().build();

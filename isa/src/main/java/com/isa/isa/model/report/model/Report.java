@@ -29,9 +29,9 @@ public class Report {
 	private LocalDateTime createdAt;
 
 	private String adminUsername;
-	private Boolean sanctionApproved;
 	private StatusOfRevision statusOfReport;
 	private LocalDateTime adminResponsDate;
+	private String adminResposne;
 	
 	public Report() {}
 
@@ -46,7 +46,6 @@ public class Report {
 		this.clientEmail = newReportDTO.getClientEmail();
 		this.ownerEmail = ownerEmail;
 		this.adminUsername = null;
-		this.sanctionApproved = false;
 		createdAt = LocalDateTime.now();
 		statusOfReport = StatusOfRevision.PENDING;
 	}
@@ -62,7 +61,6 @@ public class Report {
 		this.clientEmail = clientEmail;
 		this.ownerEmail = ownerEmail;
 		this.adminUsername = adminUsername;
-		this.sanctionApproved = sanctionApproved;
 		createdAt = LocalDateTime.now();
 		statusOfReport = StatusOfRevision.PENDING;
 	}
@@ -131,14 +129,6 @@ public class Report {
 		this.adminUsername = adminUsername;
 	}
 
-	public Boolean getSanctionApproved() {
-		return sanctionApproved;
-	}
-
-	public void setSanctionApproved(Boolean sanctionApproved) {
-		this.sanctionApproved = sanctionApproved;
-	}
-
 	public String getClientEmail() {
 		return clientEmail;
 	}
@@ -185,5 +175,13 @@ public class Report {
 
 	public void setAdminResponsDate(LocalDateTime adminResponsDate) {
 		this.adminResponsDate = adminResponsDate;
+	}
+
+	public String getAdminResposne() {
+		return adminResposne;
+	}
+
+	public void setAdminResposne(String adminResposne) {
+		this.adminResposne = adminResposne;
 	}
 }

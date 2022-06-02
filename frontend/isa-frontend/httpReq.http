@@ -481,3 +481,30 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
 GET http://localhost:8180/api/instructorterms/reservation/RESERVATION/2
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWxleElAZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjU0MDM1ODQwLCJleHAiOjE2NTQyMTU4NDB9.-J8wHoxJME1fiLc24XKu63POfEUp4VVhSpU43uDO3JRcQDpcwzrcyvRDpX7xaFEjy_iAbyVRy85M_cs0T6-fNA
 ###
+GET http://localhost:8180/api/report/admin
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjU0MTgyMTYzLCJleHAiOjE2NTQzNjIxNjN9.JHjmFkogdoBCyBugAx9FhlaRPDYkgHyipSqpJFY3NzFQrWtYOsZJIxoEyH6X78nDyg8Pui3kdS-NO1Fu5r6l9A
+###
+
+[
+  {
+    "entityName": "Penjanje na planinu",
+    "report": {
+      "id": 1,
+      "reservationId": 1,
+      "reservationType": "INSTRUCTOR",
+      "termType": "RESERVATION",
+      "text": "Nisam bas zadovoljan kako se marija ponasala na rezervaciji dajte joj penal",
+      "sanctionClient": true,
+      "clientShowedUp": true,
+      "idClient": 3,
+      "clientEmail": "isaprojectftn+marijaC@gmail.com",
+      "ownerEmail": "isaprojectftn+stefanI@gmail.com",
+      "createdAt": "2022-06-02T16:30:04.094904",
+      "adminUsername": null,
+      "statusOfReport": "PENDING",
+      "adminResponsDate": null,
+      "adminResposne": null
+    }
+  }
+]
+###

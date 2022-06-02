@@ -2,6 +2,7 @@ package com.isa.isa.service;
 
 import java.util.Optional;
 
+import com.isa.isa.model.termins.model.StatusOfRevision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class PenaltyService {
 		Client client = clientCheck.get();
 		if(!report.getClientShowedUp()) {
 			return penaltyRepository.save(new Penalty(client,"Client didn't show up for a reservation"));
-		} else if(report.getSanctionClient() && report.getSanctionApproved()) {
+		} else if(report.getSanctionClient() && report.getStatusOfReport() == StatusOfRevision.APPROVED) {
 			return penaltyRepository.save(new Penalty(client,report.getText()));
 		}
 		return null;

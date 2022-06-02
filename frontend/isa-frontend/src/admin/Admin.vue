@@ -19,6 +19,9 @@
                     <a href="/revision" class="nav-link">Revision</a>
                 </div>
                  <div class="col">
+                    <a href="/admin/report" class="nav-link">Reports</a>
+                </div>
+                 <div class="col">
                     <a href="/adminComplaint" class="nav-link">Complaint</a>
                 </div>
                  <div class="col">

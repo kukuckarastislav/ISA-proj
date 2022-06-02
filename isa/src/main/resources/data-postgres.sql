@@ -132,8 +132,12 @@ insert into instructor_terms(instructor_id, term_availability, start_time, end_t
 values (6, 'AVAILABILE', '2022-04-05T8:00:06.235098700', '2022-07-25T8:00:06.235098700');
 insert into instructor_terms(instructor_id, term_availability, start_time, end_time)
 values (6, 'UNAVAILABLE', '2022-03-25T8:00:06.235098700', '2022-04-04T8:00:06.235098700');
-insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id, instructor_username,price, is_revised, is_complained_of)
-values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3, 'isaprojectftn+stefanI@gmail.com',170, false, false); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
+--admin_respons_date, admin_response, admin_username
+insert into report(client_email, client_showed_up, created_at, id_client, owner_email, reservation_id, reservation_type, sanction_client, status_of_report, term_type, text)
+values ('isaprojectftn+marijaC@gmail.com', true, '2022-06-02 16:30:04.094904', 3, 'isaprojectftn+stefanI@gmail.com',1,2,true,0,1,'Nisam bas zadovoljan kako se marija ponasala na rezervaciji dajte joj penal');
+--
+insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id, instructor_username,price, is_revised, is_complained_of, report_id)
+values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3, 'isaprojectftn+stefanI@gmail.com',170, false, false, 1); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
 values (1,3);
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)

@@ -2,19 +2,19 @@ package com.isa.isa.model.report;
 
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.enums.OwnerType;
 import com.isa.isa.model.report.DTO.NewReportDTO;
+import com.isa.isa.model.report.DTO.ReportAdminViewDTO;
 import com.isa.isa.model.report.model.Report;
-import com.isa.isa.model.termins.model.InstructorFastReservation;
-import com.isa.isa.model.termins.model.InstructorReservation;
-import com.isa.isa.model.termins.model.TermType;
-import com.isa.isa.model.termins.repository.InstructorFastReservationRepository;
-import com.isa.isa.model.termins.repository.InstructorReservationRepository;
+import com.isa.isa.model.termins.model.*;
+import com.isa.isa.model.termins.repository.*;
 import com.isa.isa.repository.InstructorRepository;
 import com.isa.isa.service.PenaltyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -31,6 +31,18 @@ public class ReportService {
 
     @Autowired
     private InstructorRepository instructorRepository;
+
+    @Autowired
+    private BoatReservationRepository boatReservationRepository;
+
+    @Autowired
+    private BoatFastReservationRepository boatFastReservationRepository;
+
+    @Autowired
+    private CottageReservationRepository cottageReservationRepository;
+
+    @Autowired
+    private CottageFastReservationRepository cottageFastReservationRepository;
 
     @Autowired
     private PenaltyService penaltyService;
@@ -68,5 +80,57 @@ public class ReportService {
 
         penaltyService.getPenaltyFromReport(report);
         return true;
+    }
+
+    public ArrayList<ReportAdminViewDTO> getReportsForAdmin() {
+        ArrayList<ReportAdminViewDTO> reportAdminView = new ArrayList<>();
+        for(Report report : reportRepository.findAll()){
+            if(report.getSanctionClient()){
+                reportAdminView.add(new ReportAdminViewDTO(getReservationNameFromReport(report), report));
+            }
+        }
+        return reportAdminView;
+    }
+
+    private String getReservationNameFromReport(Report report){
+        if(report.getReservationType() == OwnerType.INSTRUCTOR){
+            if(report.getTermType() == TermType.RESERVATION){
+                Optional<InstructorReservation> instructorReservationOptional = instructorReservationRepository.findById(report.getReservationId());
+                if(instructorReservationOptional.isPresent()){
+                    return instructorReservationOptional.get().getAdventure().getName();
+                }
+            } else if(report.getTermType() == TermType.FAST_RESERVATION){
+                InstructorFastReservation instructorFastReservation = instructorFastReservationRepository.getByIdWithHistory(report.getReservationId());
+                if(instructorFastReservation != null){
+                    return instructorFastReservation.getAdventure().getName();
+                }
+            }
+        }else if(report.getReservationType() == OwnerType.BOAT_OWNER){
+            if(report.getTermType() == TermType.RESERVATION){
+                Optional<BoatReservations> boatReservationsOptional = boatReservationRepository.findById(report.getReservationId());
+                if(boatReservationsOptional.isPresent()){
+                    return boatReservationsOptional.get().getBoat().getName();
+                }
+            } else if(report.getTermType() == TermType.FAST_RESERVATION){
+                Optional<BoatFastReservation> boatFastReservationOptional = boatFastReservationRepository.findById(report.getReservationId());
+                if(boatFastReservationOptional.isPresent()){
+                    return boatFastReservationOptional.get().getBoat().getName();
+                }
+            }
+        }else if(report.getReservationType() == OwnerType.COTTAGE_OWNER){
+            if(report.getTermType() == TermType.RESERVATION){
+                Optional<CottageReservations> cottageReservationsOptional = cottageReservationRepository.findById(report.getReservationId());
+                if(cottageReservationsOptional.isPresent()){
+                    return cottageReservationsOptional.get().getCottage().getName();
+                }
+            } else if(report.getTermType() == TermType.FAST_RESERVATION){
+                Optional<CottageFastReservation> cottageFastReservationOptional = cottageFastReservationRepository.findById(report.getReservationId());
+                if(cottageFastReservationOptional.isPresent()){
+                    return cottageFastReservationOptional.get().getCottage().getName();
+                }
+            }
+        }
+
+        return "";
     }
 }
