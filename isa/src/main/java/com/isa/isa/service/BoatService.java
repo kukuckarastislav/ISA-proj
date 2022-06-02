@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.isa.isa.DTO.AddNewBoatDTO;
 import com.isa.isa.DTO.BoatDTO;
 import com.isa.isa.DTO.EntityImageDTO;
+import com.isa.isa.DTO.UpdateBoatDTO;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.EntityImage;
@@ -124,6 +125,38 @@ public class BoatService {
         boatRepository.saveAndFlush(boat);
 
         
+        return new BoatDTO(boat);
+    }
+	
+	public BoatDTO updateBoat(UpdateBoatDTO updateDTO, Principal user) {
+        BoatOwner owner = boatOwnerRepository.getByEmail(user.getName());
+        if(owner == null) return null;
+
+        Boat boat = getBoatByOwnerAndBoatName(user.getName(), updateDTO.getName());
+        if(boat == null) {
+            System.out.println("Boat for update not found");
+            return null;
+        }
+
+        System.out.println("Novo ime :"+updateDTO.getNewName());
+        boat.setName(updateDTO.getNewName());
+        boat.setAddress(updateDTO.getAddress());
+        boat.setPromotionalDescription(updateDTO.getPromotionalDescription());
+        boat.setBehaviourRules(updateDTO.getBehaviourRules());
+        boat.setCapacity(updateDTO.getCapacity());
+        
+        boat.setType(updateDTO.getType());
+        boat.setLength(updateDTO.getLength());
+        boat.setEngineNumber(updateDTO.getEngineNumber());
+        boat.setEnginePower(updateDTO.getEnginePower());
+        boat.setMaxSpeed(updateDTO.getMaxSpeed());
+        boat.setReservationCancellationConditions(updateDTO.getReservationCancellationConditions());
+        boat.setPrice(updateDTO.getPrice());
+        //boat.setNavigationalEquipment(new HashSet<AdditionalEquipment>(addNewBoatDTO.getAdditionalEquipments()));
+        //boat.setAdditionalServices(new HashSet<ItemPrice>(updateDTO.getPricelist()));
+        System.out.println("Pokusava save");
+        boatRepository.saveAndFlush(boat);
+        System.out.println("Kao sacuvao nesto");
         return new BoatDTO(boat);
     }
 	

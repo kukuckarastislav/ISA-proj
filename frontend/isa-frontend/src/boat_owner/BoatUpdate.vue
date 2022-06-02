@@ -23,7 +23,7 @@
             <div class="col-sm-6">
 
                 <h1 class="text-start">Name:  </h1>
-                <input v-model="boat.name" class="form-control" type="text">
+                <input v-model="newBoatName" class="form-control" type="text">
                 <br>
                 
                 <h5 class="text-start">Description: </h5>
@@ -233,7 +233,7 @@ export default {
                 latitude: 0.0,
                 longitude: 0.0
             },
-            description: "",
+            promotionalDescription: "",
             imagesForBackend: [],
             capacity: 0,
             behaviourRules: "",
@@ -257,7 +257,7 @@ export default {
             name: "name",
             description: "description"
         },
-
+        newBoatName : "",
         newLon : 0.0,
         newLat : 0.0,
         imagesForFront: [],
@@ -279,7 +279,7 @@ export default {
 
         axios.get('http://localhost:8180/api/boats/byowner/'+encodeURIComponent(this.boatName)).then(resp => {
             this.boat = resp.data;
-
+            this.newBoatName = this.boat.name;
             console.log("**********************************")
             console.log(resp.data);
             this.loadBoatImages();
@@ -462,20 +462,21 @@ export default {
     },
     updateBoatData: function(){
         console.log('NEW BOAT')
-        this.boat.imagesForBackend = this.imagesForBackend;
+        // this.boat.imagesForBackend = this.imagesForBackend;
         this.boat.address.longitude = this.map.newLon;
         this.boat.address.latitude = this.map.newLat;
+        
+        this.boat.newName = this.newBoatName;
         console.log(this.boat)
- 
-        // axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        // axios.post('http://localhost:8180/api/boats/addnewboat',this.boat)
-        //   .then(response => {
-        //       console.log('Odgoovr');
-        //       console.log(response.data);
-        //       alert("You created new boat")
-        //   }).catch(err => {
-        //       alert('DOSLO JE DO GRESKE')
-        //   }); 
+        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+        axios.post('http://localhost:8180/api/boats/updateboat',this.boat)
+          .then(response => {
+              console.log('Odgoovr');
+              console.log(response.data);
+              alert("You updated boat")
+          }).catch(err => {
+              alert('DOSLO JE DO GRESKE')
+          }); 
 
 
     }
