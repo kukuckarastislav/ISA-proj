@@ -18,10 +18,13 @@
                         <hr>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                             <input v-on:click="ShowEntity()" type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="btnradio1">Complaint Entity</label>
+                            <label class="btn btn-outline-primary" for="btnradio1">Entity</label>
 
                             <input v-on:click="ShowOwners()" type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btnradio2">Owners</label>
+
+                            <input v-on:click="ShowOwnersComplaintForClient()" type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio3">Client</label>
                         </div>
                       
                         <div v-if="showComplaints.showOwners">
@@ -36,7 +39,7 @@
                             <br> 
                         </div>
 
-                        <div v-if="showComplaints.showEntity">
+                        <div v-if="showComplaints.showEntity || showComplaints.showClient">
                             <input v-model="showComplaints.instructor" class="form-check-input m-2" type="checkbox" id="idadventures" checked>
                             <label class="form-check-label m-1" for="idadventures"> Adventures</label>
                             <br>
@@ -64,7 +67,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="card-text text-start" style="width: 40px;" v-if="complaint.revisionType==='OWNER'">
-                                        <img src="../assets/abstract-user.png" class="img-fluid rounded-start" >
+                                        <img src="../assets/abstract-user.png" class="img-fluid rounded-start">
                                     </div>
                                     <h5 v-else class="card-title text-start">{{complaint.nameOfService}}</h5> 
                                     <h6 class="card-title text-start">Owner: {{complaint.providerEmail}}</h6> 
@@ -100,8 +103,8 @@
                             </div>
 
                         </div>         
+                        <br>
                     </div>
-                    <br>
                 </div>
               
 
@@ -137,7 +140,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4>Comment</h4>
-                    <p>{{adminResponse.comment}} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque debitis libero voluptatum ipsum sequi adipisci expedita corrupti similique! Illum harum consequatur rerum quidem voluptatum laborum aut sed, corrupti non eum?</p>
+                    <p>{{adminResponse.comment}}</p>
                 </div>
             </div>
                <div class="mb-3">
@@ -172,6 +175,7 @@ export default {
         showComplaints:{
             showEntity: true,
             showOwners: false,
+            showClient: false,
             
             answered: true,
             unanswered: true,
@@ -248,17 +252,25 @@ export default {
     },
     showByType: function(complaint){
         if(complaint.revisionType === 'ENTITY' && this.showComplaints.showEntity) return true;
-        if(complaint.revisionType === 'OWNER' && this.showComplaints.showOwners) return true;
+        if(complaint.revisionType === 'OWNER' && !complaint.forClient && this.showComplaints.showOwners) return true;
+        if(complaint.revisionType === 'OWNER' && complaint.forClient && this.showComplaints.showClient) return true;
 
         return false;
     },
     ShowEntity: function(){
         this.showComplaints.showEntity = true;
         this.showComplaints.showOwners = false;
+        this.showComplaints.showClient = false;
     },
     ShowOwners: function(){
         this.showComplaints.showEntity = false;
         this.showComplaints.showOwners = true;
+        this.showComplaints.showClient = false;
+    },
+    ShowOwnersComplaintForClient: function(){
+        this.showComplaints.showEntity = false;
+        this.showComplaints.showOwners = false;
+        this.showComplaints.showClient = true;
     },
     convertDate: function(date){
         return new Date(date).toLocaleString();

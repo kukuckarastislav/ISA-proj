@@ -53,13 +53,14 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
 ]
 ###
 GET http://localhost:8180/api/complaint
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjUzNTAyNDY2LCJleHAiOjE2NTM2ODI0NjZ9.oYHGVTxy1cwbfMfWG3geFcu8GhURlO4MYHAQAyz5KjJ_CdQDdzgyMsrGyem6TxkADttEkUBGC9MK4eozCmS8Gw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjU0MTU4NzIyLCJleHAiOjE2NTQzMzg3MjJ9.1ytfzp4g0z6CoVtwTmIzl7bZ1iUh6VBB5d5meDxy3f4mQiKFYjrjdav0dGSz4M6qTyp-P_OR_2MgNhdA0ekxHg
 ###
 
 [
   {
     "id": 1,
     "comment": "Ova avantura nije bila toliko zanimljiva",
+    "nameOfService": "Penjanje na planinu",
     "userEmail": "isaprojectftn+marijaC@gmail.com",
     "createdAt": "2022-05-16T19:36:30.336347",
     "providerType": "INSTRUCTOR",
@@ -69,11 +70,13 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     "statusOfComplaint": "UNANSWERED",
     "adminEmail": null,
     "adminResponse": null,
-    "adminResponsDate": null
+    "adminResponsDate": null,
+    "forClient": false
   },
   {
     "id": 2,
     "comment": "Instruktor mi nije dao jasne instrukcije kako da se penjem na planinu, skoro sam pao sa planine",
+    "nameOfService": "",
     "userEmail": "isaprojectftn+marijaC@gmail.com",
     "createdAt": "2022-05-16T19:36:30.336347",
     "providerType": "INSTRUCTOR",
@@ -83,11 +86,13 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     "statusOfComplaint": "ANSWERED",
     "adminEmail": "isaprojectftn+admin@gmail.com",
     "adminResponse": "Zao nam je zbog toga, imacemo u vidu ... :(",
-    "adminResponsDate": "2022-05-16T19:36:30.336347"
+    "adminResponsDate": "2022-05-16T19:36:30.336347",
+    "forClient": false
   },
   {
     "id": 3,
     "comment": "Vikendica nije bila spremljena kad sam dosla, morala sam ja da cistim prvih sat vremena",
+    "nameOfService": "Kuca",
     "userEmail": "isaprojectftn+marijaC@gmail.com",
     "createdAt": "2022-05-16T19:36:30.336347",
     "providerType": "COTTAGE_OWNER",
@@ -97,11 +102,13 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     "statusOfComplaint": "UNANSWERED",
     "adminEmail": null,
     "adminResponse": null,
-    "adminResponsDate": null
+    "adminResponsDate": null,
+    "forClient": false
   },
   {
     "id": 4,
     "comment": "Vlasnik vikendice pri mom odlasku je proveravao sve zivo kao da sam lopov",
+    "nameOfService": "",
     "userEmail": "isaprojectftn+marijaC@gmail.com",
     "createdAt": "2022-05-16T19:36:30.336347",
     "providerType": "COTTAGE_OWNER",
@@ -111,7 +118,24 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     "statusOfComplaint": "UNANSWERED",
     "adminEmail": null,
     "adminResponse": null,
-    "adminResponsDate": null
+    "adminResponsDate": null,
+    "forClient": false
+  },
+  {
+    "id": 5,
+    "comment": "Marija se nije lepo ponasala, vodila je u opasnost svoj i zivot ostalih ljudi",
+    "nameOfService": "",
+    "userEmail": "isaprojectftn+marijaC@gmail.com",
+    "createdAt": "2022-06-01T19:36:30.336347",
+    "providerType": "INSTRUCTOR",
+    "providerEmail": "isaprojectftn+stefanI@gmail.com",
+    "revisionType": "OWNER",
+    "entityId": -1,
+    "statusOfComplaint": "UNANSWERED",
+    "adminEmail": null,
+    "adminResponse": null,
+    "adminResponsDate": null,
+    "forClient": true
   }
 ]
 ###

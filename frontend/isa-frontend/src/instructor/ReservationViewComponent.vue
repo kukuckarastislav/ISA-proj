@@ -106,6 +106,7 @@
                         <p class="card-text text-start">For client: {{reservation.instructorComplaint.userEmail}} At: {{convertDate(reservation.instructorComplaint.createdAt)}}</p>
                         <p class="card-text text-start">Your Complaint: {{reservation.instructorComplaint.comment}}</p>
                         <div v-if="reservation.instructorComplaint.statusOfComplaint === 'ANSWERED'">
+                            <hr>
                             <p class="card-text text-start"><b>ANSWERED At: {{convertDate(reservation.instructorComplaint.adminResponsDate)}}</b> By: {{reservation.instructorComplaint.adminEmail}}</p>
                             <p class="card-text text-start">{{reservation.instructorComplaint.adminResponse}}</p>
                         </div>

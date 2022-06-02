@@ -17,6 +17,8 @@ public class Complaint {
 	private String userEmail;
 	private LocalDateTime createdAt;
 
+	private Boolean isForClient;
+
 	private UserTypeISA providerType; //type of user {instructor / owner}
 	private String providerEmail; //
 	private RevisionType revisionType;
@@ -48,6 +50,7 @@ public class Complaint {
 		this.revisionType = revisionType;
 		this.idReservation = -1;
 		this.isFastReservation = false;
+		this.isForClient = false;
 	}
 
 	public Complaint(String comment, String userEmail, UserTypeISA provideType, String providerEmail, RevisionType revisionType, int entityId, int idReservation, Boolean isFastReservation) {
@@ -61,6 +64,7 @@ public class Complaint {
 		this.revisionType = revisionType;
 		this.idReservation = idReservation;
 		this.isFastReservation = isFastReservation;
+		this.isForClient = false;
 	}
 
 	public Complaint(String providerEmail, UserTypeISA provideType,  ComplaintForClientDTO complaintForClientDTO) {
@@ -74,6 +78,7 @@ public class Complaint {
 		this.revisionType = RevisionType.OWNER;
 		this.idReservation = complaintForClientDTO.getIdReservation();
 		this.isFastReservation = complaintForClientDTO.getFastReservation();
+		this.isForClient = true;
 	}
 
 
@@ -183,5 +188,13 @@ public class Complaint {
 
 	public void setFastReservation(Boolean fastReservation) {
 		isFastReservation = fastReservation;
+	}
+
+	public Boolean getForClient() {
+		return isForClient;
+	}
+
+	public void setForClient(Boolean forClient) {
+		isForClient = forClient;
 	}
 }

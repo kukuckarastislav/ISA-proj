@@ -243,26 +243,31 @@ values ('Kuca je bas luksuzna uzivao sam jako', '2022-05-16 19:36:30.336347', 5,
 insert into cottage_revisions (cottage_id, revisions_id)
 values (2,3);
 
-insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation)
-values ('Ova avantura nije bila toliko zanimljiva', '2022-05-16 19:36:30.336347', 1,3,'isaprojectftn+stefanI@gmail.com', 1,1,'isaprojectftn+marijaC@gmail.com',0,false);
+insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation, is_for_client)
+values ('Ova avantura nije bila toliko zanimljiva', '2022-05-16 19:36:30.336347', 1,3,'isaprojectftn+stefanI@gmail.com', 1,1,'isaprojectftn+marijaC@gmail.com',0,false,false);
 insert into adventure_complaints(adventure_id, complaints_id)
 values (1,1);
-insert into complaint(admin_email, admin_respons_date, admin_response, comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation)
-values ('isaprojectftn+admin@gmail.com','2022-05-16 19:36:30.336347','Zao nam je zbog toga, imacemo u vidu ... :(','Instruktor mi nije dao jasne instrukcije kako da se penjem na planinu, skoro sam pao sa planine', '2022-05-16 19:36:30.336347', -1,3,'isaprojectftn+stefanI@gmail.com', 0,0,'isaprojectftn+marijaC@gmail.com',0,false);
+insert into complaint(admin_email, admin_respons_date, admin_response, comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation, is_for_client)
+values ('isaprojectftn+admin@gmail.com','2022-05-16 19:36:30.336347','Zao nam je zbog toga, imacemo u vidu ... :(','Instruktor mi nije dao jasne instrukcije kako da se penjem na planinu, skoro sam pao sa planine', '2022-05-16 19:36:30.336347', -1,3,'isaprojectftn+stefanI@gmail.com', 0,0,'isaprojectftn+marijaC@gmail.com',0,false,false);
 insert into instructor_complaints(instructor_id, complaints_id)
 values (6,2);
 
-insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation)
-values ('Vikendica nije bila spremljena kad sam dosla, morala sam ja da cistim prvih sat vremena', '2022-05-16 19:36:30.336347', 2,1,'isaprojectftn+petarCO@gmail.com', 1,1,'isaprojectftn+marijaC@gmail.com',0,false);
+insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation, is_for_client)
+values ('Vikendica nije bila spremljena kad sam dosla, morala sam ja da cistim prvih sat vremena', '2022-05-16 19:36:30.336347', 2,1,'isaprojectftn+petarCO@gmail.com', 1,1,'isaprojectftn+marijaC@gmail.com',0,false, false);
 insert into cottage_complaints(cottage_id, complaints_id)
 values (2,3);
-insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation)
-values ('Vlasnik vikendice pri mom odlasku je proveravao sve zivo kao da sam lopov', '2022-05-16 19:36:30.336347', -1,1,'isaprojectftn+petarCO@gmail.com', 0,1,'isaprojectftn+marijaC@gmail.com',0,false);
+insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation, is_for_client)
+values ('Vlasnik vikendice pri mom odlasku je proveravao sve zivo kao da sam lopov', '2022-05-16 19:36:30.336347', -1,1,'isaprojectftn+petarCO@gmail.com', 0,1,'isaprojectftn+marijaC@gmail.com',0,false, false);
 insert into cottage_owner_complaints(cottage_owner_id, complaints_id)
 values (5,4);
 
 insert into loyalty_settings(client_score_for_reservation, owner_score_for_reservation, minimum_score_forsilver, minimum_score_forgold, client_discount_percentagesilver, client_discount_percentagegold, owner_discount_percentagesilver, owner_discount_percentagegold, system_percentage)
 values (30, 20, 120, 420, 5, 10, 5, 15, 20);
+
+insert into complaint(comment, created_at, entity_id, provider_type, provider_email, revision_type, status_of_complaint, user_email, id_reservation, is_fast_reservation, is_for_client)
+values ('Marija se nije lepo ponasala, vodila je u opasnost svoj i zivot ostalih ljudi', '2022-06-1 19:36:30.336347', -1,3,'isaprojectftn+stefanI@gmail.com', 0,1,'isaprojectftn+marijaC@gmail.com',1,false, true);
+insert into client_complaints(client_id, complaints_id)
+values (3,5);
 
 
 

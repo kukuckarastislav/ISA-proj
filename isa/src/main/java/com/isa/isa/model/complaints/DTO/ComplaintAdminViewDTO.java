@@ -14,6 +14,8 @@ public class ComplaintAdminViewDTO {
     private String userEmail;
     private LocalDateTime createdAt;
 
+    private Boolean isForClient;
+
     private UserTypeISA providerType; //type of user {instructor / owner}
     private String providerEmail; //
     private RevisionType revisionType;
@@ -40,6 +42,7 @@ public class ComplaintAdminViewDTO {
         this.adminResponsDate = complaint.getAdminResponsDate();
         this.adminResponse = complaint.getAdminResponse();
         this.nameOfService = nameOfService;
+        this.isForClient = complaint.getForClient();
     }
 
     public ComplaintAdminViewDTO(int id, String comment, String userEmail, LocalDateTime createdAt, UserTypeISA providerType, String providerEmail, RevisionType revisionType, int entityId, StatusOfComplaint statusOfComplaint, String adminEmail, String adminResponse, LocalDateTime adminResponsDate) {
@@ -159,5 +162,13 @@ public class ComplaintAdminViewDTO {
 
     public void setNameOfService(String nameOfService) {
         this.nameOfService = nameOfService;
+    }
+
+    public Boolean getForClient() {
+        return isForClient;
+    }
+
+    public void setForClient(Boolean forClient) {
+        isForClient = forClient;
     }
 }

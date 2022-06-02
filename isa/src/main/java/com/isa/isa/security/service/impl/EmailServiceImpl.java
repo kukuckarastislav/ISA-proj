@@ -182,14 +182,20 @@ public class EmailServiceImpl implements EmailService{
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Complaint answer");
 		String text = "";
-		if(complaint.getRevisionType() == RevisionType.OWNER){
-			text = "Hi, our team answered your complaint about owner `"+complaint.getProviderEmail()+"`\n"+
-					"Your complaint: `"+complaint.getComment()+"` on date: "+complaint.getCreatedAt()+"\n"+
+		if(complaint.getForClient()){
+			text = "Hi, our team answered complaint about you \n"+
+					"complaint: `"+complaint.getComment()+"` by owner "+complaint.getProviderEmail()+" "+complaint.getProviderType()+" on date: "+complaint.getCreatedAt()+"\n"+
 					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
 		}else{
-			text = "Hi, our team answered your complaint about service`"+offerName+"` from `"+complaint.getProviderEmail()+"` \n"+
-					"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
-					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+			if(complaint.getRevisionType() == RevisionType.OWNER){
+				text = "Hi, our team answered your complaint about owner `"+complaint.getProviderEmail()+"`\n"+
+						"Your complaint: `"+complaint.getComment()+"` on date: "+complaint.getCreatedAt()+"\n"+
+						"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+			}else{
+				text = "Hi, our team answered your complaint about service`"+offerName+"` from `"+complaint.getProviderEmail()+"` \n"+
+						"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
+						"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+			}
 		}
 		mail.setText(text);
 		javaMailSender.send(mail);
@@ -204,14 +210,20 @@ public class EmailServiceImpl implements EmailService{
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Complaint answer");
 		String text = "";
-		if(complaint.getRevisionType() == RevisionType.OWNER){
-			text = "Hi, our team answered complaint about you \n"+
-					"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
+		if(complaint.getForClient()){
+			text = "Hi, our team answered your complaint about client `"+complaint.getUserEmail()+"`\n"+
+					"Your complaint: `"+complaint.getComment()+"` on date: "+complaint.getCreatedAt()+"\n"+
 					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
 		}else{
-			text = "Hi, our team answered complaint about your service `"+offerName+"` \n"+
-					"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
-					"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+			if(complaint.getRevisionType() == RevisionType.OWNER){
+				text = "Hi, our team answered complaint about you \n"+
+						"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
+						"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+			}else{
+				text = "Hi, our team answered complaint about your service `"+offerName+"` \n"+
+						"complaint: `"+complaint.getComment()+"` by client "+complaint.getUserEmail()+" on date: "+complaint.getCreatedAt()+"\n"+
+						"response: `"+complaint.getAdminResponse()+"` on date: " + complaint.getAdminResponsDate();
+			}
 		}
 		mail.setText(text);
 		javaMailSender.send(mail);
