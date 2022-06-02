@@ -3,6 +3,7 @@ package com.isa.isa.model.termins.model;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.report.model.Report;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,7 +43,7 @@ public class InstructorReservation {
     private Boolean isRevised;
     
     private Boolean isComplainedOf;
-
+    
     public InstructorReservation(){}
 
     public InstructorReservation(Client client, Adventure adventure, LocalDateTime startTime, LocalDateTime endTime,String instructorUsername) {

@@ -20,7 +20,7 @@ import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.Instructor;
-import com.isa.isa.model.Report;
+import com.isa.isa.model.report.model.Report;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;

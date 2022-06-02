@@ -1,4 +1,4 @@
-package com.isa.isa.model;
+package com.isa.isa.model.report.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.isa.isa.model.enums.OwnerType;
+import com.isa.isa.model.termins.model.TermType;
 
 @Entity
 public class Report {
@@ -14,7 +15,7 @@ public class Report {
 	private int id;
 	private int reservationId;
 	private OwnerType reservationType;
-	private Boolean isFast;
+	private TermType termType;
 	private String text;
 	private Boolean sanctionClient;
 	private Boolean clientShowedUp;
@@ -24,23 +25,7 @@ public class Report {
 	private String adminUsername;
 	private Boolean sanctionApproved;
 	
-	public Report() {
-		super();
-	}
-
-	public Report(int reservationId, OwnerType reservationType, Boolean isFast, String text, Boolean sanctionClient, Boolean clientShowedUp, int idClient, String clientEmail, String ownerEmail, String adminUsername, Boolean sanctionApproved) {
-		this.reservationId = reservationId;
-		this.reservationType = reservationType;
-		this.isFast = isFast;
-		this.text = text;
-		this.sanctionClient = sanctionClient;
-		this.clientShowedUp = clientShowedUp;
-		this.idClient = idClient;
-		this.clientEmail = clientEmail;
-		this.ownerEmail = ownerEmail;
-		this.adminUsername = adminUsername;
-		this.sanctionApproved = sanctionApproved;
-	}
+	public Report() {}
 
 	public int getId() {
 		return id;
@@ -64,14 +49,6 @@ public class Report {
 
 	public void setReservationType(OwnerType reservationType) {
 		this.reservationType = reservationType;
-	}
-
-	public Boolean getIsFast() {
-		return isFast;
-	}
-
-	public void setIsFast(Boolean isFast) {
-		this.isFast = isFast;
 	}
 
 	public String getText() {
@@ -122,14 +99,6 @@ public class Report {
 		this.sanctionApproved = sanctionApproved;
 	}
 
-	public Boolean getFast() {
-		return isFast;
-	}
-
-	public void setFast(Boolean fast) {
-		isFast = fast;
-	}
-
 	public String getClientEmail() {
 		return clientEmail;
 	}
@@ -144,5 +113,13 @@ public class Report {
 
 	public void setOwnerEmail(String ownerEmail) {
 		this.ownerEmail = ownerEmail;
+	}
+
+	public TermType getTermType() {
+		return termType;
+	}
+
+	public void setTermType(TermType termType) {
+		this.termType = termType;
 	}
 }
