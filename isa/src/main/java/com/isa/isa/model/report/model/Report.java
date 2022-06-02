@@ -6,7 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.isa.isa.model.enums.OwnerType;
+import com.isa.isa.model.report.DTO.NewReportDTO;
+import com.isa.isa.model.termins.model.StatusOfRevision;
 import com.isa.isa.model.termins.model.TermType;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Report {
@@ -22,10 +26,46 @@ public class Report {
 	private int idClient;
 	private String clientEmail;
 	private String ownerEmail;
+	private LocalDateTime createdAt;
+
 	private String adminUsername;
 	private Boolean sanctionApproved;
+	private StatusOfRevision statusOfReport;
+	private LocalDateTime adminResponsDate;
 	
 	public Report() {}
+
+	public Report(NewReportDTO newReportDTO, String ownerEmail) {
+		this.reservationId = newReportDTO.getReservationId();
+		this.reservationType = newReportDTO.getReservationType();
+		this.termType = newReportDTO.getTermType();
+		this.text = newReportDTO.getText();
+		this.sanctionClient = newReportDTO.getSanctionClient();
+		this.clientShowedUp = newReportDTO.getClientShowedUp();
+		this.idClient = newReportDTO.getIdClient();
+		this.clientEmail = newReportDTO.getClientEmail();
+		this.ownerEmail = ownerEmail;
+		this.adminUsername = null;
+		this.sanctionApproved = false;
+		createdAt = LocalDateTime.now();
+		statusOfReport = StatusOfRevision.PENDING;
+	}
+
+	public Report(int reservationId, OwnerType reservationType, TermType termType, String text, Boolean sanctionClient, Boolean clientShowedUp, int idClient, String clientEmail, String ownerEmail, String adminUsername, Boolean sanctionApproved) {
+		this.reservationId = reservationId;
+		this.reservationType = reservationType;
+		this.termType = termType;
+		this.text = text;
+		this.sanctionClient = sanctionClient;
+		this.clientShowedUp = clientShowedUp;
+		this.idClient = idClient;
+		this.clientEmail = clientEmail;
+		this.ownerEmail = ownerEmail;
+		this.adminUsername = adminUsername;
+		this.sanctionApproved = sanctionApproved;
+		createdAt = LocalDateTime.now();
+		statusOfReport = StatusOfRevision.PENDING;
+	}
 
 	public int getId() {
 		return id;
@@ -121,5 +161,29 @@ public class Report {
 
 	public void setTermType(TermType termType) {
 		this.termType = termType;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public StatusOfRevision getStatusOfReport() {
+		return statusOfReport;
+	}
+
+	public void setStatusOfReport(StatusOfRevision statusOfReport) {
+		this.statusOfReport = statusOfReport;
+	}
+
+	public LocalDateTime getAdminResponsDate() {
+		return adminResponsDate;
+	}
+
+	public void setAdminResponsDate(LocalDateTime adminResponsDate) {
+		this.adminResponsDate = adminResponsDate;
 	}
 }

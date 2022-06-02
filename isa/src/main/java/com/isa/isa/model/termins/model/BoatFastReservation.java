@@ -4,23 +4,12 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.isa.isa.model.Address;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.report.model.Report;
 
 @Entity
 @Table(name="boat_fast_reservation")
@@ -47,6 +36,9 @@ public class BoatFastReservation {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Boat_fast_reservation_additional_services", joinColumns = @JoinColumn(name = "boat_fast_reservation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "additional_service_id", referencedColumnName = "id"))
 	private Set<ItemPrice> additionalServices = new HashSet<ItemPrice>();
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Report report;
 
 	public BoatFastReservation() {}
 	
@@ -123,6 +115,12 @@ public class BoatFastReservation {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
-	
+
+	public Report getReport() {
+		return report;
+	}
+
+	public void setReport(Report report) {
+		this.report = report;
+	}
 }

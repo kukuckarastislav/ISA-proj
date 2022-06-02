@@ -10,6 +10,7 @@ import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.enums.AdditionalServices;
+import com.isa.isa.model.report.model.Report;
 
 import javax.persistence.*;
 
@@ -43,6 +44,9 @@ public class InstructorFastReservation {
 	private double price;
 	
 	private String instructorUsername;
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Report report;
 
 	public InstructorFastReservation() {}
 
@@ -173,5 +177,13 @@ public class InstructorFastReservation {
 			}
 		}
 		return null;
+	}
+
+	public Report getReport() {
+		return report;
+	}
+
+	public void setReport(Report report) {
+		this.report = report;
 	}
 }

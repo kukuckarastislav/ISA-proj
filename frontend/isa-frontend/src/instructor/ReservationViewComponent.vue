@@ -85,16 +85,18 @@
         <!-- Report -->
         <div v-if="visibleForm.report" style="margin-top:30px;">
             <h4>Report</h4>
-            <div class="row">
+            <div class="row" v-if="!reservation.report">
                 <div class="col text-start">
                     <input v-model="report.notShowUp" class="form-check-input m-2" type="checkbox" v-bind:id="idr+'1'" checked>
                     <label class="form-check-label m-1" v-bind:for="idr+'1'"> The client did not show up</label>
                     <br>
-                    <input v-model="report.negative" class="form-check-input m-2" type="checkbox" v-bind:id="idr+'2'" checked>
-                    <label class="form-check-label m-1" v-bind:for="idr+'2'"> Negative experience</label>
+                    <div v-if="!report.notShowUp">
+                        <input v-model="report.negative" class="form-check-input m-2" type="checkbox" v-bind:id="idr+'2'" checked>
+                        <label class="form-check-label m-1" v-bind:for="idr+'2'"> Negative experience</label>
+                    </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="!reservation.report">
                 <div class="col" v-if="!report.notShowUp">
                     <textarea v-model="report.comment" style="width: 100%;" name="complaint" id="" rows="4"></textarea>
                 </div>
@@ -104,15 +106,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col" v-if="false">
+                <div class="col" v-if="reservation.report">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-text text-start">For client: {{reservation.instructorComplaint.userEmail}} At: {{convertDate(reservation.instructorComplaint.createdAt)}}</p>
-                            <p class="card-text text-start">Your Complaint: {{reservation.instructorComplaint.comment}}</p>
-                            <div v-if="reservation.instructorComplaint.statusOfComplaint === 'ANSWERED'">
+                            <p class="card-text text-start" v-if="!reservation.report.clientShowedUp"><b>The client did not show up</b></p>
+                            <p class="card-text text-start" v-if="reservation.report.sanctionClient"><b>Negative experience</b></p>
+                            <p class="card-text text-start">For client: {{reservation.report.clientEmail}} At: {{convertDate(reservation.report.createdAt)}}</p>
+                            <p class="card-text text-start">Your comment: {{reservation.report.text}}</p>
+                            <div v-if="reservation.report.statusOfReport !== 'PENDING'">
                                 <hr>
+                                <p class="card-text text-start" style="font-weight: bold; color: red;">{{reservation.report.statusOfReport}}</p>
                                 <p class="card-text text-start"><b>ANSWERED At: {{convertDate(reservation.instructorComplaint.adminResponsDate)}}</b> By: {{reservation.instructorComplaint.adminEmail}}</p>
-                                <p class="card-text text-start">{{reservation.instructorComplaint.adminResponse}}</p>
                             </div>
                         </div>
                     </div>
@@ -310,28 +314,31 @@ export default {
                 return;
             }
 
-            alert('TODO')
-            return;
-            let instructorComplaint = {
+            if(this.report.notShowUp){
+                this.report.negative = false;
+                this.report.comment = '';
+            }
+            
+            let instructorReport = {
+                "reservationId" : this.reservation.idReservation,
+                "reservationType" : 'INSTRUCTOR',
+                "termType" : this.reservation.termType,
+                "text" : this.report.comment,
+                "sanctionClient" : this.report.negative,
+                "clientShowedUp" : !this.report.notShowUp,
+                "idClient" : this.reservation.clientView.id,
                 "clientEmail" : this.reservation.clientView.email,
-                "comment": this.complaintText,
-                "fastReservation" : false,
-                "idReservation": this.reservation.idReservation
             }
 
-            if(this.reservation.termType === 'FAST_RESERVATION') {
-                instructorComplaint.fastReservation = true
-            }
-            console.log("RESERVATION", this.reservation)
-            console.log("POSTbody", instructorComplaint)
+            console.log("POSTbody", instructorReport)
             axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-            axios.post('http://localhost:8180/api/complaint/instructor',instructorComplaint).then(resp => {
+            axios.post('http://localhost:8180/api/report/instructor',instructorReport).then(resp => {
                     console.log(resp.data);
                     if(!resp.data){
                         alert("Error")
                     }else{
                         alert("Successfully")
-                        this.closeComplaintForm()
+                        this.closeReportForm()
                     }
             });
 

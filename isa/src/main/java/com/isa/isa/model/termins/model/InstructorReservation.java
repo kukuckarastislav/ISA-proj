@@ -43,7 +43,10 @@ public class InstructorReservation {
     private Boolean isRevised;
     
     private Boolean isComplainedOf;
-    
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Report report;
+
     public InstructorReservation(){}
 
     public InstructorReservation(Client client, Adventure adventure, LocalDateTime startTime, LocalDateTime endTime,String instructorUsername) {
@@ -166,5 +169,13 @@ public class InstructorReservation {
         }else{
             return true;
         }
+    }
+
+    public Report getReport() {
+        return report;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
     }
 }

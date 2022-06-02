@@ -345,6 +345,23 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
       }
     ],
     "termType": "RESERVATION",
+    "report": {
+      "id": 1,
+      "reservationId": 1,
+      "reservationType": "INSTRUCTOR",
+      "termType": "RESERVATION",
+      "text": "Bilo je bas lose sa marijom nismo mogli da radimo posao kako trbea ",
+      "sanctionClient": true,
+      "clientShowedUp": true,
+      "idClient": 3,
+      "clientEmail": "isaprojectftn+marijaC@gmail.com",
+      "ownerEmail": "isaprojectftn+stefanI@gmail.com",
+      "createdAt": "2022-06-02T15:28:16.035316",
+      "adminUsername": null,
+      "sanctionApproved": false,
+      "statusOfReport": "PENDING",
+      "adminResponsDate": null
+    },
     "additionalServices": [
       {
         "id": 3,
@@ -376,8 +393,8 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
       "adminResponse": null,
       "adminResponsDate": null,
       "idReservation": 1,
-      "fastReservation": false,
-      "forClient": true
+      "forClient": true,
+      "fastReservation": false
     },
     "statusOfReservation": "ACTIVE",
     "address": {
@@ -410,6 +427,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
       }
     ],
     "termType": "FAST_RESERVATION",
+    "report": null,
     "additionalServices": [
       {
         "id": 1,
