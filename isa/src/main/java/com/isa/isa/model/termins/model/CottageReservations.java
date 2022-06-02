@@ -4,22 +4,12 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.report.model.Report;
 
 
 @Entity
@@ -53,6 +43,9 @@ public class CottageReservations {
     private Boolean isRevised;
     
     private Boolean isComplainedOf;
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Report report;
 
     public CottageReservations() {}
    
@@ -146,9 +139,12 @@ public class CottageReservations {
 		this.isComplainedOf = isComplainedOf;
 	}
 
-	
-	
-    
-    
 
+	public Report getReport() {
+		return report;
+	}
+
+	public void setReport(Report report) {
+		this.report = report;
+	}
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Penalty;
-import com.isa.isa.model.Report;
+import com.isa.isa.model.report.model.Report;
 import com.isa.isa.repository.ClientRepository;
 import com.isa.isa.repository.PenaltyRepository;
 
