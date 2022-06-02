@@ -8,6 +8,7 @@ import javax.persistence.Column;
 
 public class AdminViewUserDTO {
 
+    private int idUser;
     private String email;
     private String firstName;
     private String lastName;
@@ -25,6 +26,7 @@ public class AdminViewUserDTO {
     public AdminViewUserDTO(){}
 
     public AdminViewUserDTO(Client client){
+        idUser = client.getId();
         this.userTypeISA = UserTypeISA.CLIENT;
         setPersonPart(client);
         this.numOfPenaltyNow = 0; //TODO: client get numb of penalty
@@ -32,6 +34,7 @@ public class AdminViewUserDTO {
     }
 
     public AdminViewUserDTO(Instructor instructor){
+        idUser = instructor.getId();
         this.userTypeISA = UserTypeISA.INSTRUCTOR;
         setPersonPart(instructor);
         this.averageGrade = instructor.getAverageGrade();
@@ -40,6 +43,7 @@ public class AdminViewUserDTO {
     }
 
     public AdminViewUserDTO(BoatOwner boatOwner){
+        idUser = boatOwner.getId();
         this.userTypeISA = UserTypeISA.BOAT_OWNER;
         setPersonPart(boatOwner);
         this.averageGrade = boatOwner.getAverageGrade();
@@ -47,6 +51,7 @@ public class AdminViewUserDTO {
     }
 
     public AdminViewUserDTO(CottageOwner cottageOwner){
+        idUser = cottageOwner.getId();
         this.userTypeISA = UserTypeISA.COTTAGE_OWNER;
         setPersonPart(cottageOwner);
         this.averageGrade = cottageOwner.getAverageGrade();
@@ -140,5 +145,13 @@ public class AdminViewUserDTO {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }

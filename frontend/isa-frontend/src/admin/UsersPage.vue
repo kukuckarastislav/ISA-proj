@@ -69,7 +69,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Admin panel</h5>
                                             <hr>
-                                            <button class="btn btn-danger" style="width: 100%;">Delete</button>
+                                            <button v-on:click="deleteAction(user)" class="btn btn-danger" style="width: 100%;">Delete</button>
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@ export default {
   methods: {
     loadData: function(){
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-         axios.get('http://localhost:8180/api/admin/users').then(resp => {
+         axios.get('http://localhost:8180/api/admin/user').then(resp => {
             this.users = resp.data;
             console.log(resp.data);
         });
@@ -129,7 +129,23 @@ export default {
         if(user.loyalty.loyaltyType === 'SILVER') return 'silverCss';
         if(user.loyalty.loyaltyType === 'REGULAR') return 'SettingsCss';
         return '';
-    }
+    },
+    deleteAction: function(user){
+        let delUser = {
+            "idUser" : user.idUser, 
+            "username" :user.email,
+            "userTypeISA": user.userTypeISA
+        }
+        console.log(delUser)
+         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+         axios.post('http://localhost:8180/api/admin/user',delUser).then(resp => {
+            if(!resp.data){
+                alert("Error (False)")
+            }else{
+                this.loadData();
+            }
+        }, (err) => {alert("Error")});
+    },  
   }
 }
 </script>

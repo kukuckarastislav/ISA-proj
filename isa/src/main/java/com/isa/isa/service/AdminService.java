@@ -136,4 +136,14 @@ public class AdminService {
 		}
 		return entitys;
     }
+
+	public Boolean deleteEntity(AdminDeleteEntityDTO adminDeleteEntityDTO) {
+		System.out.println("ToDo DELETE entity");
+		return false; //TODO: delete entity
+	}
+
+	public Boolean deleteUser(AdminDeleteUserDTO adminDeleteUserDTO) {
+		System.out.println("ToDo DELETE user");
+		return false; //TODO: delete user
+	}
 }

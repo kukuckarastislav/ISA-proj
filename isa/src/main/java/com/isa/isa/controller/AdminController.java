@@ -42,16 +42,28 @@ public class AdminController {
     }
 
 
-    @GetMapping("/users")
+    @GetMapping("/user")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ArrayList<AdminViewUserDTO>> getUsers(Principal user) {
         return new ResponseEntity<ArrayList<AdminViewUserDTO>>(adminService.getUsers(),HttpStatus.OK);
+    }
+
+    @PostMapping("/user")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Boolean> adminDeleteUser(Principal user, @RequestBody AdminDeleteUserDTO adminDeleteUserDTO) {
+        return new ResponseEntity<Boolean>(adminService.deleteUser(adminDeleteUserDTO),HttpStatus.OK);
     }
 
     @GetMapping("/entity")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ArrayList<AdminViewEntityDTO>> getAdminViewEntity(Principal user) {
         return new ResponseEntity<ArrayList<AdminViewEntityDTO>>(adminService.getAdminViewEntity(),HttpStatus.OK);
+    }
+
+    @PostMapping("/entity")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Boolean> adminDeleteEntity(Principal user, @RequestBody AdminDeleteEntityDTO adminDeleteEntityDTO) {
+        return new ResponseEntity<Boolean>(adminService.deleteEntity(adminDeleteEntityDTO),HttpStatus.OK);
     }
 
 

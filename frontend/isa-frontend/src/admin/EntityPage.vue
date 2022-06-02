@@ -68,7 +68,7 @@
                                         <div class="card-body">
                                             <h6 class="card-title">Admin panel</h6>
                                             <hr>
-                                            <button class="btn btn-danger" style="width: 100%;">Delete</button>
+                                            <button v-on:click="deleteAction(entity)" class="btn btn-danger" style="width: 100%;">Delete</button>
                                         </div>
                                     </div>
                                 </div>
@@ -134,6 +134,21 @@ export default {
         }
         return 'http://localhost:8180/api/entityImage/'+imgPath;
     },
+    deleteAction: function(entity){
+        let delEntity = {
+            "isaEntityType" : entity.isaEntityType, 
+            "idEntity" :entity.idEntity
+        }
+        console.log(delEntity)
+         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+         axios.post('http://localhost:8180/api/admin/entity',delEntity).then(resp => {
+            if(!resp.data){
+                alert("Error (False)")
+            }else{
+                this.loadData();
+            }
+        }, (err) => {alert("Error")});
+    },  
   }
 }
 </script>
