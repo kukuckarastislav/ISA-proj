@@ -83,11 +83,42 @@
         </div>
 
         <!-- Report -->
-        <div v-if="visibleForm.report" class="row" style="margin-top:30px;">
+        <div v-if="visibleForm.report" style="margin-top:30px;">
             <h4>Report</h4>
-            <div class="col">
-                TODO REPORT
+            <div class="row">
+                <div class="col text-start">
+                    <input v-model="report.notShowUp" class="form-check-input m-2" type="checkbox" v-bind:id="idr+'1'" checked>
+                    <label class="form-check-label m-1" v-bind:for="idr+'1'"> The client did not show up</label>
+                    <br>
+                    <input v-model="report.negative" class="form-check-input m-2" type="checkbox" v-bind:id="idr+'2'" checked>
+                    <label class="form-check-label m-1" v-bind:for="idr+'2'"> Negative experience</label>
+                </div>
             </div>
+            <div class="row">
+                <div class="col" v-if="!report.notShowUp">
+                    <textarea v-model="report.comment" style="width: 100%;" name="complaint" id="" rows="4"></textarea>
+                </div>
+                <div v-if="true" class="col-3">
+                    <button v-on:click="closeReportForm()" class="btn btn-primary m-1">Cancel</button>
+                    <button v-on:click="sendReport()" class="btn btn-danger m-1" :disabled="report.comment==='' && !report.notShowUp">Send</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" v-if="false">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text text-start">For client: {{reservation.instructorComplaint.userEmail}} At: {{convertDate(reservation.instructorComplaint.createdAt)}}</p>
+                            <p class="card-text text-start">Your Complaint: {{reservation.instructorComplaint.comment}}</p>
+                            <div v-if="reservation.instructorComplaint.statusOfComplaint === 'ANSWERED'">
+                                <hr>
+                                <p class="card-text text-start"><b>ANSWERED At: {{convertDate(reservation.instructorComplaint.adminResponsDate)}}</b> By: {{reservation.instructorComplaint.adminEmail}}</p>
+                                <p class="card-text text-start">{{reservation.instructorComplaint.adminResponse}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Complaint -->
@@ -139,10 +170,17 @@ export default {
   },
   data: function(){
     return {
+        idr: '',
         visibleForm: {
             report: false,
             complaint: false,
             reservationAgain: false,
+        },
+
+        report: {
+            notShowUp: false,
+            negative: false,
+            comment: '',
         },
 
         complaintText: '',
@@ -150,7 +188,7 @@ export default {
   },
   watch: { 
       	reservation: function(newVal, oldVal) { // watch it
-             console.log("NOVA VREDNOST", newVal)
+            console.log("NOVA VREDNOST", newVal)
             this.reservation = newVal
             this.reservation.clientView = this.reservation.client
             if(this.reservation.termType === 'FAST_RESERVATION'){
@@ -158,6 +196,8 @@ export default {
                     this.reservation.clientView = this.reservation.insFastResHistories[0].client
                 }
             }
+            this.idr = this.reservation.idReservation.toString() + this.reservation.termType;
+            console.log("ID: ", this.idr)
         },
   },
   mounted: function(){
@@ -172,6 +212,8 @@ export default {
                 this.reservation.clientView = this.reservation.insFastResHistories[0].client
             }
         }
+        this.idr = this.reservation.idReservation.toString() + this.reservation.termType;
+        console.log("ID: ", this.idr)
     },
     moreDetails: function(adventureName){
         this.$router.push({ path: '/adventure/'+encodeURIComponent(adventureName)});
@@ -214,6 +256,11 @@ export default {
     sendComplaint: function(){
         if(new Date(this.reservation.endTime) < new Date()){
             
+            if(!this.reservation.clientView){
+                alert('Error: Client Is not selected')
+                return;
+            }
+
             let instructorComplaint = {
                 "clientEmail" : this.reservation.clientView.email,
                 "comment": this.complaintText,
@@ -248,6 +295,50 @@ export default {
     },
     convertDate: function(date){
         return new Date(date).toLocaleString();
+    },
+    closeReportForm: function(){
+        this.report.comment = '';
+        this.report.notShowUp = false
+        this.report.negative = false
+        this.visibleForm.report = false;
+    },
+    sendReport: function(){
+        if(new Date(this.reservation.endTime) < new Date()){
+            
+            if(!this.reservation.clientView){
+                alert('Error: Client Is not selected')
+                return;
+            }
+
+            alert('TODO')
+            return;
+            let instructorComplaint = {
+                "clientEmail" : this.reservation.clientView.email,
+                "comment": this.complaintText,
+                "fastReservation" : false,
+                "idReservation": this.reservation.idReservation
+            }
+
+            if(this.reservation.termType === 'FAST_RESERVATION') {
+                instructorComplaint.fastReservation = true
+            }
+            console.log("RESERVATION", this.reservation)
+            console.log("POSTbody", instructorComplaint)
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.post('http://localhost:8180/api/complaint/instructor',instructorComplaint).then(resp => {
+                    console.log(resp.data);
+                    if(!resp.data){
+                        alert("Error")
+                    }else{
+                        alert("Successfully")
+                        this.closeComplaintForm()
+                    }
+            });
+
+        }else{
+            alert('Error: Reservation is not finished')
+            this.closeComplaintForm()
+        }
     },
   }
 }

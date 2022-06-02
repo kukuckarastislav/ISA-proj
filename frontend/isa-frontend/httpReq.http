@@ -329,11 +329,6 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     },
     "images": [
       {
-        "id": 2,
-        "name": "img2.jpg",
-        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img2.jpg"
-      },
-      {
         "id": 3,
         "name": "img3.jpg",
         "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img3.jpg"
@@ -342,26 +337,48 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
         "id": 1,
         "name": "img1.jpg",
         "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img1.jpg"
+      },
+      {
+        "id": 2,
+        "name": "img2.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img2.jpg"
       }
     ],
     "termType": "RESERVATION",
     "additionalServices": [
       {
-        "id": 4,
-        "price": 20.0,
-        "name": "Food",
-        "description": "Food included"
-      },
-      {
         "id": 3,
         "price": 7.0,
         "name": "Singing",
         "description": "Instructor will sing to you"
+      },
+      {
+        "id": 4,
+        "price": 20.0,
+        "name": "Food",
+        "description": "Food included"
       }
     ],
     "startTime": "2022-03-10T08:00:06.235099",
     "endTime": "2022-03-10T12:00:06.235099",
     "price": 170.0,
+    "instructorComplaint": {
+      "id": 5,
+      "comment": "Marija se nije lepo ponasala, vodila je u opasnost svoj i zivot ostalih ljudi",
+      "userEmail": "isaprojectftn+marijaC@gmail.com",
+      "createdAt": "2022-06-01T19:36:30.336347",
+      "providerType": "INSTRUCTOR",
+      "providerEmail": "isaprojectftn+stefanI@gmail.com",
+      "revisionType": "OWNER",
+      "entityId": -1,
+      "statusOfComplaint": "UNANSWERED",
+      "adminEmail": null,
+      "adminResponse": null,
+      "adminResponsDate": null,
+      "idReservation": 1,
+      "fastReservation": false,
+      "forClient": true
+    },
     "statusOfReservation": "ACTIVE",
     "address": {
       "country": "Slovakia",
@@ -372,6 +389,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
       "longitude": 24.0
     },
     "insFastResHistories": null,
+    "idReservation": 1,
     "taken": false
   },
   {
@@ -381,14 +399,14 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     "client": null,
     "images": [
       {
-        "id": 4,
-        "name": "img1.jpg",
-        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img1.jpg"
-      },
-      {
         "id": 5,
         "name": "img2.jpg",
         "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img2.jpg"
+      },
+      {
+        "id": 4,
+        "name": "img1.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img1.jpg"
       }
     ],
     "termType": "FAST_RESERVATION",
@@ -403,6 +421,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
     "startTime": "2022-07-11T14:00:06.235099",
     "endTime": "2022-07-11T16:00:06.235099",
     "price": 5.0,
+    "instructorComplaint": null,
     "statusOfReservation": null,
     "address": {
       "country": "Slovakia",
@@ -436,6 +455,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
         "statusOfFastReservation": "CANCELLED"
       }
     ],
+    "idReservation": 1,
     "taken": false
   }
 ]

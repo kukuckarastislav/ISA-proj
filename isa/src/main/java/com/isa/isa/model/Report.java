@@ -19,7 +19,8 @@ public class Report {
 	private Boolean sanctionClient;
 	private Boolean clientShowedUp;
 	private int idClient;
-	private int idOwner;
+	private String clientEmail;
+	private String ownerEmail;
 	private String adminUsername;
 	private Boolean sanctionApproved;
 	
@@ -27,10 +28,7 @@ public class Report {
 		super();
 	}
 
-	public Report(int reservationId, OwnerType reservationType, Boolean isFast, String text,
-			Boolean sanctionClient, Boolean clientShowedUp, int idClient, int idOwner, String adminUsername,
-			Boolean sanctionApproved) {
-		super();
+	public Report(int reservationId, OwnerType reservationType, Boolean isFast, String text, Boolean sanctionClient, Boolean clientShowedUp, int idClient, String clientEmail, String ownerEmail, String adminUsername, Boolean sanctionApproved) {
 		this.reservationId = reservationId;
 		this.reservationType = reservationType;
 		this.isFast = isFast;
@@ -38,7 +36,8 @@ public class Report {
 		this.sanctionClient = sanctionClient;
 		this.clientShowedUp = clientShowedUp;
 		this.idClient = idClient;
-		this.idOwner = idOwner;
+		this.clientEmail = clientEmail;
+		this.ownerEmail = ownerEmail;
 		this.adminUsername = adminUsername;
 		this.sanctionApproved = sanctionApproved;
 	}
@@ -107,14 +106,6 @@ public class Report {
 		this.idClient = idClient;
 	}
 
-	public int getIdOwner() {
-		return idOwner;
-	}
-
-	public void setIdOwner(int idOwner) {
-		this.idOwner = idOwner;
-	}
-
 	public String getAdminUsername() {
 		return adminUsername;
 	}
@@ -130,9 +121,28 @@ public class Report {
 	public void setSanctionApproved(Boolean sanctionApproved) {
 		this.sanctionApproved = sanctionApproved;
 	}
-	
-	
-	
-	
-	
+
+	public Boolean getFast() {
+		return isFast;
+	}
+
+	public void setFast(Boolean fast) {
+		isFast = fast;
+	}
+
+	public String getClientEmail() {
+		return clientEmail;
+	}
+
+	public void setClientEmail(String clientEmail) {
+		this.clientEmail = clientEmail;
+	}
+
+	public String getOwnerEmail() {
+		return ownerEmail;
+	}
+
+	public void setOwnerEmail(String ownerEmail) {
+		this.ownerEmail = ownerEmail;
+	}
 }
