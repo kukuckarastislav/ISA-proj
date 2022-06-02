@@ -6,6 +6,7 @@ import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.complaints.model.Complaint;
+import com.isa.isa.model.report.model.Report;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
@@ -44,4 +45,8 @@ public interface EmailService {
     void sendAdminComplaintResponseToClient(Complaint complaint, String offerName);
 
     void sendAdminComplaintResponseToProvider(Complaint complaint, String offerName);
+
+    void sendReportNotificationToClient(Report report, String reservationName);
+
+    void sendReportNotificationToOwner(Report report, String reservationName);
 }

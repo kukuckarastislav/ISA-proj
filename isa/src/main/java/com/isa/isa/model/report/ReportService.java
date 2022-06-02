@@ -4,11 +4,13 @@ import com.isa.isa.model.Client;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.enums.OwnerType;
 import com.isa.isa.model.report.DTO.NewReportDTO;
+import com.isa.isa.model.report.DTO.ReportAdminResponseDTO;
 import com.isa.isa.model.report.DTO.ReportAdminViewDTO;
 import com.isa.isa.model.report.model.Report;
 import com.isa.isa.model.termins.model.*;
 import com.isa.isa.model.termins.repository.*;
 import com.isa.isa.repository.InstructorRepository;
+import com.isa.isa.security.service.EmailService;
 import com.isa.isa.service.PenaltyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -132,5 +134,28 @@ public class ReportService {
         }
 
         return "";
+    }
+
+    @Autowired
+    private EmailService emailService;
+
+    public Boolean postAdminReport(String adminUsername, ReportAdminResponseDTO reportAdminResponseDTO) {
+
+        Optional<Report> reportOptional = reportRepository.findById(reportAdminResponseDTO.getIdReport());
+        if(reportOptional.isEmpty()) return false;  //ako nije nasao
+        Report report = reportOptional.get();
+        if(report.getStatusOfReport() != StatusOfRevision.PENDING) return false; //ako vec postoji odgovro, ne moze vise puta da se daje odgovor
+        if(reportAdminResponseDTO.getStatusOfReport() == StatusOfRevision.PENDING) return false;
+        report.setAdminResposne(reportAdminResponseDTO.getComment());
+        report.setAdminUsername(adminUsername);
+        report.setAdminResponsDate(LocalDateTime.now());
+        report.setStatusOfReport(reportAdminResponseDTO.getStatusOfReport());
+        reportRepository.saveAndFlush(report);
+        penaltyService.getPenaltyFromReport(report);
+        // poslati email poruke
+        emailService.sendReportNotificationToClient(report, getReservationNameFromReport(report));
+        emailService.sendReportNotificationToOwner(report, getReservationNameFromReport(report));
+
+        return true;
     }
 }

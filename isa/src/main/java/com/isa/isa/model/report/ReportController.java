@@ -1,6 +1,7 @@
 package com.isa.isa.model.report;
 
 import com.isa.isa.model.report.DTO.NewReportDTO;
+import com.isa.isa.model.report.DTO.ReportAdminResponseDTO;
 import com.isa.isa.model.report.DTO.ReportAdminViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,12 @@ public class ReportController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ArrayList<ReportAdminViewDTO>> getReportsForAdmin(Principal user){
         return new ResponseEntity<ArrayList<ReportAdminViewDTO>>(reportService.getReportsForAdmin(),HttpStatus.OK);
+    }
+
+    @PostMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Boolean> postAdminReport(Principal user, @RequestBody ReportAdminResponseDTO reportAdminResponseDTO){
+        return new ResponseEntity<Boolean>(reportService.postAdminReport(user.getName(), reportAdminResponseDTO), HttpStatus.OK);
     }
 
 

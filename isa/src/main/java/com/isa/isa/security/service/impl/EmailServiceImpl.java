@@ -6,6 +6,7 @@ import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.complaints.model.Complaint;
+import com.isa.isa.model.report.model.Report;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.revisions.model.RevisionType;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
@@ -48,7 +49,7 @@ public class EmailServiceImpl implements EmailService{
         mail.setText("Molimo vas potvrdite registraciju na sajtu " + link);
         javaMailSender.send(mail);
 
-        System.out.println("Email poslat!");
+        System.out.println("[EmailService]: sendNotificaition");
 	}
 
 
@@ -62,7 +63,7 @@ public class EmailServiceImpl implements EmailService{
 		mail.setText("Your " + user.getRole().getName() + " is approved. Now you can use your acc. :)");
 		javaMailSender.send(mail);
 
-		System.out.println("Email poslat!");
+		System.out.println("[EmailService]: sendNotificaitionApproved");
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class EmailServiceImpl implements EmailService{
 		mail.setText("We are sad but your acc is not approved: " + userApproveDTO.getMessage());
 		javaMailSender.send(mail);
 
-		System.out.println("Email poslat!");
+		System.out.println("[EmailService]: sendNotificaitionRejected");
 	}
 	
 	@Override
@@ -86,7 +87,7 @@ public class EmailServiceImpl implements EmailService{
         mail.setText("You've successfully reserved " + clientAdventureReservationDTO.getAdventure().getName()+" from: "+clientAdventureReservationDTO.getStartTime()+ " to: "+clientAdventureReservationDTO.getEndTime());
         javaMailSender.send(mail);
 
-        System.out.println("Email poslat!");
+        System.out.println("[EmailService]: sendReservationConfirmation");
 	}
 	
 	@Override
@@ -98,7 +99,7 @@ public class EmailServiceImpl implements EmailService{
         mail.setText("You've successfully reserved " + adventure.getName()+" from: "+clientAdventureFastReservationDTO.getStartTime()+ " to: "+clientAdventureFastReservationDTO.getEndTime());
         javaMailSender.send(mail);
 
-        System.out.println("Email poslat!");
+        System.out.println("[EmailService]: sendAdventureActionReservationConfirmation");
 	}
 	
 	@Override
@@ -110,7 +111,7 @@ public class EmailServiceImpl implements EmailService{
         mail.setText("You've successfully reserved " + clientCottageReservationDTO.getCottage().getName()+" from: "+clientCottageReservationDTO.getStartTime()+ " to: "+clientCottageReservationDTO.getEndTime());
         javaMailSender.send(mail);
 
-        System.out.println("Email poslat!");
+        System.out.println("[EmailService]: sendCottageReservationConfirmation");
 	}
 	
 	@Override
@@ -122,7 +123,7 @@ public class EmailServiceImpl implements EmailService{
         mail.setText("You've successfully reserved " + cottage.getName()+" from: "+clientCottageFastReservationDTO.getStartTime()+ " to: "+clientCottageFastReservationDTO.getEndTime());
         javaMailSender.send(mail);
 
-        System.out.println("Email poslat!");
+        System.out.println("[EmailService]: sendCottageActionReservationConfirmation");
 	}
 	
 	@Override
@@ -134,7 +135,7 @@ public class EmailServiceImpl implements EmailService{
         mail.setText("You've successfully reserved " + clientBoatReservationDTO.getBoat().getName()+" from: "+clientBoatReservationDTO.getStartTime()+ " to: "+clientBoatReservationDTO.getEndTime());
         javaMailSender.send(mail);
 
-        System.out.println("Email poslat!");
+        System.out.println("[EmailService]: sendBoatReservationConfirmation");
 	}
 	
 	@Override
@@ -146,7 +147,7 @@ public class EmailServiceImpl implements EmailService{
         mail.setText("You've successfully reserved " + boat.getName()+" from: "+clientBoatFastReservationDTO.getStartTime()+ " to: "+clientBoatFastReservationDTO.getEndTime());
         javaMailSender.send(mail);
 
-        System.out.println("Email poslat!");
+        System.out.println("[EmailService]: sendBoatActionReservationConfirmation");
 	}
 
 	@Override
@@ -159,7 +160,7 @@ public class EmailServiceImpl implements EmailService{
 		mail.setText(text);
 		javaMailSender.send(mail);
 
-		System.out.println("Email poslat!");
+		System.out.println("[EmailService]: sendNotificationNewRevisionEntity");
 	}
 
 	@Override
@@ -172,7 +173,7 @@ public class EmailServiceImpl implements EmailService{
 		mail.setText(text);
 		javaMailSender.send(mail);
 
-		System.out.println("Email poslat!");
+		System.out.println("[EmailService]: sendNotificationNewRevisionOwnerInstructor");
 	}
 
 	@Override
@@ -200,7 +201,7 @@ public class EmailServiceImpl implements EmailService{
 		mail.setText(text);
 		javaMailSender.send(mail);
 
-		System.out.println("Email poslat!");
+		System.out.println("[EmailService]: sendAdminComplaintResponseToClient");
 	}
 
 	@Override
@@ -228,6 +229,34 @@ public class EmailServiceImpl implements EmailService{
 		mail.setText(text);
 		javaMailSender.send(mail);
 
-		System.out.println("Email poslat!");
+		System.out.println("[EmailService]: sendAdminComplaintResponseToProvider");
+	}
+
+	@Override
+	public void sendReportNotificationToClient(Report report, String reservationName) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(report.getClientEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("New Report");
+		String text = "Hi, you have new Report by " +report.getOwnerEmail()+" "+report.getReservationType()+" `"+report.getText()+"` on date:"+report.getCreatedAt()+"\n";
+		text += "Admin response: "+report.getStatusOfReport()+" `"+report.getAdminResposne()+"` At:"+report.getAdminResponsDate();
+		mail.setText(text);
+		javaMailSender.send(mail);
+
+		System.out.println("[EmailService]: sendReportNotificationToClient");
+	}
+
+	@Override
+	public void sendReportNotificationToOwner(Report report, String reservationName) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(report.getOwnerEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Report Response");
+		String text = "Hi, admin respond to your Report `"+report.getText()+"` on date:"+report.getCreatedAt()+"\n";
+		text += "Admin response: "+report.getStatusOfReport()+" `"+report.getAdminResposne()+"` At:"+report.getAdminResponsDate();
+		mail.setText(text);
+		javaMailSender.send(mail);
+
+		System.out.println("[EmailService]: sendReportNotificationToOwner");
 	}
 }
