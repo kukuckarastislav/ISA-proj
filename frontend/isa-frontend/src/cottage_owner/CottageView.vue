@@ -11,7 +11,7 @@
             <div v-if="cottage.name != undefined" class="col-sm-6">
 
                 <h1 class="text-start">{{cottage.name}}</h1> <br>
-
+                <button class="card" v-on:click="editData(cottage)">Edit cottage data</button>
                 <h3 class="text-start stars">
                   <span v-for="index in Math.round(cottage.averageGrade)" :key="index">&#9733;</span> 
                   <span v-for="index in Math.round(5-cottage.averageGrade)" :key="index">&#9734;</span> 
@@ -148,57 +148,57 @@ export default {
 
 
              var iconFeature = new Feature({
-					geometry: new Point(fromLonLat([this.cottage.address.longitude, this.cottage.address.latitude])),
-					name: 'cottage',
-				  });
+				    	geometry: new Point(fromLonLat([this.cottage.address.longitude, this.cottage.address.latitude])),
+				    	name: 'cottage',
+				         });
 
-        var lat = this.cottage.address.latitude;
-        var lng = this.cottage.address.longitude;
-var iconGeometry = new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
-var iconFeature = new Feature({
-  geometry: iconGeometry,
-  name: 'The icon',
-  population: 4000,
-  rainfall: 500
-});
+              var lat = this.cottage.address.latitude;
+              var lng = this.cottage.address.longitude;
+              var iconGeometry = new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
+              var iconFeature = new Feature({
+              geometry: iconGeometry,
+              name: 'The icon',
+              population: 4000,
+              rainfall: 500
+            });
 
-var iconStyle = new Style({
-  image: new Icon( /** @type {olx.style.IconOptions} */ ({
-    anchor: [0.5, 46],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-    src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png'
-  }))
-});
+            var iconStyle = new Style({
+              image: new Icon( /** @type {olx.style.IconOptions} */ ({
+                anchor: [0.5, 46],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png'
+              }))
+            });
 
-iconFeature.setStyle(iconStyle);
+            iconFeature.setStyle(iconStyle);
 
-var vectorSource = new VectorSource({
-  features: [iconFeature]
-});
+            var vectorSource = new VectorSource({
+              features: [iconFeature]
+            });
 
-var vectorLayer = new VectorLayer({
-  source: vectorSource
-});
+            var vectorLayer = new VectorLayer({
+              source: vectorSource
+            });
 
-var rasterLayer = new TileLayer({
-  source: new OSM()
-});
+            var rasterLayer = new TileLayer({
+              source: new OSM()
+            });
 
-this.map = new Map({
-  layers: [rasterLayer, vectorLayer],
-  target: 'map',
-  controls: defaults({
-    attributionOptions: {
-      collapsible: false,
-    },
-    attribution: false
-  }),
-  view: new View({
-    center: fromLonLat([lng, lat]),
-    zoom: 7
-  })
-});
+            this.map = new Map({
+              layers: [rasterLayer, vectorLayer],
+              target: 'map',
+              controls: defaults({
+                attributionOptions: {
+                  collapsible: false,
+                },
+                attribution: false
+              }),
+              view: new View({
+                center: fromLonLat([lng, lat]),
+                zoom: 7
+              })
+            });
 
 
 
@@ -226,6 +226,9 @@ this.map = new Map({
     },
     setImg: function(image){
       return 'http://localhost:8180/'+image.path;
+    },
+    editData: function(cottage){
+        this.$router.push({ path: '/editMyCottage/'+encodeURIComponent(this.cottage.name)});
     },
   }
 }

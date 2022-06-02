@@ -28,6 +28,7 @@ import ComplaintPage from '../admin/ComplaintPage.vue'
 import CustomerSubscriptions from '../views/CustomerSubscriptions.vue'
 import LoyaltySettingsPage from '../admin/LoyaltySettingsPage.vue'
 import BoatUpdate from '../boat_owner/BoatUpdate'
+import CottageUpdate from '../cottage_owner/CottageUpdate'
 
 
 const routes = [
@@ -50,6 +51,7 @@ const routes = [
   { path: '/boatOwnerBoats', name: 'Boats', component: Boats },
   { path: '/boatOwnerBoat/:boatname?', name: 'BoatView', component: BoatView },
   { path: '/editMyBoat/:boatname?', name: 'BoatUpdate', component: BoatUpdate },
+  { path: '/editMyCottage/:cottagename?', name: 'CottageUpdate', component: CottageUpdate },
   { path: '/instructorProfile', name: 'InstructorProfile', component: InstructorProfile },
   { path: '/newboat', name: 'BoatCreation', component: BoatCreation },
   { path: '/customerReservations', name: 'CustomerReservations', component: CustomerReservations },

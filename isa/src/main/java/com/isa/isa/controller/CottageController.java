@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.AddNewCottageDTO;
+import com.isa.isa.DTO.BoatDTO;
 import com.isa.isa.DTO.CottageDTO;
+import com.isa.isa.DTO.UpdateBoatDTO;
 import com.isa.isa.service.CottageService;
 
 @RestController
@@ -48,6 +50,16 @@ public class CottageController {
         if(cottageDTO == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<CottageDTO>(cottageDTO, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('ROLE_COTTAGE_OWNER')")
+    @PostMapping("/updatecottage")
+    public ResponseEntity<BoatDTO> updateCottage(@RequestBody UpdateBoatDTO updateBoatDTO, Principal user) {
+        System.out.println("Updating cottage");
+//        BoatDTO boatDTO = boatService.updateBoat(updateBoatDTO, user);
+//        if(boatDTO == null)
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<BoatDTO>( HttpStatus.OK);
     }
 
 }
