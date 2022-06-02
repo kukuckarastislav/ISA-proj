@@ -15,11 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.AddNewCottageDTO;
+import com.isa.isa.DTO.BoatDTO;
 import com.isa.isa.DTO.CottageDTO;
+
 import com.isa.isa.model.termins.DTO.NewCottageFastReservationDto;
 import com.isa.isa.model.termins.DTO.NewCottageTermDto;
 import com.isa.isa.model.termins.service.CottageReservationService;
 import com.isa.isa.model.termins.service.CottageTermService;
+
+import com.isa.isa.DTO.UpdateBoatDTO;
+
 import com.isa.isa.service.CottageService;
 
 @RestController
@@ -72,6 +77,15 @@ public class CottageController {
 		String response = this.cottageReservationService.defineNewFastReservationForCottage(dto);
 		
         return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+    @PostMapping("/updatecottage")
+    public ResponseEntity<BoatDTO> updateCottage(@RequestBody UpdateBoatDTO updateBoatDTO, Principal user) {
+        System.out.println("Updating cottage");
+//        BoatDTO boatDTO = boatService.updateBoat(updateBoatDTO, user);
+//        if(boatDTO == null)
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<BoatDTO>( HttpStatus.OK);
+
     }
 
 }

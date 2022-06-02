@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.isa.DTO.AddNewBoatDTO;
 import com.isa.isa.DTO.BoatDTO;
+
 import com.isa.isa.model.termins.DTO.NewBoatFastReservationDto;
 import com.isa.isa.model.termins.DTO.NewBoatTermDto;
 import com.isa.isa.model.termins.service.BoatReservationService;
 import com.isa.isa.model.termins.service.BoatTermService;
+
+import com.isa.isa.DTO.UpdateBoatDTO;
+
 import com.isa.isa.service.BoatService;
 
 @RestController
@@ -75,4 +79,13 @@ public class BoatController {
     }
 	
 	
+    @PostMapping("/updateboat")
+    public ResponseEntity<BoatDTO> updateBoat(@RequestBody UpdateBoatDTO updateBoatDTO, Principal user) {
+        System.out.println("Updating boat");
+        BoatDTO boatDTO = boatService.updateBoat(updateBoatDTO, user);
+        if(boatDTO == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<BoatDTO>(boatDTO, HttpStatus.OK);
+    }
+
 }

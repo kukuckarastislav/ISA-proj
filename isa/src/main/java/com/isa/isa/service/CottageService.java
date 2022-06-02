@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.isa.DTO.AddNewCottageDTO;
+import com.isa.isa.DTO.BoatDTO;
 import com.isa.isa.DTO.CottageDTO;
 import com.isa.isa.DTO.EntityImageDTO;
+import com.isa.isa.DTO.UpdateBoatDTO;
+import com.isa.isa.model.Boat;
+import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.CottageOwner;
 import com.isa.isa.model.EntityImage;
@@ -120,6 +124,32 @@ public class CottageService {
         cottageRepository.saveAndFlush(cottage);
 
         return new CottageDTO(cottage, owner.getEmail());
+    }
+	
+	public CottageDTO updateCottage(UpdateBoatDTO updateDTO, Principal user) {
+		CottageOwner owner = cottageOwnerRepository.getByEmail(user.getName());
+        if(owner == null) return null;
+
+        Cottage cottage = getCottageByOwnerAndCottageName(user.getName(), updateDTO.getName());
+        if(cottage == null) {
+            System.out.println("Cottage for update not found");
+            return null;
+        }
+
+        System.out.println("Novo ime :"+updateDTO.getNewName());
+        cottage.setName(updateDTO.getNewName());
+        cottage.setAddress(updateDTO.getAddress());
+        cottage.setDescription(updateDTO.getPromotionalDescription());
+        cottage.setBehaviourRules(updateDTO.getBehaviourRules());
+        cottage.setCapacity(updateDTO.getCapacity());
+        
+        cottage.setPrice(updateDTO.getPrice());
+        //boat.setNavigationalEquipment(new HashSet<AdditionalEquipment>(addNewBoatDTO.getAdditionalEquipments()));
+        //boat.setAdditionalServices(new HashSet<ItemPrice>(updateDTO.getPricelist()));
+        System.out.println("Pokusava save");
+        cottageRepository.saveAndFlush(cottage);
+        System.out.println("Kao sacuvao nesto");
+        return new CottageDTO(cottage,owner.getEmail());
     }
 	
 	public ArrayList<Cottage> getAllCottages(){
