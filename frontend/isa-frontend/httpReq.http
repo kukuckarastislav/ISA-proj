@@ -508,3 +508,252 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
   }
 ]
 ###
+GET http://localhost:8180/api/admin/entity
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjU0MTgyMTYzLCJleHAiOjE2NTQzNjIxNjN9.JHjmFkogdoBCyBugAx9FhlaRPDYkgHyipSqpJFY3NzFQrWtYOsZJIxoEyH6X78nDyg8Pui3kdS-NO1Fu5r6l9A
+###
+
+[
+  {
+    "ownerType": "INSTRUCTOR",
+    "ownerEmail": "isaprojectftn+stefanI@gmail.com",
+    "ownerName": "Stefan Stefanovic",
+    "isaEntityType": "ADVENTURE",
+    "entityName": "Penjanje na planinu",
+    "idEntity": 1,
+    "averageGrade": 0.0,
+    "price": {
+      "price": 5.0,
+      "priceType": "PER_HOUR"
+    },
+    "address": {
+      "country": "Slovakia",
+      "city": "Bratislava",
+      "street": "Miskova",
+      "number": "35",
+      "latitude": 14.0,
+      "longitude": 24.0
+    },
+    "description": "Pecacemo Ribe",
+    "behaviourRules": "Nema skakanja u vodu",
+    "images": [
+      {
+        "id": 1,
+        "name": "img1.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img1.jpg"
+      },
+      {
+        "id": 2,
+        "name": "img2.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img2.jpg"
+      },
+      {
+        "id": 3,
+        "name": "img3.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Penjanje_na_planinu/img3.jpg"
+      }
+    ],
+    "reservationCancellationConditions": "FREE"
+  },
+  {
+    "ownerType": "INSTRUCTOR",
+    "ownerEmail": "isaprojectftn+stefanI@gmail.com",
+    "ownerName": "Stefan Stefanovic",
+    "isaEntityType": "ADVENTURE",
+    "entityName": "Krstarenje",
+    "idEntity": 2,
+    "averageGrade": 0.0,
+    "price": {
+      "price": 5.0,
+      "priceType": "PER_HOUR"
+    },
+    "address": {
+      "country": "Slovakia",
+      "city": "Bratislava",
+      "street": "Miskova",
+      "number": "35",
+      "latitude": 14.0,
+      "longitude": 24.0
+    },
+    "description": "Pecacemo Ribe",
+    "behaviourRules": "Nema skakanja u vodu",
+    "images": [
+      {
+        "id": 5,
+        "name": "img2.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img2.jpg"
+      },
+      {
+        "id": 4,
+        "name": "img1.jpg",
+        "path": "images/Instructors/isaprojectftn+stefanI@gmail.com/Krstarenje/img1.jpg"
+      }
+    ],
+    "reservationCancellationConditions": "FREE"
+  },
+  {
+    "ownerType": "INSTRUCTOR",
+    "ownerEmail": "isaprojectftn+alexI@gmail.com",
+    "ownerName": "Alexandar Lux",
+    "isaEntityType": "ADVENTURE",
+    "entityName": "Obilazak piramide",
+    "idEntity": 3,
+    "averageGrade": 0.0,
+    "price": {
+      "price": 5.0,
+      "priceType": "PER_HOUR"
+    },
+    "address": {
+      "country": "Egipt",
+      "city": "Aleksandrija",
+      "street": "piro",
+      "number": "35",
+      "latitude": 14.0,
+      "longitude": 24.0
+    },
+    "description": "Penjamo se na piramidu, budimo faraona",
+    "behaviourRules": "Nema kradje zlata, i cupova iz piramide",
+    "images": [
+      {
+        "id": 11,
+        "name": "img2.jpg",
+        "path": "images/Instructors/isaprojectftn+alexI@gmail.com/Obilazak_piramide/img2.jpg"
+      },
+      {
+        "id": 10,
+        "name": "img1.jpg",
+        "path": "images/Instructors/isaprojectftn+alexI@gmail.com/Obilazak_piramide/img1.jpg"
+      },
+      {
+        "id": 12,
+        "name": "img3.jpg",
+        "path": "images/Instructors/isaprojectftn+alexI@gmail.com/Obilazak_piramide/img3.jpg"
+      }
+    ],
+    "reservationCancellationConditions": "FREE"
+  },
+  {
+    "ownerType": "BOAT_OWNER",
+    "ownerEmail": "isaprojectftn+nikolaBO@gmail.com",
+    "ownerName": "Nikola Nikolic",
+    "isaEntityType": "BOAT",
+    "entityName": "Laser 16",
+    "idEntity": 1,
+    "averageGrade": 0.0,
+    "price": {
+      "price": 10.0,
+      "priceType": "PER_HOUR"
+    },
+    "address": {
+      "country": "Serbia",
+      "city": "Beograd",
+      "street": "Knez Mihajlova",
+      "number": "33",
+      "latitude": 11.0,
+      "longitude": 13.0
+    },
+    "description": "Najbolji brod",
+    "behaviourRules": "Nema brze voznje",
+    "images": [
+      {
+        "id": 8,
+        "name": "img1.jpg",
+        "path": "images/BoatOwners/isaprojectftn+nikolaBO@gmail.com/Laser_16/img1.jpg"
+      }
+    ],
+    "reservationCancellationConditions": "FREE"
+  },
+  {
+    "ownerType": "BOAT_OWNER",
+    "ownerEmail": "isaprojectftn+nikolaBO@gmail.com",
+    "ownerName": "Nikola Nikolic",
+    "isaEntityType": "BOAT",
+    "entityName": "Serenity",
+    "idEntity": 2,
+    "averageGrade": 0.0,
+    "price": {
+      "price": 20.0,
+      "priceType": "PER_HOUR"
+    },
+    "address": {
+      "country": "Serbia",
+      "city": "Novi Sad",
+      "street": "Vidovdanska",
+      "number": "33",
+      "latitude": 45.267136,
+      "longitude": 19.83355
+    },
+    "description": "Oaza mira",
+    "behaviourRules": "Nema brze voznje",
+    "images": [
+      {
+        "id": 9,
+        "name": "img1.jpg",
+        "path": "images/BoatOwners/isaprojectftn+nikolaBO@gmail.com/Serenity/img1.jpg"
+      }
+    ],
+    "reservationCancellationConditions": "FREE"
+  },
+  {
+    "ownerType": "COTTAGE_OWNER",
+    "ownerEmail": "isaprojectftn+milanCO@gmail.com",
+    "ownerName": "milan milanovic",
+    "isaEntityType": "COTTAGE",
+    "entityName": "Stan",
+    "idEntity": 1,
+    "averageGrade": 0.0,
+    "price": {
+      "price": 1000.0,
+      "priceType": "PER_DAY"
+    },
+    "address": {
+      "country": "Serbia",
+      "city": "Zlatibor",
+      "street": "Cara Dusana",
+      "number": "33",
+      "latitude": 11.0,
+      "longitude": 13.0
+    },
+    "description": "Lep stan",
+    "behaviourRules": "zabranjeno glasna muzika",
+    "images": [
+      {
+        "id": 7,
+        "name": "img1.jpg",
+        "path": "images/CottageOwners/isaprojectftn+milanCO@gmail.com/Stan/img1.jpg"
+      }
+    ],
+    "reservationCancellationConditions": null
+  },
+  {
+    "ownerType": "COTTAGE_OWNER",
+    "ownerEmail": "isaprojectftn+petarCO@gmail.com",
+    "ownerName": "petar petrovic",
+    "isaEntityType": "COTTAGE",
+    "entityName": "Kuca",
+    "idEntity": 2,
+    "averageGrade": 0.0,
+    "price": {
+      "price": 500.0,
+      "priceType": "PER_DAY"
+    },
+    "address": {
+      "country": "Serbia",
+      "city": "Kopaonik",
+      "street": "Cara Lazara",
+      "number": "33",
+      "latitude": 11.0,
+      "longitude": 13.0
+    },
+    "description": "mala kuca",
+    "behaviourRules": "hrana",
+    "images": [
+      {
+        "id": 6,
+        "name": "img1.jpg",
+        "path": "images/CottageOwners/isaprojectftn+petarCO@gmail.com/Kuca/img1.jpg"
+      }
+    ],
+    "reservationCancellationConditions": null
+  }
+]
+###

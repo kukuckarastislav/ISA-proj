@@ -34,6 +34,7 @@ import Reservation from '../instructor/Reservations.vue'
 import BoatUpdate from '../boat_owner/BoatUpdate'
 import CottageUpdate from '../cottage_owner/CottageUpdate'
 import ReportPage from '../admin/ReportPage.vue'
+import EntityPage from '../admin/EntityPage.vue'
 
 
 const routes = [
@@ -71,7 +72,8 @@ const routes = [
   { path: '/admin/users', name: 'UsersPage', component: UsersPage },
   { path: '/instructor/calendar', name: 'InstructorCalendarPage', component: InstructorCalendarPage },
   { path: '/instructor/reservation', name: 'Reservation', component: Reservation },
-  { path: '/admin/report', name: 'ReportPage', component: ReportPage},
+  { path: '/admin/report', name: 'ReportPage', component: ReportPage },
+  { path: '/admin/entity', name: 'EntityPage', component: EntityPage},
 ]
 
 const router = createRouter({

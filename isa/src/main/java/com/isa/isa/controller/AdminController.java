@@ -1,9 +1,6 @@
 package com.isa.isa.controller;
 
-import com.isa.isa.DTO.AdminDTO;
-import com.isa.isa.DTO.AdminViewUserDTO;
-import com.isa.isa.DTO.InstructorDTO;
-import com.isa.isa.DTO.PasswordDto;
+import com.isa.isa.DTO.*;
 import com.isa.isa.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,6 +47,13 @@ public class AdminController {
     public ResponseEntity<ArrayList<AdminViewUserDTO>> getUsers(Principal user) {
         return new ResponseEntity<ArrayList<AdminViewUserDTO>>(adminService.getUsers(),HttpStatus.OK);
     }
+
+    @GetMapping("/entity")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ArrayList<AdminViewEntityDTO>> getAdminViewEntity(Principal user) {
+        return new ResponseEntity<ArrayList<AdminViewEntityDTO>>(adminService.getAdminViewEntity(),HttpStatus.OK);
+    }
+
 
 
 }

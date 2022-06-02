@@ -136,4 +136,7 @@ public abstract class Person {
 		this.phoneNumber = phoneNumber;
 	}
 
+    public String getFullName(){
+		return firstName + " " + lastName;
+	}
 }

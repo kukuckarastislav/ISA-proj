@@ -7,6 +7,9 @@
                     <a href="/admin/users" class="nav-link">Users</a>
                 </div>
                 <div class="col">
+                    <a href="/admin/entity" class="nav-link">Entity</a>
+                </div>
+                <div class="col">
                     <a href="/" class="nav-link">Registrations</a>
                 </div>
                 <div class="col">

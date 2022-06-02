@@ -4,21 +4,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.isa.isa.model.enums.ReservationCancellationConditions;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.complaints.model.Complaint;
 
@@ -69,6 +57,9 @@ public class Cottage {
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Complaint> complaints = new HashSet<Complaint>();
+
+	@Enumerated(EnumType.STRING)
+	private ReservationCancellationConditions reservationCancellationConditions;
 
 
 	public void callculateGrade() {
@@ -201,9 +192,12 @@ public class Cottage {
 		Cottage other = (Cottage) obj;
 		return id == other.id;
 	}
-	
-	
-	
-	
-	
+
+	public ReservationCancellationConditions getReservationCancellationConditions() {
+		return reservationCancellationConditions;
+	}
+
+	public void setReservationCancellationConditions(ReservationCancellationConditions reservationCancellationConditions) {
+		this.reservationCancellationConditions = reservationCancellationConditions;
+	}
 }

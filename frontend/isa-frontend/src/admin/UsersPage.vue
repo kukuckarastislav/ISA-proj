@@ -25,7 +25,8 @@
             <div class="col-sm-9">
                 
                 <div v-for="user in users" :key="user">
-                    <div v-if="showIfNeed(user)" class="card">
+                <div v-if="showIfNeed(user)">
+                    <div class="card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-5">
@@ -74,7 +75,8 @@
                                 </div>
                             </div>
                         </div>         
-                        <br>
+                    </div>
+                    <br>
                     </div>
                 </div>
               

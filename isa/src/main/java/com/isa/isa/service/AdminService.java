@@ -1,8 +1,6 @@
 package com.isa.isa.service;
 
-import com.isa.isa.DTO.AdminDTO;
-import com.isa.isa.DTO.AdminViewUserDTO;
-import com.isa.isa.DTO.PasswordDto;
+import com.isa.isa.DTO.*;
 
 import com.isa.isa.model.*;
 import com.isa.isa.repository.*;
@@ -13,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.isa.isa.DTO.UserDTO;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -37,6 +33,15 @@ public class AdminService {
 
 	@Autowired
 	private AdminRepository adminRepository;
+
+	@Autowired
+	private AdventureRepository adventureRepository;
+
+	@Autowired
+	private BoatRepository boatRepository;
+
+	@Autowired
+	private CottageRepository cottageRepository;
 
 	
 	private ModelMapper modelMapper;
@@ -116,5 +121,19 @@ public class AdminService {
 			users.add(new AdminViewUserDTO(client));
 		}
 		return users;
+    }
+
+    public ArrayList<AdminViewEntityDTO> getAdminViewEntity() {
+		ArrayList<AdminViewEntityDTO> entitys = new ArrayList<>();
+		for(Adventure adventure : adventureRepository.findAllWithInstructors()){
+			entitys.add(new AdminViewEntityDTO(adventure));
+		}
+		for(Boat boat : boatRepository.findAllWithOwners()){
+			entitys.add(new AdminViewEntityDTO(boat));
+		}
+		for(Cottage cottage : cottageRepository.findAllWithOwners()){
+			entitys.add(new AdminViewEntityDTO(cottage));
+		}
+		return entitys;
     }
 }
