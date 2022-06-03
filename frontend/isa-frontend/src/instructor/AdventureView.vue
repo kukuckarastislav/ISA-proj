@@ -111,7 +111,16 @@
           <div class="col">
             <h1>Calendar</h1>
             <FullCalendar :options="calendarOptions" />
-            <br><br><br>
+            <br>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+          <div class="col-4">
+              <CalendarLegend/>
+              <br>
           </div>
         </div>
 
@@ -153,14 +162,15 @@ import {Point} from 'ol/geom';
 import {Circle, Fill, Style, Icon} from 'ol/style';
 import {defaults} from 'ol/control';
 
-
+import CalendarLegend from '../components/CalendarLegened.vue'
 
 export default {
   name: 'AdventureView',
   components: {
     CarouselView,
     FullCalendar,
-    ReservationViewComponent
+    ReservationViewComponent,
+    CalendarLegend
   },
   data: function(){
     return {

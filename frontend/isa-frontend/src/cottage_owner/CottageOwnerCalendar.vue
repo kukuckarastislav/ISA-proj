@@ -69,12 +69,11 @@ import {defaults} from 'ol/control';
 import CalendarLegend from '../components/CalendarLegened.vue'
 
 export default {
-  name: 'BoatOwnerCalendarPage',
+  name: 'CottageOwnerCalendar',
   components: {
     FullCalendar,
-    CalendarLegend,
     Datepicker,
-    //ReservationViewComponent
+    CalendarLegend
   },
   data: function(){
     return {
@@ -114,7 +113,7 @@ export default {
   methods: {
     loadData: function(){
        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        axios.get('http://localhost:8180/api/boat-term').then(resp => {
+        axios.get('http://localhost:8180/api/cottage-term').then(resp => {
             console.log(resp.data);
             this.terms = resp.data;
             this.calendarOptions.events = [];

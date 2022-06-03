@@ -119,6 +119,10 @@
             <button v-if="!createNewTerm.formVisible && !showSelectedReservation" class="btn btn-primary mx-2" v-on:click="createNewTerm.formVisible=true">Add Term</button>
             </div>
           </div>
+          <div class="col-4"></div>
+          <div class="col-4">
+              <CalendarLegend/>
+          </div>
         </div>
 
         <div v-if="createNewTerm.formVisible" class="row" style="margin-top: 30px;">
@@ -168,6 +172,7 @@ import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
 
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
+import CalendarLegend from '../components/CalendarLegened.vue'
 
 export default {
   name: 'BoatView',
@@ -175,6 +180,7 @@ export default {
     CarouselView,
     FullCalendar,
     Datepicker,
+    CalendarLegend
   },
   data: function(){
     return {

@@ -16,6 +16,10 @@
             <button v-if="!createNewTerm.formVisible && !showSelectedReservation" class="btn btn-primary mx-2" v-on:click="createNewTerm.formVisible=true">Add Term</button>
             </div>
           </div>
+          <div class="col-4"></div>
+          <div class="col-4">
+              <CalendarLegend/>
+          </div>
         </div>
 
         <div v-if="createNewTerm.formVisible" class="row" style="margin-top: 30px;">
@@ -57,6 +61,7 @@ import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
 
 // FULL CALNEDAR
+import CalendarLegend from '../components/CalendarLegened.vue'
 import '@fullcalendar/core/vdom' // solves problem with Vite
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -79,7 +84,8 @@ export default {
   components: {
     FullCalendar,
     Datepicker,
-    ReservationViewComponent
+    ReservationViewComponent,
+    CalendarLegend
   },
   data: function(){
     return {
@@ -260,7 +266,5 @@ export default {
 
 
 <style scoped>
-
-
 
 </style>

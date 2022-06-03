@@ -97,6 +97,49 @@
         </div>
 
 
+         <div class="row" style="margin-top:30px;">
+          <div class="col">
+            <h1>Calendar</h1>
+            <FullCalendar :options="calendarOptions" />
+            <br>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <div class="d-flex justify-content-start">
+            <button v-if="!createNewTerm.formVisible && !showSelectedReservation" class="btn btn-primary mx-2" v-on:click="createNewTerm.formVisible=true">Add Term</button>
+            </div>
+          </div>
+          <div class="col-4"></div>
+          <div class="col-4">
+              <CalendarLegend/>
+          </div>
+        </div>
+
+        <div v-if="createNewTerm.formVisible" class="row" style="margin-top: 30px;">
+          <div class="col-4">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Create new Term</h4>
+                <Datepicker v-on:click="showCreateNewTermForm()" v-model="createNewTerm.date" range></Datepicker>
+                <select class="form-select" v-model="createNewTerm.type" style="margin-top: 30px;">
+                  <option value="AVAILABILE">AVAILABILE</option>
+                  <option value="UNAVAILABLE">UNAVAILABLE</option>
+                </select> <br>
+
+                <p class="card-text text-danger">{{createNewTerm.msg}}</p>
+                <button class="btn btn-danger m-1" v-on:click="createNewTerm.formVisible=false">Cancel</button>
+                <button :disabled="!createNewTerm.valid" class="btn btn-success m-1" v-on:click="addNewTerm()">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
     </div>
 
 </template>
@@ -121,19 +164,55 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
 
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css'
+
+import CalendarLegend from '../components/CalendarLegened.vue'
+
 export default {
   name: 'CottageView',
   components: {
-    CarouselView
+    CarouselView,
+    FullCalendar,
+    Datepicker,
+    CalendarLegend
   },
   data: function(){
     return {
         cottageName: "",
         cottage: {},
+
+        terms: [],
+
+        calendarOptions: {
+          plugins: [ dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin ],
+          initialView: 'dayGridMonth', 
+          selectable: true,
+          droppable: true,
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          events: [
+            
+          ]
+        },
+        createNewTerm:{
+          date: [],
+          formVisible: false,
+          type: 'AVAILABILE',
+          msg: '',
+          valid: true,
+        },
+
+
+
     }
   },
   mounted: function(){
     this.cottageName = decodeURI(window.location.pathname.split('/')[2]);
+    this.calendarOptions.select = this.selectInCalendar;
     this.loadData();
   },
   methods: {
@@ -142,10 +221,7 @@ export default {
         axios.get('http://localhost:8180/api/cottages/byowner/'+encodeURIComponent(this.cottageName)).then(resp => {
             this.cottage = resp.data;
             console.log(resp.data);
-
-
-
-
+            this.loadDataCalendar();
 
              var iconFeature = new Feature({
 				    	geometry: new Point(fromLonLat([this.cottage.address.longitude, this.cottage.address.latitude])),
@@ -200,35 +276,110 @@ export default {
               })
             });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         });
-
-
-       
-
     },
     setImg: function(image){
       return 'http://localhost:8180/'+image.path;
     },
     editData: function(cottage){
         this.$router.push({ path: '/editMyCottage/'+encodeURIComponent(this.cottage.name)});
+    },
+    loadDataCalendar: function(){
+       axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+        axios.get('http://localhost:8180/api/cottage-term/'+this.cottage.id.toString()).then(resp => {
+            console.log(resp.data);
+            this.terms = resp.data;
+            this.calendarOptions.events = [];
+            for (let e of this.terms) {
+                console.log(e);
+                this.calendarOptions.events.push(this.eventTransform(e));
+            }
+
+        });
+    },
+    eventTransform: function(e){
+        e.display = 'auto'
+        if(e.isa_termType === 'TERM'){
+            e.textColor = "black"
+            if(e.isa_termAvailability === 'UNAVAILABLE'){
+                e.backgroundColor = "#ffe3e3"
+                e.borderColor = "#ffe3e3"
+            }else if(e.isa_termAvailability === 'AVAILABILE'){
+                e.backgroundColor = "#ecffe3"
+                e.borderColor = "#ecffe3"    
+            }
+        }else if(e.isa_termType === 'RESERVATION'){
+            if(e.isa_statusOfReservation === 'CANCELLED'){
+                e.backgroundColor = "#35013d"
+                e.borderColor = "#35013d" 
+            }
+            else if(e.isa_statusOfReservation === 'ACTIVE'){
+                e.backgroundColor = "#a100ba"
+                e.borderColor = "#a100ba" 
+            }
+        }else if(e.isa_termType === 'FAST_RESERVATION'){
+            if(e.isa_isTakenFastReservation){
+                e.backgroundColor = "#0057ba"
+                e.borderColor = "#0057ba"
+            }else{
+                e.backgroundColor = "#06ba00"
+                e.borderColor = "#06ba00"
+            }
+        }
+        e.description = "opis neki"
+        e.editable = false
+        e.overlap = false
+        return e;
+    },
+    showCreateNewTermForm: function(){
+      this.createNewTerm.msg = ''
+      this.createNewTerm.formVisible = true;
+      this.createNewTerm.valid = true;
+    },
+    selectInCalendar: function(selectedDate){
+      if(this.showSelectedReservation) return;
+      this.createNewTerm.msg = ''
+      this.createNewTerm.valid = true;
+      this.createNewTerm.date[0] = new Date(selectedDate.start)
+      this.createNewTerm.date[1] = new Date(new Date(selectedDate.end) - 1000) // TODO: minuti59
+      this.createNewTerm.formVisible = true;
+      if(this.overlap()){
+          this.createNewTerm.msg = 'Error, new term have overlap with other term'
+          this.createNewTerm.valid = false;
+      }
+    },
+    addNewTerm: function(){
+        if(this.overlap()){
+          this.createNewTerm.msg = 'Error, new term have overlap with other term'
+          this.createNewTerm.valid = false;
+          return;
+        }
+
+        const startTimeForBackend = new Date(Date.UTC(this.createNewTerm.date[0].getFullYear(), this.createNewTerm.date[0].getMonth(), this.createNewTerm.date[0].getDate(), this.createNewTerm.date[0].getHours(), this.createNewTerm.date[0].getMinutes()))
+        const endTimeForBackend = new Date(Date.UTC(this.createNewTerm.date[1].getFullYear(), this.createNewTerm.date[1].getMonth(), this.createNewTerm.date[1].getDate(), this.createNewTerm.date[1].getHours(), this.createNewTerm.date[1].getMinutes()))
+
+        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+        axios.post('http://localhost:8180/api/cottage-term', {
+          "idEntity" : this.cottage.id,
+          "termAvailability":this.createNewTerm.type,
+          "startTime":startTimeForBackend,
+          "endTime":endTimeForBackend,
+        }).then(
+          (resp) => {
+            this.loadDataCalendar();
+          }, 
+          (err)=>{
+            alert(err)
+        });
+    },
+    overlap: function(){
+        for(const event of this.calendarOptions.events){
+            if(!((new Date(event.end) < this.createNewTerm.date[0]) || (this.createNewTerm.date[1] < new Date(event.start)))){
+              console.log('OVERLAP')
+              return true;
+            }
+        }
+        return false;
     },
   }
 }

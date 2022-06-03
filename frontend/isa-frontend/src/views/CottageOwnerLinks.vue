@@ -4,10 +4,13 @@
         <div class="container">
             <div class="row align-items-center justify-content-between">
                 <div class="col">
-                    <a href="/cottageOwnerProfile" class="nav-link">Profile</a>
+                    <a href="/cottageOwnerCottages" class="nav-link">My Cottages</a>
                 </div>
                 <div class="col">
-                    <a href="/cottageOwnerCottages" class="nav-link">My Cottages</a>
+                    <a href="/cottageowner/calendar" class="nav-link">Calendar</a>
+                </div>
+                 <div class="col">
+                    <a href="/cottageOwnerProfile" class="nav-link">Profile</a>
                 </div>
             </div>
         </div>

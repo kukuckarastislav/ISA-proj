@@ -101,11 +101,16 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
-            events.add(new EventDTO(instructorReservation, instructorReservation.getAdventure().getName()));
+            String title = instructorReservation.getAdventure().getName() + " - " + instructorReservation.getClient().getFullName();
+            events.add(new EventDTO(instructorReservation, title));
         }
 
         for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
-            events.add(new EventDTO(instructorFastReservation, instructorFastReservation.getAdventure().getName()));
+            String title = instructorFastReservation.getAdventure().getName();
+            Client client = instructorFastReservation.getClientWhoTake();
+            if(client != null)
+                title += " - " + client.getFullName();
+            events.add(new EventDTO(instructorFastReservation, title));
         }
 
         return events;
@@ -230,7 +235,8 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
-            EventDTO e = new EventDTO(instructorReservation, instructorReservation.getAdventure().getName());
+            String title = instructorReservation.getAdventure().getName() + " - " + instructorReservation.getClient().getFullName();
+            EventDTO e = new EventDTO(instructorReservation, title);
             if(instructorReservation.getAdventure().getId() != idAdventure){
                 e.hideData();
             }
@@ -238,7 +244,11 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
-            EventDTO e = new EventDTO(instructorFastReservation, instructorFastReservation.getAdventure().getName());
+            String title = instructorFastReservation.getAdventure().getName();
+            Client client = instructorFastReservation.getClientWhoTake();
+            if(client != null)
+                title += " - " + client.getFullName();
+            EventDTO e = new EventDTO(instructorFastReservation, title);
             if(instructorFastReservation.getAdventure().getId() != idAdventure){
                 e.hideData();
             }

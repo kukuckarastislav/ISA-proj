@@ -9,7 +9,8 @@ import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.enums.ReservationCancellationConditions;
 
 public class CottageDTO {
-	
+
+		private int id;
 	 	private String cottageOwnerUsername;
 	    private String name;
 	    private Address address;
@@ -24,6 +25,7 @@ public class CottageDTO {
 	    
 	    
 	    public CottageDTO(Cottage cottage, String ownerName) {
+			this.id = cottage.getId();
 	    	this.cottageOwnerUsername = ownerName;
 			this.name = cottage.getName();
 			this.address = cottage.getAddress();
@@ -59,6 +61,7 @@ public class CottageDTO {
 		}
 		
 		public CottageDTO(Cottage cottage, ArrayList<EntityImageDTO> images) {
+			this.id = cottage.getId();
 	        this.cottageOwnerUsername = cottage.getOwner().getEmail();
 	        this.name = cottage.getName();
 	        this.address = cottage.getAddress();
@@ -124,7 +127,12 @@ public class CottageDTO {
 		public void setAverageGrade(double averageGrade) {
 			this.averageGrade = averageGrade;
 		}
-	    
-	    
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }
