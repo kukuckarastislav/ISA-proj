@@ -97,7 +97,6 @@ public class BoatOwner extends Person {
 		this.loyalty = loyalty;
 	}
 
-	//TODO: geter brodova
 	@JsonIgnore
 	public Set<Boat> getBoates() {
 		if(boates != null){

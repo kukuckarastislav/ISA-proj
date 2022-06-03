@@ -93,6 +93,44 @@ public class EventDTO {
         this.end = boatFastReservation.getEndTime();
     }
 
+    // ========================================================================
+    public EventDTO(CottageTerms cottageTerm) {
+        this.isa_idTerm = cottageTerm.getId();
+        this.isa_termType = TermType.TERM;
+        this.isa_termAvailability = cottageTerm.getTermAvailability();
+        this.isa_statusOfReservation = null;
+        this.isa_isTakenFastReservation = false;
+        if(this.isa_termAvailability == TermAvailability.AVAILABILE){
+            this.title = "AVAILABILE";
+        }else{
+            this.title = "UNAVAILABLE";
+        }
+        this.start = cottageTerm.getStartTime();
+        this.end = cottageTerm.getEndTime();
+    }
+
+    public EventDTO(CottageReservations cottageReservation, String title) {
+        this.isa_idTerm = cottageReservation.getId();
+        this.isa_termType = TermType.RESERVATION;
+        this.isa_termAvailability = null;
+        this.isa_statusOfReservation = cottageReservation.getStatusOfReservation();
+        this.isa_isTakenFastReservation = false;
+        this.title = title;
+        this.start = cottageReservation.getStartTime();
+        this.end = cottageReservation.getEndTime();
+    }
+
+    public EventDTO(CottageFastReservation cottageFastReservation, String title) {
+        this.isa_idTerm = cottageFastReservation.getId();
+        this.isa_termType = TermType.FAST_RESERVATION;
+        this.isa_termAvailability = null;
+        this.isa_statusOfReservation = null;
+        this.isa_isTakenFastReservation = cottageFastReservation.isTaken();
+        this.title = title;
+        this.start = cottageFastReservation.getStartTime();
+        this.end = cottageFastReservation.getEndTime();
+    }
+
     public int getIsa_idTerm() {
         return isa_idTerm;
     }

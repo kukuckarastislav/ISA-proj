@@ -19,7 +19,7 @@ public class BoatFastReservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@OneToMany (mappedBy = "boatFastReservation",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "boatFastReservation",fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<BoatFastResHistory> boatFastResHistories = new HashSet<BoatFastResHistory>();
 
 	@ManyToOne(fetch = FetchType.EAGER)

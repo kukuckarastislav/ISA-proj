@@ -1,18 +1,20 @@
 package com.isa.isa.model.termins.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.isa.isa.model.*;
+import com.isa.isa.model.termins.DTO.EventDTO;
+import com.isa.isa.model.termins.DTO.NewEntityTermDTO;
+import com.isa.isa.model.termins.model.*;
+import com.isa.isa.repository.CottageOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.model.Cottage;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.NewCottageTermDto;
-import com.isa.isa.model.termins.model.CottageFastReservation;
-import com.isa.isa.model.termins.model.CottageReservations;
-import com.isa.isa.model.termins.model.CottageTerms;
-import com.isa.isa.model.termins.model.TermAvailability;
 import com.isa.isa.model.termins.repository.CottageFastReservationRepository;
 import com.isa.isa.model.termins.repository.CottageReservationRepository;
 import com.isa.isa.model.termins.repository.CottageTermRepository;
@@ -20,6 +22,9 @@ import com.isa.isa.repository.CottageRepository;
 
 @Service
 public class CottageTermService {
+
+	@Autowired
+	private CottageOwnerRepository cottageOwnerRepository;
 
 	@Autowired
     private CottageTermRepository cottageTermRepository;
@@ -98,5 +103,103 @@ public class CottageTermService {
 	            return true;
 	
 	      return false;
+	}
+
+    public ArrayList<EventDTO> getTermForCottageCalendar(String username, int idCottage) {
+		ArrayList<EventDTO> events = new ArrayList<>();
+
+		CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(username);
+		if(cottageOwner == null) return events;
+
+		for(CottageTerms cottageTerm : cottageTermRepository.findAllByCottageId(idCottage)){
+			events.add(new EventDTO(cottageTerm));
+		}
+
+		for(CottageReservations cottageReservation : cottageReservationRepository.findAllByCottageId(idCottage)){
+			events.add(new EventDTO(cottageReservation, cottageReservation.getClient().getFullName()));
+		}
+
+		for(CottageFastReservation cottageFastReservation : cottageFastReservationRepository.findAllByCottageId(idCottage)){
+			String title = "";
+			Client client = cottageFastReservation.getClientWhoTake();
+			if(client != null)
+				title = client.getFullName();
+			events.add(new EventDTO(cottageFastReservation,title));
+		}
+
+		return events;
+    }
+
+	public ArrayList<EventDTO> getTermForCottageOwnerCalendar(String username) {
+		ArrayList<EventDTO> events = new ArrayList<>();
+
+		CottageOwner cottageOwner = cottageOwnerRepository.getByEmailWithCottages(username);
+		if(cottageOwner == null) return events;
+
+		for(Cottage cottage : cottageOwner.getCottages()){
+			for(CottageReservations cottageReservation : cottageReservationRepository.findAllByCottageId(cottage.getId())){
+				String title = cottageReservation.getCottage().getName() + " - " + cottageReservation.getClient().getFullName();
+				events.add(new EventDTO(cottageReservation, title));
+			}
+
+			for(CottageFastReservation cottageFastReservation : cottageFastReservationRepository.findAllByCottageId(cottage.getId())){
+				String title = cottageFastReservation.getCottage().getName();
+				Client client = cottageFastReservation.getClientWhoTake();
+				if(client != null)
+					title += " - " + client.getFullName();
+				events.add(new EventDTO(cottageFastReservation,title));
+			}
+
+		}
+
+
+
+		return events;
+	}
+
+	public Boolean createTermForCottage(String username, NewEntityTermDTO newEntityTermDTO) {
+		CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(username);
+		if(cottageOwner == null) return false;
+
+		Optional<Cottage> cottageOptional = cottageRepository.findById(newEntityTermDTO.getIdEntity());
+		if(cottageOptional.isEmpty()) return false;
+		Cottage cottage = cottageOptional.get();
+
+		if(overlap(newEntityTermDTO.getStartTime(), newEntityTermDTO.getEndTime(), cottage)){
+			return false;
+		}
+
+		CottageTerms cottageTerm = new CottageTerms(cottage, newEntityTermDTO.getTermAvailability(), newEntityTermDTO.getStartTime(), newEntityTermDTO.getEndTime());
+		cottageTermRepository.saveAndFlush(cottageTerm);
+
+		return true;
+	}
+
+	private Boolean overlap(LocalDateTime startTime, LocalDateTime endTime, Cottage cottage){
+		for(CottageTerms cottageTerm : cottageTermRepository.findAllByCottageId(cottage.getId())){
+			if(cottageTerm.isOverlap(startTime, endTime)){
+				System.out.println("Overlaping with Cottage term");
+				return true;
+			}
+		}
+
+		for(CottageReservations cottageReservation : cottageReservationRepository.findAllByCottageId(cottage.getId())){
+			if(cottageReservation.getStatusOfReservation() == StatusOfReservation.ACTIVE){
+				if(cottageReservation.isOverlap(startTime, endTime)){
+					System.out.println("Overlaping with Cottage Reservation");
+					return true;
+				}
+			}
+		}
+
+		for(CottageFastReservation cottageFastReservation : cottageFastReservationRepository.findAllByCottageId(cottage.getId())){
+			if(cottageFastReservation.isOverlap(startTime, endTime)){
+				System.out.println("Overlaping with Cottage FAST Reservation");
+				return true;
+			}
+		}
+
+
+		return false;
 	}
 }

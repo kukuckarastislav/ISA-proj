@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.isa.isa.model.Address;
+import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.report.model.Report;
@@ -19,7 +20,7 @@ public class CottageFastReservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@OneToMany (mappedBy = "cottageFastReservation",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "cottageFastReservation",fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<CottageFastResHistory> cottageFastResHistories = new HashSet<CottageFastResHistory>();
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -123,5 +124,30 @@ public class CottageFastReservation {
 
 	public void setReport(Report report) {
 		this.report = report;
+	}
+
+	public Client getClientWhoTake() {
+		for(CottageFastResHistory cottageFastResHistory : cottageFastResHistories){
+			if(cottageFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN){
+				return cottageFastResHistory.getClient();
+			}
+		}
+		return null;
+	}
+
+	public Boolean isTaken(){
+		for(CottageFastResHistory cottageFastResHistory : cottageFastResHistories){
+			if(cottageFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN)
+				return true;
+		}
+		return false;
+	}
+
+	public Boolean isOverlap(LocalDateTime newStartTime, LocalDateTime newEndTime) {
+		if(this.endTime.isBefore(newStartTime) || newEndTime.isBefore(this.startTime)){
+			return false;
+		}else{
+			return true;
+		}
 	}
 }

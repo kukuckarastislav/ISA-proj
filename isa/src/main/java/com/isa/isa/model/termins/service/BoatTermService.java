@@ -121,7 +121,7 @@ public class BoatTermService {
 			events.add(new EventDTO(BoatFastReservation, BoatFastReservation.getClient().getFullName()));
 		}
 
-		for(BoatFastReservation boatFastReservation : boatFastReservationRepository.getByIdWithHistory(idBoat)){
+		for(BoatFastReservation boatFastReservation : boatFastReservationRepository.findAllByBoatId(idBoat)){
 			String title = "";
 			Client client = boatFastReservation.getClientWhoTake();
 			if(client != null)
@@ -145,16 +145,15 @@ public class BoatTermService {
 				events.add(new EventDTO(boatFastReservation, title));
 			}
 
-			for(BoatFastReservation boatFastReservation : boatFastReservationRepository.getByIdWithHistory(boat.getId())){
+			for(BoatFastReservation boatFastReservation : boatFastReservationRepository.findAllByBoatId(boat.getId())){
 				String title = boatFastReservation.getBoat().getName();
 				Client client = boatFastReservation.getClientWhoTake();
 				if(client != null)
 					title += " - " + client.getFullName();
 				events.add(new EventDTO(boatFastReservation,title));
 			}
+
 		}
-
-
 
 		return events;
 	}
@@ -194,12 +193,13 @@ public class BoatTermService {
 			}
 		}
 
-		for(BoatFastReservation boatFastReservation : boatFastReservationRepository.getByIdWithHistory(boat.getId())){
+		for(BoatFastReservation boatFastReservation : boatFastReservationRepository.findAllByBoatId(boat.getId())){
 			if(boatFastReservation.isOverlap(startTime, endTime)){
 				System.out.println("Overlaping with Boat FAST Reservation");
 				return true;
 			}
 		}
+
 
 		return false;
 	}

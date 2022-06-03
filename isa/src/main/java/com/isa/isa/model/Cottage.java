@@ -200,4 +200,6 @@ public class Cottage {
 	public void setReservationCancellationConditions(ReservationCancellationConditions reservationCancellationConditions) {
 		this.reservationCancellationConditions = reservationCancellationConditions;
 	}
+
+
 }

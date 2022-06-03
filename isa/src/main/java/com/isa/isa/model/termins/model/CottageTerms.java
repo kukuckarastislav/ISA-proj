@@ -48,8 +48,15 @@ public class CottageTerms {
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
-	
-	public int getId() {
+
+    public CottageTerms(Cottage cottage, TermAvailability termAvailability, LocalDateTime startTime, LocalDateTime endTime) {
+		this.cottage = cottage;
+		this.termAvailability = termAvailability;
+		this.startTime = startTime;
+		this.endTime = endTime;
+    }
+
+    public int getId() {
 		return id;
 	}
 	public void setId(int id) {
@@ -79,6 +86,13 @@ public class CottageTerms {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
-    
-    
+
+
+	public Boolean isOverlap(LocalDateTime newStartTime, LocalDateTime newEndTime) {
+		if(this.endTime.isBefore(newStartTime) || newEndTime.isBefore(this.startTime)){
+			return false;
+		}else{
+			return true;
+		}
+	}
 }
