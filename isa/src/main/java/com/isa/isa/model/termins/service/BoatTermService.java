@@ -141,7 +141,7 @@ public class BoatTermService {
 
 		for(Boat boat : boatOwner.getBoates()){
 			for(BoatReservations boatFastReservation : boatReservationRepository.findAllByBoatId(boat.getId())){
-				String title = boatFastReservation.getClient().getFullName() + " - " + boatFastReservation.getClient().getFullName();
+				String title = boatFastReservation.getBoat().getName() + " - " + boatFastReservation.getClient().getFullName();
 				events.add(new EventDTO(boatFastReservation, title));
 			}
 
