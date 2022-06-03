@@ -441,7 +441,6 @@ export default {
       this.fastReservationForm.maxNumberOfPeople = this.adventure.maxNumberOfPeople
       this.fastReservationForm.price = this.adventure.price.price
       this.fastReservationForm.itemPrices = []
-
     },
     addItemPriceFastReservation: function(itPrice){
        for(let i = 0; i < this.fastReservationForm.itemPrices.length; i++) {
@@ -478,6 +477,8 @@ export default {
           if(resp.data.startsWith("error")){
             alert(resp.data)
           }else{
+            this.openFastReservationForm();
+            this.fastReservationForm.visible = false;
             this.loadData(false);
           }
         }, 
