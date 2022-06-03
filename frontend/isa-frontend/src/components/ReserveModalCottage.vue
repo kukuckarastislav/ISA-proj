@@ -66,12 +66,16 @@ export default {
       totalPrice: 0
     };
   },
+  watch:{
+      date(value, oldValue){
+        this.calculatePrice();
+      }
+  },
   updated() {
     this.calculatePrice();
   },
   methods: {
     close() {
-        console.log((this.date[1].getTime()-this.date[0].getTime())/ (1000 * 3600 * 24))
       this.$emit('close');
     },
     calculatePrice(){
@@ -84,6 +88,10 @@ export default {
         this.totalPrice += numOfDays * this.cottage.price.price;
     },
     reserve() {
+      if(!this.date){
+        alert("Morate uneti datum.")
+        return;
+      }
       axios.defaults.headers.common["Authorization"] =
                 "Bearer " + window.sessionStorage.getItem("jwt");  
      axios

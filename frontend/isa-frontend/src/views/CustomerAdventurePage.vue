@@ -137,7 +137,7 @@
             :key="a.startTime" style="border: 1px solid gray; width: 50%; margin-left:25%; margin-top: 5%;text-align:left" class="table">
     <tbody>
       <tr>
-        <td style="border:none;" colspan="2">{{(new Date(a.startTime)).getDate()}}/{{(new Date(a.startTime)).getMonth()+1}}/{{(new Date(a.startTime)).getFullYear()}} {{(new Date(a.startTime)).getHours()}}:{{(new Date(a.startTime)).getMinutes()}}-{{(new Date(a.endTime)).getDate()}}/{{(new Date(a.endTime)).getMonth()+1}}/{{(new Date(a.endTime)).getFullYear()}} {{(new Date(a.endTime)).getHours()}}:{{(new Date(a.endTime)).getMinutes()}}</td>
+        <td style="border:none;" colspan="2">{{(new Date(a.startTime)).getDate()}}/{{(new Date(a.startTime)).getMonth()+1}}/{{(new Date(a.startTime)).getFullYear()}} {{(new Date(a.startTime)).getHours()}}:{{(new Date(a.startTime)).getMinutes()<10?'0':''}}{{(new Date(a.startTime)).getMinutes()}}-{{(new Date(a.endTime)).getDate()}}/{{(new Date(a.endTime)).getMonth()+1}}/{{(new Date(a.endTime)).getFullYear()}} {{(new Date(a.endTime)).getHours()}}:{{(new Date(a.endTime)).getMinutes()<10?'0':''}}{{(new Date(a.endTime)).getMinutes()}}</td>
         <td style="border:none;text-align:center">{{a.discount}}% OFF</td>
       </tr>
       <tr>
@@ -192,7 +192,7 @@
     <tbody v-if="a.statusOfRevision=='APPROVED'">
       <tr>
         <td style="border:none;zoom:0.5"><star-rating style="margin-left:7em" v-model:rating="a.grade" v-bind:show-rating=false v-bind:read-only=true /></td>
-        <td style="border:none;text-align:center">{{(new Date(a.createdAt)).getDate()}}/{{(new Date(a.createdAt)).getMonth()+1}}/{{(new Date(a.createdAt)).getFullYear()}} {{(new Date(a.createdAt)).getHours()}}:{{(new Date(a.createdAt)).getMinutes()}}</td>
+        <td style="border:none;text-align:center">{{(new Date(a.createdAt)).getDate()}}/{{(new Date(a.createdAt)).getMonth()+1}}/{{(new Date(a.createdAt)).getFullYear()}} {{(new Date(a.createdAt)).getHours()}}:{{(new Date(a.createdAt)).getMinutes()<10?'0':''}}{{(new Date(a.createdAt)).getMinutes()}}</td>
       </tr>
       <tr>       
         <td style="border:none;width:26%; text-align:center" colspan="2">{{a.comment}} </td>
@@ -207,7 +207,7 @@
     <tbody v-if="a.statusOfRevision=='APPROVED'">
       <tr>
         <td style="border:none;zoom:0.5"><star-rating style="margin-left:7em" v-model:rating="a.grade" v-bind:show-rating=false v-bind:read-only=true /></td>
-        <td style="border:none;text-align:center">{{(new Date(a.createdAt)).getDate()}}/{{(new Date(a.createdAt)).getMonth()+1}}/{{(new Date(a.createdAt)).getFullYear()}} {{(new Date(a.createdAt)).getHours()}}:{{(new Date(a.createdAt)).getMinutes()}}</td>
+        <td style="border:none;text-align:center">{{(new Date(a.createdAt)).getDate()}}/{{(new Date(a.createdAt)).getMonth()+1}}/{{(new Date(a.createdAt)).getFullYear()}} {{(new Date(a.createdAt)).getHours()}}:{{(new Date(a.createdAt)).getMinutes()<10?'0':''}}{{(new Date(a.createdAt)).getMinutes()}}</td>
       </tr>
       <tr>       
         <td style="border:none;width:26%; text-align:center" colspan="2">{{a.comment}} </td>

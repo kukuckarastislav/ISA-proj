@@ -59,7 +59,7 @@
         <td style="border:none;">Start date:
         </td>
         <td style="border:none;"></td>
-        {{a.startTime}}
+        {{(new Date(a.startTime)).getDate()}}/{{(new Date(a.startTime)).getMonth()+1}}/{{(new Date(a.startTime)).getFullYear()}} {{(new Date(a.startTime)).getHours()}}:{{(new Date(a.startTime)).getMinutes()<10?'0':''}}{{(new Date(a.startTime)).getMinutes()}}
         <td v-if="HasPassed(a) && a.isRevised==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" style="min-width:5.8em" class="btn btn-primary" v-on:click="showModal(a,'adventure')">Review</button></td>
         </tr>
       <tr>
@@ -67,7 +67,7 @@
         <td style="border:none;">End date:
         </td>
         <td style="border:none;"></td>
-        {{a.endTime}}        
+        {{(new Date(a.endTime)).getDate()}}/{{(new Date(a.endTime)).getMonth()+1}}/{{(new Date(a.endTime)).getFullYear()}} {{(new Date(a.endTime)).getHours()}}:{{(new Date(a.endTime)).getMinutes()<10?'0':''}}{{(new Date(a.endTime)).getMinutes()}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelAdventure(a)">Cancel</button></td>
@@ -110,7 +110,7 @@
         <td style="border:none;">Start date:
         </td>
         <td style="border:none;"></td>
-        {{a.startTime}}
+        {{(new Date(a.startTime)).getDate()}}/{{(new Date(a.startTime)).getMonth()+1}}/{{(new Date(a.startTime)).getFullYear()}} {{(new Date(a.startTime)).getHours()}}:{{(new Date(a.startTime)).getMinutes()<10?'0':''}}{{(new Date(a.startTime)).getMinutes()}}
         <td v-if="HasPassed(a) && a.isRevised==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" style="min-width:5.8em" class="btn btn-primary" v-on:click="showModal(a,'cottage')">Review</button></td>
         </tr>
       <tr>
@@ -118,7 +118,7 @@
         <td style="border:none;">End date:
         </td>
         <td style="border:none;"></td>
-        {{a.endTime}}        
+        {{(new Date(a.endTime)).getDate()}}/{{(new Date(a.endTime)).getMonth()+1}}/{{(new Date(a.endTime)).getFullYear()}} {{(new Date(a.endTime)).getHours()}}:{{(new Date(a.endTime)).getMinutes()<10?'0':''}}{{(new Date(a.endTime)).getMinutes()}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelCottage(a)">Cancel</button></td>
@@ -161,7 +161,7 @@
         <td style="border:none;">Start date:
         </td>
         <td style="border:none;"></td>
-        {{a.startTime}}
+        {{(new Date(a.startTime)).getDate()}}/{{(new Date(a.startTime)).getMonth()+1}}/{{(new Date(a.startTime)).getFullYear()}} {{(new Date(a.startTime)).getHours()}}:{{(new Date(a.startTime)).getMinutes()<10?'0':''}}{{(new Date(a.startTime)).getMinutes()}}
         <td v-if="HasPassed(a) && a.isRevised==false && a.status!=='CANCELLED'" style="border:none;"><button type="button" style="min-width:5.8em" class="btn btn-primary" v-on:click="showModal(a,'boat')">Review</button></td>
         </tr>
       <tr>
@@ -169,7 +169,7 @@
         <td style="border:none;">End date:
         </td>
         <td style="border:none;"></td>
-        {{a.endTime}}        
+        {{(new Date(a.endTime)).getDate()}}/{{(new Date(a.endTime)).getMonth()+1}}/{{(new Date(a.endTime)).getFullYear()}} {{(new Date(a.endTime)).getHours()}}:{{(new Date(a.endTime)).getMinutes()<10?'0':''}}{{(new Date(a.endTime)).getMinutes()}}        
         <td v-if="a.status==='CANCELLED'" style="border:none;padding-right:1em;color:red">CANCELLED</td>
         <td v-else-if="LessThanthreeDays(a)" style="border:none;padding-right:1em;color:red"></td>
         <td  v-else style="border:none;padding-right:1em"><button type="button" class="btn btn-danger" v-on:click="cancelBoat(a)">Cancel</button></td>

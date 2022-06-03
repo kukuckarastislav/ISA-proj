@@ -87,7 +87,7 @@
                                 Instructor: {{n.instructor.firstName}} {{n.instructor.lastName}}<br>
                                 Description: {{n.description}}<br>
                                 Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}} <br>
-                                Price: ${{n.price.price}}/day <br>
+                                Price: ${{n.price.price}}/hour <br>
                                 Grade:
                             <span v-if="n.instructor.averageGrade===0">Not yet rated</span>  
                             <span v-else>{{n.instructor.averageGrade}}</span><br>
@@ -150,7 +150,7 @@
                             <p class="card-text">
                             Description: {{n.promotionalDescription}}<br>
                             Address: {{n.address.country}}, {{n.address.city}}, {{n.address.street}} {{n.address.number}} <br>
-                            Price: ${{n.price.price}}/day <br>
+                            Price: ${{n.price.price}}/hour <br>
                                 Grade:
                             <span v-if="n.averageGrade===0">Not yet rated</span>  
                             <span v-else>{{n.averageGrade}}</span><br>
@@ -198,20 +198,6 @@ export default {
   StarRating,
   Datepicker
 },
-setup() {
-        const date = ref();
-
-        // For demo purposes assign range from the current date
-        onMounted(() => {
-            const startDate = new Date();
-            const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-            date.value = [startDate, endDate];
-        })
-        
-        return {
-            date,
-        }
-    },
   data: function(){
     return {
       msgFromBackend: '',
