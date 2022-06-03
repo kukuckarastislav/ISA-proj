@@ -37,7 +37,16 @@ public class BoatTerms {
     	this.startTime = startTime;
     	this.endTime = endTime;
     }
-    
+
+
+
+	public BoatTerms(Boat boat, TermAvailability termAvailability, LocalDateTime startTime, LocalDateTime endTime) {
+		this.boat = boat;
+		this.termAvailability = termAvailability;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -68,6 +77,13 @@ public class BoatTerms {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
-    
-    
+
+
+	public Boolean isOverlap(LocalDateTime newStartTime, LocalDateTime newEndTime) {
+		if(this.endTime.isBefore(newStartTime) || newEndTime.isBefore(this.startTime)){
+			return false;
+		}else{
+			return true;
+		}
+	}
 }

@@ -1,12 +1,15 @@
 package com.isa.isa.model.termins.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.isa.isa.model.BoatOwner;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.termins.DTO.EventDTO;
+import com.isa.isa.model.termins.DTO.NewEntityTermDTO;
 import com.isa.isa.model.termins.model.*;
 import com.isa.isa.repository.BoatOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,5 +157,50 @@ public class BoatTermService {
 
 
 		return events;
+	}
+
+	public Boolean createTermForBoat(String username, NewEntityTermDTO newEntityTermDTO) {
+		BoatOwner boatOwner = boatOwnerRepository.getByEmail(username);
+		if(boatOwner == null) return false;
+
+		Optional<Boat> boatOptional = boatRepository.findById(newEntityTermDTO.getIdEntity());
+		if(boatOptional.isEmpty()) return false;
+		Boat boat = boatOptional.get();
+
+		if(overlap(newEntityTermDTO.getStartTime(), newEntityTermDTO.getEndTime(), boat)){
+			return false;
+		}
+
+		BoatTerms boatTerms = new BoatTerms(boat, newEntityTermDTO.getTermAvailability(), newEntityTermDTO.getStartTime(), newEntityTermDTO.getEndTime());
+		boatTermRepository.saveAndFlush(boatTerms);
+
+		return true;
+	}
+
+	private Boolean overlap(LocalDateTime startTime, LocalDateTime endTime, Boat boat){
+		for(BoatTerms boatTerms : boatTermRepository.findAllByBoatId(boat.getId())){
+			if(boatTerms.isOverlap(startTime, endTime)){
+				System.out.println("Overlaping with Boat term");
+				return true;
+			}
+		}
+
+		for(BoatReservations boatReservations : boatReservationRepository.findAllByBoatId(boat.getId())){
+			if(boatReservations.getStatusOfReservation() == StatusOfReservation.ACTIVE){
+				if(boatReservations.isOverlap(startTime, endTime)){
+					System.out.println("Overlaping with Boat Reservation");
+					return true;
+				}
+			}
+		}
+
+		for(BoatFastReservation boatFastReservation : boatFastReservationRepository.getByIdWithHistory(boat.getId())){
+			if(boatFastReservation.isOverlap(startTime, endTime)){
+				System.out.println("Overlaping with Boat FAST Reservation");
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

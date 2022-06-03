@@ -14,6 +14,7 @@ import com.isa.isa.model.enums.ReservationCancellationConditions;
 
 public class BoatDTO {
 
+	private int id;
 	private String name;
 	private String type;
 	private int length;
@@ -38,6 +39,7 @@ public class BoatDTO {
 	
 	public BoatDTO(Boat boat)
 	{
+		this.id = boat.getId();
 		this.name = boat.getName();
 		this.type = boat.getType();
 		this.length = boat.getLength();
@@ -68,7 +70,7 @@ public class BoatDTO {
 	}
 	
 	public BoatDTO(Boat boat, ArrayList<EntityImageDTO> images) {
-        
+        this.id = boat.getId();
 		this.name = boat.getName();
 		this.type = boat.getType();
 		this.length = boat.getLength();
@@ -185,7 +187,12 @@ public class BoatDTO {
 	public void setImages(ArrayList<EntityImageDTO> images) {
 		this.images = images;
 	}
-	
-	
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }
