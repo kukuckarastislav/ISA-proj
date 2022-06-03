@@ -102,7 +102,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
             events.add(new EventDTO(instructorReservation, title));
         }
 
-        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsername(username)){
             String title = instructorFastReservation.getAdventure().getName();
             Client client = instructorFastReservation.getClientWhoTake();
             if(client != null)
@@ -159,7 +159,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
     }
 
     private boolean overlapWithFastReservation(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor) {
-        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(instructor.getEmail())){
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsername(instructor.getEmail())){
             if(instructorFastReservation.isOverlap(startTime, endTime)){
                 System.out.println("Overlaping with Instructor FAST Reservation");
                 return true;
@@ -220,7 +220,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
             instructorReservations.add(instructorReservationDTO);
         }
 
-        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsername(username)){
             InstructorReservationDTO instructorReservationDTO = new InstructorReservationDTO(instructorFastReservation);
             Client client = instructorFastReservation.getClientWhoTake();
             if(client != null){
@@ -234,7 +234,6 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
     }
 
     public InstructorReservationDTO getReservationForInstructorById(String username, TermType termType, int idReservation) {
-        //TODO: dodati complaintRepository get complaint
         Instructor instructor = instructorRepository.getByEmail(username);
         if(instructor == null) return null;
 
@@ -250,18 +249,16 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
                 return instructorReservationDTO;
             }
         }else if(termType == TermType.FAST_RESERVATION){
-            for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
-                if(instructorFastReservation.getInstructorUsername().equals(username)){
-                    //return new InstructorReservationDTO(instructorFastReservation);
-                    InstructorReservationDTO instructorReservationDTO = new InstructorReservationDTO(instructorFastReservation);
-                    Client client = instructorFastReservation.getClientWhoTake();
-                    if(client != null){
-                        Complaint complaint = client.getComplaintByReservationId(instructorFastReservation.getId(), UserTypeISA.INSTRUCTOR, true);
-                        instructorReservationDTO.setInstructorComplaint(complaint);
-                    }
-                    return instructorReservationDTO;
-                }
+            Optional<InstructorFastReservation> instructorFastReservationOptional = instructorFastReservationRepository.findById(idReservation);
+            if(instructorFastReservationOptional.isEmpty()) return null;
+            InstructorFastReservation instructorFastReservation = instructorFastReservationOptional.get();
+            InstructorReservationDTO instructorReservationDTO = new InstructorReservationDTO(instructorFastReservation);
+            Client client = instructorFastReservation.getClientWhoTake();
+            if(client != null){
+                Complaint complaint = client.getComplaintByReservationId(instructorFastReservation.getId(), UserTypeISA.INSTRUCTOR, true);
+                instructorReservationDTO.setInstructorComplaint(complaint);
             }
+            return instructorReservationDTO;
         }
 
         return null;
@@ -286,7 +283,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
             events.add(e);
         }
 
-        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(username)){
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsername(username)){
             String title = instructorFastReservation.getAdventure().getName();
             Client client = instructorFastReservation.getClientWhoTake();
             if(client != null)

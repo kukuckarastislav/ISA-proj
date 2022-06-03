@@ -23,7 +23,7 @@ public class InstructorFastReservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@OneToMany (mappedBy = "instructorFastReservation",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "instructorFastReservation",fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<InsFastResHistory> insFastResHistories = new HashSet<InsFastResHistory>();
 
 	@ManyToOne(fetch = FetchType.EAGER)

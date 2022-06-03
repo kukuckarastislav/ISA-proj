@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="col-4">
-                <div v-if="reservation.termType === 'FAST_RESERVATION'">
+                <div v-if="reservation.termType === 'FAST_RESERVATION' && reservation.insFastResHistories.length > 0">
                     <div class="list-group text-start overflow-auto card" style="height: 220px">
                         <label v-for="frh in reservation.insFastResHistories" :key="frh" class="list-group-item">
                             <div v-on:click="selectClientView(reservation, frh)" class="row">
