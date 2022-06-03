@@ -15,4 +15,7 @@ public interface BoatOwnerRepository  extends JpaRepository<BoatOwner, Integer>{
 
 	@Query(value = "Select * from boat_owner where id=(select boat_owner_id from boat_owner_complaints where complaints_id=?1)", nativeQuery = true)
 	BoatOwner getBoatOwnerByComplaintId(Integer complaintId);
+
+	@Query("select a from BoatOwner a join fetch a.boates where a.email =?1")
+    BoatOwner getByEmailWithBoats(String username);
 }

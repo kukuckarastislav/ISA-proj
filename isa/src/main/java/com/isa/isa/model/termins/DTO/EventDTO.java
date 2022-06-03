@@ -33,6 +33,17 @@ public class EventDTO {
         this.end = instructorTerm.getEndTime();
     }
 
+    public EventDTO(InstructorReservation instructorReservation, String title) {
+        this.isa_idTerm = instructorReservation.getId();
+        this.isa_termType = TermType.RESERVATION;
+        this.isa_termAvailability = null;
+        this.isa_statusOfReservation = instructorReservation.getStatusOfReservation();
+        this.isa_isTakenFastReservation = false;
+        this.title = title;
+        this.start = instructorReservation.getStartTime();
+        this.end = instructorReservation.getEndTime();
+    }
+
     public EventDTO(InstructorFastReservation instructorFastReservation, String title) {
         this.isa_idTerm = instructorFastReservation.getId();
         this.isa_termType = TermType.FAST_RESERVATION;
@@ -43,16 +54,43 @@ public class EventDTO {
         this.start = instructorFastReservation.getStartTime();
         this.end = instructorFastReservation.getEndTime();
     }
+    // ========================================================================
 
-    public EventDTO(InstructorReservation instructorReservation, String title) {
-        this.isa_idTerm = instructorReservation.getId();
+    public EventDTO(BoatTerms boatTerms) {
+        this.isa_idTerm = boatTerms.getId();
+        this.isa_termType = TermType.TERM;
+        this.isa_termAvailability = boatTerms.getTermAvailability();
+        this.isa_statusOfReservation = null;
+        this.isa_isTakenFastReservation = false;
+        if(this.isa_termAvailability == TermAvailability.AVAILABILE){
+            this.title = "AVAILABILE";
+        }else{
+            this.title = "UNAVAILABLE";
+        }
+        this.start = boatTerms.getStartTime();
+        this.end = boatTerms.getEndTime();
+    }
+
+    public EventDTO(BoatReservations boatReservation, String title) {
+        this.isa_idTerm = boatReservation.getId();
         this.isa_termType = TermType.RESERVATION;
         this.isa_termAvailability = null;
-        this.isa_statusOfReservation = instructorReservation.getStatusOfReservation();
+        this.isa_statusOfReservation = boatReservation.getStatusOfReservation();
         this.isa_isTakenFastReservation = false;
         this.title = title;
-        this.start = instructorReservation.getStartTime();
-        this.end = instructorReservation.getEndTime();
+        this.start = boatReservation.getStartTime();
+        this.end = boatReservation.getEndTime();
+    }
+
+    public EventDTO(BoatFastReservation boatFastReservation, String title) {
+        this.isa_idTerm = boatFastReservation.getId();
+        this.isa_termType = TermType.FAST_RESERVATION;
+        this.isa_termAvailability = null;
+        this.isa_statusOfReservation = null;
+        this.isa_isTakenFastReservation = boatFastReservation.isTaken();
+        this.title = title;
+        this.start = boatFastReservation.getStartTime();
+        this.end = boatFastReservation.getEndTime();
     }
 
     public int getIsa_idTerm() {

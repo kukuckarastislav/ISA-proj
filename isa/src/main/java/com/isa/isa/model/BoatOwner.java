@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.isa.DTO.UserDTO;
 import com.isa.isa.model.loyalty.Loyalty;
 import com.isa.isa.model.revisions.model.Revision;
@@ -94,5 +95,18 @@ public class BoatOwner extends Person {
 
 	public void setLoyalty(Loyalty loyalty) {
 		this.loyalty = loyalty;
+	}
+
+	//TODO: geter brodova
+	@JsonIgnore
+	public Set<Boat> getBoates() {
+		if(boates != null){
+			return boates;
+		}
+		return new HashSet<>();
+	}
+
+	public void setBoates(Set<Boat> boates) {
+		this.boates = boates;
 	}
 }

@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 import com.isa.isa.model.Address;
 import com.isa.isa.model.Boat;
+import com.isa.isa.model.Client;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.report.model.Report;
 
@@ -122,5 +123,30 @@ public class BoatFastReservation {
 
 	public void setReport(Report report) {
 		this.report = report;
+	}
+
+	public Boolean isTaken(){
+		for(BoatFastResHistory boatFastResHistory : boatFastResHistories){
+			if(boatFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN)
+				return true;
+		}
+		return false;
+	}
+
+	public Boolean isOverlap(LocalDateTime newStartTime, LocalDateTime newEndTime) {
+		if(this.endTime.isBefore(newStartTime) || newEndTime.isBefore(this.startTime)){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	public Client getClientWhoTake() {
+		for(BoatFastResHistory boatFastResHistory : boatFastResHistories){
+			if(boatFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN){
+				return boatFastResHistory.getClient();
+			}
+		}
+		return null;
 	}
 }

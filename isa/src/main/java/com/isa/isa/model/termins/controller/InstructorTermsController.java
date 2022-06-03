@@ -63,10 +63,4 @@ public class InstructorTermsController {
         return new ResponseEntity<ArrayList<EventDTO>>(instructorTermService.getTermForAdventureCalendar(user.getName(), idAdventure), HttpStatus.OK);
     }
 
-
-    //@PostMapping("/reservation/complaint")
-
-
-
-
 }

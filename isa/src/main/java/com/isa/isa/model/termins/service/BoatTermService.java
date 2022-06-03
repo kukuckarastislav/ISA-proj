@@ -3,18 +3,18 @@ package com.isa.isa.model.termins.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.Client;
+import com.isa.isa.model.Instructor;
+import com.isa.isa.model.termins.DTO.EventDTO;
+import com.isa.isa.model.termins.model.*;
+import com.isa.isa.repository.BoatOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.NewBoatTermDto;
-import com.isa.isa.model.termins.model.BoatFastReservation;
-import com.isa.isa.model.termins.model.BoatReservations;
-import com.isa.isa.model.termins.model.BoatTerms;
-import com.isa.isa.model.termins.model.CottageFastReservation;
-import com.isa.isa.model.termins.model.CottageTerms;
-import com.isa.isa.model.termins.model.TermAvailability;
 import com.isa.isa.model.termins.repository.BoatFastReservationRepository;
 import com.isa.isa.model.termins.repository.BoatReservationRepository;
 import com.isa.isa.model.termins.repository.BoatTermRepository;
@@ -22,6 +22,9 @@ import com.isa.isa.repository.BoatRepository;
 
 @Service
 public class BoatTermService {
+
+	@Autowired
+	private BoatOwnerRepository boatOwnerRepository;
 
 	@Autowired
     private BoatTermRepository boatTermRepository;
@@ -100,5 +103,56 @@ public class BoatTermService {
 	
 	      return false;
 	}
-	
+
+    public ArrayList<EventDTO> getTermForBoatCalendar(String username, int idBoat) {
+		ArrayList<EventDTO> events = new ArrayList<>();
+
+		BoatOwner boatOwner = boatOwnerRepository.getByEmail(username);
+		if(boatOwner == null) return events;
+
+		for(BoatTerms boatTerms : boatTermRepository.findAllByBoatId(idBoat)){
+			events.add(new EventDTO(boatTerms));
+		}
+
+		for(BoatReservations BoatFastReservation : boatReservationRepository.findAllByBoatId(idBoat)){
+			events.add(new EventDTO(BoatFastReservation, BoatFastReservation.getClient().getFullName()));
+		}
+
+		for(BoatFastReservation boatFastReservation : boatFastReservationRepository.getByIdWithHistory(idBoat)){
+			String title = "";
+			Client client = boatFastReservation.getClientWhoTake();
+			if(client != null)
+				title = client.getFullName();
+			events.add(new EventDTO(boatFastReservation,title));
+		}
+
+		return events;
+
+    }
+
+	public ArrayList<EventDTO> getTermForBoatOwnerCalendar(String username) {
+		ArrayList<EventDTO> events = new ArrayList<>();
+
+		BoatOwner boatOwner = boatOwnerRepository.getByEmailWithBoats(username);
+		if(boatOwner == null) return events;
+
+		for(Boat boat : boatOwner.getBoates()){
+			for(BoatReservations boatFastReservation : boatReservationRepository.findAllByBoatId(boat.getId())){
+				String title = boatFastReservation.getClient().getFullName() + " - " + boatFastReservation.getClient().getFullName();
+				events.add(new EventDTO(boatFastReservation, title));
+			}
+
+			for(BoatFastReservation boatFastReservation : boatFastReservationRepository.getByIdWithHistory(boat.getId())){
+				String title = boatFastReservation.getBoat().getName();
+				Client client = boatFastReservation.getClientWhoTake();
+				if(client != null)
+					title += " - " + client.getFullName();
+				events.add(new EventDTO(boatFastReservation,title));
+			}
+		}
+
+
+
+		return events;
+	}
 }
