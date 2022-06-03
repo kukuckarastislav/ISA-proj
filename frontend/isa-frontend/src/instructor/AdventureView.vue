@@ -106,6 +106,74 @@
           </div>
         </div>
 
+      <div class="row" style="margin-top: 40px;">
+        <div class="col">
+          <h1>Fast Reservations</h1>
+          <button v-on:click="openFastReservationForm()" v-if="!fastReservationForm.visible" class="btn btn-primary">Create New Fast Reservation</button>
+          <div v-if="fastReservationForm.visible" class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-4">
+                  <Datepicker v-model="fastReservationForm.date" range></Datepicker> <br> <br> <br>
+                  <div class="row justify-content-between">
+                    <div class="col">
+                        <input type="text" v-model="fastReservationForm.address.country" class="form-control" placeholder="Country">
+                        <br>
+                        <input type="text" v-model="fastReservationForm.address.city" class="form-control" placeholder="City">
+                        <br>
+                        <input type="text" v-model="fastReservationForm.address.street" class="form-control" placeholder="street">
+                    </div>
+                    <div class="col">
+                        <input type="text" v-model="fastReservationForm.address.number" class="form-control" placeholder="number">
+                        <br>
+                        <input type="number" v-model="fastReservationForm.address.latitude" class="form-control" placeholder="latitude">
+                        <br>
+                        <input type="number" v-model="fastReservationForm.address.longitude" class="form-control" placeholder="longitude">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-8">
+                    <div class="list-group text-start overflow-auto card" style="height: 210px">
+                    <label v-for="itPrice in adventure.pricelist" :key="itPrice" class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <input class="form-check-input me-1" type="checkbox" value="" v-on:click="addItemPriceFastReservation(itPrice)">
+                            </div>
+                            <div class="col-sm-3">{{itPrice.name}}</div>
+                            <div class="col-sm-6">{{itPrice.description}}</div>
+                            <div class="col-sm-2">{{itPrice.price}}</div>
+                        </div>
+                    </label>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-2"></div>
+                      <div class="col-2 text-end">Max number of People</div>
+                      <div class="col-2">
+                        <input type="number" v-model="fastReservationForm.maxNumberOfPeople" class="form-control">
+                      </div>
+                      <div class="col-2 text-end">Price</div>
+                      <div class="col-2">
+                        <input type="number" v-model="fastReservationForm.price" class="form-control">
+                      </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 30px;">
+                <hr>
+                <div class="col">
+                  <button class="btn btn-danger m-1" v-on:click="fastReservationForm.visible = false">Cancel</button>
+                  <button class="btn btn-primary m-1" v-on:click="sendNewFastReservation()">Create</button>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
         <br><br><br>
         <div class="row">
           <div class="col">
@@ -163,6 +231,8 @@ import {Circle, Fill, Style, Icon} from 'ol/style';
 import {defaults} from 'ol/control';
 
 import CalendarLegend from '../components/CalendarLegened.vue'
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css'
 
 export default {
   name: 'AdventureView',
@@ -170,7 +240,8 @@ export default {
     CarouselView,
     FullCalendar,
     ReservationViewComponent,
-    CalendarLegend
+    CalendarLegend,
+    Datepicker
   },
   data: function(){
     return {
@@ -195,20 +266,34 @@ export default {
           events: [
             
           ]
-        }
+        },
 
-
+        fastReservationForm: {
+          visible: false,
+          date: [],
+          itemPrices: [],
+          address: {
+                country: '',
+                city: '',
+                street: '',
+                number: '',
+                latitude: 0,
+                longitude: 0
+          },
+          maxNumberOfPeople: 0,
+          price: 0,
+        },
 
 
     }
   },
   mounted: function(){
     this.adventureName = decodeURI(window.location.pathname.split('/')[2]);
-    this.loadData();
+    this.loadData(true);
     this.calendarOptions.eventClick = this.eventClickCalendar;
   },
   methods: {
-    loadData: function(){
+    loadData: function(reloadMap){
        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
         axios.get('http://localhost:8180/api/adventure/byinstructor/'+encodeURIComponent(this.adventureName)).then(resp => {
             this.adventure = resp.data;
@@ -217,9 +302,13 @@ export default {
             console.log(this.adventure);
             console.log("*****************");
 
+            if(reloadMap)
+              this.loadMap();
 
-
-          var iconFeature = new Feature({
+        });
+    },
+    loadMap: function(){
+        var iconFeature = new Feature({
 					geometry: new Point(fromLonLat([this.adventure.address.longitude, this.adventure.address.latitude])),
 					name: 'adventure',
 				  });
@@ -270,9 +359,6 @@ export default {
             center: fromLonLat([lng, lat]),
             zoom: 7
           })
-        });
-
-
         });
     },
     loadCalendarData: function(){
@@ -348,6 +434,56 @@ export default {
     closeSelectedReservation: function(){
        this.selectedReservation = null;
        this.showSelectedReservation = false; 
+    },
+    openFastReservationForm: function(){
+      this.fastReservationForm.visible = true;
+      this.fastReservationForm.address = this.adventure.address
+      this.fastReservationForm.maxNumberOfPeople = this.adventure.maxNumberOfPeople
+      this.fastReservationForm.price = this.adventure.price.price
+      this.fastReservationForm.itemPrices = []
+
+    },
+    addItemPriceFastReservation: function(itPrice){
+       for(let i = 0; i < this.fastReservationForm.itemPrices.length; i++) {
+            if(this.fastReservationForm.itemPrices[i].id == itPrice.id){
+                //remove
+                this.fastReservationForm.itemPrices.splice(i, 1);
+                console.log("removed element from itemPrices with id="+itPrice.id);
+                return;
+            }
+        }
+        this.fastReservationForm.itemPrices.push(itPrice)
+    },
+    sendNewFastReservation: function(){
+
+      const startTimeForBackend = new Date(Date.UTC(this.fastReservationForm.date[0].getFullYear(), this.fastReservationForm.date[0].getMonth(), this.fastReservationForm.date[0].getDate(), this.fastReservationForm.date[0].getHours(), this.fastReservationForm.date[0].getMinutes()))
+      const endTimeForBackend = new Date(Date.UTC(this.fastReservationForm.date[1].getFullYear(), this.fastReservationForm.date[1].getMonth(), this.fastReservationForm.date[1].getDate(), this.fastReservationForm.date[1].getHours(), this.fastReservationForm.date[1].getMinutes()))
+
+
+      let newFastReservationDTO = {
+          "idAdventure" : this.adventure.id,
+          "startTime" : startTimeForBackend,
+          "endTime" : endTimeForBackend,
+          "maxNumberOfPeople" : this.fastReservationForm.maxNumberOfPeople,
+          "address" : this.fastReservationForm.address,
+          "itemPrices" : this.fastReservationForm.itemPrices,
+          "price" : this.fastReservationForm.price
+      }
+
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+      axios.post('http://localhost:8180/api/instructorterms/fast-reservation', newFastReservationDTO).then(
+        (resp) => {
+          console.log(resp.data)
+          if(resp.data.startsWith("error")){
+            alert(resp.data)
+          }else{
+            this.loadData(false);
+          }
+        }, 
+        (err)=>{
+          alert(err)
+      });
     },
   }
 }

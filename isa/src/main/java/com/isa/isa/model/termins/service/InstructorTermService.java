@@ -168,11 +168,23 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         return false;
     }
 
-    private boolean isReservationPossible(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor){
-        if(!overlapWithAVAILABLEAndNotWithUNAVAILABLE(startTime, endTime, instructor)) return false;
+    private boolean isFastReservationPossible(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor){
+        if(overlapWithInstructorTermsUNAVAILABLE(startTime, endTime, instructor)) return false;
         if (overlapWithReservation(startTime, endTime, instructor)) return false;
         if (overlapWithFastReservation(startTime, endTime, instructor)) return false;
         return true;
+    }
+
+    private boolean overlapWithInstructorTermsUNAVAILABLE(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor) {
+        for(InstructorTerms instructorTerm : instructorTermRepository.findAllByInstructorId(instructor.getId())){
+            if(instructorTerm.getTermAvailability() == TermAvailability.UNAVAILABLE){
+                if(instructorTerm.isOverlap(startTime, endTime)){
+                    System.out.println("Overlaping with Instructor UNAVAILABLE term");
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean overlapWithAVAILABLEAndNotWithUNAVAILABLE(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor) {
@@ -300,7 +312,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
 
         Adventure adventure = adventureOptional.get();
 
-        if(isReservationPossible(newInstructorFastReservationDTO.getStartTime(), newInstructorFastReservationDTO.getEndTime(), instructor)){
+        if(isFastReservationPossible(newInstructorFastReservationDTO.getStartTime(), newInstructorFastReservationDTO.getEndTime(), instructor)){
             InstructorFastReservation ifr = new InstructorFastReservation(adventure, newInstructorFastReservationDTO, username);
             instructorFastReservationRepository.saveAndFlush(ifr);
             //TODO: pozvati metodu koja obavestava klijente da je napravljena brza akcija
