@@ -11,6 +11,7 @@ import com.isa.isa.model.Client;
 import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.enums.AdditionalServices;
 import com.isa.isa.model.report.model.Report;
+import com.isa.isa.model.termins.DTO.NewInstructorFastReservationDTO;
 
 import javax.persistence.*;
 
@@ -61,6 +62,32 @@ public class InstructorFastReservation {
 		this.additionalServices = additionalServices;
 		this.price = price;
 		this.instructorUsername = instructorUsername;
+	}
+
+	public InstructorFastReservation( Adventure adventure, NewInstructorFastReservationDTO newInstructorFastReservationDTO, String instructorUsername) {
+		this.insFastResHistories = new HashSet<>();
+		this.adventure = adventure;
+		this.startTime = newInstructorFastReservationDTO.getStartTime();
+		this.endTime = newInstructorFastReservationDTO.getEndTime();
+		this.maxNumberOfPeople = newInstructorFastReservationDTO.getMaxNumberOfPeople();
+		this.address = newInstructorFastReservationDTO.getAddress();
+		this.additionalServices = new HashSet<>(newInstructorFastReservationDTO.getItemPrices());
+		this.price = newInstructorFastReservationDTO.getPrice();
+		this.instructorUsername = instructorUsername;
+		this.report = null;
+	}
+
+	public InstructorFastReservation(Set<InsFastResHistory> insFastResHistories, Adventure adventure, LocalDateTime startTime, LocalDateTime endTime, int maxNumberOfPeople, Address address, Set<ItemPrice> additionalServices, double price, String instructorUsername, Report report) {
+		this.insFastResHistories = insFastResHistories;
+		this.adventure = adventure;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.maxNumberOfPeople = maxNumberOfPeople;
+		this.address = address;
+		this.additionalServices = additionalServices;
+		this.price = price;
+		this.instructorUsername = instructorUsername;
+		this.report = report;
 	}
 
 	public int getId() {

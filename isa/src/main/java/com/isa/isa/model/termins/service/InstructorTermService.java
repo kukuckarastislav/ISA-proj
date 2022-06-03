@@ -7,10 +7,7 @@ import com.isa.isa.model.Instructor;
 import com.isa.isa.model.complaints.ComplaintRepository;
 import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.enums.UserTypeISA;
-import com.isa.isa.model.termins.DTO.EventDTO;
-import com.isa.isa.model.termins.DTO.InstructorReservationDTO;
-import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
-import com.isa.isa.model.termins.DTO.NewInstructorTermDTO;
+import com.isa.isa.model.termins.DTO.*;
 import com.isa.isa.model.termins.model.*;
 import com.isa.isa.model.termins.repository.InsFastResHistoryRepository;
 import com.isa.isa.model.termins.repository.InstructorFastReservationRepository;
@@ -133,13 +130,23 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
 
 
     private Boolean overlap(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor){
+        if (overlapWithInstructorTerms(startTime, endTime, instructor)) return true;
+        if (overlapWithReservation(startTime, endTime, instructor)) return true;
+        if (overlapWithFastReservation(startTime, endTime, instructor)) return true;
+        return false;
+    }
+
+    private boolean overlapWithInstructorTerms(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor) {
         for(InstructorTerms instructorTerm : instructorTermRepository.findAllByInstructorId(instructor.getId())){
             if(instructorTerm.isOverlap(startTime, endTime)){
                 System.out.println("Overlaping with Instructor term");
                 return true;
             }
         }
+        return false;
+    }
 
+    private boolean overlapWithReservation(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor) {
         for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(instructor.getEmail())){
             if(instructorReservation.getStatusOfReservation() == StatusOfReservation.ACTIVE){
                 if(instructorReservation.isOverlap(startTime, endTime)){
@@ -148,15 +155,39 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
                 }
             }
         }
+        return false;
+    }
 
+    private boolean overlapWithFastReservation(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor) {
         for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameWithHistory(instructor.getEmail())){
             if(instructorFastReservation.isOverlap(startTime, endTime)){
                 System.out.println("Overlaping with Instructor FAST Reservation");
                 return true;
             }
         }
-
         return false;
+    }
+
+    private boolean isReservationPossible(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor){
+        if(!overlapWithAVAILABLEAndNotWithUNAVAILABLE(startTime, endTime, instructor)) return false;
+        if (overlapWithReservation(startTime, endTime, instructor)) return false;
+        if (overlapWithFastReservation(startTime, endTime, instructor)) return false;
+        return true;
+    }
+
+    private boolean overlapWithAVAILABLEAndNotWithUNAVAILABLE(LocalDateTime startTime, LocalDateTime endTime, Instructor instructor) {
+        boolean overlapWithAVAILABLE = false;
+        for(InstructorTerms instructorTerm : instructorTermRepository.findAllByInstructorId(instructor.getId())){
+            if(instructorTerm.isOverlap(startTime, endTime)){
+                if(instructorTerm.getTermAvailability() == TermAvailability.UNAVAILABLE){
+                    System.out.println("Overlaping with Instructor term");
+                    return true;
+                }else{
+                    overlapWithAVAILABLE = true;
+                }
+            }
+        }
+        return overlapWithAVAILABLE;
     }
 
     @Autowired
@@ -257,5 +288,25 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
 
 
         return events;
+    }
+
+    public String createFastReservation(String username, NewInstructorFastReservationDTO newInstructorFastReservationDTO) {
+
+        Instructor instructor = instructorRepository.getByEmail(username);
+        if(instructor == null) return "error: instructor null";
+
+        Optional<Adventure> adventureOptional = adventureRepository.findById(newInstructorFastReservationDTO.getIdAdventure());
+        if(adventureOptional.isEmpty()) return "error: adventure does not exists";
+
+        Adventure adventure = adventureOptional.get();
+
+        if(isReservationPossible(newInstructorFastReservationDTO.getStartTime(), newInstructorFastReservationDTO.getEndTime(), instructor)){
+            InstructorFastReservation ifr = new InstructorFastReservation(adventure, newInstructorFastReservationDTO, username);
+            instructorFastReservationRepository.saveAndFlush(ifr);
+            //TODO: pozvati metodu koja obavestava klijente da je napravljena brza akcija
+            return "ok";
+        }else{
+            return "error: overlaping with other terms";
+        }
     }
 }
