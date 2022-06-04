@@ -318,4 +318,22 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
             return "error: overlaping with other terms";
         }
     }
+
+    public boolean updatePossible(Adventure adventure, String username) {
+        for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsernameAndAdventureId(username, adventure.getId())){
+            if(instructorReservation.getStatusOfReservation() == StatusOfReservation.ACTIVE){
+                if(instructorReservation.getEndTime().isAfter(LocalDateTime.now())){
+                    return false;
+                }
+            }
+        }
+
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsernameAndAdventureId(username, adventure.getId())){
+            if(instructorFastReservation.getEndTime().isAfter(LocalDateTime.now())){
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

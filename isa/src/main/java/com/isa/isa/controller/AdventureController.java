@@ -1,10 +1,7 @@
 package com.isa.isa.controller;
 
 
-import com.isa.isa.DTO.AddNewAdventureDTO;
-import com.isa.isa.DTO.AdventureDTO;
-import com.isa.isa.DTO.AdventureViewDTO;
-import com.isa.isa.DTO.UserDTO;
+import com.isa.isa.DTO.*;
 import com.isa.isa.model.Client;
 import com.isa.isa.security.model.User;
 import com.isa.isa.service.AdventureService;
@@ -52,10 +49,11 @@ public class AdventureController {
         return new ResponseEntity<AdventureViewDTO>(adventureViewDTO, HttpStatus.OK);
     }
 
-
-
-
-
-
-
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    @PostMapping("/update-adventure")
+    public ResponseEntity<String> updateAdventure(@RequestBody UpdateAdventureDTO updateAdventureDTO, Principal user) {
+        String msg = adventureService.updateAdventure(updateAdventureDTO, user);
+        System.out.println(msg);
+        return new ResponseEntity<String>(msg, HttpStatus.OK);
+    }
 }

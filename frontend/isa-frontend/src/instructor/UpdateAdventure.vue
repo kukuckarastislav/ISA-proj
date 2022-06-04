@@ -20,8 +20,8 @@
             </div>
             <div class="col-sm-6">
 
-                <h1 class="text-start">Name:  </h1>
-                <input v-model="adventure.name" class="form-control" type="text">
+                <h1 class="text-start">{{adventure.name}}</h1>
+                <!-- <input v-model="adventure.name" class="form-control" type="text"> -->
                 <br>
                 
                 <h5 class="text-start">Description: </h5>
@@ -226,6 +226,7 @@ export default {
             },
             description: "",
             imagesForBackend: [],
+            imagesForBackendDelete: [],
             maxNumberOfPeople: 0,
             behaviourRules: "",
             pricelist: [],
@@ -456,6 +457,7 @@ export default {
         updatedventure: function(){
             console.log('updatedventure')
             this.adventure.imagesForBackend = this.imagesForBackend;
+            this.adventure.imagesForBackendDelete = this.imagesForBackendDelete
             this.adventure.address.longitude = this.map.newLon;
             this.adventure.address.latitude = this.map.newLat;
 
@@ -465,10 +467,10 @@ export default {
             axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
             axios.post('http://localhost:8180/api/adventure/update-adventure',this.adventure)
             .then(response => {
-                console.log('Odgoovr');
                 console.log(response.data);
+                alert(response.data)
             }).catch(err => {
-                alert('DOSLO JE DO GRESKE')
+                alert('DOSLO JE DO GRESKE',err.error)
             }); 
 
 

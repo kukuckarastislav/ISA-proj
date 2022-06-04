@@ -4,10 +4,7 @@ import com.isa.isa.model.enums.ReservationCancellationConditions;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.complaints.model.Complaint;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
+import java.util.*;
 
 
 import javax.persistence.*;
@@ -239,5 +236,19 @@ public class Adventure {
 			return entityImage;
 		}
 		return null;
+	}
+
+    public Boolean deleteImage(EntityImage entityImage) {
+		for (Iterator<EntityImage> iterator = this.images.iterator(); iterator.hasNext();) {
+			EntityImage img =  iterator.next();
+			if (img.getId() == entityImage.getId()) {
+				iterator.remove();
+			}
+		}
+		return false;
+    }
+
+	public void addImages(ArrayList<EntityImage> images) {
+		this.images.addAll(images);
 	}
 }

@@ -1,9 +1,6 @@
 package com.isa.isa.service;
 
-import com.isa.isa.DTO.AddNewAdventureDTO;
-import com.isa.isa.DTO.AdventureDTO;
-import com.isa.isa.DTO.AdventureViewDTO;
-import com.isa.isa.DTO.EntityImageDTO;
+import com.isa.isa.DTO.*;
 import com.isa.isa.model.*;
 import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.model.revisions.model.RevisionType;
@@ -11,6 +8,7 @@ import com.isa.isa.model.termins.DTO.ComplaintClientDTO;
 import com.isa.isa.model.termins.DTO.RevisionClientDTO;
 import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.revisions.model.Revision;
+import com.isa.isa.model.termins.service.InstructorTermService;
 import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class AdventureService {
@@ -130,5 +129,42 @@ public class AdventureService {
 		adventure.getComplaints().add(new Complaint(complaintClientDTO.getEntityComment(),complaintClientDTO.getUserEmail(), UserTypeISA.INSTRUCTOR, adventure.getInstructor().getEmail(), RevisionType.ENTITY, adventure.getId()));
 		adventureRepository.saveAndFlush(adventure);
 	}
+
+
+    @Autowired
+    private InstructorTermService instructorTermService;
+
+    public String updateAdventure(UpdateAdventureDTO updateAdventureDTO, Principal user) {
+
+        Optional<Adventure> adventureOpt = adventureRepository.findById(updateAdventureDTO.getId());
+        if(adventureOpt.isEmpty()) return "error adventure does not exist";
+
+        Adventure adventure = adventureOpt.get();
+
+        if(!instructorTermService.updatePossible(adventure, user.getName())){
+            return "error update is not possible, there are reservations in the future";
+        }
+
+        adventure.setAddress(updateAdventureDTO.getAddress());
+        adventure.setDescription(updateAdventureDTO.getDescription());
+        adventure.setBehaviourRules(updateAdventureDTO.getBehaviourRules());
+        adventure.setMaxNumberOfPeople(updateAdventureDTO.getMaxNumberOfPeople());
+        adventure.setReservationCancellationConditions(updateAdventureDTO.getReservationCancellationConditions());
+        adventure.setPrice(updateAdventureDTO.getPrice());
+        adventure.setAdditionalEquipments(new HashSet<AdditionalEquipment>(updateAdventureDTO.getAdditionalEquipments()));
+        adventure.setPricelist(new HashSet<ItemPrice>(updateAdventureDTO.getPricelist()));
+
+        for(EntityImage entityImage : updateAdventureDTO.getImagesForBackendDelete()){
+            adventure.deleteImage(entityImage);
+        }
+
+        if(!updateAdventureDTO.getImagesForBackend().isEmpty()){
+            ArrayList<EntityImage> images = entityImageService.updateAndSaveImages("Instructors", user.getName(), updateAdventureDTO.getName(), updateAdventureDTO.getImagesForBackendDelete(), updateAdventureDTO.getImagesForBackend());
+            adventure.addImages(images);
+        }
+
+        adventureRepository.saveAndFlush(adventure);
+        return "successfully updated adventure";
+    }
 
 }
