@@ -14,6 +14,9 @@ import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
+import com.isa.isa.model.termins.model.BoatFastReservation;
+import com.isa.isa.model.termins.model.CottageFastReservation;
+import com.isa.isa.model.termins.model.InstructorFastReservation;
 
 import org.springframework.mail.MailException;
 
@@ -49,4 +52,10 @@ public interface EmailService {
     void sendReportNotificationToClient(Report report, String reservationName);
 
     void sendReportNotificationToOwner(Report report, String reservationName);
+    
+    void sendNewAdventureActionNotification(Client client, InstructorFastReservation instructorFastReservation) throws MailException, InterruptedException;
+    
+    void sendNewCottageActionNotification(Client client, CottageFastReservation cottageFastReservation) throws MailException, InterruptedException;
+    
+    void sendNewBoatActionNotification(Client client, BoatFastReservation boatFastReservation) throws MailException, InterruptedException;
 }
