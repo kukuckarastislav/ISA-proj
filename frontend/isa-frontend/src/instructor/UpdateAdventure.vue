@@ -15,8 +15,6 @@
                     <img class="ms-3 me-3 mt-3 newImage img-fluid" v-bind:src="image.path" >
                 </div>
             </div>
-
-
             
 
             </div>
@@ -63,7 +61,7 @@
                 
                 <div class="list-group text-start overflow-auto card m-2" style="height: 150px; width: 50%;">
                     <label v-for="additionalEq in allAdditionalEquipment" :key="additionalEq" class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="" v-on:click="clickAdditionalEq(additionalEq)">
+                        <input class="form-check-input me-1" type="checkbox" value="" v-model="additionalEq.selected" v-on:click="clickAdditionalEq(additionalEq)">
                         {{additionalEq.name}}
                     </label>
                 </div> <br>
@@ -111,7 +109,7 @@
                     <label v-for="itPrice in allItemPrices" :key="itPrice" class="list-group-item">
                         <div class="row">
                             <div class="col-sm-1">
-                                <input class="form-check-input me-1" type="checkbox" value="" v-on:click="clickItemPrice(itPrice)">
+                                <input v-model="itPrice.selected" class="form-check-input me-1" type="checkbox" value="" v-on:click="clickItemPrice(itPrice)">
                             </div>
                             <div class="col-sm-3">{{itPrice.name}}</div>
                             <div class="col-sm-6">{{itPrice.description}}</div>
@@ -187,7 +185,7 @@
         </div>
 
         <br> <br>
-        <button v-on:click="createNewAdventure()" class="btn btn-primary m-5 p-3">Create New Adventure</button>
+        <button v-on:click="updatedventure()" class="btn btn-primary m-5 p-3">Update Adventure</button>
 
     </div>
 
@@ -207,13 +205,16 @@ import {defaults} from 'ol/control';
 
 
 export default {
-  name: 'NewAdventure',
+  name: 'UpdateAdventure',
   components: {
     CarouselView
   },
   data: function(){
-    return {
+      return {
+        adventureName: "",
+        adventureData: {},
         adventure: {
+            id: 0,
             name: "",
             address: {
                 country: "",
@@ -252,65 +253,114 @@ export default {
         newLat : 0.0,
 
         imagesForFront: [],
+        imagesForBackendDelete: [],
         imagesForBackend: [],
+        imagesForBackendIDS: [],
         imageCount: 0,
         map: {}
     }
   },
-  mounted: function(){
-      this.loadData();
-      console.log(this.imagesForFront);
+    mounted: function () {
+        this.adventureName = decodeURI(window.location.pathname.split('/')[2]);
+        this.loadAdventure();
+        console.log(this.imagesForFront);
+  },
+    methods: {
+        loadAdventure: function () {
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");
+            axios.get('http://localhost:8180/api/adventure/byinstructor/' + encodeURIComponent(this.adventureName)).then(resp => {
+                this.adventureData = resp.data;
+                this.bindAdventureData();
 
+                //{id: this.imageCount, name: ""+this.imageCount, path: URL.createObjectURL(file)}
+                for (let img of this.adventureData.images) {
+                    img.fromBackend = true
+                    img.path = 'http://localhost:8180/api/entityImage/'+img.path
+                    this.imagesForFront.push(img);   
+                }
 
+                this.loadData();
+
+                this.loadMap();
+            });
+        },
+        loadData: function () {
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");
+            axios.get('http://localhost:8180/api/additionalequipment/getadditionalequipment').then(resp => {
+                this.allAdditionalEquipment = resp.data;
+                for (let adEq of this.allAdditionalEquipment) {
+                    adEq.selected = false;   
+                    for (let adEqAdventure of this.adventure.additionalEquipments) {
+                        if (adEq.id == adEqAdventure.id) {
+                            adEq.selected = true;       
+                        }
+                    }
+                }
+                console.log(resp.data);
+            });
+            axios.get('http://localhost:8180/api/itemprice/getitemprices').then(resp => {
+                this.allItemPrices = resp.data;
+                for (let ip of this.allItemPrices) {
+                    ip.selected = false;
+                    for (let ipa of this.adventure.pricelist) {
+                        if (ip.id == ipa.id) {
+                            ip.selected = true;       
+                        }
+                    }
+                }
+                console.log(resp.data);
+            });
+        },
+        loadMap: function () {
             var lat = this.adventure.address.latitude;
             var lng = this.adventure.address.longitude;
             var iconGeometry = new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
             var iconFeature = new Feature({
-            geometry: iconGeometry,
-            name: 'adventure',
-            population: 4000,
-            rainfall: 500
+                geometry: iconGeometry,
+                name: 'adventure',
+                population: 4000,
+                rainfall: 500
             });
 
             var iconStyle = new Style({
-            image: new Icon( /** @type {olx.style.IconOptions} */ ({
-                anchor: [0.5, 46],
-                anchorXUnits: 'fraction',
-                anchorYUnits: 'pixels',
-                src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png'
-            }))
+                image: new Icon( /** @type {olx.style.IconOptions} */({
+                    anchor: [0.5, 46],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png'
+                }))
             });
 
-        iconFeature.setStyle(iconStyle);
+            iconFeature.setStyle(iconStyle);
 
-        var vectorSource = new VectorSource({
-        features: [iconFeature]
-        });
+            var vectorSource = new VectorSource({
+                features: [iconFeature]
+            });
 
-        var vectorLayer = new VectorLayer({
-        source: vectorSource
-        });
+            var vectorLayer = new VectorLayer({
+                source: vectorSource
+            });
 
-        var rasterLayer = new TileLayer({
-        source: new OSM()
-        });
+            var rasterLayer = new TileLayer({
+                source: new OSM()
+            });
 
-        this.map = new Map({
-        layers: [rasterLayer, vectorLayer],
-        target: 'map',
-        controls: defaults({
-            attributionOptions: {
-            collapsible: false,
-            },
-            attribution: false
-        }),
-        view: new View({
-            center: fromLonLat([lng, lat]),
-            zoom: 5
-        })
-        });
+            this.map = new Map({
+                layers: [rasterLayer, vectorLayer],
+                target: 'map',
+                controls: defaults({
+                    attributionOptions: {
+                        collapsible: false,
+                    },
+                    attribution: false
+                }),
+                view: new View({
+                    center: fromLonLat([lng, lat]),
+                    zoom: 5
+                })
+            });
 
-        this.map.on('singleclick', function (evt) {
+            this.map.on('singleclick', function (evt) {
                 //  alert("nesto: "+transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326')) 
                 var transformed_xy = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
                 this.newLon = transformed_xy[0];//neradi 
@@ -320,100 +370,109 @@ export default {
                 iconGeometry.setCoordinates(evt.coordinate);
             });
 
-
-  },
-  methods: {
-    loadData: function(){
-        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        axios.get('http://localhost:8180/api/additionalequipment/getadditionalequipment').then(resp => {
-            this.allAdditionalEquipment = resp.data;
-            console.log(resp.data);
-        });
-        axios.get('http://localhost:8180/api/itemprice/getitemprices').then(resp => {
-            this.allItemPrices = resp.data;
-            console.log(resp.data);
-        });
-    },
-    clickAdditionalEq: function(additionalEq){
-        for (var i = 0; i < this.adventure.additionalEquipments.length; i++) {
-            if(this.adventure.additionalEquipments[i].id == additionalEq.id){
-                //remove
-                this.adventure.additionalEquipments.splice(i, 1);
-                console.log("removed element from additionEq with id="+additionalEq.id);
-               
-                return;
+        },
+        bindAdventureData: function () {
+            this.adventure.id = this.adventureData.id
+            this.adventure.name = this.adventureData.name
+            this.adventure.address = this.adventureData.address
+            this.adventure.description = this.adventureData.description
+            this.adventure.maxNumberOfPeople = this.adventureData.maxNumberOfPeople
+            this.adventure.behaviourRules = this.adventureData.behaviourRules
+            this.adventure.pricelist = this.adventureData.pricelist
+            this.adventure.reservationCancellationConditions = this.adventureData.reservationCancellationConditions
+            this.adventure.price = this.adventureData.price
+            this.adventure.additionalEquipments = this.adventureData.additionalEquipments
+        },
+        clickAdditionalEq: function(additionalEq){
+            for (var i = 0; i < this.adventure.additionalEquipments.length; i++) {
+                if(this.adventure.additionalEquipments[i].id == additionalEq.id){
+                    //remove
+                    this.adventure.additionalEquipments.splice(i, 1);
+                    console.log("removed element from additionEq with id="+additionalEq.id);
+                
+                    return;
+                }
             }
-        }
-        //add
-        this.adventure.additionalEquipments.push(additionalEq);
-        console.log("added element from additionEq with id="+additionalEq.id);
-     
-    },
-    addNewAdditionalEq: function(){
-        // poslati na bekend novi add equipment
-    },
-    clickItemPrice: function(itemPrice){
-        for (var i = 0; i < this.adventure.pricelist.length; i++) {
-            if(this.adventure.pricelist[i].id == itemPrice.id){
-                //remove
-                this.adventure.pricelist.splice(i, 1);
-                console.log("removed element from itemPrice with id="+itemPrice.id);
-                return;
+            //add
+            this.adventure.additionalEquipments.push(additionalEq);
+            console.log("added element from additionEq with id="+additionalEq.id);
+        
+        },
+        addNewAdditionalEq: function(){
+            // poslati na bekend novi add equipment
+        },
+        clickItemPrice: function(itemPrice){
+            for (var i = 0; i < this.adventure.pricelist.length; i++) {
+                if(this.adventure.pricelist[i].id == itemPrice.id){
+                    //remove
+                    this.adventure.pricelist.splice(i, 1);
+                    console.log("removed element from itemPrice with id="+itemPrice.id);
+                    return;
+                }
             }
+            //add
+            this.adventure.pricelist.push(itemPrice);
+            console.log("added element from itemPrice with id="+itemPrice.id);
+        },
+        cancelAddNewItemPrice: function(){
+            this.newPriceItem.price = 0;
+            this.newPriceItem.name = "Name";
+            this.newPriceItem.description = "description";
+            this.addNewItemPriceVisible = false;
+        },
+        onFileChange: function(e){
+            console.log('fajl select');
+            const file = e.target.files[0];
+            this.createBase64Image(file);
+            this.imageCount--;
+            this.imagesForFront.push({fromBackend: false, id: this.imageCount, name: ""+this.imageCount, path: URL.createObjectURL(file)});
+            this.imagesForBackendIDS.push(this.imageCount)
+            console.log('Nice');
+            console.log(this.imagesForFront);
+        },
+        createBase64Image(file){
+            const reader= new FileReader();
+            reader.onload = (e) =>{
+                this.imagesForBackend.push(e.target.result);
+            }
+            reader.readAsDataURL(file);
+            console.log('Images for beckend');
+            console.log(this.imagesForBackend);
+        },
+        removeImage: function (image, index) {
+            if (image.fromBackend) {
+                this.imagesForBackendDelete.push(image)
+            } else {
+                for (let i = 0; i < this.imagesForBackendIDS.length; i++){
+                    if (this.imagesForBackendIDS[i] == image.id) {
+                        this.imagesForBackend.splice(i, 1);   
+                        this.imagesForBackendIDS.splice(i, 1);   
+                        break;       
+                    }
+                }
+            }
+            this.imagesForFront.splice(index,1);
+        },
+        updatedventure: function(){
+            console.log('updatedventure')
+            this.adventure.imagesForBackend = this.imagesForBackend;
+            this.adventure.address.longitude = this.map.newLon;
+            this.adventure.address.latitude = this.map.newLat;
+
+            // console.log("Kreiranje avanture")
+            // console.log(this.adventure)
+
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.post('http://localhost:8180/api/adventure/update-adventure',this.adventure)
+            .then(response => {
+                console.log('Odgoovr');
+                console.log(response.data);
+            }).catch(err => {
+                alert('DOSLO JE DO GRESKE')
+            }); 
+
+
         }
-        //add
-        this.adventure.pricelist.push(itemPrice);
-        console.log("added element from itemPrice with id="+itemPrice.id);
-    },
-    cancelAddNewItemPrice: function(){
-        this.newPriceItem.price = 0;
-        this.newPriceItem.name = "Name";
-        this.newPriceItem.description = "description";
-        this.addNewItemPriceVisible = false;
-    },
-    onFileChange: function(e){
-        console.log('fajl select');
-        const file = e.target.files[0];
-        this.createBase64Image(file);
-        this.imageCount++;
-        this.imagesForFront.push({id: this.imageCount, name: ""+this.imageCount, path: URL.createObjectURL(file)});
-        console.log('Nice');
-        console.log(this.imagesForFront);
-    },
-    createBase64Image(file){
-        const reader= new FileReader();
-        reader.onload = (e) =>{
-            this.imagesForBackend.push(e.target.result);
-        }
-        reader.readAsDataURL(file);
-        console.log('Images for beckend');
-        console.log(this.imagesForBackend);
-    },
-    removeImage: function(image, index){
-        this.imageCount--;
-        this.imagesForFront.splice(index,1);
-        this.imagesForBackend.splice(index,1);
-    },
-    createNewAdventure: function(){
-        console.log('NEW ADVENTURE')
-        this.adventure.imagesForBackend = this.imagesForBackend;
-        this.adventure.address.longitude = this.map.newLon;
-        this.adventure.address.latitude = this.map.newLat;
-
-        // console.log("Kreiranje avanture")
-        // console.log(this.adventure)
-
-        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        axios.put('http://localhost:8180/api/adventure/addnewadventure',this.adventure)
-          .then(response => {
-              console.log('Odgoovr');
-              console.log(response.data);
-          }).catch(err => {
-              alert('DOSLO JE DO GRESKE')
-          }); 
-
-
-    }
   }
 }
 </script>

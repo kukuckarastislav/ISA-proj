@@ -38,6 +38,7 @@ import EntityPage from '../admin/EntityPage.vue'
 import AdminRegistrationPage from '../admin/AdminRegistrationPage.vue'
 import BoatOwnerCalendarPage from '../boat_owner/BoatOwnerCalendar.vue'
 import CottageOwnerCalendar from '../cottage_owner/CottageOwnerCalendar.vue'
+import UpdateAdventure from '../instructor/UpdateAdventure.vue'
 
 
 const routes = [
@@ -49,7 +50,8 @@ const routes = [
   { path: '/boatOwnerProfile', name: 'BoatOwnerProfile', component: BoatOwnerProfile},
   { path: '/approval', name: 'ApprovalRegistrations', component: ApprovalRegistrations },
   { path: '/adventures', name: 'Adventures', component: Adventures },
-  { path: '/adventure/:adventurename?', name: 'AdventureView', component: AdventureView},
+  { path: '/adventure/:adventurename?', name: 'AdventureView', component: AdventureView },
+  { path: '/adventure-update/:adventurename?', name: 'UpdateAdventure', component: UpdateAdventure},
   { path: '/customerInstructorPage/:id?', name: 'CustomerInstructorPage', component: CustomerInstructorPage},
   { path: '/customerCottagePage/:id?', name: 'CustomerCottagePage', component: CustomerCottagePage},
   { path: '/customerAdventurePage/:id?', name: 'CustomerAdventurePage', component: CustomerAdventurePage},

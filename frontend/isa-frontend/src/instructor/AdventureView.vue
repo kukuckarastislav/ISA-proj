@@ -9,8 +9,14 @@
 
             </div>
             <div v-if="adventure.name != undefined" class="col-sm-6">
-
-                <h1 class="text-start">{{adventure.name}}</h1> <br>
+                <div class="row">
+                  <div class="col-9">
+                    <h1 class="text-start">{{adventure.name}}</h1>
+                  </div>
+                  <div class="col">
+                    <button v-on:click="UpdateAdventurePage()" class="btn btn-primary">Update</button>
+                  </div>
+                </div>
 
                 <h3 class="text-start stars">
                   <span v-for="index in Math.round(adventure.averageGrade)" :key="index">&#9733;</span> 
@@ -485,6 +491,9 @@ export default {
         (err)=>{
           alert(err)
       });
+    },
+    UpdateAdventurePage: function () {
+        this.$router.push({ path: '/adventure-update/'+encodeURIComponent(this.adventure.name)});
     },
   }
 }
