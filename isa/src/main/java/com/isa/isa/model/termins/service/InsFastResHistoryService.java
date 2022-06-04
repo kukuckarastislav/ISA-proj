@@ -2,6 +2,8 @@ package com.isa.isa.model.termins.service;
 
 import com.isa.isa.model.Client;
 import com.isa.isa.model.EntityImage;
+import com.isa.isa.model.Instructor;
+import com.isa.isa.model.loyalty.LoyaltyService;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.model.InsFastResHistory;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.isa.isa.repository.ClientRepository;
+import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +45,24 @@ public class InsFastResHistoryService {
     		insFastResHistoryRepository.save(insFastResHistory);
     	}
     }
+
+	@Autowired
+	LoyaltyService loyaltyService;
+	@Autowired
+	InstructorRepository instructorRepository;
+	@Autowired
+	ClientRepository clientRepository;
     
     public Boolean makeReservation(Client client, InstructorFastReservation instructorFastReservation) {
     	if(hasClientAlreadyCancelled(client,instructorFastReservation)) return false;
+		Instructor instructor = instructorRepository.getByEmail(instructorFastReservation.getInstructorUsername());
     	InsFastResHistory insFastResHistory = new InsFastResHistory(client,instructorFastReservation,StatusOfFastReservation.TAKEN);
+		insFastResHistory.setPrice(loyaltyService.applyDiscount(client, instructorFastReservation.getPrice()));
+		insFastResHistory.setIncome(loyaltyService.calculateIncome(instructor, insFastResHistory.getPrice()));
+		loyaltyService.applyReward(client);
+		clientRepository.saveAndFlush(client);
+		loyaltyService.applyReward(instructor);
+		instructorRepository.saveAndFlush(instructor);
     	insFastResHistoryRepository.save(insFastResHistory);
     	return true;
     }

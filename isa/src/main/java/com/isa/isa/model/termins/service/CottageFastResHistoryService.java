@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.loyalty.LoyaltyService;
+import com.isa.isa.repository.ClientRepository;
+import com.isa.isa.repository.CottageOwnerRepository;
+import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +44,27 @@ public class CottageFastResHistoryService {
 	    		cottageFastResHistoryRepository.save(cottageFastResHistory);
 	    	}
 	    }
-	 
+
+	@Autowired
+	LoyaltyService loyaltyService;
+	@Autowired
+	CottageOwnerRepository cottageOwnerRepository;
+	@Autowired
+	ClientRepository clientRepository;
+
 	 public Boolean makeReservation(Client client, CottageFastReservation cottageFastReservation) {
-	    	if(hasClientAlreadyCancelled(client,cottageFastReservation)) return false;
-	    	CottageFastResHistory cottageFastResHistory = new CottageFastResHistory(client,cottageFastReservation,StatusOfFastReservation.TAKEN);
-	    	cottageFastResHistoryRepository.save(cottageFastResHistory);
-	    	return true;
-	    }
+		 if(hasClientAlreadyCancelled(client,cottageFastReservation)) return false;
+		 CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(cottageFastReservation.getCottage().getOwner().getEmail());
+		 CottageFastResHistory cottageFastResHistory = new CottageFastResHistory(client,cottageFastReservation,StatusOfFastReservation.TAKEN);
+		 cottageFastResHistory.setPrice(loyaltyService.applyDiscount(client, cottageFastReservation.getPrice()));
+		 cottageFastResHistory.setIncome(loyaltyService.calculateIncome(cottageOwner, cottageFastResHistory.getPrice()));
+		 loyaltyService.applyReward(client);
+		 clientRepository.saveAndFlush(client);
+		 loyaltyService.applyReward(cottageOwner);
+		 cottageOwnerRepository.saveAndFlush(cottageOwner);
+		 cottageFastResHistoryRepository.save(cottageFastResHistory);
+		 return true;
+	 }
 	 
 	 private Boolean hasClientAlreadyCancelled(Client client, CottageFastReservation cottageFastReservation) {
 	    	CottageFastResHistory cottageFastResHistory = cottageFastResHistoryRepository.findByClientIdAndCottageFastReservationId(client.getId(), cottageFastReservation.getId());

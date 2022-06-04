@@ -2,7 +2,9 @@ package com.isa.isa.model.termins.service;
 
 import com.isa.isa.model.Client;
 import com.isa.isa.model.EntityImage;
+import com.isa.isa.model.Instructor;
 import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.loyalty.LoyaltyService;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.isa.isa.repository.ClientRepository;
+import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,9 @@ public class InstructorReservationService {
 
     @Autowired
     private InstructorReservationRepository instructorReservationRepository;
+
+	@Autowired
+	private LoyaltyService loyaltyService;
     
     public Boolean isInstructorFree(InstructorTermsDTO dto) {
 		ArrayList<InstructorReservation> reservations =  (ArrayList<InstructorReservation>) instructorReservationRepository.getByInstructorUsername(dto.getInstructorUsername());
@@ -37,13 +44,25 @@ public class InstructorReservationService {
 		}
 		return retVal;
 	}
+
+	@Autowired
+	private ClientRepository clientRepository;
+
+	@Autowired
+	private InstructorRepository instructorRepository;
     
     public InstructorReservation reserveAdventureByClient(ClientAdventureReservationDTO dto, Client client) {
     	if(hasClientAlreadyCancelledAdventure(dto, client)) return null;
+		Instructor instructor = instructorRepository.getByEmail(dto.getAdventure().getInstructor().getEmail());
     	InstructorReservation instructorReservation = new InstructorReservation(client,dto.getAdventure(),dto.getStartTime(),dto.getEndTime(),dto.getAdventure().getInstructor().getEmail());
 		instructorReservation.setAdditionalServices(dto.getAdditionalServices());
 		instructorReservation.setStatusOfReservation(StatusOfReservation.ACTIVE);
-		instructorReservation.setPrice(calculatePrice(dto));
+		instructorReservation.setPrice(calculatePrice(dto, client));
+		instructorReservation.setIncome(loyaltyService.calculateIncome(instructor, instructorReservation.getPrice()));
+		loyaltyService.applyReward(client);
+		clientRepository.saveAndFlush(client);
+		loyaltyService.applyReward(instructor);
+		instructorRepository.saveAndFlush(instructor);
     	return instructorReservationRepository.save(instructorReservation);
 	}
     
@@ -57,14 +76,14 @@ public class InstructorReservationService {
     	return false;
     }
     
-    private double calculatePrice(ClientAdventureReservationDTO dto) {
+    private double calculatePrice(ClientAdventureReservationDTO dto,Client client) {
     	double price=0;
     	Long hours = ChronoUnit.HOURS.between(dto.getStartTime(),dto.getEndTime());
     	price += hours * dto.getAdventure().getPrice().getPrice();
     	for(ItemPrice itemprice : dto.getAdditionalServices()) {
     		price+= itemprice.getPrice();
     	}
-    	return price;
+		return loyaltyService.applyDiscount(client, price);
     }
     
     public List<ClientMadeReservationsAdventureDTO> getAdventureReservationByClient(int clientId){

@@ -39,8 +39,9 @@ public class CottageReservations {
     private StatusOfReservation statusOfReservation;
     
     private double price;
-    
-    private Boolean isRevised;
+	private double income;
+
+	private Boolean isRevised;
     
     private Boolean isComplainedOf;
 
@@ -154,6 +155,14 @@ public class CottageReservations {
 		}else{
 			return true;
 		}
+	}
+
+	public double getIncome() {
+		return income;
+	}
+
+	public void setIncome(double income) {
+		this.income = income;
 	}
 
 }

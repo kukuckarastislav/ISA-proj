@@ -35,8 +35,11 @@ public class CottageFastResHistory {
     private Boolean isRevised;
     
     private Boolean isComplainedOf;
-    
-    public CottageFastResHistory() {}
+
+	private double price;
+	private double income;
+
+	public CottageFastResHistory() {}
     
     
 	public CottageFastResHistory(Client client, CottageFastReservation cottageFastReservation,
@@ -101,8 +104,22 @@ public class CottageFastResHistory {
 	public void setIsComplainedOf(Boolean isComplainedOf) {
 		this.isComplainedOf = isComplainedOf;
 	}
-	
-	
-    
-    
+
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public double getIncome() {
+		return income;
+	}
+
+	public void setIncome(double income) {
+		this.income = income;
+	}
+
 }

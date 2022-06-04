@@ -1,5 +1,9 @@
 package com.isa.isa.model.loyalty;
 
+import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.Client;
+import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.Instructor;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.ClientService;
 import com.isa.isa.service.CottageOwnerService;
@@ -105,4 +109,65 @@ public class LoyaltyService {
         if(newLoyaltySettings.getOwnerDiscountPercentageGOLD() > newLoyaltySettings.getSystemPercentage()) return false;
         return true;
     }
+
+    public double applyDiscount(Client client, double price) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        if(client.getLoyalty().getLoyaltyType() == LoyaltyType.GOLD){
+            price = price - (price*loyaltySettings.getClientDiscountPercentageGOLD())/100;
+        }else if(client.getLoyalty().getLoyaltyType() == LoyaltyType.SILVER){
+            price = price - (price*loyaltySettings.getClientDiscountPercentageSILVER())/100;
+        }
+
+        return price;
+    }
+
+    public void applyReward(Client client) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        client.getLoyalty().addScore(loyaltySettings.getClientScoreForReservation());
+        client.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+    }
+
+    public void applyReward(Instructor instructor) {
+        applyRewardOwner(instructor.getLoyalty());
+    }
+
+    public void applyReward(BoatOwner boatOwner) {
+        applyRewardOwner(boatOwner.getLoyalty());
+    }
+
+    public void applyReward(CottageOwner cottageOwner) {
+        applyRewardOwner(cottageOwner.getLoyalty());
+    }
+
+    public void applyRewardOwner(Loyalty loyalty) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        loyalty.addScore(loyaltySettings.getOwnerScoreForReservation());
+        loyalty.update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+    }
+
+    public double calculateIncome(Instructor instructor, double price) {
+        return calculateIncomeOwner(instructor.getLoyalty(), price);
+    }
+
+    public double calculateIncome(BoatOwner boatOwner, double price) {
+        return calculateIncomeOwner(boatOwner.getLoyalty(), price);
+    }
+
+    public double calculateIncome(CottageOwner cottageOwner, double price) {
+        return calculateIncomeOwner(cottageOwner.getLoyalty(), price);
+    }
+
+    public double calculateIncomeOwner(Loyalty loyalty, double price) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        double income = 0;
+        if(loyalty.getLoyaltyType() == LoyaltyType.GOLD){
+            income = price - price * (loyaltySettings.getSystemPercentage()-loyaltySettings.getOwnerDiscountPercentageGOLD())/100;
+        }else if(loyalty.getLoyaltyType() == LoyaltyType.SILVER){
+            income = price - price * (loyaltySettings.getSystemPercentage()-loyaltySettings.getOwnerDiscountPercentageSILVER())/100;
+        }else{
+            income = price - price * loyaltySettings.getSystemPercentage()/100;
+        }
+        return income;
+    }
+
 }

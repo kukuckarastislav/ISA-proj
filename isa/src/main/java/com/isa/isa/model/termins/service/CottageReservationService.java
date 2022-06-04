@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.isa.isa.model.*;
+import com.isa.isa.model.loyalty.LoyaltyService;
+import com.isa.isa.repository.ClientRepository;
+import com.isa.isa.repository.CottageOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.model.Client;
-import com.isa.isa.model.Cottage;
-import com.isa.isa.model.EntityImage;
-import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsCottageDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
@@ -37,7 +37,14 @@ public class CottageReservationService {
 	@Autowired
 	private CottageRepository cottageRepository;
 	@Autowired
+	private CottageOwnerRepository cottageOwnerRepository;
+	@Autowired
 	private CottageFastReservationRepository cottageFastReservationRepository;
+	@Autowired
+	private ClientRepository clientRepository;
+
+	@Autowired
+	private LoyaltyService loyaltyService;
 	
 	public Boolean isCottageFree(CottageTermsDTO dto) {
 		ArrayList<CottageReservations> reservations =  (ArrayList<CottageReservations>) cottageReservationRepository.findAllByCottageId(dto.getId());
@@ -50,13 +57,19 @@ public class CottageReservationService {
 		}
 		return retVal;
 	}
-	
+
 	public CottageReservations reserveCottageByClient(ClientCottageReservationDTO dto, Client client) {
     	if(hasClientAlreadyCancelledCottage(dto, client)) return null;
+		CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(dto.getCottage().getOwner().getEmail());
 		CottageReservations cottageReservations = new CottageReservations(client, dto.getCottage(), dto.getStartTime(), dto.getEndTime());
 		cottageReservations.setAdditionalServices(dto.getAdditionalServices());
 		cottageReservations.setStatusOfReservation(StatusOfReservation.ACTIVE);
-		cottageReservations.setPrice(calculatePrice(dto));
+		cottageReservations.setPrice(calculatePrice(dto, client));
+		cottageReservations.setIncome(loyaltyService.calculateIncome(cottageOwner, cottageReservations.getPrice()));
+		loyaltyService.applyReward(client);
+		clientRepository.saveAndFlush(client);
+		loyaltyService.applyReward(cottageOwner);
+		cottageOwnerRepository.saveAndFlush(cottageOwner);
     	return cottageReservationRepository.save(cottageReservations);
 	}
 	
@@ -70,15 +83,15 @@ public class CottageReservationService {
 		
     	return false;
     }
-	
-	private double calculatePrice(ClientCottageReservationDTO dto) {
+
+	private double calculatePrice(ClientCottageReservationDTO dto, Client client) {
     	double price=0;
     	Long days = ChronoUnit.DAYS.between(dto.getStartTime(),dto.getEndTime());
     	price += days * dto.getCottage().getPrice().getPrice();
     	for(ItemPrice itemprice : dto.getAdditionalServices()) {
     		price+= itemprice.getPrice();
     	}
-    	return price;
+    	return loyaltyService.applyDiscount(client, price);
     }
 	
 	

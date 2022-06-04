@@ -38,8 +38,9 @@ public class BoatReservations {
     private StatusOfReservation statusOfReservation;
     
     private double price;
-    
-    private Boolean isRevised;
+	private double income;
+
+	private Boolean isRevised;
     
     private Boolean isComplainedOf;
 
@@ -166,4 +167,13 @@ public class BoatReservations {
 			return true;
 		}
 	}
+
+	public double getIncome() {
+		return income;
+	}
+
+	public void setIncome(double income) {
+		this.income = income;
+	}
+
 }

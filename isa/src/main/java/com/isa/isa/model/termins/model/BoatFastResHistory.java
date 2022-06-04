@@ -35,8 +35,11 @@ public class BoatFastResHistory {
     private Boolean isRevised;
     
     private Boolean isComplainedOf;
-    
-    public BoatFastResHistory() {}
+
+	private double price;
+	private double income;
+
+	public BoatFastResHistory() {}
     
     
 
@@ -107,10 +110,22 @@ public class BoatFastResHistory {
 	public void setIsComplainedOf(Boolean isComplainedOf) {
 		this.isComplainedOf = isComplainedOf;
 	}
-	
-	
-	
-    
-    
+
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public double getIncome() {
+		return income;
+	}
+
+	public void setIncome(double income) {
+		this.income = income;
+	}
 
 }
