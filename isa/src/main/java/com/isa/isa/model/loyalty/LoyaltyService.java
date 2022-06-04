@@ -1,5 +1,9 @@
 package com.isa.isa.model.loyalty;
 
+import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.Client;
+import com.isa.isa.model.CottageOwner;
+import com.isa.isa.model.Instructor;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.ClientService;
 import com.isa.isa.service.CottageOwnerService;
@@ -104,5 +108,40 @@ public class LoyaltyService {
         if(newLoyaltySettings.getOwnerDiscountPercentageSILVER() > newLoyaltySettings.getSystemPercentage()) return false;
         if(newLoyaltySettings.getOwnerDiscountPercentageGOLD() > newLoyaltySettings.getSystemPercentage()) return false;
         return true;
+    }
+
+    public double applyDiscount(Client client, double price) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        if(client.getLoyalty().getLoyaltyType() == LoyaltyType.GOLD){
+            price = price - (price*loyaltySettings.getClientDiscountPercentageGOLD())/100;
+        }else if(client.getLoyalty().getLoyaltyType() == LoyaltyType.SILVER){
+            price = price - (price*loyaltySettings.getClientDiscountPercentageSILVER())/100;
+        }
+
+        return price;
+    }
+
+    public void applyReward(Client client) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        client.getLoyalty().addScore(loyaltySettings.getClientScoreForReservation());
+        client.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+    }
+
+    public void applyReward(Instructor instructor) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        instructor.getLoyalty().addScore(loyaltySettings.getOwnerScoreForReservation());
+        instructor.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+    }
+
+    public void applyReward(BoatOwner boatOwner) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        boatOwner.getLoyalty().addScore(loyaltySettings.getOwnerScoreForReservation());
+        boatOwner.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+    }
+
+    public void applyReward(CottageOwner cottageOwner) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        cottageOwner.getLoyalty().addScore(loyaltySettings.getOwnerScoreForReservation());
+        cottageOwner.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
     }
 }

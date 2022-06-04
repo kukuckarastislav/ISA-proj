@@ -35,6 +35,10 @@ public class CottageFastResHistory {
     private Boolean isRevised;
     
     private Boolean isComplainedOf;
+
+	private double price;
+	private double income;
+	private double systemIncome;
     
     public CottageFastResHistory() {}
     
@@ -101,8 +105,29 @@ public class CottageFastResHistory {
 	public void setIsComplainedOf(Boolean isComplainedOf) {
 		this.isComplainedOf = isComplainedOf;
 	}
-	
-	
-    
-    
+
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public double getIncome() {
+		return income;
+	}
+
+	public void setIncome(double income) {
+		this.income = income;
+	}
+
+	public double getSystemIncome() {
+		return systemIncome;
+	}
+
+	public void setSystemIncome(double systemIncome) {
+		this.systemIncome = systemIncome;
+	}
 }

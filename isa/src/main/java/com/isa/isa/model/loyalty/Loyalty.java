@@ -40,4 +40,8 @@ public class Loyalty {
         }
         return false;   // nije bilo potrebno menjati :)
     }
+
+    public void addScore(int clientScoreForReservation) {
+        score += clientScoreForReservation;
+    }
 }

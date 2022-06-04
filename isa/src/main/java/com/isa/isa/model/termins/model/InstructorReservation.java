@@ -39,6 +39,8 @@ public class InstructorReservation {
     private String instructorUsername;
     
     private double price;
+    private double income;
+    private double systemIncome;
     
     private Boolean isRevised;
     
@@ -58,24 +60,26 @@ public class InstructorReservation {
         this.isRevised = false;
         this.isComplainedOf =false;
     }
-        
 
-    public InstructorReservation(int id, Client client, Adventure adventure, LocalDateTime startTime,
-			LocalDateTime endTime, StatusOfReservation statusOfReservation, String instructorUsername, double price) {
-		super();
-		this.id = id;
-		this.client = client;
-		this.adventure = adventure;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.statusOfReservation = statusOfReservation;
-		this.instructorUsername = instructorUsername;
-		this.price = price;
-		this.isRevised = false;
-		this.isComplainedOf =false;
-	}
 
-	public int getId() {
+    public InstructorReservation(int id, Client client, Adventure adventure, Set<ItemPrice> additionalServices, LocalDateTime startTime, LocalDateTime endTime, StatusOfReservation statusOfReservation, String instructorUsername, double price, double income, double systemIncome, Boolean isRevised, Boolean isComplainedOf, Report report) {
+        this.id = id;
+        this.client = client;
+        this.adventure = adventure;
+        this.additionalServices = additionalServices;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.statusOfReservation = statusOfReservation;
+        this.instructorUsername = instructorUsername;
+        this.price = price;
+        this.income = income;
+        this.systemIncome = systemIncome;
+        this.isRevised = isRevised;
+        this.isComplainedOf = isComplainedOf;
+        this.report = report;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -177,5 +181,21 @@ public class InstructorReservation {
 
     public void setReport(Report report) {
         this.report = report;
+    }
+
+    public double getIncome() {
+        return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
+    }
+
+    public double getSystemIncome() {
+        return systemIncome;
+    }
+
+    public void setSystemIncome(double systemIncome) {
+        this.systemIncome = systemIncome;
     }
 }
