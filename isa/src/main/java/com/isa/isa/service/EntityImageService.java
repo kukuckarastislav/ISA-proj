@@ -42,9 +42,22 @@ public class EntityImageService {
 
         String path = "main" + File.separator + "resources" + File.separator + "public";
         String dirName = name.replace(' ', '_');
+        String pathToOwnerDit = "images" + File.separator + role + File.separator + owner;
         String imgPath = "images" + File.separator + role + File.separator + owner + File.separator + dirName;
 
         File dir = null;
+        try {
+            dir = new File(new File("./src").getCanonicalPath() + File.separator + path + File.separator + pathToOwnerDit);
+            if(!dir.exists()){
+                if(dir.mkdir()){
+                    System.out.println("Succesfuly created new directory for new "+role);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        dir = null;
         try {
             dir = new File(new File("./src").getCanonicalPath() + File.separator + path + File.separator + imgPath);
             if(!dir.exists()){
