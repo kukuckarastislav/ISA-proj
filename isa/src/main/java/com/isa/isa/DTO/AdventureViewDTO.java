@@ -2,11 +2,9 @@ package com.isa.isa.DTO;
 
 import com.isa.isa.model.*;
 import com.isa.isa.model.enums.ReservationCancellationConditions;
+import com.isa.isa.model.revisions.model.Revision;
 
-import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class AdventureViewDTO {
 
@@ -26,6 +24,9 @@ public class AdventureViewDTO {
     private ReservationCancellationConditions reservationCancellationConditions;
     private double averageGrade;
     private Price price;
+
+    private ArrayList<Revision> adventureRevisions;
+    private ArrayList<Revision> instructorRevisions;
 
     public AdventureViewDTO(){}
 
@@ -74,6 +75,9 @@ public class AdventureViewDTO {
         this.reservationCancellationConditions = adventure.getReservationCancellationConditions();
         this.averageGrade = adventure.getAverageGrade();
         this.price = adventure.getPrice();
+
+        this.adventureRevisions = new ArrayList<>(adventure.getRevisions());
+        this.instructorRevisions = new ArrayList<>(instructor.getRevisions());
     }
 
     public String getInstructorName() {
@@ -194,5 +198,21 @@ public class AdventureViewDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public ArrayList<Revision> getAdventureRevisions() {
+        return adventureRevisions;
+    }
+
+    public void setAdventureRevisions(ArrayList<Revision> adventureRevisions) {
+        this.adventureRevisions = adventureRevisions;
+    }
+
+    public ArrayList<Revision> getInstructorRevisions() {
+        return instructorRevisions;
+    }
+
+    public void setInstructorRevisions(ArrayList<Revision> instructorRevisions) {
+        this.instructorRevisions = instructorRevisions;
     }
 }

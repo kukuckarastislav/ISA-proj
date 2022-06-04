@@ -210,6 +210,38 @@
         </div>
 
 
+        <div class="div" style="margin-top: 10px; margin-bottom: 30px;">
+          <h1>Revisions</h1>
+          <div class="row m-2">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <input v-on:click="showRevisions(0)" type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="btnradio1">Adventure</label>
+                <input v-on:click="showRevisions(1)" type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio2">Instructor</label>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-3"></div>
+              <div class="col-6">
+                <div v-for="revision in revisions" :key="revision">
+                <div class="card"  v-if="revision.statusOfRevision === 'APPROVED'">
+                  <div class="card-body">
+                      <h3 class="text-start stars">
+                      <span v-for="index in Math.round(revision.grade)" :key="index">&#9733;</span> 
+                      <span v-for="index in Math.round(5-revision.grade)" :key="index">&#9734;</span> 
+                      {{revision.grade}} <span style="font-size: 18px; color: black;"> {{convertDate(revision.createdAt)}} </span>
+                      </h3>
+                      <p class="card-text text-start">{{revision.comment}}</p>
+                  </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
     </div>
 
@@ -253,6 +285,8 @@ export default {
     return {
         adventureName: "",
         adventure: {},
+
+        revisions: [],
 
         terms: [],
 
@@ -302,7 +336,8 @@ export default {
     loadData: function(reloadMap){
        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
         axios.get('http://localhost:8180/api/adventure/byinstructor/'+encodeURIComponent(this.adventureName)).then(resp => {
-            this.adventure = resp.data;
+          this.adventure = resp.data;
+            this.revisions = this.adventure.adventureRevisions
             this.loadCalendarData();
             console.log("podaci avanture");
             console.log(this.adventure);
@@ -494,6 +529,16 @@ export default {
     },
     UpdateAdventurePage: function () {
         this.$router.push({ path: '/adventure-update/'+encodeURIComponent(this.adventure.name)});
+    },
+    convertDate: function(date){
+        return new Date(date).toLocaleString();
+    },
+    showRevisions: function (x) {
+      if (x) {
+        this.revisions = this.adventure.instructorRevisions
+      } else {
+        this.revisions = this.adventure.adventureRevisions
+      }
     },
   }
 }
