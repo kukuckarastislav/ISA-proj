@@ -128,20 +128,46 @@ public class LoyaltyService {
     }
 
     public void applyReward(Instructor instructor) {
-        LoyaltySettings loyaltySettings = getLoyaltySettings();
-        instructor.getLoyalty().addScore(loyaltySettings.getOwnerScoreForReservation());
-        instructor.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+        applyRewardOwner(instructor.getLoyalty());
     }
 
     public void applyReward(BoatOwner boatOwner) {
-        LoyaltySettings loyaltySettings = getLoyaltySettings();
-        boatOwner.getLoyalty().addScore(loyaltySettings.getOwnerScoreForReservation());
-        boatOwner.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+        applyRewardOwner(boatOwner.getLoyalty());
     }
 
     public void applyReward(CottageOwner cottageOwner) {
-        LoyaltySettings loyaltySettings = getLoyaltySettings();
-        cottageOwner.getLoyalty().addScore(loyaltySettings.getOwnerScoreForReservation());
-        cottageOwner.getLoyalty().update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+        applyRewardOwner(cottageOwner.getLoyalty());
     }
+
+    public void applyRewardOwner(Loyalty loyalty) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        loyalty.addScore(loyaltySettings.getOwnerScoreForReservation());
+        loyalty.update(loyaltySettings.getMinimumScoreForSILVER(), loyaltySettings.getMinimumScoreForGOLD());
+    }
+
+    public double calculateIncome(Instructor instructor, double price) {
+        return calculateIncomeOwner(instructor.getLoyalty(), price);
+    }
+
+    public double calculateIncome(BoatOwner boatOwner, double price) {
+        return calculateIncomeOwner(boatOwner.getLoyalty(), price);
+    }
+
+    public double calculateIncome(CottageOwner cottageOwner, double price) {
+        return calculateIncomeOwner(cottageOwner.getLoyalty(), price);
+    }
+
+    public double calculateIncomeOwner(Loyalty loyalty, double price) {
+        LoyaltySettings loyaltySettings = getLoyaltySettings();
+        double income = 0;
+        if(loyalty.getLoyaltyType() == LoyaltyType.GOLD){
+            income = price - price * (loyaltySettings.getSystemPercentage()-loyaltySettings.getOwnerDiscountPercentageGOLD())/100;
+        }else if(loyalty.getLoyaltyType() == LoyaltyType.SILVER){
+            income = price - price * (loyaltySettings.getSystemPercentage()-loyaltySettings.getOwnerDiscountPercentageSILVER())/100;
+        }else{
+            income = price - price * loyaltySettings.getSystemPercentage()/100;
+        }
+        return income;
+    }
+
 }

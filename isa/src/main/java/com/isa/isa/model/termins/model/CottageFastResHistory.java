@@ -38,9 +38,8 @@ public class CottageFastResHistory {
 
 	private double price;
 	private double income;
-	private double systemIncome;
-    
-    public CottageFastResHistory() {}
+
+	public CottageFastResHistory() {}
     
     
 	public CottageFastResHistory(Client client, CottageFastReservation cottageFastReservation,
@@ -123,11 +122,4 @@ public class CottageFastResHistory {
 		this.income = income;
 	}
 
-	public double getSystemIncome() {
-		return systemIncome;
-	}
-
-	public void setSystemIncome(double systemIncome) {
-		this.systemIncome = systemIncome;
-	}
 }

@@ -40,9 +40,8 @@ public class CottageReservations {
     
     private double price;
 	private double income;
-	private double systemIncome;
-    
-    private Boolean isRevised;
+
+	private Boolean isRevised;
     
     private Boolean isComplainedOf;
 
@@ -166,11 +165,4 @@ public class CottageReservations {
 		this.income = income;
 	}
 
-	public double getSystemIncome() {
-		return systemIncome;
-	}
-
-	public void setSystemIncome(double systemIncome) {
-		this.systemIncome = systemIncome;
-	}
 }

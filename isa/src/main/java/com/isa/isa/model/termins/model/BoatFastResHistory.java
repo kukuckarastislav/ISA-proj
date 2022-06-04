@@ -38,9 +38,8 @@ public class BoatFastResHistory {
 
 	private double price;
 	private double income;
-	private double systemIncome;
-    
-    public BoatFastResHistory() {}
+
+	public BoatFastResHistory() {}
     
     
 
@@ -129,11 +128,4 @@ public class BoatFastResHistory {
 		this.income = income;
 	}
 
-	public double getSystemIncome() {
-		return systemIncome;
-	}
-
-	public void setSystemIncome(double systemIncome) {
-		this.systemIncome = systemIncome;
-	}
 }

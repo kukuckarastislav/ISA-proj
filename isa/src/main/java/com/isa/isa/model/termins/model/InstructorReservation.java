@@ -40,8 +40,7 @@ public class InstructorReservation {
     
     private double price;
     private double income;
-    private double systemIncome;
-    
+
     private Boolean isRevised;
     
     private Boolean isComplainedOf;
@@ -62,7 +61,7 @@ public class InstructorReservation {
     }
 
 
-    public InstructorReservation(int id, Client client, Adventure adventure, Set<ItemPrice> additionalServices, LocalDateTime startTime, LocalDateTime endTime, StatusOfReservation statusOfReservation, String instructorUsername, double price, double income, double systemIncome, Boolean isRevised, Boolean isComplainedOf, Report report) {
+    public InstructorReservation(int id, Client client, Adventure adventure, Set<ItemPrice> additionalServices, LocalDateTime startTime, LocalDateTime endTime, StatusOfReservation statusOfReservation, String instructorUsername, double price, double income, Boolean isRevised, Boolean isComplainedOf, Report report) {
         this.id = id;
         this.client = client;
         this.adventure = adventure;
@@ -73,7 +72,6 @@ public class InstructorReservation {
         this.instructorUsername = instructorUsername;
         this.price = price;
         this.income = income;
-        this.systemIncome = systemIncome;
         this.isRevised = isRevised;
         this.isComplainedOf = isComplainedOf;
         this.report = report;
@@ -191,11 +189,4 @@ public class InstructorReservation {
         this.income = income;
     }
 
-    public double getSystemIncome() {
-        return systemIncome;
-    }
-
-    public void setSystemIncome(double systemIncome) {
-        this.systemIncome = systemIncome;
-    }
 }
