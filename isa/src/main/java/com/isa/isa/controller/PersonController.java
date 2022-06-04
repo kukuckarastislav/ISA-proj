@@ -1,5 +1,6 @@
 package com.isa.isa.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,15 @@ import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.CottageTermsDTO;
 import com.isa.isa.model.termins.DTO.InstructorTermsDTO;
+import com.isa.isa.model.termins.model.BoatFastReservation;
+import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.service.BoatFastReservationService;
 import com.isa.isa.model.termins.service.CottageFastReservationService;
 import com.isa.isa.model.termins.service.InstructorFastReservationService;
 import com.isa.isa.service.AdventureService;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.BoatService;
+import com.isa.isa.service.ClientService;
 import com.isa.isa.service.CottageOwnerService;
 import com.isa.isa.service.CottageService;
 import com.isa.isa.service.InstructorService;
@@ -64,6 +68,9 @@ public class PersonController {
     
     @Autowired 
     private PenaltyService penaltyService;
+    @Autowired
+    private ClientService clientService;
+    
     
     @PutMapping("/registration")
     public ResponseEntity<UserDTO> registrationStuff(@RequestBody UserDTO userDTO){
@@ -188,6 +195,32 @@ public class PersonController {
     	report.setSanctionClient(true);
     	report.setText("Ostavio stan u haosu.");
     	penaltyService.getPenaltyFromReport(report);
+    	return ResponseEntity.ok().build();
+    }
+    
+    @GetMapping("/testCottageAction")
+    public ResponseEntity<?> testCottageAction() {
+    	CottageFastReservation cottageFastReservation = new CottageFastReservation();
+    	Cottage cottage = new Cottage();
+    	cottage.setId(1);
+    	cottage.setName("Stan");
+    	cottageFastReservation.setCottage(cottage);
+    	cottageFastReservation.setStartTime(LocalDateTime.now());
+    	cottageFastReservation.setEndTime(LocalDateTime.now().plusDays(2));
+    	clientService.notifyCottageSubscribedClients(cottageFastReservation);
+    	return ResponseEntity.ok().build();
+    }
+    
+    @GetMapping("/testBoatAction")
+    public ResponseEntity<?> testBoatAction() {
+    	BoatFastReservation boatFastReservation = new BoatFastReservation();
+    	Boat boat = new Boat();
+    	boat.setId(2);
+    	boat.setName("Serenity");
+    	boatFastReservation.setBoat(boat);
+    	boatFastReservation.setStartTime(LocalDateTime.now());
+    	boatFastReservation.setEndTime(LocalDateTime.now().plusHours(2));
+    	clientService.notifyBoatSubscribedClients(boatFastReservation);
     	return ResponseEntity.ok().build();
     }
     

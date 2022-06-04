@@ -17,6 +17,8 @@ import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.ClientRepository;
 import com.isa.isa.repository.InstructorRepository;
 import com.isa.isa.service.AdventureService;
+import com.isa.isa.service.ClientService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +54,8 @@ public class InstructorTermService {
     @Autowired
     private ComplaintRepository complaintRepository;
 
+    @Autowired
+    private ClientService clientService;
 
     public ArrayList<EventDTO> getAdventureTerms(String instructorname, String adventurename) {
         ArrayList<EventDTO> instructorAndAdventureTerm = new ArrayList<EventDTO>();
@@ -312,7 +316,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         if(isFastReservationPossible(newInstructorFastReservationDTO.getStartTime(), newInstructorFastReservationDTO.getEndTime(), instructor)){
             InstructorFastReservation ifr = new InstructorFastReservation(adventure, newInstructorFastReservationDTO, username);
             instructorFastReservationRepository.saveAndFlush(ifr);
-            //TODO: pozvati metodu koja obavestava klijente da je napravljena brza akcija
+            clientService.notifyAdventureSubscribedClients(ifr);
             return "ok";
         }else{
             return "error: overlaping with other terms";

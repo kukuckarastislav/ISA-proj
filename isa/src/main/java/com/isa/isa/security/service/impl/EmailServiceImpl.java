@@ -15,6 +15,9 @@ import com.isa.isa.model.termins.DTO.ClientBoatFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientCottageReservationDTO;
+import com.isa.isa.model.termins.model.BoatFastReservation;
+import com.isa.isa.model.termins.model.CottageFastReservation;
+import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.security.model.User;
 import com.isa.isa.security.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -258,5 +261,38 @@ public class EmailServiceImpl implements EmailService{
 		javaMailSender.send(mail);
 
 		System.out.println("[EmailService]: sendReportNotificationToOwner");
+	}
+	
+	@Override
+	public void sendNewAdventureActionNotification(Client client, InstructorFastReservation instructorFastReservation) throws MailException, InterruptedException{
+	    SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(client.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("New action");
+        mail.setText("There's a new action for " + instructorFastReservation.getAdventure().getName()+" from: "+instructorFastReservation.getStartTime()+ " to: "+instructorFastReservation.getEndTime());
+        javaMailSender.send(mail);
+
+	}
+	
+	@Override
+	public void sendNewCottageActionNotification(Client client, CottageFastReservation cottageFastReservation) throws MailException, InterruptedException{
+	    SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(client.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("New action");
+        mail.setText("There's a new action for " + cottageFastReservation.getCottage().getName()+" from: "+cottageFastReservation.getStartTime()+ " to: "+cottageFastReservation.getEndTime());
+        javaMailSender.send(mail);
+
+	}
+	
+	@Override
+	public void sendNewBoatActionNotification(Client client, BoatFastReservation boatFastReservation) throws MailException, InterruptedException{
+	    SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(client.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("New action");
+        mail.setText("There's a new action for " + boatFastReservation.getBoat().getName()+" from: "+boatFastReservation.getStartTime()+ " to: "+boatFastReservation.getEndTime());
+        javaMailSender.send(mail);
+
 	}
 }
