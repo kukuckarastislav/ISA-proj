@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.isa.isa.model.BoatOwner;
+import com.isa.isa.model.loyalty.LoyaltyService;
+import com.isa.isa.repository.BoatOwnerRepository;
+import com.isa.isa.repository.ClientRepository;
+import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +35,24 @@ public class BoatFastResHistoryService {
     	}
     	return retVal;
     }
-	
+
+	@Autowired
+	LoyaltyService loyaltyService;
+	@Autowired
+	BoatOwnerRepository boatOwnerRepository;
+	@Autowired
+	ClientRepository clientRepository;
+
 	public Boolean makeReservation(Client client, BoatFastReservation boatFastReservation) {
     	if(hasClientAlreadyCancelled(client,boatFastReservation)) return false;
+		BoatOwner boatOwner = boatOwnerRepository.getByEmail(boatFastReservation.getBoat().getOwner().getEmail());
     	BoatFastResHistory boatFastResHistory = new BoatFastResHistory(client,boatFastReservation,StatusOfFastReservation.TAKEN);
+		boatFastResHistory.setPrice(loyaltyService.applyDiscount(client, boatFastReservation.getPrice()));
+		boatFastResHistory.setIncome(loyaltyService.calculateIncome(boatOwner, boatFastResHistory.getPrice()));
+		loyaltyService.applyReward(client);
+		clientRepository.saveAndFlush(client);
+		loyaltyService.applyReward(boatOwner);
+		boatOwnerRepository.saveAndFlush(boatOwner);
     	boatFastResHistoryRepository.save(boatFastResHistory);
     	return true;
     }

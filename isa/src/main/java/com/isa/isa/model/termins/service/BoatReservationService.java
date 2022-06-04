@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.isa.isa.model.*;
+import com.isa.isa.model.loyalty.LoyaltyService;
+import com.isa.isa.repository.BoatOwnerRepository;
+import com.isa.isa.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.model.Boat;
-import com.isa.isa.model.Client;
-import com.isa.isa.model.EntityImage;
-import com.isa.isa.model.ItemPrice;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientBoatReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsBoatDTO;
@@ -38,6 +38,12 @@ public class BoatReservationService {
 	private BoatRepository boatRepository;
 	@Autowired
 	private BoatFastReservationRepository boatFastReservationRepository;
+	@Autowired
+	private LoyaltyService loyaltyService;
+	@Autowired
+	private BoatOwnerRepository boatOwnerRepository;
+	@Autowired
+	private ClientRepository clientRepository;
 	
 	public Boolean isBoatFree(BoatTermsDTO dto) {
 		ArrayList<BoatReservations> reservations =  (ArrayList<BoatReservations>) boatReservationRepository.findAllByBoatId(dto.getId());
@@ -73,10 +79,16 @@ public class BoatReservationService {
 	
 	public BoatReservations reserveBoatByClient(ClientBoatReservationDTO dto, Client client) {
     	if(hasClientAlreadyCancelledBoat(dto, client)) return null;
+		BoatOwner boatOwner = boatOwnerRepository.getByEmail(dto.getBoat().getOwner().getEmail());
     	BoatReservations boatReservations = new BoatReservations(client, dto.getBoat(), dto.getStartTime(), dto.getEndTime());
     	boatReservations.setAdditionalServices(dto.getAdditionalServices());
     	boatReservations.setStatusOfReservation(StatusOfReservation.ACTIVE);
-    	boatReservations.setPrice(calculatePrice(dto));
+    	boatReservations.setPrice(calculatePrice(dto, client));
+		boatReservations.setIncome(loyaltyService.calculateIncome(boatOwner, boatReservations.getPrice()));
+		loyaltyService.applyReward(client);
+		clientRepository.saveAndFlush(client);
+		loyaltyService.applyReward(boatOwner);
+		boatOwnerRepository.saveAndFlush(boatOwner);
     	return boatReservationRepository.save(boatReservations);
 	}
 	
@@ -91,14 +103,14 @@ public class BoatReservationService {
     	return false;
     }
 	
-	private double calculatePrice(ClientBoatReservationDTO dto) {
+	private double calculatePrice(ClientBoatReservationDTO dto, Client client) {
     	double price=0;
     	Long hours = ChronoUnit.HOURS.between(dto.getStartTime(),dto.getEndTime());
     	price += hours * dto.getBoat().getPrice().getPrice();
     	for(ItemPrice itemprice : dto.getAdditionalServices()) {
     		price+= itemprice.getPrice();
     	}
-    	return price;
+    	return loyaltyService.applyDiscount(client, price);
     }
 	
 	public List<ClientMadeReservationsBoatDTO> getBoatReservationByClient(int clientId){	

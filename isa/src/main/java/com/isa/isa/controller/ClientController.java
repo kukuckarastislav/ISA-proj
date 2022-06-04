@@ -335,7 +335,6 @@ public class ClientController {
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	@PostMapping("/reserveBoatAction")
 	public ResponseEntity<Boolean> reserveBoatAction(@RequestBody ClientBoatFastReservationDTO clientBoatFastReservationDTO, Principal user) {
-		//TODO: loyalty
 		Client client= this.clientService.findByEmail(user.getName());
 		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		Boat boat = boatService.getBoatWithOwner(clientBoatFastReservationDTO.getIdBoat());
