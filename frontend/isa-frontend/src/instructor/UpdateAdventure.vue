@@ -131,7 +131,7 @@
                             <input v-model="newPriceItem.description" type="text" class="form-control"> <br>
                             <input v-model="newPriceItem.price" type="number" class="form-control" min=0> <br>
                             <button class="btn btn-danger m-2" v-on:click="cancelAddNewItemPrice()">Cancel</button>
-                            <button class="btn btn-primary m-2">Add</button>
+                            <button class="btn btn-primary m-2" v-on:click="addNewItemPrice()">Add</button>
                         </div>
                     </div>
                     <div v-else>
@@ -244,7 +244,7 @@ export default {
 
         addNewItemPriceVisible: false,
         newPriceItem: {
-            id: -1,
+            id: 0,
             price: 0,
             name: "name",
             description: "description"
@@ -400,7 +400,15 @@ export default {
         
         },
         addNewAdditionalEq: function(){
-            // poslati na bekend novi add equipment
+            let newAdditiona = { "name": this.newAdditionalEq }
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.post('http://localhost:8180/api/additionalequipment', newAdditiona).then(resp => {
+                if (resp.data.name === newAdditiona.name) {
+                    this.allAdditionalEquipment.push(resp.data);
+                    this.newAdditionalEq = '';
+                }
+                console.log(resp.data);
+            });
         },
         clickItemPrice: function(itemPrice){
             for (var i = 0; i < this.adventure.pricelist.length; i++) {
@@ -420,6 +428,17 @@ export default {
             this.newPriceItem.name = "Name";
             this.newPriceItem.description = "description";
             this.addNewItemPriceVisible = false;
+        },
+        addNewItemPrice: function () {
+            let newItemPrice = {"name":this.newPriceItem.name, "description":this.newPriceItem.description, "price":this.newPriceItem.price}
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.post('http://localhost:8180/api/itemprice', newItemPrice).then(resp => {
+                if (resp.data.name === newItemPrice.name) {
+                    this.allItemPrices.push(resp.data);
+                    this.cancelAddNewItemPrice()
+                }
+                console.log(resp.data);
+            });
         },
         onFileChange: function(e){
             console.log('fajl select');

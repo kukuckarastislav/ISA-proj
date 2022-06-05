@@ -16,4 +16,12 @@ public class ItemPriceService {
     public ArrayList<ItemPrice> getAllItemPrices(){
         return (ArrayList<ItemPrice>) itemPriceRepository.findAll();
     }
+
+    public ItemPrice addItemPrice(ItemPrice itemPrice) {
+        ItemPrice newItemPrice = new ItemPrice();
+        newItemPrice.setPrice(itemPrice.getPrice());
+        newItemPrice.setDescription(itemPrice.getDescription());
+        newItemPrice.setName(itemPrice.getName());
+        return itemPriceRepository.saveAndFlush(newItemPrice);
+    }
 }
