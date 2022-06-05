@@ -351,6 +351,7 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         if(instructor == null) return null;
 
         for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
+            if(instructorReservation.getStartTime() == null) continue;
             if(instructorReservation.isSuccessfullyFinished()){
                 BusinessStatistic businessStatistic = instructorBusinessReport.getBusinessStatisticByEntityName(instructorReservation.getAdventure().getName());
                 if(businessStatistic == null){
@@ -398,5 +399,30 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         return instructorBusinessReport;
+    }
+
+    public double getSystemIncome(Instructor instructor, TimeStamp timeStamp) {
+        double systemIncome = 0;
+
+        if(instructor == null) return 0;
+
+        for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(instructor.getEmail())){
+            if(instructorReservation.isSuccessfullyFinished()){
+                if(timeStamp.inStamp(instructorReservation.getStartTime(), instructorReservation.getEndTime())){
+                    systemIncome += instructorReservation.getPrice() - instructorReservation.getIncome();
+                }
+            }
+        }
+
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsername(instructor.getEmail())){
+            InsFastResHistory insFastResHistory = instructorFastReservation.getSuccessfullyFinishedHistory();
+            if(insFastResHistory != null){
+                if(timeStamp.inStamp(instructorFastReservation.getStartTime(), instructorFastReservation.getEndTime())){
+                    systemIncome += insFastResHistory.getPrice() - insFastResHistory.getIncome();
+                }
+            }
+        }
+
+        return systemIncome;
     }
 }

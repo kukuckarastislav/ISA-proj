@@ -31,6 +31,8 @@ public class TimeStamp {
     }
 
     public boolean inStamp(LocalDateTime startTime, LocalDateTime endTime){
+        if(this.startTime == null || this.endTime == null) return false;
+        if(startTime == null || endTime == null) return false;
         return this.startTime.isBefore(startTime) && this.endTime.isAfter(endTime);
     }
 }

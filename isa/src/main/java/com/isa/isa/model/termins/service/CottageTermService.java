@@ -202,4 +202,34 @@ public class CottageTermService {
 
 		return false;
 	}
+
+    public double getSystemIncome(CottageOwner cottageOwner, TimeStamp timeStamp) {
+		double systemIncome = 0;
+
+		if(cottageOwner == null) return 0;
+
+		CottageOwner cottageOwnerWithBoats = cottageOwnerRepository.getByEmailWithCottages(cottageOwner.getEmail());
+		if(cottageOwnerWithBoats == null) return 0;
+
+		for(Cottage cottage : cottageOwnerWithBoats.getCottages()){
+			for(CottageReservations cottageReservations : cottageReservationRepository.findAllByCottageId(cottage.getId())){
+				if(cottageReservations.isSuccessfullyFinished()){
+					if(timeStamp.inStamp(cottageReservations.getStartTime(), cottageReservations.getEndTime())){
+						systemIncome += cottageReservations.getPrice() - cottageReservations.getIncome();
+					}
+				}
+			}
+
+			for(CottageFastReservation cottageFastReservation : cottageFastReservationRepository.findAllByCottageId(cottage.getId())){
+				CottageFastResHistory cottageFastResHistory = cottageFastReservation.getSuccessfullyFinishedHistory();
+				if(cottageFastResHistory != null){
+					if(timeStamp.inStamp(cottageFastReservation.getStartTime(), cottageFastReservation.getEndTime())){
+						systemIncome += cottageFastResHistory.getPrice() - cottageFastResHistory.getIncome();
+					}
+				}
+			}
+		}
+
+		return systemIncome;
+    }
 }

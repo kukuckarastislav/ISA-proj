@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.isa.isa.model.BoatOwner;
-import com.isa.isa.model.Client;
-import com.isa.isa.model.Instructor;
+import com.isa.isa.model.*;
 import com.isa.isa.model.termins.DTO.EventDTO;
 import com.isa.isa.model.termins.DTO.NewEntityTermDTO;
 import com.isa.isa.model.termins.model.*;
@@ -15,7 +13,6 @@ import com.isa.isa.repository.BoatOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.isa.model.Boat;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.NewBoatTermDto;
 import com.isa.isa.model.termins.repository.BoatFastReservationRepository;
@@ -203,4 +200,34 @@ public class BoatTermService {
 
 		return false;
 	}
+
+    public double getSystemIncome(BoatOwner boatOwner, TimeStamp timeStamp) {
+		double systemIncome = 0;
+
+		if(boatOwner == null) return 0;
+
+		BoatOwner boatOwnerWithBoats = boatOwnerRepository.getByEmailWithBoats(boatOwner.getEmail());
+		if(boatOwnerWithBoats == null) return 0;
+
+		for(Boat boat : boatOwnerWithBoats.getBoates()){
+			for(BoatReservations boatReservations : boatReservationRepository.findAllByBoatId(boat.getId())){
+				if(boatReservations.isSuccessfullyFinished()){
+					if(timeStamp.inStamp(boatReservations.getStartTime(), boatReservations.getEndTime())){
+						systemIncome += boatReservations.getPrice() - boatReservations.getIncome();
+					}
+				}
+			}
+
+			for(BoatFastReservation boatFastReservation : boatFastReservationRepository.findAllByBoatId(boat.getId())){
+				BoatFastResHistory boatFastResHistory = boatFastReservation.getSuccessfullyFinishedHistory();
+				if(boatFastResHistory != null){
+					if(timeStamp.inStamp(boatFastReservation.getStartTime(), boatFastReservation.getEndTime())){
+						systemIncome += boatFastResHistory.getPrice() - boatFastResHistory.getIncome();
+					}
+				}
+			}
+		}
+
+		return systemIncome;
+    }
 }

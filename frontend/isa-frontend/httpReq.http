@@ -766,3 +766,29 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhb
 ###
 GET http://localhost:8180/api/adventure/byinstructor/Penjanje%20na%20planinu
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rc3RlZmFuSUBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2NTQzODM4ODksImV4cCI6MTY1NDU2Mzg4OX0.B7QgO73OfKLx06SdaXfsgv4HIKOBhvTMX-TSC0WY5HiERLyWnaQNciwDrmUoSZuvRD9juqZtxQ-640hP_cgnLg
+###
+POST http://localhost:8180/auth/login
+Content-Type: application/json
+
+{
+  "username": "isaprojectftn+stefanI@gmail.com",
+  "password": "pass"
+}
+###
+POST http://localhost:8180/api/admin/business
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rYWRtaW5AZ21haWwuY29tIiwiYXVkIjoid2ViIiwiaWF0IjoxNjU0NDI1NjY0LCJleHAiOjE2NTQ2MDU2NjR9.GXsLFQjAO1_oMCx3Gf8a4W1zLxxOZz2Qyycrox-DXel8V3bVqh4BzGDyoQr6me7hCocYjjvz7PtUUzKCJoE1wg
+Content-Type: application/json
+
+{
+  "startTime" : "2021-06-10 19:36:30.336347",
+  "endTime" : "2022-06-10 19:36:30.336347"
+}
+###
+POST http://localhost:8180/api/instructor/business
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmctc2VjdXJpdHktZXhhbXBsZSIsInN1YiI6ImlzYXByb2plY3RmdG4rc3RlZmFuSUBnbWFpbC5jb20iLCJhdWQiOiJ3ZWIiLCJpYXQiOjE2NTQ0MjU2MTgsImV4cCI6MTY1NDYwNTYxOH0.m8-ixQke_Zdf1IDr5mP8eh2w2IwNhGZKbG8EcYfannEF7EYal8lEwe6aXasKm_q9_-s1Xe9brHY-ebZ6kHaqXg
+Content-Type: application/json
+
+{
+  "startTime" : "Sun Jun 05 2021 13:33:35 GMT+0200 (Central European Summer Time)",
+  "endTime" : "Sun Jun 05 2022 13:33:35 GMT+0200 (Central European Summer Time)"
+}

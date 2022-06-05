@@ -1,6 +1,7 @@
 package com.isa.isa.controller;
 
 import com.isa.isa.DTO.*;
+import com.isa.isa.model.TimeStamp;
 import com.isa.isa.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,11 @@ public class AdminController {
         return "IMAM PRAVO PRISTUPA";
     }
 
+    @PostMapping("/business")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ArrayList<AdminBusinessReportDTO> getBusiness(Principal user, @RequestBody TimeStamp timeStamp) {
+        return adminService.getBusinessReport(timeStamp);
+    }
 
 
 }

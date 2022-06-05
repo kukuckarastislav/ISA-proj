@@ -9,7 +9,9 @@ public class InstructorBusinessReportDTO {
     private InstructorDTO instructorDTO;
     private ArrayList<BusinessStatistic> businessStatistics;
 
-    public InstructorBusinessReportDTO(){}
+    public InstructorBusinessReportDTO(){
+        this.businessStatistics = new ArrayList<>();
+    }
 
     public InstructorBusinessReportDTO(InstructorDTO instructorDTO, ArrayList<BusinessStatistic> businessStatistics) {
         this.instructorDTO = instructorDTO;
@@ -47,5 +49,13 @@ public class InstructorBusinessReportDTO {
                 return businessStatistic;
         }
         return null;
+    }
+
+    public double getAllIncome(){
+        double sumIncome = 0;
+        for(BusinessStatistic businessStatistic : businessStatistics){
+           sumIncome += businessStatistic.getIncome();
+        }
+        return sumIncome;
     }
 }

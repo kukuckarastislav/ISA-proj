@@ -150,4 +150,21 @@ public class CottageFastReservation {
 			return true;
 		}
 	}
+
+	public CottageFastResHistory getHistoryWhoTake() {
+		for(CottageFastResHistory cottageFastResHistory : cottageFastResHistories){
+			if(cottageFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN){
+				return cottageFastResHistory;
+			}
+		}
+		return null;
+	}
+
+	public CottageFastResHistory getSuccessfullyFinishedHistory() {
+		if(endTime.isBefore(LocalDateTime.now())){
+			return getHistoryWhoTake();
+		}
+		return null;
+	}
+
 }

@@ -149,4 +149,20 @@ public class BoatFastReservation {
 		}
 		return null;
 	}
+
+	public BoatFastResHistory getHistoryWhoTake() {
+		for(BoatFastResHistory boatFastResHistory : boatFastResHistories){
+			if(boatFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN){
+				return boatFastResHistory;
+			}
+		}
+		return null;
+	}
+
+	public BoatFastResHistory getSuccessfullyFinishedHistory() {
+		if(endTime.isBefore(LocalDateTime.now())){
+			return getHistoryWhoTake();
+		}
+		return null;
+	}
 }

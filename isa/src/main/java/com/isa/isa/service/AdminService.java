@@ -3,6 +3,9 @@ package com.isa.isa.service;
 import com.isa.isa.DTO.*;
 
 import com.isa.isa.model.*;
+import com.isa.isa.model.termins.service.BoatTermService;
+import com.isa.isa.model.termins.service.CottageTermService;
+import com.isa.isa.model.termins.service.InstructorTermService;
 import com.isa.isa.repository.*;
 import com.isa.isa.security.model.User;
 import com.isa.isa.security.repository.UserRepository;
@@ -149,4 +152,29 @@ public class AdminService {
 		System.out.println("ToDo DELETE user");
 		return false; //TODO: delete user
 	}
+
+	@Autowired
+	private InstructorTermService instructorTermService;
+	@Autowired
+	private BoatTermService boatTermService;
+	@Autowired
+	private CottageTermService cottageTermService;
+
+    public ArrayList<AdminBusinessReportDTO> getBusinessReport(TimeStamp timeStamp) {
+		ArrayList<AdminBusinessReportDTO> adminBusinessReportDTOS = new ArrayList<>();
+		for(Instructor instructor : instructorRepository.findAll()){
+			double systemIncome = instructorTermService.getSystemIncome(instructor, timeStamp);
+			adminBusinessReportDTOS.add(new AdminBusinessReportDTO(instructor, systemIncome));
+		}
+		for(BoatOwner boatOwner : boatOwnerRepository.findAll()){
+			double systemIncome = boatTermService.getSystemIncome(boatOwner, timeStamp);
+			adminBusinessReportDTOS.add(new AdminBusinessReportDTO(boatOwner, systemIncome));
+		}
+		for(CottageOwner cottageOwner : cottageOwnerRepository.findAll()){
+			double systemIncome = cottageTermService.getSystemIncome(cottageOwner, timeStamp);
+			adminBusinessReportDTOS.add(new AdminBusinessReportDTO(cottageOwner, systemIncome));
+		}
+
+		return adminBusinessReportDTOS;
+    }
 }
