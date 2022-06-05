@@ -12,6 +12,7 @@ public class AdminBusinessReportDTO {
     private String email;
     private String fullName;
     private double income;
+    private double grade;
 
     public AdminBusinessReportDTO(){}
 
@@ -29,6 +30,7 @@ public class AdminBusinessReportDTO {
         this.email = instructor.getEmail();
         this.fullName = instructor.getFullName();
         this.income = allIncome;
+        this.grade = instructor.getAverageGrade();
     }
 
     public AdminBusinessReportDTO(BoatOwner boatOwner, double allIncome) {
@@ -37,6 +39,7 @@ public class AdminBusinessReportDTO {
         this.email = boatOwner.getEmail();
         this.fullName = boatOwner.getFullName();
         this.income = allIncome;
+        this.grade = boatOwner.getAverageGrade();
     }
 
     public AdminBusinessReportDTO(CottageOwner cottageOwner, double allIncome) {
@@ -45,6 +48,7 @@ public class AdminBusinessReportDTO {
         this.email = cottageOwner.getEmail();
         this.fullName = cottageOwner.getFullName();
         this.income = allIncome;
+        this.grade = cottageOwner.getAverageGrade();
     }
 
     public UserTypeISA getUserTypeISA() {
@@ -85,5 +89,13 @@ public class AdminBusinessReportDTO {
 
     public void setIncome(double income) {
         this.income = income;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 }

@@ -37,6 +37,9 @@ public class Loyalty {
         if(score >= minimumScoreForSILVER){
             loyaltyType = LoyaltyType.SILVER;
             return true;
+        }else if(loyaltyType != loyaltyType.REGULAR){
+            loyaltyType = LoyaltyType.REGULAR;
+            return true;
         }
         return false;   // nije bilo potrebno menjati :)
     }

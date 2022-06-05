@@ -95,7 +95,7 @@ values ('isaprojectftn+stefanI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGS
 insert into user_role (user_id, role_id)
 values (6, 5);
 insert into instructor (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade)
-values (6, 0,0, 'Bratislava', 'Slovakia', 48.1524021968794, 17.102130827048573, 35, 'Miskova', 'isaprojectftn+stefanI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Stefan', 'Stefanovic', '030345', 'moja biografija, ja sam super lik', 'Hoho instruktor',0);
+values (6, 560, 2, 'Bratislava', 'Slovakia', 48.1524021968794, 17.102130827048573, 35, 'Miskova', 'isaprojectftn+stefanI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Stefan', 'Stefanovic', '030345', 'moja biografija, ja sam super lik', 'Hoho instruktor',0);
 insert into adventure (name, city, country, latitude, longitude, number, street, price, price_type, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
 values ('Penjanje na planinu', 'Bratislava', 'Slovakia', 48.1524021968794, 17.102130827048573, 35, 'Miskova', 5,'PER_HOUR','Pecacemo Ribe', 'moja biografija, ja sam super lik', 4, 'Nema skakanja u vodu', 'FREE', 6, 0);
 insert into adventure_additional_services(adventure_id, additional_service_id)
@@ -137,7 +137,7 @@ insert into report(client_email, client_showed_up, created_at, id_client, owner_
 values ('isaprojectftn+marijaC@gmail.com', true, '2022-06-02 16:30:04.094904', 3, 'isaprojectftn+stefanI@gmail.com',1,2,true,0,1,'Nisam bas zadovoljan kako se marija ponasala na rezervaciji dajte joj penal');
 --
 insert into instructor_reservation(start_time, end_time, status_of_reservation, adventure_id, client_id, instructor_username,price, is_revised, is_complained_of, report_id, income)
-values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3, 'isaprojectftn+stefanI@gmail.com',170, false, false, 1, 119); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
+values ('2022-03-10T8:00:06.235098700', '2022-03-10T12:00:06.235098700', 'ACTIVE', 1, 3, 'isaprojectftn+stefanI@gmail.com',240, false, false, 1, 204); -- instruktor Stefan ima adventuru:"Penjanje na planinu" sa clientom: Marijom
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)
 values (1,3);
 insert into instructor_reservation_additional_services(instructor_reservation_id, additional_service_id)

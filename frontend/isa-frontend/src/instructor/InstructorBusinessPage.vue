@@ -124,7 +124,7 @@
                             <h5 class="card-title text-start text-bold">{{sumary.week}}</h5>
                         </div>
                         <div class="col-2">
-                            <h5 class="card-title text-start text-bold">{{sumary.income}}</h5>
+                            <h5 class="card-title text-start text-bold">${{sumary.income}}</h5>
                         </div>
                     </div>
             </div>
