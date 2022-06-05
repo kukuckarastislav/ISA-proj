@@ -32,6 +32,9 @@ import com.isa.isa.model.Penalty;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestFromFrontDTO;
 import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
 import com.isa.isa.model.enums.UserTypeISA;
+import com.isa.isa.model.loyalty.LoyaltyService;
+import com.isa.isa.model.loyalty.LoyaltySettings;
+import com.isa.isa.model.loyalty.LoyaltyType;
 import com.isa.isa.model.termins.DTO.BoatTermsDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
@@ -125,6 +128,9 @@ public class ClientController {
 	@Autowired
 	private BoatOwnerService boatOwnerService;
 
+	@Autowired
+	private LoyaltyService loyaltyService;
+	
 	@Autowired
 	private LoyaltyService loyaltyService;
 	
@@ -529,6 +535,21 @@ public class ClientController {
 	public ResponseEntity<Set<Penalty>> getPenalties(Principal user) {
 		Client client= this.clientService.findByEmail(user.getName());
 		return new ResponseEntity<Set<Penalty>>(client.getPenalties(), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@GetMapping("/getLoyaltyDiscount")
+	public ResponseEntity<Double> getLoyaltyDiscount(Principal user) {
+		Client client= this.clientService.findByEmail(user.getName());
+		Double retVal=0.0;
+		LoyaltySettings loyaltySettings= loyaltyService.getLoyaltySettings();
+		if(client.getLoyalty().getLoyaltyType()==LoyaltyType.SILVER) {
+			retVal=loyaltySettings.getClientDiscountPercentageSILVER();
+		}
+		else if(client.getLoyalty().getLoyaltyType()==LoyaltyType.GOLD) {
+			retVal=loyaltySettings.getClientDiscountPercentageGOLD();
+		}
+		return new ResponseEntity<Double>(retVal,HttpStatus.OK);
 	}
 
 }

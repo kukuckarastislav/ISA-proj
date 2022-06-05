@@ -102,8 +102,11 @@
                         <div class="col">
                             <div class="card" v-bind:class="getCssForLoyalty()">
                                 <div class="card-body">
+                                    <div v-if="loyaltyDiscount!=0" style="float:right;margin-top:2em">
+                                        You have a discount of {{loyaltyDiscount}} percent.
+                                    </div>
                                     <h5 class="card-title text-start">Loyalty</h5> 
-                                    <h6 class="card-title text-start"><b>{{profile.loyalty.loyaltyType}}</b></h6> 
+                                    <h6  class="card-title text-start"><b>{{profile.loyalty.loyaltyType}}</b></h6> 
                                     <h6 class="card-title text-start">Score {{profile.loyalty.score}}</h6> 
                                 </div>
                             </div>
@@ -156,6 +159,7 @@ export default {
 
         isDeletingAcc: false,
         deleteRequestMessage: '',
+        loyaltyDiscount: 0
     }
   },
   mounted: function(){
@@ -168,7 +172,10 @@ export default {
       loadInformation: function(){
           axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
             axios.get('http://localhost:8180/api/client/profileInfo')
-            .then(response => {this.profile=response.data;}).catch(err => {alert('DOSLO JE DO GRESKE')}); 
+            .then(response => {this.profile=response.data;
+                axios.get('http://localhost:8180/api/client/getLoyaltyDiscount')
+            .then(response => {this.loyaltyDiscount=response.data;}).catch(err => {alert('DOSLO JE DO GRESKE')}); 
+            }).catch(err => {alert('DOSLO JE DO GRESKE')}); 
       },
       editProfile: function(){
           // Najednostavniji nacin da se uradi Deep-Copy
