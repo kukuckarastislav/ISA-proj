@@ -2,6 +2,7 @@ package com.isa.isa.model.AccountDeleteRequest.controller;
 
 import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestDetailDTO;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AdminResponseToAccDelReqDTO;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AdmninDeleteUserDTO;
 import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
 import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,12 @@ public class AccountDeleteRequestController {
     @PostMapping("admin-response")
     public boolean adminResponsToUserDeleteRequest(@RequestBody AdminResponseToAccDelReqDTO adminResponseToAccDelReqDTO, Principal user){
         return accountDeleteRequestService.setAdminRespons(adminResponseToAccDelReqDTO, user.getName());
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("user")
+    public boolean adminDeleteUser(@RequestBody AdmninDeleteUserDTO admninDeleteUserDTO, Principal user){
+        return accountDeleteRequestService.adminDeleteUser(admninDeleteUserDTO, user.getName());
     }
 
 }

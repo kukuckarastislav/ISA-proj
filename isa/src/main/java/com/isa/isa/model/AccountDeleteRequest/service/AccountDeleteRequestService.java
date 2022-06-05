@@ -4,6 +4,7 @@ import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestDetailDTO;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestFromFrontDTO;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AdminResponseToAccDelReqDTO;
 import com.isa.isa.model.*;
+import com.isa.isa.model.AccountDeleteRequest.DTO.AdmninDeleteUserDTO;
 import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
 import com.isa.isa.model.AccountDeleteRequest.repository.AccountDeleteRequestRepository;
 import com.isa.isa.model.AccountDeleteRequest.enums.DeleteRequestStatus;
@@ -103,7 +104,7 @@ public class AccountDeleteRequestService {
 				accountDeleteRequest.setAdminResponsDate(LocalDateTime.now());
 				accountDeleteRequestRepository.save(accountDeleteRequest);
 				if(accountDeleteRequest.getDeleteRequestStatus() == DeleteRequestStatus.APPROVED){
-					deleteUser(accountDeleteRequest);
+					deleteUser(accountDeleteRequest.getUsername(), accountDeleteRequest.getUserTypeISA());
 				}
 				System.out.println("Admin response successfully");
 				return true;
@@ -119,33 +120,33 @@ public class AccountDeleteRequestService {
 	@Autowired
 	private UserRepository userRepository;
 
-	private Boolean deleteUser(AccountDeleteRequest accountDeleteRequest){
-		if(accountDeleteRequest.getUserTypeISA() == UserTypeISA.INSTRUCTOR){
-			Instructor instructor = instructorRepository.getByEmail(accountDeleteRequest.getUsername());
+	private Boolean deleteUser(String username, UserTypeISA userTypeISA){
+		if(userTypeISA == UserTypeISA.INSTRUCTOR){
+			Instructor instructor = instructorRepository.getByEmail(username);
 			if(instructor == null) return false;
 			instructor.setDeleted(true);
 			instructorRepository.saveAndFlush(instructor);
 			User user = userRepository.findByUsername(instructor.getEmail());
 			user.setEnabled(false);
 			userRepository.saveAndFlush(user);
-		}else if(accountDeleteRequest.getUserTypeISA() == UserTypeISA.COTTAGE_OWNER){
-			CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(accountDeleteRequest.getUsername());
+		}else if(userTypeISA == UserTypeISA.COTTAGE_OWNER){
+			CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(username);
 			if(cottageOwner == null) return false;
 			cottageOwner.setDeleted(true);
 			cottageOwnerRepository.saveAndFlush(cottageOwner);
 			User user = userRepository.findByUsername(cottageOwner.getEmail());
 			user.setEnabled(false);
 			userRepository.saveAndFlush(user);
-		}else if(accountDeleteRequest.getUserTypeISA() == UserTypeISA.BOAT_OWNER){
-			BoatOwner boatOwner = boatOwnerRepository.getByEmail(accountDeleteRequest.getUsername());
+		}else if(userTypeISA == UserTypeISA.BOAT_OWNER){
+			BoatOwner boatOwner = boatOwnerRepository.getByEmail(username);
 			if(boatOwner == null) return false;
 			boatOwner.setDeleted(true);
 			boatOwnerRepository.saveAndFlush(boatOwner);
 			User user = userRepository.findByUsername(boatOwner.getEmail());
 			user.setEnabled(false);
 			userRepository.saveAndFlush(user);
-		}else if(accountDeleteRequest.getUserTypeISA() == UserTypeISA.CLIENT){
-			Client client = clientRepository.findByEmail(accountDeleteRequest.getUsername());
+		}else if(userTypeISA == UserTypeISA.CLIENT){
+			Client client = clientRepository.findByEmail(username);
 			if(client == null) return false;
 			client.setDeleted(true);
 			clientRepository.saveAndFlush(client);
@@ -153,6 +154,11 @@ public class AccountDeleteRequestService {
 			user.setEnabled(false);
 			userRepository.saveAndFlush(user);
 		}
+		System.out.println("Deleted and disabled " + username);
 		return true;
+	}
+
+	public boolean adminDeleteUser(AdmninDeleteUserDTO admninDeleteUserDTO, String adminUsername) {
+		return deleteUser(admninDeleteUserDTO.getUsername(), admninDeleteUserDTO.getUserTypeISA());
 	}
 }

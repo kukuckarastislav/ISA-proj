@@ -34,32 +34,32 @@ insert into USERS (username, password, last_password_reset_date, enabled, approv
 values ('isaprojectftn+admin@gmail.com','$2a$10$3xqAvzqpGKgBJrzIzpBQf.lm3RaR3R0.SAZsE6JovkCKv.9.9QgPG','2022-01-03 21:02:17.307', true, true, true);   -- password: admin
 insert into user_role (user_id, role_id)
 values (1, 1);
-insert into admin (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number)
-values (1, 'Novi Sad', 'Serbia', 45.2471591374095, 19.818258855810267, 10, 'Bulevar evrope', 'isaprojectftn+admin@gmail.com', '$2a$10$3xqAvzqpGKgBJrzIzpBQf.lm3RaR3R0.SAZsE6JovkCKv.9.9QgPG', 'Admin', 'Admin', '030345');
+insert into admin (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, deleted)
+values (1, 'Novi Sad', 'Serbia', 45.2471591374095, 19.818258855810267, 10, 'Bulevar evrope', 'isaprojectftn+admin@gmail.com', '$2a$10$3xqAvzqpGKgBJrzIzpBQf.lm3RaR3R0.SAZsE6JovkCKv.9.9QgPG', 'Admin', 'Admin', '030345', false);
 
 -- Admin2
 insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
 values ('isaprojectftn+administrator@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true, false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (2, 1);
-insert into admin (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number)
-values (2, 'Beograd', 'Serbia', 44.77609210891258, 20.549114382934537, 13, 'Bulevar evrope', 'isaprojectftn+administrator@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Admin', 'Admin', '030345');
+insert into admin (id, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, deleted)
+values (2, 'Beograd', 'Serbia', 44.77609210891258, 20.549114382934537, 13, 'Bulevar evrope', 'isaprojectftn+administrator@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Admin', 'Admin', '030345', false);
 
 -- Client Mirija
 insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
 values ('isaprojectftn+marijaC@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (3, 3);
-insert into client(id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number)
-values (3, 0, 0, 'Novi Sad', 'Serbia', 45.257120944214186, 19.847844898140064, 33, 'Zmaj Jovina', 'isaprojectftn+marijaC@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Marija', 'Maric', '030348');
+insert into client(id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number,deleted)
+values (3, 0, 0, 'Novi Sad', 'Serbia', 45.257120944214186, 19.847844898140064, 33, 'Zmaj Jovina', 'isaprojectftn+marijaC@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Marija', 'Maric', '030348',false);
 
 -- Cottage owner milan
 insert into USERS (username, password, last_password_reset_date, enabled, approved,admin_ready)
 values ('isaprojectftn+milanCO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', false, false,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (4, 4);
-insert into cottage_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade)
-values (4,0,0, 'Novi Sad', 'Serbia', 45.247249780971536, 19.818205211634332, 10, 'Bulevar evrope', 'isaprojectftn+milanCO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'milan', 'milanovic', '030345', 'imao sam zelju', 0);
+insert into cottage_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade,deleted)
+values (4,0,0, 'Novi Sad', 'Serbia', 45.247249780971536, 19.818205211634332, 10, 'Bulevar evrope', 'isaprojectftn+milanCO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'milan', 'milanovic', '030345', 'imao sam zelju', 0,false);
 insert into cottage (name, description, behaviour_rules, price,price_type, owner_id, city, country, latitude, longitude, number, street, average_grade, capacity)
 values ('Stan', 'Lep stan', 'zabranjeno glasna muzika', 1000,'PER_DAY', 4, 'Zlatibor', 'Serbia', 43.73244496341901, 19.69687467198646, 33, 'Cara Dusana', 0, 5);
 
@@ -69,8 +69,8 @@ insert into USERS (username, password, last_password_reset_date, enabled, approv
 values ('isaprojectftn+petarCO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (5, 4);
-insert into cottage_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade)
-values (5,0,0, 'Beograd', 'Serbia', 44.817766374150516, 20.456455013470055, 35, 'Knez', 'isaprojectftn+petarCO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'petar', 'petrovic', '030345', 'imao sam zelju da iznamljujem sobe', 0);
+insert into cottage_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade, deleted)
+values (5,0,0, 'Beograd', 'Serbia', 44.817766374150516, 20.456455013470055, 35, 'Knez', 'isaprojectftn+petarCO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'petar', 'petrovic', '030345', 'imao sam zelju da iznamljujem sobe', 0, false);
 insert into cottage (name, description, behaviour_rules, price, price_type, owner_id, city, country, latitude, longitude, number, street, average_grade, capacity)
 values ('Kuca', 'mala kuca', 'hrana', 500, 'PER_DAY', 5, 'Kopaonik', 'Serbia', 43.2760831163471, 20.76000198459797, 33, 'Cara Lazara', 0, 4);
 
@@ -94,8 +94,8 @@ insert into USERS (username, password, last_password_reset_date, enabled, approv
 values ('isaprojectftn+stefanI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (6, 5);
-insert into instructor (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade)
-values (6, 560, 2, 'Bratislava', 'Slovakia', 48.1524021968794, 17.102130827048573, 35, 'Miskova', 'isaprojectftn+stefanI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Stefan', 'Stefanovic', '030345', 'moja biografija, ja sam super lik', 'Hoho instruktor',0);
+insert into instructor (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade, deleted)
+values (6, 560, 2, 'Bratislava', 'Slovakia', 48.1524021968794, 17.102130827048573, 35, 'Miskova', 'isaprojectftn+stefanI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Stefan', 'Stefanovic', '030345', 'moja biografija, ja sam super lik', 'Hoho instruktor',0, false);
 insert into adventure (name, city, country, latitude, longitude, number, street, price, price_type, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
 values ('Penjanje na planinu', 'Bratislava', 'Slovakia', 48.1524021968794, 17.102130827048573, 35, 'Miskova', 5,'PER_HOUR','Pecacemo Ribe', 'moja biografija, ja sam super lik', 4, 'Nema skakanja u vodu', 'FREE', 6, 0);
 insert into adventure_additional_services(adventure_id, additional_service_id)
@@ -168,8 +168,8 @@ insert into USERS (username, password, last_password_reset_date, enabled, approv
 values ('isaprojectftn+nikolaBO@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true,false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (7, 2);
-insert into boat_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade)
-values (7, 0,0,'Zrenjanin', 'Serbia', 45.37603402791083, 20.393630711637407, 33, 'Zmaj Jovina', 'isaprojectftn+nikolaBO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Nikola', 'Nikolic', '030346', 'imao sam zelju', 0);
+insert into boat_owner (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, registration_motivation, average_grade, deleted)
+values (7, 0,0,'Zrenjanin', 'Serbia', 45.37603402791083, 20.393630711637407, 33, 'Zmaj Jovina', 'isaprojectftn+nikolaBO@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Nikola', 'Nikolic', '030346', 'imao sam zelju', 0,false);
 insert into boat (city, country, latitude, longitude, number, street,price, price_type, behaviour_rules, capacity, engine_number, engine_power, length, max_speed, name, promotional_description, type, owner_id,reservation_cancellation_conditions,average_grade)
 values ('Beograd', 'Serbia', 44.81773309538738, 20.456885226964513, 33, 'Knez Mihajlova', 10, 'PER_HOUR', 'Nema brze voznje', 3, '123', 100, 50, 70, 'Laser 16', 'Najbolji brod', 'Jedrilica', 7, 'FREE',0);
 insert into entity_image (name, path)
@@ -286,8 +286,8 @@ insert into USERS (username, password, last_password_reset_date, enabled, approv
 values ('isaprojectftn+alexI@gmail.com','$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC','2022-01-03 21:02:17.307', true, true, false);   -- password: pass
 insert into user_role (user_id, role_id)
 values (8, 5);
-insert into instructor (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade)
-values (8, 0,0, 'Novi Sad', 'Srbija', 45.26050908726751, 19.832872269305035, 35, 'Bulevar oslobodjenja', 'isaprojectftn+alexI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Alexandar', 'Lux', '030345', 'Odlican instrutktor, naucicu te svim cakama i vestinama, jedva cekam', 'To mi je San od malena, da ucim druge ',0);
+insert into instructor (id, score, loyalty_type, city, country, latitude, longitude, number, street, email, password, first_name, last_name, phone_number, biography, registration_motivation, average_grade, deleted)
+values (8, 0,0, 'Novi Sad', 'Srbija', 45.26050908726751, 19.832872269305035, 35, 'Bulevar oslobodjenja', 'isaprojectftn+alexI@gmail.com', '$2a$10$OnaRYDYNzDYjx6iju8sK9eGMkmicGSnSPETdBqLKLYVRjyJSw5/QC', 'Alexandar', 'Lux', '030345', 'Odlican instrutktor, naucicu te svim cakama i vestinama, jedva cekam', 'To mi je San od malena, da ucim druge ',0, false);
 insert into adventure (name, city, country, latitude, longitude, number, street, price, price_type, description, biography, max_number_of_people, behaviour_rules, reservation_cancellation_conditions, instructor_id, average_grade)
 values ('Obilazak piramide', 'Aleksandrija', 'Egipt', 31.224646848528113, 29.951699984354544, 35, 'piro', 5,'PER_HOUR','Penjamo se na piramidu, budimo faraona', 'Odlican instrutktor, naucicu te svim cakama i vestinama, jedva cekam', 4, 'Nema kradje zlata, i cupova iz piramide', 'FREE', 8, 0);
 insert into adventure_additional_services(adventure_id, additional_service_id)

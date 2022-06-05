@@ -15,6 +15,7 @@ public class AdminViewUserDTO {
     private Address address;
     private String phoneNumber;
     private Loyalty loyalty;
+    private Boolean deleted;
 
     private UserTypeISA userTypeISA;
 
@@ -59,6 +60,7 @@ public class AdminViewUserDTO {
     }
 
     private void setPersonPart(Person person){
+        this.deleted = person.getDeleted();
         this.email = person.getEmail();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
@@ -153,5 +155,13 @@ public class AdminViewUserDTO {
 
     public void setIdUser(int idUser) {
         this.idUser = idUser;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

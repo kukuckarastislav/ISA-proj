@@ -69,7 +69,8 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Admin panel</h5>
                                             <hr>
-                                            <button v-on:click="deleteAction(user)" class="btn btn-danger" style="width: 100%;">Delete</button>
+                                            <button :disabled="user.deleted" v-on:click="deleteAction(user)" class="btn btn-danger" style="width: 100%;">Delete</button>
+                                            <p v-if="user.deleted" class="m-3" style="color: red; font-weight: bold;">DELETED</p>
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +139,7 @@ export default {
         }
         console.log(delUser)
          axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-         axios.post('http://localhost:8180/api/admin/user',delUser).then(resp => {
+         axios.post('http://localhost:8180/api/deleteRequest/user',delUser).then(resp => {
             if(!resp.data){
                 alert("Error (False)")
             }else{
