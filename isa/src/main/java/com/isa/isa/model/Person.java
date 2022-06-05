@@ -43,6 +43,8 @@ public abstract class Person {
 
 	@Column(nullable=false)
 	private String phoneNumber;
+
+	private Boolean deleted = false;
 	
 	
 	public Person() {
@@ -138,5 +140,13 @@ public abstract class Person {
 
     public String getFullName(){
 		return firstName + " " + lastName;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 }

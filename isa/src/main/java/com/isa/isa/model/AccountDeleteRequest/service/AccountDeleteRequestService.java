@@ -9,6 +9,9 @@ import com.isa.isa.model.AccountDeleteRequest.repository.AccountDeleteRequestRep
 import com.isa.isa.model.AccountDeleteRequest.enums.DeleteRequestStatus;
 import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.repository.*;
+import com.isa.isa.security.model.User;
+import com.isa.isa.security.repository.UserRepository;
+import com.isa.isa.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -99,6 +102,9 @@ public class AccountDeleteRequestService {
 				accountDeleteRequest.setDeleteRequestStatus(adminResponseToAccDelReqDTO.getDeleteRequestStatus());
 				accountDeleteRequest.setAdminResponsDate(LocalDateTime.now());
 				accountDeleteRequestRepository.save(accountDeleteRequest);
+				if(accountDeleteRequest.getDeleteRequestStatus() == DeleteRequestStatus.APPROVED){
+					deleteUser(accountDeleteRequest);
+				}
 				System.out.println("Admin response successfully");
 				return true;
 			}else{
@@ -109,4 +115,44 @@ public class AccountDeleteRequestService {
 		}
 		return false;
     }
+
+	@Autowired
+	private UserRepository userRepository;
+
+	private Boolean deleteUser(AccountDeleteRequest accountDeleteRequest){
+		if(accountDeleteRequest.getUserTypeISA() == UserTypeISA.INSTRUCTOR){
+			Instructor instructor = instructorRepository.getByEmail(accountDeleteRequest.getUsername());
+			if(instructor == null) return false;
+			instructor.setDeleted(true);
+			instructorRepository.saveAndFlush(instructor);
+			User user = userRepository.findByUsername(instructor.getEmail());
+			user.setEnabled(false);
+			userRepository.saveAndFlush(user);
+		}else if(accountDeleteRequest.getUserTypeISA() == UserTypeISA.COTTAGE_OWNER){
+			CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(accountDeleteRequest.getUsername());
+			if(cottageOwner == null) return false;
+			cottageOwner.setDeleted(true);
+			cottageOwnerRepository.saveAndFlush(cottageOwner);
+			User user = userRepository.findByUsername(cottageOwner.getEmail());
+			user.setEnabled(false);
+			userRepository.saveAndFlush(user);
+		}else if(accountDeleteRequest.getUserTypeISA() == UserTypeISA.BOAT_OWNER){
+			BoatOwner boatOwner = boatOwnerRepository.getByEmail(accountDeleteRequest.getUsername());
+			if(boatOwner == null) return false;
+			boatOwner.setDeleted(true);
+			boatOwnerRepository.saveAndFlush(boatOwner);
+			User user = userRepository.findByUsername(boatOwner.getEmail());
+			user.setEnabled(false);
+			userRepository.saveAndFlush(user);
+		}else if(accountDeleteRequest.getUserTypeISA() == UserTypeISA.CLIENT){
+			Client client = clientRepository.findByEmail(accountDeleteRequest.getUsername());
+			if(client == null) return false;
+			client.setDeleted(true);
+			clientRepository.saveAndFlush(client);
+			User user = userRepository.findByUsername(client.getEmail());
+			user.setEnabled(false);
+			userRepository.saveAndFlush(user);
+		}
+		return true;
+	}
 }
