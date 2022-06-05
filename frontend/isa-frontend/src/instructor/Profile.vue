@@ -37,11 +37,7 @@
                                 <br>
                                 <input :disabled="!isEditingProfile" type="number" v-model="profile.address.longitude" class="form-control" placeholder="longitude">
                             </div>
-                            </div>
-
-                            <br>
-                            <div class="mapaTODO">OVDE CE BITI MAPA</div>
-                            <br>
+                            </div> <br>
 
                             <div class="d-flex justify-content-center">
                                 <button v-if="!isEditingProfile" v-on:click="editProfile()" class="btn btn-primary m-1">Edit Informations</button>

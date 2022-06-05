@@ -72,5 +72,13 @@ public class InstructorTermsController {
         return new ResponseEntity<String>(msg, HttpStatus.OK);
     }
 
+    @PostMapping("/fast-reservation")
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    public ResponseEntity<String> createFastReservation(Principal user, @RequestBody NewInstructorFastReservationDTO newInstructorFastReservationDTO) {
+        String msg = instructorTermService.createFastReservation(user.getName(), newInstructorFastReservationDTO);
+        System.out.println(msg);
+        return new ResponseEntity<String>(msg, HttpStatus.OK);
+    }
+
 
 }

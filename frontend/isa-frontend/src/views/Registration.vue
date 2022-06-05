@@ -35,11 +35,7 @@
                 <br>
                 <input type="number" v-model="registration.address.longitude" class="form-control" placeholder="longitude">
               </div>
-            </div>
-
-            <br>
-            <div class="mapaTODO">OVDE CE BITI MAPA</div>
-            <br>
+            </div> <br>
 
             <select class="form-select" v-model="registration.typeOfUser">
               <option value="ROLE_CUSTOMER">Customer</option>

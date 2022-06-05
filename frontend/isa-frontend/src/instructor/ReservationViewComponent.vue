@@ -153,9 +153,67 @@
 
         <!-- Reservation Again -->
         <div v-if="visibleForm.reservationAgain" class="row" style="margin-top:30px;">
-            <div class="col">
-                TODO RESERVATION AGAIN
+        <div class="col">
+          <h4>Reservate again</h4>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="row justify-content-between">
+                    <div class="col">
+                        <input type="text" v-model="repeatReservation.address.country" class="form-control" placeholder="Country">
+                        <br>
+                        <input type="text" v-model="repeatReservation.address.city" class="form-control" placeholder="City">
+                        <br>
+                        <input type="text" v-model="repeatReservation.address.street" class="form-control" placeholder="street">
+                    </div>
+                    <div class="col">
+                        <input type="text" v-model="repeatReservation.address.number" class="form-control" placeholder="number">
+                        <br>
+                        <input type="number" v-model="repeatReservation.address.latitude" class="form-control" placeholder="latitude">
+                        <br>
+                        <input type="number" v-model="repeatReservation.address.longitude" class="form-control" placeholder="longitude">
+                    </div>
+                    <Datepicker v-model="repeatReservation.date" range style="margin-top: 22px;"></Datepicker>
+                  </div>
+                </div>
+                <div class="col-7">
+                    <div class="list-group text-start overflow-auto card" style="height: 162px">
+                    <label v-for="itPrice in allItemPrices" :key="itPrice" class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <input class="form-check-input me-1" type="checkbox" value="" v-on:click="addItemPriceFastReservation(itPrice)">
+                            </div>
+                            <div class="col-sm-3">{{itPrice.name}}</div>
+                            <div class="col-sm-6">{{itPrice.description}}</div>
+                            <div class="col-sm-2">{{itPrice.price}}</div>
+                        </div>
+                    </label>
+                    </div>
+                    <br>
+                    <div class="row">
+                    <div class="col-1"></div>
+                      <div class="col-5 text-end">Max number of People</div>
+                      <div class="col-2">
+                        <input type="number" v-model="repeatReservation.maxNumberOfPeople" class="form-control">
+                      </div>
+                      <div class="col-2 text-end">Price</div>
+                      <div class="col-2">
+                        <input type="number" v-model="repeatReservation.price" class="form-control">
+                      </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 30px;">
+                <hr>
+                <div class="col">
+                  <button class="btn btn-danger m-1" v-on:click="showForm(4)">Cancel</button>
+                  <button class="btn btn-primary m-1" v-on:click="sendNewFastReservation()">Create</button>
+                </div>
+              </div>
+              </div>
             </div>
+          </div>
+        </div>
         </div>
 
 
@@ -167,11 +225,14 @@
 <script>
 import axios from "axios";
 import ClientViewComponent from '../components/ClientViewComponent.vue'
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css'
 export default {
   name: 'ReservationViewComponent',
   props: ['reservation'],
   components: {
-    ClientViewComponent
+      ClientViewComponent,
+      Datepicker
   },
   data: function(){
     return {
@@ -189,6 +250,24 @@ export default {
         },
 
         complaintText: '',
+
+        repeatReservation: {
+          date: [],
+          itemPrices: [],
+          address: {
+                country: '',
+                city: '',
+                street: '',
+                number: '',
+                latitude: 0,
+                longitude: 0
+          },
+          maxNumberOfPeople: 0,
+          price: 0,
+        },
+
+        allItemPrices: [],
+        allAdditionalEquipment: [],
     }
   },
   watch: { 
@@ -205,7 +284,8 @@ export default {
             console.log("ID: ", this.idr)
         },
   },
-  mounted: function(){
+    mounted: function () {
+      this.loadAdditionaData();
       this.setupReservation();
   },
   methods: {
@@ -255,6 +335,7 @@ export default {
             this.visibleForm.complaint = true;
         }
         if(n==3){
+            this.initReservationAgainForm();
             this.visibleForm.reservationAgain = true;
         }
     },
@@ -347,6 +428,66 @@ export default {
             alert('Error: Reservation is not finished')
             this.closeComplaintForm()
         }
+    },
+    addItemPriceFastReservation: function (itPrice) {  
+       for(let i = 0; i < this.repeatReservation.itemPrices.length; i++) {
+            if(this.repeatReservation.itemPrices[i].id == itPrice.id){
+                //remove
+                this.repeatReservation.itemPrices.splice(i, 1);
+                return;
+            }
+        }
+        this.repeatReservation.itemPrices.push(itPrice)
+    },
+    sendNewFastReservation: function(){
+
+      const startTimeForBackend = new Date(Date.UTC(this.fastReservationForm.date[0].getFullYear(), this.fastReservationForm.date[0].getMonth(), this.fastReservationForm.date[0].getDate(), this.fastReservationForm.date[0].getHours(), this.fastReservationForm.date[0].getMinutes()))
+      const endTimeForBackend = new Date(Date.UTC(this.fastReservationForm.date[1].getFullYear(), this.fastReservationForm.date[1].getMonth(), this.fastReservationForm.date[1].getDate(), this.fastReservationForm.date[1].getHours(), this.fastReservationForm.date[1].getMinutes()))
+
+
+      let newFastReservationDTO = {
+          "idAdventure" : this.adventure.id,
+          "startTime" : startTimeForBackend,
+          "endTime" : endTimeForBackend,
+          "maxNumberOfPeople" : this.fastReservationForm.maxNumberOfPeople,
+          "address" : this.fastReservationForm.address,
+          "itemPrices" : this.fastReservationForm.itemPrices,
+          "price" : this.fastReservationForm.price
+      }
+
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+      axios.post('http://localhost:8180/api/instructorterms/fast-reservation', newFastReservationDTO).then(
+        (resp) => {
+          console.log(resp.data)
+          if(resp.data.startsWith("error")){
+            alert(resp.data)
+          }else{
+            this.openFastReservationForm();
+            this.fastReservationForm.visible = false;
+            this.loadData(false);
+          }
+        }, 
+        (err)=>{
+          alert(err)
+      });
+      },
+    initReservationAgainForm: function () {
+      this.repeatReservation.address = this.reservation.address
+      this.repeatReservation.maxNumberOfPeople = 1
+      this.repeatReservation.price = 0
+      this.repeatReservation.itemPrices = []
+      },
+    loadAdditionaData: function () {
+        axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+        axios.get('http://localhost:8180/api/additionalequipment/getadditionalequipment').then(resp => {
+            this.allAdditionalEquipment = resp.data;
+            console.log(resp.data);
+        });
+        axios.get('http://localhost:8180/api/itemprice/getitemprices').then(resp => {
+            this.allItemPrices = resp.data;
+            console.log(resp.data);
+        });    
     },
   }
 }
