@@ -1,11 +1,16 @@
 package com.isa.isa.controller;
 
+import com.isa.isa.DTO.InstructorBusinessReportDTO;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestFromFrontDTO;
 import com.isa.isa.DTO.BiographyDTO;
 import com.isa.isa.DTO.PasswordDto;
 import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.model.AccountDeleteRequest.service.AccountDeleteRequestService;
+import com.isa.isa.model.TimeStamp;
+import com.isa.isa.model.enums.IsaEntityType;
 import com.isa.isa.model.enums.UserTypeISA;
+import com.isa.isa.model.loyalty.LoyaltyService;
+import com.isa.isa.model.termins.service.InstructorTermService;
 import com.isa.isa.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +29,9 @@ public class InstructorController {
 
     @Autowired
     private AccountDeleteRequestService accountDeleteRequestService;
+
+    @Autowired
+    private InstructorTermService instructorTermService;
 
     @GetMapping("/profileInfo")
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
@@ -60,6 +68,12 @@ public class InstructorController {
     @PutMapping("/deleteRequest")
     public ResponseEntity<Boolean> deleteRequest(@RequestBody AccountDeleteRequestFromFrontDTO reasonDTO, Principal user) {
         return new ResponseEntity<Boolean>(accountDeleteRequestService.createAccDeleteRequest(reasonDTO, user, UserTypeISA.INSTRUCTOR), HttpStatus.OK);
+    }
+
+    @PostMapping("/business")
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    public InstructorBusinessReportDTO getBusiness(Principal user, @RequestBody TimeStamp timeStamp) {
+        return instructorTermService.getBusinessReport(user.getName(), timeStamp);
     }
 
 }

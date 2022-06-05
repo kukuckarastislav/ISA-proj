@@ -189,4 +189,11 @@ public class InstructorReservation {
         this.income = income;
     }
 
+    public boolean isFinished() {
+        return this.endTime.isBefore(LocalDateTime.now());
+    }
+
+    public boolean isSuccessfullyFinished() {
+        return isFinished() && statusOfReservation == StatusOfReservation.ACTIVE;
+    }
 }

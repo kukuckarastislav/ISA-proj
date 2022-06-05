@@ -1,9 +1,8 @@
 package com.isa.isa.model.loyalty;
 
-import com.isa.isa.model.BoatOwner;
-import com.isa.isa.model.Client;
-import com.isa.isa.model.CottageOwner;
-import com.isa.isa.model.Instructor;
+import com.isa.isa.DTO.InstructorBusinessReportDTO;
+import com.isa.isa.model.*;
+import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.service.BoatOwnerService;
 import com.isa.isa.service.ClientService;
 import com.isa.isa.service.CottageOwnerService;

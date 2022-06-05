@@ -206,6 +206,15 @@ public class InstructorFastReservation {
 		return null;
 	}
 
+	public InsFastResHistory getHistoryWhoTake() {
+		for(InsFastResHistory insFastResHistory : insFastResHistories){
+			if(insFastResHistory.getStatusOfFastReservation() == StatusOfFastReservation.TAKEN){
+				return insFastResHistory;
+			}
+		}
+		return null;
+	}
+
 	public Report getReport() {
 		return report;
 	}
@@ -213,4 +222,11 @@ public class InstructorFastReservation {
 	public void setReport(Report report) {
 		this.report = report;
 	}
+
+    public InsFastResHistory getSuccessfullyFinishedHistory() {
+		if(endTime.isBefore(LocalDateTime.now())){
+			return getHistoryWhoTake();
+		}
+		return null;
+    }
 }

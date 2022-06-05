@@ -1,12 +1,15 @@
 package com.isa.isa.model.termins.service;
 
 
+import com.isa.isa.DTO.InstructorBusinessReportDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Instructor;
+import com.isa.isa.model.TimeStamp;
 import com.isa.isa.model.complaints.ComplaintRepository;
 import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.enums.UserTypeISA;
+import com.isa.isa.model.loyalty.BusinessStatistic;
 import com.isa.isa.model.termins.DTO.*;
 import com.isa.isa.model.termins.model.*;
 import com.isa.isa.model.termins.repository.InsFastResHistoryRepository;
@@ -339,5 +342,61 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         }
 
         return true;
+    }
+
+    public InstructorBusinessReportDTO getBusinessReport(String username, TimeStamp timeStamp) {
+        InstructorBusinessReportDTO instructorBusinessReport = new InstructorBusinessReportDTO();
+
+        Instructor instructor = instructorRepository.getByEmail(username);
+        if(instructor == null) return null;
+
+        for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
+            if(instructorReservation.isSuccessfullyFinished()){
+                BusinessStatistic businessStatistic = instructorBusinessReport.getBusinessStatisticByEntityName(instructorReservation.getAdventure().getName());
+                if(businessStatistic == null){
+                    businessStatistic = new BusinessStatistic(instructorReservation.getAdventure().getName(), instructorReservation.getAdventure().getAverageGrade(), timeStamp.getStartTime(), timeStamp.getEndTime());
+                }
+                if(timeStamp.inStamp(instructorReservation.getStartTime(), instructorReservation.getEndTime())){
+                    businessStatistic.addIncome(instructorReservation.getIncome());
+                }
+                if(instructorReservation.getEndTime().isAfter(LocalDateTime.now().minusDays(7))){
+                    businessStatistic.incNumOfResInWeek();
+                }
+                if(instructorReservation.getEndTime().isAfter(LocalDateTime.now().minusMonths(1))){
+                    businessStatistic.incNumOfResInMonth();
+                }
+                if(instructorReservation.getEndTime().isAfter(LocalDateTime.now().minusMonths(12))){
+                    businessStatistic.incNumOfResInYear();
+                }
+
+                instructorBusinessReport.addBusinessStatistic(businessStatistic);
+            }
+        }
+
+        for(InstructorFastReservation instructorFastReservation : instructorFastReservationRepository.getByInstructorUsername(username)){
+            InsFastResHistory insFastResHistory = instructorFastReservation.getSuccessfullyFinishedHistory();
+            if(insFastResHistory != null){
+                BusinessStatistic businessStatistic = instructorBusinessReport.getBusinessStatisticByEntityName(instructorFastReservation.getAdventure().getName());
+                if(businessStatistic == null){
+                    businessStatistic = new BusinessStatistic(instructorFastReservation.getAdventure().getName(), instructorFastReservation.getAdventure().getAverageGrade(), timeStamp.getStartTime(), timeStamp.getEndTime());
+                }
+                if(timeStamp.inStamp(instructorFastReservation.getStartTime(), instructorFastReservation.getEndTime())){
+                    businessStatistic.addIncome(insFastResHistory.getIncome());
+                }
+                if(instructorFastReservation.getEndTime().isAfter(LocalDateTime.now().minusDays(7))){
+                    businessStatistic.incNumOfResInWeek();
+                }
+                if(instructorFastReservation.getEndTime().isAfter(LocalDateTime.now().minusMonths(1))){
+                    businessStatistic.incNumOfResInMonth();
+                }
+                if(instructorFastReservation.getEndTime().isAfter(LocalDateTime.now().minusMonths(12))){
+                    businessStatistic.incNumOfResInYear();
+                }
+
+                instructorBusinessReport.addBusinessStatistic(businessStatistic);
+            }
+        }
+
+        return instructorBusinessReport;
     }
 }

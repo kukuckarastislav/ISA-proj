@@ -131,9 +131,6 @@ public class ClientController {
 	@Autowired
 	private LoyaltyService loyaltyService;
 	
-	@Autowired
-	private LoyaltyService loyaltyService;
-	
 	@GetMapping("/profileInfo")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")	
 	public ClientDto getInfo(Principal user) {

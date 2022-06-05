@@ -3,6 +3,9 @@ package com.isa.isa.DTO;
 import com.isa.isa.model.Address;
 import com.isa.isa.model.Instructor;
 import com.isa.isa.model.loyalty.Loyalty;
+import com.isa.isa.model.revisions.model.Revision;
+
+import java.util.ArrayList;
 
 public class InstructorDTO {
 
@@ -15,6 +18,7 @@ public class InstructorDTO {
     private String biography;
     private Loyalty loyalty;
     private double averageGrade;
+    private ArrayList<Revision> revisions;
 
     public InstructorDTO(){}
 
@@ -28,6 +32,7 @@ public class InstructorDTO {
         this.biography = instructor.getBiography();
         this.loyalty = instructor.getLoyalty();
         this.averageGrade = instructor.getAverageGrade();
+        this.revisions = new ArrayList<>(instructor.getRevisions());
     }
 
     public String getEmail() {
@@ -100,5 +105,13 @@ public class InstructorDTO {
 
     public void setAverageGrade(double averageGrade) {
         this.averageGrade = averageGrade;
+    }
+
+    public ArrayList<Revision> getRevisions() {
+        return revisions;
+    }
+
+    public void setRevisions(ArrayList<Revision> revisions) {
+        this.revisions = revisions;
     }
 }
