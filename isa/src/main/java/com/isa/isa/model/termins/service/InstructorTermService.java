@@ -2,6 +2,7 @@ package com.isa.isa.model.termins.service;
 
 
 import com.isa.isa.DTO.InstructorBusinessReportDTO;
+import com.isa.isa.DTO.InstructorDTO;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Instructor;
@@ -10,6 +11,7 @@ import com.isa.isa.model.complaints.ComplaintRepository;
 import com.isa.isa.model.complaints.model.Complaint;
 import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.model.loyalty.BusinessStatistic;
+import com.isa.isa.model.loyalty.LoyaltyService;
 import com.isa.isa.model.termins.DTO.*;
 import com.isa.isa.model.termins.model.*;
 import com.isa.isa.model.termins.repository.InsFastResHistoryRepository;
@@ -344,14 +346,23 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         return true;
     }
 
+    @Autowired
+    private LoyaltyService loyaltyService;
+
     public InstructorBusinessReportDTO getBusinessReport(String username, TimeStamp timeStamp) {
         InstructorBusinessReportDTO instructorBusinessReport = new InstructorBusinessReportDTO();
 
         Instructor instructor = instructorRepository.getByEmail(username);
         if(instructor == null) return null;
 
+        instructorBusinessReport.setInstructorDTO(new InstructorDTO(instructor));
+        instructorBusinessReport.setLoyaltySettings(loyaltyService.getLoyaltySettings());
+
+        for(Adventure adventure : adventureRepository.getByInstructorId(instructor.getId())){
+            instructorBusinessReport.addBusinessStatistic(new BusinessStatistic(adventure.getName(), adventure.getAverageGrade(), timeStamp.getStartTime(), timeStamp.getEndTime()));
+        }
+
         for(InstructorReservation instructorReservation : instructorReservationRepository.getByInstructorUsername(username)){
-            if(instructorReservation.getStartTime() == null) continue;
             if(instructorReservation.isSuccessfullyFinished()){
                 BusinessStatistic businessStatistic = instructorBusinessReport.getBusinessStatisticByEntityName(instructorReservation.getAdventure().getName());
                 if(businessStatistic == null){

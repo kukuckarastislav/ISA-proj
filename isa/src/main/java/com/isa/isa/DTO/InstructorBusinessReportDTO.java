@@ -1,6 +1,7 @@
 package com.isa.isa.DTO;
 
 import com.isa.isa.model.loyalty.BusinessStatistic;
+import com.isa.isa.model.loyalty.LoyaltySettings;
 
 import java.util.ArrayList;
 
@@ -8,14 +9,10 @@ public class InstructorBusinessReportDTO {
 
     private InstructorDTO instructorDTO;
     private ArrayList<BusinessStatistic> businessStatistics;
+    private LoyaltySettings loyaltySettings;
 
     public InstructorBusinessReportDTO(){
         this.businessStatistics = new ArrayList<>();
-    }
-
-    public InstructorBusinessReportDTO(InstructorDTO instructorDTO, ArrayList<BusinessStatistic> businessStatistics) {
-        this.instructorDTO = instructorDTO;
-        this.businessStatistics = businessStatistics;
     }
 
     public InstructorDTO getInstructorDTO() {
@@ -57,5 +54,13 @@ public class InstructorBusinessReportDTO {
            sumIncome += businessStatistic.getIncome();
         }
         return sumIncome;
+    }
+
+    public LoyaltySettings getLoyaltySettings() {
+        return loyaltySettings;
+    }
+
+    public void setLoyaltySettings(LoyaltySettings loyaltySettings) {
+        this.loyaltySettings = loyaltySettings;
     }
 }

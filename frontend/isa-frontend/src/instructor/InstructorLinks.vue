@@ -13,6 +13,9 @@
                     <a href="/instructor/calendar" class="nav-link">Calendar</a>
                 </div>
                 <div class="col">
+                    <a href="/instructor/business" class="nav-link">Business</a>
+                </div>
+                <div class="col">
                     <a href="/instructorProfile" class="nav-link">My Profile</a>
                 </div>
             </div>

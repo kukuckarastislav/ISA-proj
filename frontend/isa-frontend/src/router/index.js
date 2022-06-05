@@ -39,6 +39,7 @@ import AdminRegistrationPage from '../admin/AdminRegistrationPage.vue'
 import BoatOwnerCalendarPage from '../boat_owner/BoatOwnerCalendar.vue'
 import CottageOwnerCalendar from '../cottage_owner/CottageOwnerCalendar.vue'
 import UpdateAdventure from '../instructor/UpdateAdventure.vue'
+import InstructorBusinessPage from '../instructor/InstructorBusinessPage.vue'
 
 
 const routes = [
@@ -81,7 +82,8 @@ const routes = [
   { path: '/admin/entity', name: 'EntityPage', component: EntityPage },
   { path: '/admin/registration', name: 'AdminRegistrationPage', component: AdminRegistrationPage },
   { path: '/boatowner/calendar', name: 'BoatOwnerCalendarPage', component: BoatOwnerCalendarPage },
-  { path: '/cottageowner/calendar', name: 'CottageOwnerCalendar', component: CottageOwnerCalendar},
+  { path: '/cottageowner/calendar', name: 'CottageOwnerCalendar', component: CottageOwnerCalendar },
+  { path: '/instructor/business', name: 'InstructorBusinessPage', component: InstructorBusinessPage},
 ]
 
 const router = createRouter({
