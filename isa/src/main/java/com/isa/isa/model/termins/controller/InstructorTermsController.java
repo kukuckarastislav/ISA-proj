@@ -2,10 +2,7 @@ package com.isa.isa.model.termins.controller;
 
 import com.isa.isa.DTO.AdventureDTO;
 import com.isa.isa.model.revisions.DTO.RevisionAdminViewDTO;
-import com.isa.isa.model.termins.DTO.EventDTO;
-import com.isa.isa.model.termins.DTO.InstructorReservationDTO;
-import com.isa.isa.model.termins.DTO.NewInstructorFastReservationDTO;
-import com.isa.isa.model.termins.DTO.NewInstructorTermDTO;
+import com.isa.isa.model.termins.DTO.*;
 import com.isa.isa.model.termins.model.TermType;
 import com.isa.isa.model.termins.service.InstructorTermService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,10 +69,10 @@ public class InstructorTermsController {
         return new ResponseEntity<String>(msg, HttpStatus.OK);
     }
 
-    @PostMapping("/fast-reservation")
+    @PostMapping("/reserve-again")
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-    public ResponseEntity<String> createFastReservation(Principal user, @RequestBody NewInstructorFastReservationDTO newInstructorFastReservationDTO) {
-        String msg = instructorTermService.createFastReservation(user.getName(), newInstructorFastReservationDTO);
+    public ResponseEntity<String> createReservationAgain(Principal user, @RequestBody ReservationAgainDTO reservationAgainDTO) {
+        String msg = instructorTermService.createReservationAgain(user.getName(), reservationAgainDTO);
         System.out.println(msg);
         return new ResponseEntity<String>(msg, HttpStatus.OK);
     }

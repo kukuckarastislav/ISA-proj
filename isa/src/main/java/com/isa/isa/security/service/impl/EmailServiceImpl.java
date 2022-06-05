@@ -6,6 +6,8 @@ import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.complaints.model.Complaint;
+import com.isa.isa.model.enums.IsaEntityType;
+import com.isa.isa.model.enums.OwnerType;
 import com.isa.isa.model.report.model.Report;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.revisions.model.RevisionType;
@@ -20,6 +22,7 @@ import com.isa.isa.model.termins.model.CottageFastReservation;
 import com.isa.isa.model.termins.model.InstructorFastReservation;
 import com.isa.isa.security.model.User;
 import com.isa.isa.security.service.EmailService;
+import org.hibernate.type.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -30,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Base64;
 
 @Service
@@ -294,5 +298,17 @@ public class EmailServiceImpl implements EmailService{
         mail.setText("There's a new action for " + boatFastReservation.getBoat().getName()+" from: "+boatFastReservation.getStartTime()+ " to: "+boatFastReservation.getEndTime());
         javaMailSender.send(mail);
 
+	}
+
+	@Override
+	public void sendAgainReservationConfirmation(Client client, String entityName, IsaEntityType entityType, String providerEmail, LocalDateTime startTime, LocalDateTime endTime){
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(client.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Successful Again reservation");
+		mail.setText("For you, "+providerEmail+" successfully reserved " + entityName+" again from: "+startTime+ " to: "+endTime);
+		javaMailSender.send(mail);
+
+		System.out.println("[EmailService]: sendAgainReservationConfirmation");
 	}
 }

@@ -229,4 +229,8 @@ public class InstructorFastReservation {
 		}
 		return null;
     }
+
+    public boolean inThisMoment() {
+		return this.startTime.isBefore(LocalDateTime.now()) && this.endTime.isAfter(LocalDateTime.now());
+    }
 }

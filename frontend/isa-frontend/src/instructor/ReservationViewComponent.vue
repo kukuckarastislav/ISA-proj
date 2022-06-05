@@ -193,10 +193,6 @@
                     <br>
                     <div class="row">
                     <div class="col-1"></div>
-                      <div class="col-5 text-end">Max number of People</div>
-                      <div class="col-2">
-                        <input type="number" v-model="repeatReservation.maxNumberOfPeople" class="form-control">
-                      </div>
                       <div class="col-2 text-end">Price</div>
                       <div class="col-2">
                         <input type="number" v-model="repeatReservation.price" class="form-control">
@@ -439,42 +435,50 @@ export default {
         }
         this.repeatReservation.itemPrices.push(itPrice)
     },
-    sendNewFastReservation: function(){
+      sendNewFastReservation: function () {
+        if(!this.reservation.clientView){
+            alert('Error: Client Is not selected')
+            return;
+        }
+        if (new Date(this.reservation.endTime) < new Date() || new Date(this.reservation.startTime) > new Date()) { 
+            alert("You cannot book again because it is not in the moment")
+            return;
+        }
 
-      const startTimeForBackend = new Date(Date.UTC(this.fastReservationForm.date[0].getFullYear(), this.fastReservationForm.date[0].getMonth(), this.fastReservationForm.date[0].getDate(), this.fastReservationForm.date[0].getHours(), this.fastReservationForm.date[0].getMinutes()))
-      const endTimeForBackend = new Date(Date.UTC(this.fastReservationForm.date[1].getFullYear(), this.fastReservationForm.date[1].getMonth(), this.fastReservationForm.date[1].getDate(), this.fastReservationForm.date[1].getHours(), this.fastReservationForm.date[1].getMinutes()))
+      const startTimeForBackend = new Date(Date.UTC(this.repeatReservation.date[0].getFullYear(), this.repeatReservation.date[0].getMonth(), this.repeatReservation.date[0].getDate(), this.repeatReservation.date[0].getHours(), this.repeatReservation.date[0].getMinutes()))
+      const endTimeForBackend = new Date(Date.UTC(this.repeatReservation.date[1].getFullYear(), this.repeatReservation.date[1].getMonth(), this.repeatReservation.date[1].getDate(), this.repeatReservation.date[1].getHours(), this.repeatReservation.date[1].getMinutes()))
 
 
-      let newFastReservationDTO = {
-          "idAdventure" : this.adventure.id,
+        let newFastReservationDTO = {
+          "idClient" : this.reservation.clientView.id,
+          "clientEmail":this.reservation.clientView.email,
+          "idEntity" : this.reservation.idAdventure,
           "startTime" : startTimeForBackend,
           "endTime" : endTimeForBackend,
-          "maxNumberOfPeople" : this.fastReservationForm.maxNumberOfPeople,
-          "address" : this.fastReservationForm.address,
-          "itemPrices" : this.fastReservationForm.itemPrices,
-          "price" : this.fastReservationForm.price
+          "address" : this.repeatReservation.address,
+          "itemPrices" : this.repeatReservation.itemPrices,
+          "price": this.repeatReservation.price,
+          "fast": true,
+          "idReservation":0
       }
 
 
       axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-      axios.post('http://localhost:8180/api/instructorterms/fast-reservation', newFastReservationDTO).then(
+      axios.post('http://localhost:8180/api/instructorterms/reserve-again', newFastReservationDTO).then(
         (resp) => {
-          console.log(resp.data)
-          if(resp.data.startsWith("error")){
+            console.log(resp.data)
             alert(resp.data)
-          }else{
-            this.openFastReservationForm();
-            this.fastReservationForm.visible = false;
-            this.loadData(false);
-          }
+            if (!resp.data.startsWith('err')) {
+                this.showForm(4);
+            }
         }, 
-        (err)=>{
-          alert(err)
+          (err) => {
+            console.log(err)
+          alert("ERROR:", err)
       });
       },
     initReservationAgainForm: function () {
       this.repeatReservation.address = this.reservation.address
-      this.repeatReservation.maxNumberOfPeople = 1
       this.repeatReservation.price = 0
       this.repeatReservation.itemPrices = []
       },

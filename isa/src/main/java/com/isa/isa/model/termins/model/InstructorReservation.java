@@ -196,4 +196,8 @@ public class InstructorReservation {
     public boolean isSuccessfullyFinished() {
         return isFinished() && statusOfReservation == StatusOfReservation.ACTIVE;
     }
+
+    public boolean inThisMoment() {
+        return this.startTime.isBefore(LocalDateTime.now()) && this.endTime.isAfter(LocalDateTime.now());
+    }
 }

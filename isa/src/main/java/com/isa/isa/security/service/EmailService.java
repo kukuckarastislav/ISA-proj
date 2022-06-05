@@ -6,6 +6,7 @@ import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.Cottage;
 import com.isa.isa.model.complaints.model.Complaint;
+import com.isa.isa.model.enums.IsaEntityType;
 import com.isa.isa.model.report.model.Report;
 import com.isa.isa.model.revisions.model.Revision;
 import com.isa.isa.model.termins.DTO.ClientAdventureFastReservationDTO;
@@ -21,6 +22,8 @@ import com.isa.isa.model.termins.model.InstructorFastReservation;
 import org.springframework.mail.MailException;
 
 import com.isa.isa.security.model.User;
+
+import java.time.LocalDateTime;
 
 public interface EmailService {
 	void sendNotificaition(User user) throws MailException, InterruptedException;
@@ -58,4 +61,6 @@ public interface EmailService {
     void sendNewCottageActionNotification(Client client, CottageFastReservation cottageFastReservation) throws MailException, InterruptedException;
     
     void sendNewBoatActionNotification(Client client, BoatFastReservation boatFastReservation) throws MailException, InterruptedException;
+
+    void sendAgainReservationConfirmation(Client client, String entityName, IsaEntityType entityType, String providerEmail, LocalDateTime startTime, LocalDateTime endTime);
 }
