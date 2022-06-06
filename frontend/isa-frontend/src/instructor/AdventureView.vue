@@ -14,7 +14,8 @@
                     <h1 class="text-start">{{adventure.name}}</h1>
                   </div>
                   <div class="col">
-                    <button v-on:click="UpdateAdventurePage()" class="btn btn-primary">Update</button>
+                    <button :disabled="adventure.deleted" v-on:click="UpdateAdventurePage()" class="btn btn-primary">Update</button>
+                    <p v-if="adventure.deleted" class="m-3" style="color: red; font-weight: bold;">DELETED</p>
                   </div>
                 </div>
 

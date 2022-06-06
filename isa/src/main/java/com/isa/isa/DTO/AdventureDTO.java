@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class AdventureDTO {
 
+    private int id;
     private String instructorUsername;
     private String name;
     private Address address;
@@ -37,6 +38,7 @@ public class AdventureDTO {
     }
 
     public AdventureDTO(Adventure adventure, ArrayList<EntityImageDTO> images) {
+        this.id = adventure.getId();
         this.instructorUsername = adventure.getInstructor().getEmail();
         this.name = adventure.getName();
         this.address = adventure.getAddress();
@@ -147,5 +149,13 @@ public class AdventureDTO {
 
     public void setAverageGrade(double averageGrade) {
         this.averageGrade = averageGrade;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

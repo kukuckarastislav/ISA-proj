@@ -56,4 +56,13 @@ public class AdventureController {
         System.out.println(msg);
         return new ResponseEntity<String>(msg, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAdventure(@PathVariable int id, Principal user) {
+        String msg = adventureService.deleteAdventure(user.getName(), id);
+        System.out.println(msg);
+        return new ResponseEntity<String>(msg, HttpStatus.OK);
+    }
+
 }

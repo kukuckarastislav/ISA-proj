@@ -28,6 +28,8 @@ public class AdventureViewDTO {
     private ArrayList<Revision> adventureRevisions;
     private ArrayList<Revision> instructorRevisions;
 
+    private Boolean deleted;
+
     public AdventureViewDTO(){}
 
     public AdventureViewDTO(String instructorName, String instructorFirstName, String instructorLastName, String name, Address address, String description, String biography, ArrayList<EntityImage> images, int maxNumberOfPeople, String behaviourRules, ArrayList<AdditionalEquipment> additionalEquipments, ArrayList<ItemPrice> pricelist, ReservationCancellationConditions reservationCancellationConditions, double averageGrade, Price price) {
@@ -49,6 +51,7 @@ public class AdventureViewDTO {
     }
 
     public AdventureViewDTO(Adventure adventure, String instructorName, Instructor instructor) {
+        this.deleted = adventure.getDeleted();
         this.id = adventure.getId();
         this.instructorName = instructorName;
         if(instructor != null){
@@ -214,5 +217,13 @@ public class AdventureViewDTO {
 
     public void setInstructorRevisions(ArrayList<Revision> instructorRevisions) {
         this.instructorRevisions = instructorRevisions;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

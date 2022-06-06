@@ -37,6 +37,7 @@ public class AdventureService {
         if(instructor != null){
             ArrayList<Adventure> adventureByInstructor = (ArrayList<Adventure>)adventureRepository.getByInstructorId(instructor.getId());
             for (Adventure adventure : adventureByInstructor) {
+                if(adventure.getDeleted()) continue;
                 ArrayList<EntityImageDTO> images = new ArrayList<EntityImageDTO>();
                 for(EntityImage img : adventure.getImages()){
                     images.add(new EntityImageDTO(img));
@@ -167,4 +168,19 @@ public class AdventureService {
         return "successfully updated adventure";
     }
 
+    public String deleteAdventure(String username, int id) {
+
+        Optional<Adventure> adventureOpt = adventureRepository.findById(id);
+        if(adventureOpt.isEmpty()) return "error adventure does not exist";
+
+        Adventure adventure = adventureOpt.get();
+
+        if(!instructorTermService.updatePossible(adventure, username)){
+            return "error delete is not possible, there are reservations in the future";
+        }
+
+        adventure.setDeleted(true);
+        adventureRepository.saveAndFlush(adventure);
+        return "Successfully deleted adventure";
+    }
 }

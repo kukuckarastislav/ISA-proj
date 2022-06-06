@@ -30,13 +30,13 @@
             <div class="col-sm-9">
                 <div v-for="adventure in adventures" :key="adventure">
                     
-                        <div v-if="showIf(adventure)" class="card" v-on:click="moreDetails(adventure)">
+                        <div v-if="showIf(adventure)" class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-5">
+                                    <div class="col-5" v-on:click="moreDetails(adventure)">
                                         <img class="img-fluid" v-bind:src="getImg(adventure)">
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-5" v-on:click="moreDetails(adventure)">
                                         <h5 class="card-title text-start">{{adventure.name}}</h5> 
                                         <br>
                                         <h6 class="card-title text-start">Country: {{adventure.address.country}}</h6>
@@ -45,6 +45,9 @@
                                         <br>
                                         <h6 class="card-title text-start">Maximum number of people: {{adventure.maxNumberOfPeople}}</h6>
                                         <h6 class="card-title text-start">description: {{adventure.description}}</h6>
+                                    </div>
+                                    <div class="col-2 text-end">
+                                        <button class="btn btn-danger" v-on:click="deleteClick(adventure)">Delete</button>
                                     </div>
                                 </div>
                             </div>         
@@ -124,7 +127,18 @@ export default {
 	},
     showIf: function(adventure){
         return adventure.name.toLowerCase().includes(this.filterByName.toLowerCase())
-    }
+    },
+    deleteClick: function (adventure) {
+        let confirmAction = confirm("Are you sure? Delete user " + adventure.name);
+        if (!confirmAction) {
+            return
+        }
+         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+         axios.delete('http://localhost:8180/api/adventure/'+adventure.id).then(resp => {
+            alert(resp.data)
+            this.loadData();
+        }, (err) => {alert("Error")});
+    },
   }
 }
 </script>
