@@ -38,7 +38,6 @@
             </div>
 
             <br>
-            <div class="mapaTODO">OVDE CE BITI MAPA</div>
             <br>
 
             <select class="form-select" v-model="registration.typeOfUser">
@@ -129,7 +128,10 @@ export default {
       }
      axios
           .post('http://localhost:8180/auth/signup',this.registration)
-          .then(response => console.log(response)).catch(err => {
+          .then(response => {
+            alert("You've successfully registred.")
+            this.$router.push('/');
+          }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           });
     }
