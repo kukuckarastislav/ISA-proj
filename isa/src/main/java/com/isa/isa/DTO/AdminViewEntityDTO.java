@@ -25,6 +25,8 @@ public class AdminViewEntityDTO {
     private String behaviourRules;
     private ArrayList<EntityImage> images;
 
+    private Boolean deleted;
+
     private ReservationCancellationConditions reservationCancellationConditions;
 
     public AdminViewEntityDTO(){}
@@ -46,6 +48,7 @@ public class AdminViewEntityDTO {
     }
 
     public AdminViewEntityDTO(Adventure adventure) {
+        this.deleted = adventure.getDeleted();
         this.ownerType = OwnerType.INSTRUCTOR;
         this.ownerEmail = adventure.getInstructor().getEmail();
         this.ownerName = adventure.getInstructor().getFullName();
@@ -62,6 +65,7 @@ public class AdminViewEntityDTO {
     }
 
     public AdminViewEntityDTO(Boat boat) {
+        this.deleted = boat.getDeleted();
         this.ownerType = OwnerType.BOAT_OWNER;
         this.ownerEmail = boat.getOwner().getEmail();
         this.ownerName = boat.getOwner().getFullName();
@@ -78,6 +82,7 @@ public class AdminViewEntityDTO {
     }
 
     public AdminViewEntityDTO(Cottage cottage) {
+        this.deleted = cottage.getDeleted();
         this.ownerType = OwnerType.COTTAGE_OWNER;
         this.ownerEmail = cottage.getOwner().getEmail();
         this.ownerName = cottage.getOwner().getFullName();
@@ -195,5 +200,13 @@ public class AdminViewEntityDTO {
 
     public void setReservationCancellationConditions(ReservationCancellationConditions reservationCancellationConditions) {
         this.reservationCancellationConditions = reservationCancellationConditions;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

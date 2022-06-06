@@ -68,7 +68,8 @@
                                         <div class="card-body">
                                             <h6 class="card-title">Admin panel</h6>
                                             <hr>
-                                            <button v-on:click="deleteAction(entity)" class="btn btn-danger" style="width: 100%;">Delete</button>
+                                            <button :disabled="entity.deleted" v-on:click="deleteAction(entity)" class="btn btn-danger" style="width: 100%;">Delete</button>
+                                            <p v-if="entity.deleted" class="m-1" style="color: red; font-weight: bold;">DELETED</p>
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +135,12 @@ export default {
         }
         return 'http://localhost:8180/api/entityImage/'+imgPath;
     },
-    deleteAction: function(entity){
+      deleteAction: function (entity) {
+        let confirmAction = confirm("Are you sure? Delete " + entity.name);
+        if (!confirmAction) {
+            return
+        }
+        
         let delEntity = {
             "isaEntityType" : entity.isaEntityType, 
             "idEntity" :entity.idEntity

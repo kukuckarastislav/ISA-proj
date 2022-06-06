@@ -63,6 +63,8 @@ public class Adventure {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Complaint> complaints = new HashSet<Complaint>();
 
+	@Column(columnDefinition = "boolean default false")
+	private Boolean deleted;
 	
 	public Adventure() { }
 
@@ -250,5 +252,13 @@ public class Adventure {
 
 	public void addImages(ArrayList<EntityImage> images) {
 		this.images.addAll(images);
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 }

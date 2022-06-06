@@ -3,6 +3,7 @@ package com.isa.isa.service;
 import com.isa.isa.DTO.*;
 
 import com.isa.isa.model.*;
+import com.isa.isa.model.enums.IsaEntityType;
 import com.isa.isa.model.termins.service.BoatTermService;
 import com.isa.isa.model.termins.service.CottageTermService;
 import com.isa.isa.model.termins.service.InstructorTermService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -144,13 +146,31 @@ public class AdminService {
     }
 
 	public Boolean deleteEntity(AdminDeleteEntityDTO adminDeleteEntityDTO) {
-		System.out.println("ToDo DELETE entity");
-		return false; //TODO: delete entity
+		if(adminDeleteEntityDTO.getIsaEntityType() == IsaEntityType.ADVENTURE){
+			Optional<Adventure> adventureOptional = adventureRepository.findById(adminDeleteEntityDTO.getIdEntity());
+			if(adventureOptional.isEmpty()) return false;
+			Adventure adventure = adventureOptional.get();
+			adventure.setDeleted(true);
+			adventureRepository.saveAndFlush(adventure);
+		}else if(adminDeleteEntityDTO.getIsaEntityType() == IsaEntityType.BOAT){
+			Optional<Boat> boatOptional = boatRepository.findById(adminDeleteEntityDTO.getIdEntity());
+			if(boatOptional.isEmpty()) return false;
+			Boat boat = boatOptional.get();
+			boat.setDeleted(true);
+			boatRepository.saveAndFlush(boat);
+		}else if(adminDeleteEntityDTO.getIsaEntityType() == IsaEntityType.COTTAGE){
+			Optional<Cottage> cottageOptional = cottageRepository.findById(adminDeleteEntityDTO.getIdEntity());
+			if(cottageOptional.isEmpty()) return false;
+			Cottage cottage = cottageOptional.get();
+			cottage.setDeleted(true);
+			cottageRepository.saveAndFlush(cottage);
+		}
+
+		return true;
 	}
 
 	public Boolean deleteUser(AdminDeleteUserDTO adminDeleteUserDTO) {
-		System.out.println("ToDo DELETE user");
-		return false; //TODO: delete user
+		return false;
 	}
 
 	@Autowired

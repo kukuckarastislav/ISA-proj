@@ -61,6 +61,8 @@ public class Cottage {
 	@Enumerated(EnumType.STRING)
 	private ReservationCancellationConditions reservationCancellationConditions;
 
+	@Column(columnDefinition = "boolean default false")
+	private Boolean deleted;
 
 	public void callculateGrade() {
 		double sum = 0;
@@ -201,5 +203,11 @@ public class Cottage {
 		this.reservationCancellationConditions = reservationCancellationConditions;
 	}
 
+	public Boolean getDeleted() {
+		return deleted;
+	}
 
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 }

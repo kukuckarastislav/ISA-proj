@@ -65,6 +65,8 @@ public class Boat {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Complaint> complaints = new HashSet<Complaint>();
 
+	@Column(columnDefinition = "boolean default false")
+	private Boolean deleted;
 	
 	public Boat() {
 		
@@ -281,10 +283,11 @@ public class Boat {
 		return id == other.id;
 	}
 
-	
-	
-	
-	
-	
-	
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 }

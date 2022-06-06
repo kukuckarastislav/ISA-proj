@@ -131,7 +131,12 @@ export default {
         if(user.loyalty.loyaltyType === 'REGULAR') return 'SettingsCss';
         return '';
     },
-    deleteAction: function(user){
+    deleteAction: function (user) {
+        let confirmAction = confirm("Are you sure? Delete user " + user.email);
+        if (!confirmAction) {
+            return
+        }
+        
         let delUser = {
             "idUser" : user.idUser, 
             "username" :user.email,
