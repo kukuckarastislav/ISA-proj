@@ -8,7 +8,10 @@ import com.isa.isa.service.ClientService;
 import com.isa.isa.service.CottageOwnerService;
 import com.isa.isa.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LoyaltyService {
@@ -36,57 +39,60 @@ public class LoyaltyService {
         return new LoyaltySettings();
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public LoyaltySettings setLoyaltySettings(LoyaltySettings newLoyaltySettings) {
         if(!isValid(newLoyaltySettings)) return null;
-        var loyaltySettingsOptional = loyaltyRepository.findById(1);
-        if(loyaltySettingsOptional.isPresent()){
-            LoyaltySettings loyaltySettings = loyaltySettingsOptional.get();
-            //izvrsiti azuriranje i proveriti sta se promenilo i onda pozvati service
+        try {
+            LoyaltySettings loyaltySettings = loyaltyRepository.getLoyaltySettings(1);
+            if(loyaltySettings != null){
+                Boolean updateUsers = false;
 
-            Boolean updateUsers = false;
+                if(loyaltySettings.getClientScoreForReservation() != newLoyaltySettings.getClientScoreForReservation()){
+                    loyaltySettings.setClientScoreForReservation(newLoyaltySettings.getClientScoreForReservation());
+                }
+                if(loyaltySettings.getOwnerScoreForReservation() != newLoyaltySettings.getOwnerScoreForReservation()){
+                    loyaltySettings.setOwnerScoreForReservation(newLoyaltySettings.getOwnerScoreForReservation());
+                }
+                if(loyaltySettings.getMinimumScoreForSILVER() != newLoyaltySettings.getMinimumScoreForSILVER()){
+                    loyaltySettings.setMinimumScoreForSILVER(newLoyaltySettings.getMinimumScoreForSILVER());
+                    // izvrsiti izmenu na osobama
+                    updateUsers = true;
+                }
+                if(loyaltySettings.getMinimumScoreForGOLD() != newLoyaltySettings.getMinimumScoreForGOLD()){
+                    loyaltySettings.setMinimumScoreForGOLD(newLoyaltySettings.getMinimumScoreForGOLD());
+                    // izvrsiti izmenu na osobama
+                    updateUsers = true;
+                }
+                if(loyaltySettings.getClientDiscountPercentageSILVER() != newLoyaltySettings.getClientDiscountPercentageSILVER()){
+                    loyaltySettings.setClientDiscountPercentageSILVER(newLoyaltySettings.getClientDiscountPercentageSILVER());
+                }
+                if(loyaltySettings.getClientDiscountPercentageGOLD() != newLoyaltySettings.getClientDiscountPercentageGOLD()){
+                    loyaltySettings.setClientDiscountPercentageGOLD(newLoyaltySettings.getClientDiscountPercentageGOLD());
+                }
+                if(loyaltySettings.getOwnerDiscountPercentageSILVER() != newLoyaltySettings.getOwnerDiscountPercentageSILVER()){
+                    loyaltySettings.setOwnerDiscountPercentageSILVER(newLoyaltySettings.getOwnerDiscountPercentageSILVER());
+                }
+                if(loyaltySettings.getOwnerDiscountPercentageGOLD() != newLoyaltySettings.getOwnerDiscountPercentageGOLD()){
+                    loyaltySettings.setOwnerDiscountPercentageGOLD(newLoyaltySettings.getOwnerDiscountPercentageGOLD());
+                }
+                if(loyaltySettings.getSystemPercentage() != newLoyaltySettings.getSystemPercentage()){
+                    loyaltySettings.setSystemPercentage(newLoyaltySettings.getSystemPercentage());
+                }
 
-            if(loyaltySettings.getClientScoreForReservation() != newLoyaltySettings.getClientScoreForReservation()){
-                loyaltySettings.setClientScoreForReservation(newLoyaltySettings.getClientScoreForReservation());
-            }
-            if(loyaltySettings.getOwnerScoreForReservation() != newLoyaltySettings.getOwnerScoreForReservation()){
-                loyaltySettings.setOwnerScoreForReservation(newLoyaltySettings.getOwnerScoreForReservation());
-            }
-            if(loyaltySettings.getMinimumScoreForSILVER() != newLoyaltySettings.getMinimumScoreForSILVER()){
-                loyaltySettings.setMinimumScoreForSILVER(newLoyaltySettings.getMinimumScoreForSILVER());
-                // izvrsiti izmenu na osobama
-                updateUsers = true;
-            }
-            if(loyaltySettings.getMinimumScoreForGOLD() != newLoyaltySettings.getMinimumScoreForGOLD()){
-                loyaltySettings.setMinimumScoreForGOLD(newLoyaltySettings.getMinimumScoreForGOLD());
-                // izvrsiti izmenu na osobama
-                updateUsers = true;
-            }
-            if(loyaltySettings.getClientDiscountPercentageSILVER() != newLoyaltySettings.getClientDiscountPercentageSILVER()){
-                loyaltySettings.setClientDiscountPercentageSILVER(newLoyaltySettings.getClientDiscountPercentageSILVER());
-            }
-            if(loyaltySettings.getClientDiscountPercentageGOLD() != newLoyaltySettings.getClientDiscountPercentageGOLD()){
-                loyaltySettings.setClientDiscountPercentageGOLD(newLoyaltySettings.getClientDiscountPercentageGOLD());
-            }
-            if(loyaltySettings.getOwnerDiscountPercentageSILVER() != newLoyaltySettings.getOwnerDiscountPercentageSILVER()){
-                loyaltySettings.setOwnerDiscountPercentageSILVER(newLoyaltySettings.getOwnerDiscountPercentageSILVER());
-            }
-            if(loyaltySettings.getOwnerDiscountPercentageGOLD() != newLoyaltySettings.getOwnerDiscountPercentageGOLD()){
-                loyaltySettings.setOwnerDiscountPercentageGOLD(newLoyaltySettings.getOwnerDiscountPercentageGOLD());
-            }
-            if(loyaltySettings.getSystemPercentage() != newLoyaltySettings.getSystemPercentage()){
-                loyaltySettings.setSystemPercentage(newLoyaltySettings.getSystemPercentage());
+                loyaltyRepository.saveAndFlush(loyaltySettings);
+
+                if(updateUsers){
+                    instructorService.updateLoyaltyForAll(loyaltySettings);
+                    boatOwnerService.updateLoyaltyForAll(loyaltySettings);
+                    cottageOwnerService.updateLoyaltyForAll(loyaltySettings);
+                    clientService.updateLoyaltyForAll(loyaltySettings);
+                }
+
+                return loyaltySettings;
             }
 
-            loyaltyRepository.saveAndFlush(loyaltySettings);
-
-            if(updateUsers){
-                instructorService.updateLoyaltyForAll(loyaltySettings);
-                boatOwnerService.updateLoyaltyForAll(loyaltySettings);
-                cottageOwnerService.updateLoyaltyForAll(loyaltySettings);
-                clientService.updateLoyaltyForAll(loyaltySettings);
-            }
-
-            return loyaltySettings;
+        }catch (PessimisticLockingFailureException e){
+            System.out.println("error PessimisticLockingFailureException");
         }
         return null;
     }

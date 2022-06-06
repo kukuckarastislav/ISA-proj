@@ -27,7 +27,10 @@ import com.isa.isa.service.AdventureService;
 import com.isa.isa.service.ClientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -315,24 +318,28 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
         return events;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public String createFastReservation(String username, NewInstructorFastReservationDTO newInstructorFastReservationDTO) {
 
         Instructor instructor = instructorRepository.getByEmail(username);
         if(instructor == null) return "error: instructor null";
 
-        Optional<Adventure> adventureOptional = adventureRepository.findById(newInstructorFastReservationDTO.getIdAdventure());
-        if(adventureOptional.isEmpty()) return "error: adventure does not exists";
+        try {
+            Adventure adventure = adventureRepository.getAdventureById(newInstructorFastReservationDTO.getIdAdventure());
+            if(adventure == null) return "error: adventure does not exists";
 
-        Adventure adventure = adventureOptional.get();
-
-        if(isFastReservationPossible(newInstructorFastReservationDTO.getStartTime(), newInstructorFastReservationDTO.getEndTime(), instructor)){
-            InstructorFastReservation ifr = new InstructorFastReservation(adventure, newInstructorFastReservationDTO, username);
-            instructorFastReservationRepository.saveAndFlush(ifr);
-            clientService.notifyAdventureSubscribedClients(ifr);
-            return "ok";
-        }else{
-            return "error: overlaping with other terms";
+            if(isFastReservationPossible(newInstructorFastReservationDTO.getStartTime(), newInstructorFastReservationDTO.getEndTime(), instructor)){
+                InstructorFastReservation ifr = new InstructorFastReservation(adventure, newInstructorFastReservationDTO, username);
+                instructorFastReservationRepository.saveAndFlush(ifr);
+                clientService.notifyAdventureSubscribedClients(ifr);
+                return "ok";
+            }else{
+                return "error: overlaping with other terms";
+            }
+        }catch (PessimisticLockingFailureException e){
+            System.out.println("error PessimisticLockingFailureException");
         }
+        return "error";
     }
 
     public boolean updatePossible(Adventure adventure, String username) {

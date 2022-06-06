@@ -1,9 +1,6 @@
 package com.isa.isa.model.termins.service;
 
-import com.isa.isa.model.Client;
-import com.isa.isa.model.EntityImage;
-import com.isa.isa.model.Instructor;
-import com.isa.isa.model.ItemPrice;
+import com.isa.isa.model.*;
 import com.isa.isa.model.loyalty.LoyaltyService;
 import com.isa.isa.model.termins.DTO.ClientAdventureReservationDTO;
 import com.isa.isa.model.termins.DTO.ClientMadeReservationsAdventureDTO;
@@ -19,10 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.ClientRepository;
 import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InstructorReservationService {
@@ -50,8 +51,20 @@ public class InstructorReservationService {
 
 	@Autowired
 	private InstructorRepository instructorRepository;
-    
+	@Autowired
+	private AdventureRepository adventureRepository;
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public InstructorReservation reserveAdventureByClient(ClientAdventureReservationDTO dto, Client client) {
+		Adventure adventure = null;
+		try {
+			adventure = adventureRepository.getAdventureById(dto.getAdventure().getId());
+		}catch (PessimisticLockingFailureException e){
+			System.out.println("error PessimisticLockingFailureException");
+			return null;
+		}
+		if(adventure == null) return null;
+
     	if(hasClientAlreadyCancelledAdventure(dto, client)) return null;
 		Instructor instructor = instructorRepository.getByEmail(dto.getAdventure().getInstructor().getEmail());
     	InstructorReservation instructorReservation = new InstructorReservation(client,dto.getAdventure(),dto.getStartTime(),dto.getEndTime(),dto.getAdventure().getInstructor().getEmail());
