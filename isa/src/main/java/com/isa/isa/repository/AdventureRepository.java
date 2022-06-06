@@ -6,8 +6,12 @@ import com.isa.isa.model.Boat;
 import com.isa.isa.model.Cottage;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.List;
 
 public interface AdventureRepository extends JpaRepository<Adventure, Integer> {
@@ -25,5 +29,8 @@ public interface AdventureRepository extends JpaRepository<Adventure, Integer> {
     @Query(value = "Select * from adventure where id=(select adventure_id from adventure_complaints where complaints_id=?1)", nativeQuery = true)
     Adventure getAdventureByComplaintId(Integer complaintId);
 
-
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT r FROM Adventure r WHERE r.id=?1")
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
+    Adventure getAdventureById(int idAdventure);
 }
