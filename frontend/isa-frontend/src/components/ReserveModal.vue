@@ -81,7 +81,7 @@ export default {
     calculatePrice(){
       if(!this.date) return;
         this.totalPrice = 0;
-        var numOfHours = (this.date[1].getTime()-this.date[0].getTime())/ (1000 * 3600);
+        var numOfHours = Math.floor((this.date[1].getTime()-this.date[0].getTime())/ (1000 * 3600));
         for(let i=0;i<this.chosenServices.length;i++){
           this.totalPrice += this.chosenServices[i].price
         }
