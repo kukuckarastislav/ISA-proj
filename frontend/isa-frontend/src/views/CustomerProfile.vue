@@ -40,7 +40,6 @@
                             </div>
 
                             <br>
-                            <div class="mapaTODO">OVDE CE BITI MAPA</div>
                             <br>
 
                             <div class="d-flex justify-content-center">

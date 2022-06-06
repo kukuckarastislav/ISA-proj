@@ -155,7 +155,7 @@ public class ClientController {
 	@PostMapping("/reserveAdventure")
 	public ResponseEntity<Boolean> reserveAdventure(@RequestBody ClientAdventureReservationDTO clientAdventureReservationDTO, Principal user) {
 
-		//TODO: loyalty
+		if(ChronoUnit.HOURS.between(clientAdventureReservationDTO.getStartTime(),clientAdventureReservationDTO.getEndTime())<1) return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		if(!instructorService.isInstructorFree(new InstructorTermsDTO(clientAdventureReservationDTO.getAdventure().getInstructor().getId(), clientAdventureReservationDTO.getStartTime(), clientAdventureReservationDTO.getEndTime(), clientAdventureReservationDTO.getAdventure().getInstructor().getEmail()))) {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
@@ -210,7 +210,6 @@ public class ClientController {
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	@PostMapping("/reserveAction")
 	public ResponseEntity<Boolean> reserveAction(@RequestBody ClientAdventureFastReservationDTO clientAdventureFastReservationDTO, Principal user) {
-		//TODO: loyalty
 		Client client= this.clientService.findByEmail(user.getName());
 		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		Adventure adventure = adventureService.getAdventureWithInstructor(clientAdventureFastReservationDTO.getIdAdventure());
@@ -233,7 +232,7 @@ public class ClientController {
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	@PostMapping("/reserveCottage")
 	public ResponseEntity<Boolean> reserveCottage(@RequestBody ClientCottageReservationDTO clientCottageReservationDTO, Principal user) {
-		//TODO: loyalty
+		if(ChronoUnit.DAYS.between(clientCottageReservationDTO.getStartTime(),clientCottageReservationDTO.getEndTime())<1) return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		if(!cottageService.isCottageFree(new CottageTermsDTO(clientCottageReservationDTO.getCottage().getId(),clientCottageReservationDTO.getStartTime(),clientCottageReservationDTO.getEndTime()))) {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}
@@ -281,7 +280,6 @@ public class ClientController {
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	@PostMapping("/reserveCottageAction")
 	public ResponseEntity<Boolean> reserveCottageAction(@RequestBody ClientCottageFastReservationDTO clientCottageFastReservationDTO, Principal user) {
-		//TODO: loyalty
 		Client client= this.clientService.findByEmail(user.getName());
 		if(client.getPenalties().size()>2) return new ResponseEntity<>(false,HttpStatus.OK);
 		Cottage cottage = cottageService.getCottageWithOwner(clientCottageFastReservationDTO.getIdCottage());
@@ -304,7 +302,7 @@ public class ClientController {
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	@PostMapping("/reserveBoat")
 	public ResponseEntity<Boolean> reserveBoat(@RequestBody ClientBoatReservationDTO clientBoatReservationDTO, Principal user) {
-		//TODO: loyalty
+		if(ChronoUnit.HOURS.between(clientBoatReservationDTO.getStartTime(),clientBoatReservationDTO.getEndTime())<1) return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		if(!boatService.isBoatFree(new BoatTermsDTO(clientBoatReservationDTO.getBoat().getId(),clientBoatReservationDTO.getStartTime(),clientBoatReservationDTO.getEndTime()))) {
 			return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 		}

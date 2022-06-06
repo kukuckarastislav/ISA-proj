@@ -125,7 +125,10 @@ export default {
       }
      axios
           .post('http://localhost:8180/auth/signup',this.registration)
-          .then(response => console.log(response)).catch(err => {
+          .then(response => {
+            alert("You've successfully registred.")
+            this.$router.push('/');
+          }).catch(err => {
               alert('DOSLO JE DO GRESKE')
           });
     }
