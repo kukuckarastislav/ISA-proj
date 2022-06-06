@@ -66,7 +66,7 @@
       </tr>
       <tr>
         
-        <td style="border:none;text-align:left">{{a.description}}
+        <td style="border:none;text-align:left">{{a.promotionalDescription}}
         </td>
         <td  style="border:none;"></td>
         </tr>
