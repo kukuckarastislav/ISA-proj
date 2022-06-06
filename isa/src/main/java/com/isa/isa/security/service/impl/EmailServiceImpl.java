@@ -1,6 +1,8 @@
 package com.isa.isa.security.service.impl;
 
 import com.isa.isa.DTO.UserApproveDTO;
+import com.isa.isa.model.AccountDeleteRequest.enums.DeleteRequestStatus;
+import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
@@ -84,19 +86,38 @@ public class EmailServiceImpl implements EmailService{
 
 		System.out.println("[EmailService]: sendNotificaitionRejected");
 	}
-	
+
 	@Override
 	public void sendReservationConfirmation(Client client, ClientAdventureReservationDTO clientAdventureReservationDTO) throws MailException, InterruptedException{
-	    SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo(client.getEmail());
-        mail.setFrom(env.getProperty("spring.mail.username"));
-        mail.setSubject("Successful reservation");
-        mail.setText("You've successfully reserved " + clientAdventureReservationDTO.getAdventure().getName()+" from: "+clientAdventureReservationDTO.getStartTime()+ " to: "+clientAdventureReservationDTO.getEndTime());
-        javaMailSender.send(mail);
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(client.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Successful reservation");
+		mail.setText("You've successfully reserved " + clientAdventureReservationDTO.getAdventure().getName()+" from: "+clientAdventureReservationDTO.getStartTime()+ " to: "+clientAdventureReservationDTO.getEndTime());
+		javaMailSender.send(mail);
 
-        System.out.println("[EmailService]: sendReservationConfirmation");
+		System.out.println("[EmailService]: sendReservationConfirmation");
 	}
-	
+
+
+	@Override
+	public void sendNotificaitionDeleteAccRespo(AccountDeleteRequest accountDeleteRequest) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(accountDeleteRequest.getUsername());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Fishing Acc information");
+		String text = "";
+		if(accountDeleteRequest.getDeleteRequestStatus() == DeleteRequestStatus.APPROVED){
+			text = "Your Acc is now deleted, reason:"+accountDeleteRequest.getReason();
+		}else if(accountDeleteRequest.getDeleteRequestStatus() == DeleteRequestStatus.REJECTED){
+			text = "Your Acc is NOT now deleted, resaon:" + accountDeleteRequest.getReason();
+		}
+		mail.setText(text);
+		javaMailSender.send(mail);
+
+		System.out.println("[EmailService]: sendNotificaitionDeleteAccRespo");
+	}
+
 	@Override
 	public void sendAdventureActionReservationConfirmation(Client client, Adventure adventure, ClientAdventureFastReservationDTO clientAdventureFastReservationDTO) throws MailException, InterruptedException{
 	    SimpleMailMessage mail = new SimpleMailMessage();
@@ -259,7 +280,7 @@ public class EmailServiceImpl implements EmailService{
 		mail.setTo(report.getOwnerEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Report Response");
-		String text = "Hi, admin respond to your Report `"+report.getText()+"` on date:"+report.getCreatedAt()+" for `"+reservationName+"`\n";
+		String text = "Hi, admin respond to your Report `"+report.getText()+"` on date:"+report.getCreatedAt()+" for " + report.getClientEmail() + " on `"+reservationName+"`\n";
 		text += "Admin response: "+report.getStatusOfReport()+" `"+report.getAdminResposne()+"` At:"+report.getAdminResponsDate();
 		mail.setText(text);
 		javaMailSender.send(mail);

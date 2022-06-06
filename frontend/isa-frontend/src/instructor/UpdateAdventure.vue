@@ -477,8 +477,12 @@ export default {
             console.log('updatedventure')
             this.adventure.imagesForBackend = this.imagesForBackend;
             this.adventure.imagesForBackendDelete = this.imagesForBackendDelete
-            this.adventure.address.longitude = this.map.newLon;
-            this.adventure.address.latitude = this.map.newLat;
+            if (this.map.newLat != undefined) {
+                this.adventure.address.longitude = this.map.newLon;
+                this.adventure.address.latitude = this.map.newLat;   
+            }
+
+            console.log("MAP KORD", this.map.newLat)
 
             // console.log("Kreiranje avanture")
             // console.log(this.adventure)

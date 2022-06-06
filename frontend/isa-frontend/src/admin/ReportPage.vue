@@ -7,7 +7,6 @@
                     <div class="card-body justify-content-start text-start">
                         
                         <h5>Status of Report</h5>
-                    
                         <input v-model="showreports.pending" class="form-check-input m-2" type="checkbox" id="idPending" checked>
                         <label class="form-check-label m-1" for="idPending"> Pending</label>
                         <br>
@@ -180,9 +179,9 @@ export default {
               alert('DOSLO JE DO GRESKE')
             });
     },
-    showIfNeed: function(report){
-        return true;
-        return this.showByStatus(report) && this.showOnlyMyRespons(report) && this.showByreportType(report)
+      showIfNeed: function (report) {
+          return true;
+        return this.showByStatus(report.report) && this.showOnlyMyRespons(report.report) && this.showByreportType(report.report)
     },
     showByStatus: function(report){
        
@@ -206,9 +205,9 @@ export default {
     },
     showByreportType: function(report){
        
-        if( report.ownerType === 'INSTRUCTOR' && this.showreports.instructor) return true;
-        if( report.ownerType === 'BOAT_OWNER' && this.showreports.boat_owner) return true;
-        if( report.ownerType === 'COTTAGE_OWNER' && this.showreports.cottage_owner) return true;
+        if( report.reservationType === 'INSTRUCTOR' && this.showreports.instructor) return true;
+        if( report.reservationType === 'BOAT_OWNER' && this.showreports.boat_owner) return true;
+        if( report.reservationType === 'COTTAGE_OWNER' && this.showreports.cottage_owner) return true;
         
         return false;
     },

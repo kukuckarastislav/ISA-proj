@@ -68,7 +68,7 @@
                     </div>
                     <br> <br> <br>
 
-                    <!-- Brisanje profila -->
+                    <!-- Brisanje profila 
                     <div class="card border border-danger">
                         <div class="card-body border border-danger">
                             <textarea v-if="isDeletingAcc" class="form-control mb-2" v-model="deleteRequestMessage" rows="4"></textarea>
@@ -80,7 +80,7 @@
                            
                         </div>
                     </div>
-                    
+                    -->
                       
 
 
