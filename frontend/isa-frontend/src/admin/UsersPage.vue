@@ -6,17 +6,17 @@
                 <div class="card align-items-start">
                     <div class="card-body justify-content-start text-start">
 
-                        <input v-model="showUsers.instructors" class="form-check-input" type="checkbox" id="idCInstructors" checked>
-                        <label class="form-check-label" for="idCInstructors"> Instructors</label>
+                        <input v-model="showUsers.instructors" class="form-check-input m-2" type="checkbox" id="idCInstructors" checked>
+                        <label class="form-check-label m-1" for="idCInstructors"> Instructors</label>
                         <br>
-                        <input v-model="showUsers.boatOwners" class="form-check-input" type="checkbox" id="idCBoat" checked>
-                        <label class="form-check-label" for="idCBoat"> Boat Owners</label>
+                        <input v-model="showUsers.boatOwners" class="form-check-input m-2" type="checkbox" id="idCBoat" checked>
+                        <label class="form-check-label m-1" for="idCBoat"> Boat Owners</label>
                         <br>
-                        <input v-model="showUsers.cottageOwners" class="form-check-input" type="checkbox" id="idCCottage" checked>
-                        <label class="form-check-label" for="idCCottage"> Cottage Owners</label>
+                        <input v-model="showUsers.cottageOwners" class="form-check-input m-2" type="checkbox" id="idCCottage" checked>
+                        <label class="form-check-label m-1" for="idCCottage"> Cottage Owners</label>
                         <br>
-                        <input v-model="showUsers.client" class="form-check-input" type="checkbox" id="idClient" checked>
-                        <label class="form-check-label" for="idClient"> Client</label>
+                        <input v-model="showUsers.client" class="form-check-input m-2" type="checkbox" id="idClient" checked>
+                        <label class="form-check-label m-1" for="idClient"> Client</label>
                         
    
                     </div>

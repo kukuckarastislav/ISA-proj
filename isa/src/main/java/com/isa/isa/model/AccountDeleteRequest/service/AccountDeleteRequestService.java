@@ -1,5 +1,6 @@
 package com.isa.isa.model.AccountDeleteRequest.service;
 
+import com.isa.isa.DTO.AdminDeleteEntityDTO;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestDetailDTO;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AccountDeleteRequestFromFrontDTO;
 import com.isa.isa.model.AccountDeleteRequest.DTO.AdminResponseToAccDelReqDTO;
@@ -8,6 +9,7 @@ import com.isa.isa.model.AccountDeleteRequest.DTO.AdmninDeleteUserDTO;
 import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
 import com.isa.isa.model.AccountDeleteRequest.repository.AccountDeleteRequestRepository;
 import com.isa.isa.model.AccountDeleteRequest.enums.DeleteRequestStatus;
+import com.isa.isa.model.enums.IsaEntityType;
 import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.repository.*;
 import com.isa.isa.security.model.User;
@@ -38,6 +40,15 @@ public class AccountDeleteRequestService {
 
 	@Autowired
 	private BoatOwnerRepository boatOwnerRepository;
+
+	@Autowired
+	private AdventureRepository adventureRepository;
+
+	@Autowired
+	private CottageRepository cottageRepository;
+
+	@Autowired
+	private BoatRepository boatRepository;
 	
 	public AccountDeleteRequest save(AccountDeleteRequest request) {
 		return accountDeleteRequestRepository.saveAndFlush(request);
@@ -129,6 +140,7 @@ public class AccountDeleteRequestService {
 			User user = userRepository.findByUsername(instructor.getEmail());
 			user.setEnabled(false);
 			userRepository.saveAndFlush(user);
+			deleteAllOwnerEntity(instructor);
 		}else if(userTypeISA == UserTypeISA.COTTAGE_OWNER){
 			CottageOwner cottageOwner = cottageOwnerRepository.getByEmail(username);
 			if(cottageOwner == null) return false;
@@ -137,6 +149,7 @@ public class AccountDeleteRequestService {
 			User user = userRepository.findByUsername(cottageOwner.getEmail());
 			user.setEnabled(false);
 			userRepository.saveAndFlush(user);
+			deleteAllOwnerEntity(cottageOwner);
 		}else if(userTypeISA == UserTypeISA.BOAT_OWNER){
 			BoatOwner boatOwner = boatOwnerRepository.getByEmail(username);
 			if(boatOwner == null) return false;
@@ -145,6 +158,7 @@ public class AccountDeleteRequestService {
 			User user = userRepository.findByUsername(boatOwner.getEmail());
 			user.setEnabled(false);
 			userRepository.saveAndFlush(user);
+			deleteAllOwnerEntity(boatOwner);
 		}else if(userTypeISA == UserTypeISA.CLIENT){
 			Client client = clientRepository.findByEmail(username);
 			if(client == null) return false;
@@ -158,7 +172,49 @@ public class AccountDeleteRequestService {
 		return true;
 	}
 
+	public void deleteAllOwnerEntity(Instructor instructor){
+		for(Adventure adventure : adventureRepository.getByInstructorId(instructor.getId())){
+			deleteEntity(IsaEntityType.ADVENTURE, adventure.getId());
+		}
+	}
+
+	private void deleteAllOwnerEntity(BoatOwner boatOwner) {
+		for(Boat boat : boatRepository.getByOwnerId(boatOwner.getId())){
+			deleteEntity(IsaEntityType.BOAT, boat.getId());
+		}
+	}
+
+	private void deleteAllOwnerEntity(CottageOwner cottageOwner) {
+		for(Cottage cottage : cottageRepository.getByOwnerId(cottageOwner.getId())){
+			deleteEntity(IsaEntityType.COTTAGE, cottage.getId());
+		}
+	}
+
 	public boolean adminDeleteUser(AdmninDeleteUserDTO admninDeleteUserDTO, String adminUsername) {
 		return deleteUser(admninDeleteUserDTO.getUsername(), admninDeleteUserDTO.getUserTypeISA());
+	}
+
+	public Boolean deleteEntity(IsaEntityType isaEntityType, int idEntity) {
+		if(isaEntityType == IsaEntityType.ADVENTURE){
+			Optional<Adventure> adventureOptional = adventureRepository.findById(idEntity);
+			if(adventureOptional.isEmpty()) return false;
+			Adventure adventure = adventureOptional.get();
+			adventure.setDeleted(true);
+			adventureRepository.saveAndFlush(adventure);
+		}else if(isaEntityType == IsaEntityType.BOAT){
+			Optional<Boat> boatOptional = boatRepository.findById(idEntity);
+			if(boatOptional.isEmpty()) return false;
+			Boat boat = boatOptional.get();
+			boat.setDeleted(true);
+			boatRepository.saveAndFlush(boat);
+		}else if(isaEntityType == IsaEntityType.COTTAGE){
+			Optional<Cottage> cottageOptional = cottageRepository.findById(idEntity);
+			if(cottageOptional.isEmpty()) return false;
+			Cottage cottage = cottageOptional.get();
+			cottage.setDeleted(true);
+			cottageRepository.saveAndFlush(cottage);
+		}
+
+		return true;
 	}
 }
