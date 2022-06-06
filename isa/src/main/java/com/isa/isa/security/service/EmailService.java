@@ -1,6 +1,7 @@
 package com.isa.isa.security.service;
 
 import com.isa.isa.DTO.UserApproveDTO;
+import com.isa.isa.model.AccountDeleteRequest.model.AccountDeleteRequest;
 import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Boat;
 import com.isa.isa.model.Client;
@@ -63,4 +64,6 @@ public interface EmailService {
     void sendNewBoatActionNotification(Client client, BoatFastReservation boatFastReservation) throws MailException, InterruptedException;
 
     void sendAgainReservationConfirmation(Client client, String entityName, IsaEntityType entityType, String providerEmail, LocalDateTime startTime, LocalDateTime endTime);
+
+    void sendNotificaitionDeleteAccRespo(AccountDeleteRequest accountDeleteRequest);
 }

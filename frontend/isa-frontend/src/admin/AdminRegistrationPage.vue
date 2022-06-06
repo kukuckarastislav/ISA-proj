@@ -35,10 +35,6 @@
               </div>
             </div>
 
-            <br>
-            <div class="mapaTODO">OVDE CE BITI MAPA</div>
-            <br>
-
             <br>   
             <label for="exampleInputPassword1" class="form-label">Password</label>
             <input type="password" v-model="registration.password" class="form-control" id="exampleInputPassword1">

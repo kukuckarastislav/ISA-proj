@@ -14,6 +14,7 @@ import com.isa.isa.model.enums.UserTypeISA;
 import com.isa.isa.repository.*;
 import com.isa.isa.security.model.User;
 import com.isa.isa.security.repository.UserRepository;
+import com.isa.isa.security.service.EmailService;
 import com.isa.isa.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PessimisticLockingFailureException;
@@ -107,7 +108,9 @@ public class AccountDeleteRequestService {
 		return null;
 	}
 
-	//TODO transakcija
+	@Autowired
+	private EmailService emailService;
+
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean setAdminRespons(AdminResponseToAccDelReqDTO adminResponseToAccDelReqDTO, String adminEmail) {
 		AccountDeleteRequest accountDeleteRequest = null;
@@ -124,7 +127,7 @@ public class AccountDeleteRequestService {
 						deleteUser(accountDeleteRequest.getUsername(), accountDeleteRequest.getUserTypeISA());
 					}
 					System.out.println("Admin response successfully");
-
+					emailService.sendNotificaitionDeleteAccRespo(accountDeleteRequest);
 					return true;
 				}else{
 					System.out.println("Error: status is invalid");
