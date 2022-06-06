@@ -21,7 +21,10 @@ import com.isa.isa.repository.ClientRepository;
 import com.isa.isa.repository.CottageRepository;
 import com.isa.isa.security.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,24 +60,30 @@ public class ComplaintService {
         return complaintAdminViewDTOS;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean postAdminComplaintResponse(ComplaintAdminResponseDTO complaintAdminResponseDTO) {
-        Optional<Complaint> optComplaint = complaintRepository.findById(complaintAdminResponseDTO.getId());
-        if(optComplaint.isPresent()){
-            Complaint complaint = optComplaint.get();
-            complaint.setAdminResponse(complaintAdminResponseDTO.getResponse());
-            complaint.setAdminEmail(complaintAdminResponseDTO.getAdminEmail());
-            complaint.setAdminResponsDate(LocalDateTime.now());
-            complaint.setStatusOfComplaint(StatusOfComplaint.ANSWERED);
-            complaintRepository.saveAndFlush(complaint);
-            //send email
-            String offerName = getServiceNameByComplaint(complaint);
-            emailService.sendAdminComplaintResponseToClient(complaint, offerName);
-            emailService.sendAdminComplaintResponseToProvider(complaint, offerName);
-            return true;
-        }else{
-            System.out.println("Error id of Complaint is invalid");
-            return false;
+        //Optional<Complaint> optComplaint = complaintRepository.findById(complaintAdminResponseDTO.getId());
+        try {
+            Complaint complaint =  complaintRepository.getComplaintById(complaintAdminResponseDTO.getId());
+            if(complaint!=null){
+                complaint.setAdminResponse(complaintAdminResponseDTO.getResponse());
+                complaint.setAdminEmail(complaintAdminResponseDTO.getAdminEmail());
+                complaint.setAdminResponsDate(LocalDateTime.now());
+                complaint.setStatusOfComplaint(StatusOfComplaint.ANSWERED);
+                complaintRepository.saveAndFlush(complaint);
+                //send email
+                String offerName = getServiceNameByComplaint(complaint);
+                emailService.sendAdminComplaintResponseToClient(complaint, offerName);
+                emailService.sendAdminComplaintResponseToProvider(complaint, offerName);
+                return true;
+            }else{
+                System.out.println("Error id of Complaint is invalid");
+                return false;
+            }
+        }catch (PessimisticLockingFailureException e){
+            System.out.println("error PessimisticLockingFailureException");
         }
+        return false;
     }
 
     private String getServiceNameByComplaint(Complaint complaint){
