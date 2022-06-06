@@ -371,7 +371,9 @@ export default {
      axios
           .post('http://localhost:8180/api/client/reserveBoatAction',ac)
           .then(response => {
-            if(response.data) alert('Uspesno ste rezervisali brod.')
+            if(response.data) {alert('Uspesno ste rezervisali brod.')
+                window.location.reload()
+            }
             else alert('Trenutno vam je onemoguceno da pravite rezervacije zbog previlikog broja penala.')
           }).catch(err => {
               alert('Već ste otkazali ovu akciju.')
