@@ -56,17 +56,17 @@ public class InstructorReservationService {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public InstructorReservation reserveAdventureByClient(ClientAdventureReservationDTO dto, Client client) {
-		Adventure adventure = null;
+
+		Instructor instructor = null;
 		try {
-			adventure = adventureRepository.getAdventureById(dto.getAdventure().getId());
+			instructor = instructorRepository.getByUsername(dto.getAdventure().getInstructor().getEmail());
+			if(instructor == null) return null;
 		}catch (PessimisticLockingFailureException e){
 			System.out.println("error PessimisticLockingFailureException");
 			return null;
 		}
-		if(adventure == null) return null;
 
     	if(hasClientAlreadyCancelledAdventure(dto, client)) return null;
-		Instructor instructor = instructorRepository.getByEmail(dto.getAdventure().getInstructor().getEmail());
     	InstructorReservation instructorReservation = new InstructorReservation(client,dto.getAdventure(),dto.getStartTime(),dto.getEndTime(),dto.getAdventure().getInstructor().getEmail());
 		instructorReservation.setAdditionalServices(dto.getAdditionalServices());
 		instructorReservation.setStatusOfReservation(StatusOfReservation.ACTIVE);

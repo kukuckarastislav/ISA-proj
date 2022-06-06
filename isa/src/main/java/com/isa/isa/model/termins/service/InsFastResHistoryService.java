@@ -63,16 +63,16 @@ public class InsFastResHistoryService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean makeReservation(Client client, InstructorFastReservation instructorFastReservation) {
 		if(hasClientAlreadyCancelled(client,instructorFastReservation)) return false;
-		Adventure adventure = null;
+
+		Instructor instructor = null;
 		try {
-			adventure = adventureRepository.getAdventureById(instructorFastReservation.getAdventure().getId());
-			if (adventure == null) return false;
+			instructor = instructorRepository.getByUsername(instructorFastReservation.getInstructorUsername());
+			if(instructor == null) return false;
 		}catch (PessimisticLockingFailureException e){
 			System.out.println("error PessimisticLockingFailureException");
 			return false;
 		}
 
-		Instructor instructor = instructorRepository.getByEmail(instructorFastReservation.getInstructorUsername());
 		InsFastResHistory insFastResHistory = new InsFastResHistory(client,instructorFastReservation,StatusOfFastReservation.TAKEN);
 		insFastResHistory.setPrice(loyaltyService.applyDiscount(client, instructorFastReservation.getPrice()));
 		insFastResHistory.setIncome(loyaltyService.calculateIncome(instructor, insFastResHistory.getPrice()));
