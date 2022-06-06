@@ -1,5 +1,6 @@
 package com.isa.isa.model.termins.service;
 
+import com.isa.isa.model.Adventure;
 import com.isa.isa.model.Client;
 import com.isa.isa.model.EntityImage;
 import com.isa.isa.model.Instructor;
@@ -16,10 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.isa.isa.repository.AdventureRepository;
 import com.isa.isa.repository.ClientRepository;
 import com.isa.isa.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InsFastResHistoryService {
@@ -52,11 +57,23 @@ public class InsFastResHistoryService {
 	InstructorRepository instructorRepository;
 	@Autowired
 	ClientRepository clientRepository;
-    
+	@Autowired
+	AdventureRepository adventureRepository;
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean makeReservation(Client client, InstructorFastReservation instructorFastReservation) {
-    	if(hasClientAlreadyCancelled(client,instructorFastReservation)) return false;
+		if(hasClientAlreadyCancelled(client,instructorFastReservation)) return false;
+		Adventure adventure = null;
+		try {
+			adventure = adventureRepository.getAdventureById(instructorFastReservation.getAdventure().getId());
+			if (adventure == null) return false;
+		}catch (PessimisticLockingFailureException e){
+			System.out.println("error PessimisticLockingFailureException");
+			return false;
+		}
+
 		Instructor instructor = instructorRepository.getByEmail(instructorFastReservation.getInstructorUsername());
-    	InsFastResHistory insFastResHistory = new InsFastResHistory(client,instructorFastReservation,StatusOfFastReservation.TAKEN);
+		InsFastResHistory insFastResHistory = new InsFastResHistory(client,instructorFastReservation,StatusOfFastReservation.TAKEN);
 		insFastResHistory.setPrice(loyaltyService.applyDiscount(client, instructorFastReservation.getPrice()));
 		insFastResHistory.setIncome(loyaltyService.calculateIncome(instructor, insFastResHistory.getPrice()));
 		loyaltyService.applyReward(client);

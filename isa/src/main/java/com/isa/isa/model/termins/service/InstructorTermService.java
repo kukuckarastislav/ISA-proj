@@ -454,53 +454,57 @@ public Boolean isInstructorFree(InstructorTermsDTO dto) {
     @Autowired
     private EmailService emailService;
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public String createReservationAgain(String username, ReservationAgainDTO reservationAgainDTO) {
         Instructor instructor = instructorRepository.getByEmail(username);
         if(instructor == null) return "error instructor null";
 
-        Optional<Adventure> adventureOptional = adventureRepository.findById(reservationAgainDTO.getIdEntity());
-        if(adventureOptional.isEmpty()) return "error adventure do not exist";
-        Adventure adventure = adventureOptional.get();
+        try{
+            Adventure adventure = adventureRepository.getAdventureById(reservationAgainDTO.getIdEntity());
+            if(adventure == null) return "error: adventure does not exists";
 
-        Client client = clientRepository.findByEmail(reservationAgainDTO.getClientEmail());
-        if(client == null) return "error client not found";
+            Client client = clientRepository.findByEmail(reservationAgainDTO.getClientEmail());
+            if(client == null) return "error client not found";
 
-        if(reservationAgainDTO.isFast()){
-            Optional<InstructorFastReservation> instructorFastReservationOptional = instructorFastReservationRepository.findById(reservationAgainDTO.getIdReservation());
-            if(instructorFastReservationOptional.isEmpty()) return "error reservation do not exist";
-            InstructorFastReservation instructorFastReservation = instructorFastReservationOptional.get();
-            if(!instructorFastReservation.inThisMoment()) return "error not in period of reservation";
-        }else{
-            Optional<InstructorReservation> instructorReservationOptional = instructorReservationRepository.findById(reservationAgainDTO.getIdReservation());
-            if(instructorReservationOptional.isEmpty()) return "error reservation do not exist";
-            InstructorReservation instructorReservation = instructorReservationOptional.get();
-            if(!instructorReservation.inThisMoment()) return "error not in period of reservation";
+            if(reservationAgainDTO.isFast()){
+                Optional<InstructorFastReservation> instructorFastReservationOptional = instructorFastReservationRepository.findById(reservationAgainDTO.getIdReservation());
+                if(instructorFastReservationOptional.isEmpty()) return "error reservation do not exist";
+                InstructorFastReservation instructorFastReservation = instructorFastReservationOptional.get();
+                if(!instructorFastReservation.inThisMoment()) return "error not in period of reservation";
+            }else{
+                Optional<InstructorReservation> instructorReservationOptional = instructorReservationRepository.findById(reservationAgainDTO.getIdReservation());
+                if(instructorReservationOptional.isEmpty()) return "error reservation do not exist";
+                InstructorReservation instructorReservation = instructorReservationOptional.get();
+                if(!instructorReservation.inThisMoment()) return "error not in period of reservation";
+            }
+
+            if(!isReservationPossible(reservationAgainDTO.getStartTime(), reservationAgainDTO.getEndTime(), instructor)) return "error overlap with instructor terms";
+
+            InstructorReservation newInstructorReservation = new InstructorReservation();
+            newInstructorReservation.setClient(client);
+            newInstructorReservation.setAdventure(adventure);
+            newInstructorReservation.setAdditionalServices(new HashSet<>(reservationAgainDTO.getItemPrices()));
+            newInstructorReservation.setStartTime(reservationAgainDTO.getStartTime());
+            newInstructorReservation.setEndTime(reservationAgainDTO.getEndTime());
+            newInstructorReservation.setStatusOfReservation(StatusOfReservation.ACTIVE);
+            newInstructorReservation.setInstructorUsername(instructor.getEmail());
+            newInstructorReservation.setPrice(loyaltyService.applyDiscount(client, reservationAgainDTO.getPrice()));
+            newInstructorReservation.setIncome(loyaltyService.calculateIncome(instructor, newInstructorReservation.getPrice()));
+            newInstructorReservation.setIsRevised(false);
+            newInstructorReservation.setIsComplainedOf(false);
+            loyaltyService.applyReward(client);
+            loyaltyService.applyReward(instructor);
+            clientRepository.saveAndFlush(client);
+            instructorRepository.saveAndFlush(instructor);
+            instructorReservationRepository.saveAndFlush(newInstructorReservation);
+
+
+            emailService.sendAgainReservationConfirmation(client, adventure.getName(), IsaEntityType.ADVENTURE, instructor.getEmail(),reservationAgainDTO.getStartTime(), reservationAgainDTO.getEndTime() );
+        }catch (PessimisticLockingFailureException e){
+            System.out.println("error PessimisticLockingFailureException");
+            return "error PessimisticLockingFailureException";
         }
 
-        if(!isReservationPossible(reservationAgainDTO.getStartTime(), reservationAgainDTO.getEndTime(), instructor)) return "error overlap with instructor terms";
-
-        InstructorReservation newInstructorReservation = new InstructorReservation();
-        newInstructorReservation.setClient(client);
-        newInstructorReservation.setAdventure(adventure);
-        newInstructorReservation.setAdditionalServices(new HashSet<>(reservationAgainDTO.getItemPrices()));
-        newInstructorReservation.setStartTime(reservationAgainDTO.getStartTime());
-        newInstructorReservation.setEndTime(reservationAgainDTO.getEndTime());
-        newInstructorReservation.setStatusOfReservation(StatusOfReservation.ACTIVE);
-        newInstructorReservation.setInstructorUsername(instructor.getEmail());
-        newInstructorReservation.setPrice(loyaltyService.applyDiscount(client, reservationAgainDTO.getPrice()));
-        newInstructorReservation.setIncome(loyaltyService.calculateIncome(instructor, newInstructorReservation.getPrice()));
-        newInstructorReservation.setIsRevised(false);
-        newInstructorReservation.setIsComplainedOf(false);
-        loyaltyService.applyReward(client);
-        loyaltyService.applyReward(instructor);
-        clientRepository.saveAndFlush(client);
-        instructorRepository.saveAndFlush(instructor);
-        instructorReservationRepository.saveAndFlush(newInstructorReservation);
-
-
-        emailService.sendAgainReservationConfirmation(client, adventure.getName(), IsaEntityType.ADVENTURE, instructor.getEmail(),reservationAgainDTO.getStartTime(), reservationAgainDTO.getEndTime() );
-
         return "successfully rebooked";
-
     }
 }
