@@ -62,7 +62,7 @@ public class Cottage {
 	private ReservationCancellationConditions reservationCancellationConditions;
 
 	@Column(columnDefinition = "boolean default false")
-	private Boolean deleted;
+	private Boolean deleted = false;
 
 	public void callculateGrade() {
 		double sum = 0;

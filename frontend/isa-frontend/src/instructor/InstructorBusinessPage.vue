@@ -182,8 +182,8 @@ export default {
                 this.sumary.week += bs.numOfResInWeek
                 this.sumary.income += bs.income
             }
-            if (this.businessData.businessStatistics > 0) {
-                this.sumary.grade = this.sumary.grade / this.businessData.businessStatistics
+            if (this.businessData.businessStatistics.length > 0) {
+                this.sumary.grade = this.sumary.grade / this.businessData.businessStatistics.length
             }
             console.log(this.businessData)
         });

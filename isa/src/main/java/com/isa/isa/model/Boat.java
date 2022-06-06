@@ -66,7 +66,7 @@ public class Boat {
 	private Set<Complaint> complaints = new HashSet<Complaint>();
 
 	@Column(columnDefinition = "boolean default false")
-	private Boolean deleted;
+	private Boolean deleted = false;
 	
 	public Boat() {
 		

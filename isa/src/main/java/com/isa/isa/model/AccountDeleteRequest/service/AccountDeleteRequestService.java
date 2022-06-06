@@ -16,7 +16,10 @@ import com.isa.isa.security.model.User;
 import com.isa.isa.security.repository.UserRepository;
 import com.isa.isa.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -104,26 +107,33 @@ public class AccountDeleteRequestService {
 		return null;
 	}
 
+	//TODO transakcija
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean setAdminRespons(AdminResponseToAccDelReqDTO adminResponseToAccDelReqDTO, String adminEmail) {
-		Optional<AccountDeleteRequest> accountDeleteRequestOptional = accountDeleteRequestRepository.findById(adminResponseToAccDelReqDTO.getIdRequest());
-		AccountDeleteRequest accountDeleteRequest = accountDeleteRequestOptional.get();
-		if(accountDeleteRequest != null || accountDeleteRequest.getId() == 0){
-			if(adminResponseToAccDelReqDTO.getDeleteRequestStatus() != DeleteRequestStatus.PENDING){
-				accountDeleteRequest.setAdminUsername(adminEmail);
-				accountDeleteRequest.setAdminResponse(adminResponseToAccDelReqDTO.getAdminResponse());
-				accountDeleteRequest.setDeleteRequestStatus(adminResponseToAccDelReqDTO.getDeleteRequestStatus());
-				accountDeleteRequest.setAdminResponsDate(LocalDateTime.now());
-				accountDeleteRequestRepository.save(accountDeleteRequest);
-				if(accountDeleteRequest.getDeleteRequestStatus() == DeleteRequestStatus.APPROVED){
-					deleteUser(accountDeleteRequest.getUsername(), accountDeleteRequest.getUserTypeISA());
+		AccountDeleteRequest accountDeleteRequest = null;
+		try {
+			accountDeleteRequest = accountDeleteRequestRepository.getDelReqById(adminResponseToAccDelReqDTO.getIdRequest());
+			if(accountDeleteRequest != null){
+				if(adminResponseToAccDelReqDTO.getDeleteRequestStatus() != DeleteRequestStatus.PENDING){
+					accountDeleteRequest.setAdminUsername(adminEmail);
+					accountDeleteRequest.setAdminResponse(adminResponseToAccDelReqDTO.getAdminResponse());
+					accountDeleteRequest.setDeleteRequestStatus(adminResponseToAccDelReqDTO.getDeleteRequestStatus());
+					accountDeleteRequest.setAdminResponsDate(LocalDateTime.now());
+					accountDeleteRequestRepository.save(accountDeleteRequest);
+					if(accountDeleteRequest.getDeleteRequestStatus() == DeleteRequestStatus.APPROVED){
+						deleteUser(accountDeleteRequest.getUsername(), accountDeleteRequest.getUserTypeISA());
+					}
+					System.out.println("Admin response successfully");
+
+					return true;
+				}else{
+					System.out.println("Error: status is invalid");
 				}
-				System.out.println("Admin response successfully");
-				return true;
 			}else{
-				System.out.println("Error: status is invalid");
+				System.out.println("Error: id: accountDeleteRequest is not found");
 			}
-		}else{
-			System.out.println("Error: id: accountDeleteRequest is not found");
+		}catch (PessimisticLockingFailureException e){
+			System.out.println("error PessimisticLockingFailureException");
 		}
 		return false;
     }

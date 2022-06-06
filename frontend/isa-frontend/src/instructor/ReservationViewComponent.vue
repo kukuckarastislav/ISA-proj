@@ -459,7 +459,7 @@ export default {
           "itemPrices" : this.repeatReservation.itemPrices,
           "price": this.repeatReservation.price,
           "fast": true,
-          "idReservation":0
+          "idReservation":this.reservation.idReservation
       }
 
 
