@@ -9,6 +9,12 @@
                 <div class="col">
                     <a href="/boatOwnerBoats" class="nav-link">My boats</a>
                 </div>
+                <div class="col">
+                    <a href="/boatOwnerReservations" class="nav-link">Reservations</a>
+                </div>
+                <div class="col">
+                    <a href="/boatOwnerReport" class="nav-link">Reports</a>
+                </div>
             </div>
         </div>
     </div>

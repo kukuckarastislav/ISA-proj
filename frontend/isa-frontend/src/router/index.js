@@ -33,7 +33,8 @@ import InstructorCalendarPage from '../instructor/CalendarPage.vue'
 import Reservation from '../instructor/Reservations.vue'
 import BoatUpdate from '../boat_owner/BoatUpdate'
 import CottageUpdate from '../cottage_owner/CottageUpdate'
-
+import BoatReservations from '../boat_owner/BoatReservations'
+import BoatBusinessReport from '../boat_owner/BoatBusinessReport'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -53,6 +54,8 @@ const routes = [
   { path: '/cottageOwnerCottages', name: 'Cottages', component: Cottages },
   { path: '/cottageOwnerCottage/:cottagename?', name: 'CottageView', component: CottageView },
   { path: '/boatOwnerBoats', name: 'Boats', component: Boats },
+  { path: '/boatOwnerReservations', name: 'BoatReservations', component: BoatReservations },
+  { path: '/boatOwnerReport', name: 'BoatBusinessReport', component: BoatBusinessReport },
   { path: '/boatOwnerBoat/:boatname?', name: 'BoatView', component: BoatView },
   { path: '/editMyBoat/:boatname?', name: 'BoatUpdate', component: BoatUpdate },
   { path: '/editMyCottage/:cottagename?', name: 'CottageUpdate', component: CottageUpdate },

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.isa.isa.DTO.AddNewBoatDTO;
 import com.isa.isa.DTO.BoatDTO;
+import com.isa.isa.DTO.CalculateBoatReservationsDTO;
 import com.isa.isa.DTO.EntityImageDTO;
 import com.isa.isa.DTO.UpdateBoatDTO;
 import com.isa.isa.model.Boat;
@@ -75,7 +76,12 @@ public class BoatService {
         return boatDTOByOwner;
     }
 	
-	public BoatDTO getBoatDTOByOwnerAndName(String username, String boatname) {
+	public BoatDTO getCalculationsForBoatReservations(String boatName) {
+        
+		return null;
+    }
+	
+	public BoatDTO calculateBoatReservations(String username, String boatname) {
         Boat boat = getBoatByOwnerAndBoatName(username, boatname);
         BoatOwner owner = boatOwnerRepository.getByEmail(username);
         BoatDTO boatDto = new BoatDTO(boat);

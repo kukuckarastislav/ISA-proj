@@ -78,7 +78,7 @@ public class BoatController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 	
-	
+	@PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
     @PostMapping("/updateboat")
     public ResponseEntity<BoatDTO> updateBoat(@RequestBody UpdateBoatDTO updateBoatDTO, Principal user) {
         System.out.println("Updating boat");
@@ -86,6 +86,13 @@ public class BoatController {
         if(boatDTO == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<BoatDTO>(boatDTO, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
+    @GetMapping("/boats/calculate/{boatname}")
+    public ResponseEntity<BoatDTO> getCalculationsForBoat(Principal user, @PathVariable String boatname) {
+		BoatDTO boatDto = boatService.getCalculationsForBoatReservations(boatname);
+        return new ResponseEntity<BoatDTO>(boatDto, HttpStatus.OK);
     }
 
 }
