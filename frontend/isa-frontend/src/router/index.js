@@ -42,6 +42,8 @@ import BoatOwnerCalendarPage from '../boat_owner/BoatOwnerCalendar.vue'
 import CottageOwnerCalendar from '../cottage_owner/CottageOwnerCalendar.vue'
 import UpdateAdventure from '../instructor/UpdateAdventure.vue'
 import InstructorBusinessPage from '../instructor/InstructorBusinessPage.vue'
+import BoatBusinessPage from '../boat_owner/BoatBusinessPage.vue'
+import CottageBusinessPage from '../cottage_owner/CottageBusinessPage.vue'
 
 
 const routes = [
@@ -88,6 +90,8 @@ const routes = [
   { path: '/boatowner/calendar', name: 'BoatOwnerCalendarPage', component: BoatOwnerCalendarPage },
   { path: '/cottageowner/calendar', name: 'CottageOwnerCalendar', component: CottageOwnerCalendar },
   { path: '/instructor/business', name: 'InstructorBusinessPage', component: InstructorBusinessPage},
+  { path: '/boatowner/business', name: 'BoatBusinessPage', component: BoatBusinessPage},
+  { path: '/cottageowner/business', name: 'CottageBusinessPage', component: CottageBusinessPage},
 ]
 
 const router = createRouter({

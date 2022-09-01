@@ -12,6 +12,9 @@
                  <div class="col">
                     <a href="/boatowner/calendar" class="nav-link">Calendar</a>
                 </div>
+                <div class="col">
+                    <a href="/boatowner/business" class="nav-link">Business</a>
+                </div>
                  <div class="col">
                     <a href="/boatOwnerProfile" class="nav-link">Profile</a>
                 </div>

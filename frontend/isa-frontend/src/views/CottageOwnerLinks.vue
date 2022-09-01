@@ -12,6 +12,9 @@
                 <div class="col">
                     <a href="/cottageowner/calendar" class="nav-link">Calendar</a>
                 </div>
+                <div class="col">
+                    <a href="/cottageowner/business" class="nav-link">Business</a>
+                </div>
                  <div class="col">
                     <a href="/cottageOwnerProfile" class="nav-link">Profile</a>
                 </div>
