@@ -31,6 +31,8 @@ import CustomerPenalties from '../views/CustomerPenalties.vue'
 import UsersPage from '../admin/UsersPage.vue'
 import InstructorCalendarPage from '../instructor/CalendarPage.vue'
 import Reservation from '../instructor/Reservations.vue'
+import BoatReservation from '../boat_owner/BoatReservations'
+import CottageReservation from '../cottage_owner/CottageReservations'
 import BoatUpdate from '../boat_owner/BoatUpdate'
 import CottageUpdate from '../cottage_owner/CottageUpdate'
 import ReportPage from '../admin/ReportPage.vue'
@@ -78,6 +80,8 @@ const routes = [
   { path: '/admin/users', name: 'UsersPage', component: UsersPage },
   { path: '/instructor/calendar', name: 'InstructorCalendarPage', component: InstructorCalendarPage },
   { path: '/instructor/reservation', name: 'Reservation', component: Reservation },
+  { path: '/boatowner/reservation', name: 'BoatReservation', component: BoatReservation },
+  { path: '/cottageowner/reservation', name: 'CottageReservation', component: CottageReservation },
   { path: '/admin/report', name: 'ReportPage', component: ReportPage },
   { path: '/admin/entity', name: 'EntityPage', component: EntityPage },
   { path: '/admin/registration', name: 'AdminRegistrationPage', component: AdminRegistrationPage },
