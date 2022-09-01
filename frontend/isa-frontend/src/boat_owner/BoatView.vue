@@ -203,12 +203,20 @@ export default {
             
           ]
         },
-        createNewTerm:{
+        fastReservationForm: {
+          visible: false,
           date: [],
-          formVisible: false,
-          type: 'AVAILABILE',
-          msg: '',
-          valid: true,
+          itemPrices: [],
+          address: {
+                country: '',
+                city: '',
+                street: '',
+                number: '',
+                latitude: 0,
+                longitude: 0
+          },
+          maxNumberOfPeople: 0,
+          price: 0,
         },
 
     }
@@ -299,6 +307,9 @@ export default {
 
         });
     },
+    setImg: function(image){
+      return 'http://localhost:8180/api/entityImage/'+image.path;
+    },
     eventTransform: function(e){
         e.display = 'auto'
         if(e.isa_termType === 'TERM'){
@@ -332,6 +343,96 @@ export default {
         e.editable = false
         e.overlap = false
         return e;
+    },
+    eventClickCalendar: function(info){
+        let e = info.event._def.extendedProps
+        if(e.isa_termType != 'TERM'){
+          this.loadDataSelectedReservation(e)
+        }
+    },
+    loadDataSelectedReservation: function(event){
+      //alert('ID ' + event.isa_idTerm)
+      this.selectedReservation = null;
+      this.showSelectedReservation = false; 
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+      axios.get('http://localhost:8180/api/boat-term/reservation/'+event.isa_termType+'/'+event.isa_idTerm).then(
+        (resp) => {
+          console.log(resp.data)
+          this.selectedReservation = resp.data;
+          this.showSelectedReservation = true; 
+        }, 
+        (err)=>{
+          alert(err)
+      });
+    },
+    closeSelectedReservation: function(){
+       this.selectedReservation = null;
+       this.showSelectedReservation = false; 
+    },
+    openFastReservationForm: function(){
+      this.fastReservationForm.visible = true;
+      this.fastReservationForm.address = this.boat.address
+      this.fastReservationForm.maxNumberOfPeople = this.boat.maxNumberOfPeople
+      this.fastReservationForm.price = this.boat.price.price
+      this.fastReservationForm.itemPrices = []
+    },
+    addItemPriceFastReservation: function(itPrice){
+       for(let i = 0; i < this.fastReservationForm.itemPrices.length; i++) {
+            if(this.fastReservationForm.itemPrices[i].id == itPrice.id){
+                //remove
+                this.fastReservationForm.itemPrices.splice(i, 1);
+                console.log("removed element from itemPrices with id="+itPrice.id);
+                return;
+            }
+        }
+        this.fastReservationForm.itemPrices.push(itPrice)
+    },
+    sendNewFastReservation: function(){
+
+      const startTimeForBackend = new Date(Date.UTC(this.fastReservationForm.date[0].getFullYear(), this.fastReservationForm.date[0].getMonth(), this.fastReservationForm.date[0].getDate(), this.fastReservationForm.date[0].getHours(), this.fastReservationForm.date[0].getMinutes()))
+      const endTimeForBackend = new Date(Date.UTC(this.fastReservationForm.date[1].getFullYear(), this.fastReservationForm.date[1].getMonth(), this.fastReservationForm.date[1].getDate(), this.fastReservationForm.date[1].getHours(), this.fastReservationForm.date[1].getMinutes()))
+
+
+      let newFastReservationDTO = {
+          "idAdventure" : this.boat.id,
+          "startTime" : startTimeForBackend,
+          "endTime" : endTimeForBackend,
+          "maxNumberOfPeople" : this.fastReservationForm.maxNumberOfPeople,
+          "address" : this.fastReservationForm.address,
+          "itemPrices" : this.fastReservationForm.itemPrices,
+          "price" : this.fastReservationForm.price
+      }
+
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+      axios.post('http://localhost:8180/api/boat-term/fast-reservation', newFastReservationDTO).then(
+        (resp) => {
+          console.log(resp.data)
+          if(resp.data.startsWith("error")){
+            alert(resp.data)
+          }else{
+            this.openFastReservationForm();
+            this.fastReservationForm.visible = false;
+            this.loadData(false);
+          }
+        }, 
+        (err)=>{
+          alert(err)
+      });
+    },
+    UpdateAdventurePage: function () {
+        this.$router.push({ path: '/boat-update/'+encodeURIComponent(this.boat.name)});
+    },
+    convertDate: function(date){
+        return new Date(date).toLocaleString();
+    },
+    showRevisions: function (x) {
+      if (x) {
+        this.revisions = this.boat.instructorRevisions
+      } else {
+        this.revisions = this.boat.adventureRevisions
+      }
     },
     showCreateNewTermForm: function(){
       this.createNewTerm.msg = ''

@@ -16,6 +16,9 @@
                             <option value="MaxNumOfPeopleASC">Max number of people Ascend</option>
                             <option value="MaxNumOfPeopleDES">Max number of people Descend</option>
                         </select>
+                        <br>
+                        <input v-model="filterByName" type="text" class="form-control" />
+                        
                         
                         <br> <br>
                         <a href="/newcottage" class="btn btn-primary" style="width: 100%;">Add New Cottage</a>
@@ -28,26 +31,30 @@
             <div class="col-sm-9">
                 <div v-for="cottage in cottages" :key="cottage">
                     
-                        <div class="card" v-on:click="moreDetails(cottage)">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-5">
-                                        <img class="img-fluid" v-bind:src="getImg(cottage)">
+                        <div v-if="showIf(cottage)" class="card">
+                            
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-5" v-on:click="moreDetails(cottage)">
+                                            <img class="img-fluid" v-bind:src="getImg(cottage)">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <h5 class="card-title text-start">{{cottage.name}}</h5> 
+                                            <br>
+                                            <h6 class="card-title text-start">Country: {{cottage.address.country}}</h6>
+                                            <h6 class="card-title text-start">City: {{cottage.address.city}}</h6>
+                                            <h6 class="card-title text-start">Street: {{cottage.address.street}} {{cottage.address.number}}</h6>
+                                            <br>
+                                            <h6 class="card-title text-start">Maximum number of people: {{cottage.maxNumberOfPeople}}</h6>
+                                            <h6 class="card-title text-start">description: {{cottage.description}}</h6>
+                                        </div>
+                                        <div class="col-2 text-end">
+                                            <button class="btn btn-danger" v-on:click="deleteClick(cottage)">Delete</button>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <h5 class="card-title text-start">{{cottage.name}}</h5> 
-                                        <br>
-                                        <h6 class="card-title text-start">Country: {{cottage.address.country}}</h6>
-                                        <h6 class="card-title text-start">City: {{cottage.address.city}}</h6>
-                                        <h6 class="card-title text-start">Street: {{cottage.address.street}} {{cottage.address.number}}</h6>
-                                        <br>
-                                        <h6 class="card-title text-start">Maximum number of people: {{cottage.maxNumberOfPeople}}</h6>
-                                        <h6 class="card-title text-start">description: {{cottage.description}}</h6>
-                                    </div>
-                                </div>
-                            </div>         
+                                </div>         
+                            
                         </div>
-                    
                     <br>
                 </div>
                  
@@ -119,6 +126,20 @@ export default {
 				this.cottages.sort((b, a) => (a.maxNumberOfPeople > b.maxNumberOfPeople) ? 1 : ((b.maxNumberOfPeople > a.maxNumberOfPeople) ? -1 : 0));
 			} 
 		},
+        showIf: function(cottage){
+        return cottage.name.toLowerCase().includes(this.filterByName.toLowerCase())
+    },
+    deleteClick: function (cottage) {
+        let confirmAction = confirm("Are you sure? Delete user " + cottage.name);
+        if (!confirmAction) {
+            return
+        }
+         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+         axios.delete('http://localhost:8180/api/cottage/'+cottage.id).then(resp => {
+            alert(resp.data)
+            this.loadData();
+        }, (err) => {alert("Error")});
+    },
   }
 }
 </script>

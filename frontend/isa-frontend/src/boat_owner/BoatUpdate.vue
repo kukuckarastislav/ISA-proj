@@ -79,7 +79,7 @@
                 
                 <div class="list-group text-start overflow-auto card m-2" style="height: 150px; width: 50%;">
                     <label v-for="additionalEq in allAdditionalEquipment" :key="additionalEq" class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="" v-on:click="clickAdditionalEq(additionalEq)">
+                        <input class="form-check-input me-1" type="checkbox" value="" v-model="additionalEq.selected" v-on:click="clickAdditionalEq(additionalEq)">
                         {{additionalEq.name}}
                     </label>
                 </div> <br>
@@ -127,7 +127,7 @@
                     <label v-for="itPrice in allItemPrices" :key="itPrice" class="list-group-item">
                         <div class="row">
                             <div class="col-sm-1">
-                                <input class="form-check-input me-1" type="checkbox" value="" v-on:click="clickItemPrice(itPrice)">
+                                <input v-model="itPrice.selected" class="form-check-input me-1" type="checkbox" value="" v-on:click="clickItemPrice(itPrice)"><!--<input class="form-check-input me-1" type="checkbox" value="" v-on:click="clickItemPrice(itPrice)">-->
                             </div>
                             <div class="col-sm-3">{{itPrice.name}}</div>
                             <div class="col-sm-6">{{itPrice.description}}</div>
@@ -149,7 +149,7 @@
                             <input v-model="newPriceItem.description" type="text" class="form-control"> <br>
                             <input v-model="newPriceItem.price" type="number" class="form-control" min=0> <br>
                             <button class="btn btn-danger m-2" v-on:click="cancelAddNewItemPrice()">Cancel</button>
-                            <button class="btn btn-primary m-2">Add</button>
+                            <button class="btn btn-primary m-2" v-on:click="addNewItemPrice()">Add</button><!--<button class="btn btn-primary m-2">Add</button>-->
                         </div>
                     </div>
                     <div v-else>
@@ -235,6 +235,7 @@ export default {
             },
             promotionalDescription: "",
             imagesForBackend: [],
+            imagesForBackendDelete: [],
             capacity: 0,
             behaviourRules: "",
             additionalServices: [],
@@ -262,6 +263,8 @@ export default {
         newLat : 0.0,
         imagesForFront: [],
         imagesForBackend: [],
+        imagesForBackendDelete: [],
+        imagesForBackendIDS: [],
         imageCount: 0,
         map: {}
     }
@@ -416,7 +419,15 @@ export default {
      
     },
     addNewAdditionalEq: function(){
-        // poslati na bekend novi add equipment
+        let newAdditiona = { "name": this.newAdditionalEq }
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.post('http://localhost:8180/api/additionalequipment', newAdditiona).then(resp => {
+                if (resp.data.name === newAdditiona.name) {
+                    this.allAdditionalEquipment.push(resp.data);
+                    this.newAdditionalEq = '';
+                }
+                console.log(resp.data);
+            });
     },
     clickItemPrice: function(itemPrice){
         for (var i = 0; i < this.boat.additionalServices.length; i++) {
@@ -437,32 +448,55 @@ export default {
         this.newPriceItem.description = "description";
         this.addNewItemPriceVisible = false;
     },
+    addNewItemPrice: function () {
+            let newItemPrice = {"name":this.newPriceItem.name, "description":this.newPriceItem.description, "price":this.newPriceItem.price}
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.post('http://localhost:8180/api/itemprice', newItemPrice).then(resp => {
+                if (resp.data.name === newItemPrice.name) {
+                    this.allItemPrices.push(resp.data);
+                    this.cancelAddNewItemPrice()
+                }
+                console.log(resp.data);
+            });
+    },
     onFileChange: function(e){
-        console.log('fajl select');
-        const file = e.target.files[0];
-        this.createBase64Image(file);
-        this.imageCount++;
-        this.imagesForFront.push({id: this.imageCount, name: ""+this.imageCount, path: URL.createObjectURL(file)});
-        console.log('Nice');
-        console.log(this.imagesForFront);
-    },
+            console.log('fajl select');
+            const file = e.target.files[0];
+            this.createBase64Image(file);
+            this.imageCount--;
+            this.imagesForFront.push({fromBackend: false, id: this.imageCount, name: ""+this.imageCount, path: URL.createObjectURL(file)});
+            this.imagesForBackendIDS.push(this.imageCount)
+            console.log('Nice');
+            console.log(this.imagesForFront);
+        },
     createBase64Image(file){
-        const reader= new FileReader();
-        reader.onload = (e) =>{
-            this.imagesForBackend.push(e.target.result);
-        }
-        reader.readAsDataURL(file);
-        console.log('Images for beckend');
-        console.log(this.imagesForBackend);
-    },
-    removeImage: function(image, index){
-        this.imageCount--;
-        this.imagesForFront.splice(index,1);
-        this.imagesForBackend.splice(index,1);
-    },
+            const reader= new FileReader();
+            reader.onload = (e) =>{
+                this.imagesForBackend.push(e.target.result);
+            }
+            reader.readAsDataURL(file);
+            console.log('Images for beckend');
+            console.log(this.imagesForBackend);
+        },
+    removeImage: function (image, index) {
+            if (image.fromBackend) {
+                this.imagesForBackendDelete.push(image)
+            } else {
+                for (let i = 0; i < this.imagesForBackendIDS.length; i++){
+                    if (this.imagesForBackendIDS[i] == image.id) {
+                        this.imagesForBackend.splice(i, 1);   
+                        this.imagesForBackendIDS.splice(i, 1);   
+                        break;       
+                    }
+                }
+            }
+            this.imagesForFront.splice(index,1);
+        },
     updateBoatData: function(){
         console.log('NEW BOAT')
         // this.boat.imagesForBackend = this.imagesForBackend;
+        this.boat.imagesForBackend = this.imagesForBackend;
+        this.boat.imagesForBackendDelete = this.imagesForBackendDelete
         this.boat.address.longitude = this.map.newLon;
         this.boat.address.latitude = this.map.newLat;
         

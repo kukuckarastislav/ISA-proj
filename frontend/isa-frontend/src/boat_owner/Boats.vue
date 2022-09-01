@@ -28,21 +28,24 @@
             <div class="col-sm-9">
                 <div v-for="boat in boats" :key="boat">
                     
-                        <div class="card" v-on:click="moreDetails(boat)">
+                        <div v-if="showIf(boat)" class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-5">
+                                    <div class="col-5" v-on:click="moreDetails(boat)">
                                         <img class="img-fluid" v-bind:src="getImg(boat)">
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-5" v-on:click="moreDetails(boat)">
                                         <h5 class="card-title text-start">{{boat.name}}</h5> 
                                         <br>
                                         <h6 class="card-title text-start">Country: {{boat.address.country}}</h6>
                                         <h6 class="card-title text-start">City: {{boat.address.city}}</h6>
                                         <h6 class="card-title text-start">Street: {{boat.address.street}} {{boat.address.number}}</h6>
                                         <br>
-                                        <h6 class="card-title text-start">Maximum number of people: {{boat.maxNumberOfPeople}}</h6>
-                                        <h6 class="card-title text-start">description: {{boat.description}}</h6>
+                                        <h6 class="card-title text-start">Maximum number of people: {{boat.capacity}}</h6>
+                                        <h6 class="card-title text-start">description: {{boat.promotionalDescription}}</h6>
+                                    </div>
+                                    <div class="col-2 text-end">
+                                        <button class="btn btn-danger" v-on:click="deleteClick(boat)">Delete</button>
                                     </div>
                                 </div>
                             </div>         
@@ -54,6 +57,53 @@
               
 
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            <!--<div class="col-sm-9">
+            //     <div v-for="boat in boats" :key="boat">
+                    
+            //             <div class="card" v-on:click="moreDetails(boat)">
+            //                 <div class="card-body">
+            //                     <div class="row">
+            //                         <div class="col-sm-5">
+            //                             <img class="img-fluid" v-bind:src="getImg(boat)">
+            //                         </div>
+            //                         <div class="col-sm-6">
+            //                             <h5 class="card-title text-start">{{boat.name}}</h5> 
+            //                             <br>
+            //                             <h6 class="card-title text-start">Country: {{boat.address.country}}</h6>
+            //                             <h6 class="card-title text-start">City: {{boat.address.city}}</h6>
+            //                             <h6 class="card-title text-start">Street: {{boat.address.street}} {{boat.address.number}}</h6>
+            //                             <br>
+            //                             <h6 class="card-title text-start">Maximum number of people: {{boat.maxNumberOfPeople}}</h6>
+            //                             <h6 class="card-title text-start">description: {{boat.description}}</h6>
+            //                         </div>
+            //                     </div>
+            //                 </div>         
+            //             </div>
+                    
+            //         <br>
+            //     </div>
+                 
+              
+            // </div>-->
+
+
         </div>
     </div>
 
@@ -69,7 +119,8 @@ export default {
   data: function(){
     return {
         boats: [],
-        sortType: 'NameAZ'
+        sortType: 'NameAZ',
+        filterByName: ''
     }
   },
   mounted: function(){
@@ -114,11 +165,25 @@ export default {
 			} else if (this.sortType == 'CountryZA') {
 				this.boats.sort((b, a) => (a.address.country > b.address.country) ? 1 : ((b.address.country > a.address.country) ? -1 : 0));
 			} else if (this.sortType == 'MaxNumOfPeopleASC') {
-				this.boats.sort((a, b) => (a.maxNumberOfPeople > b.maxNumberOfPeople) ? 1 : ((b.maxNumberOfPeople > a.maxNumberOfPeople) ? -1 : 0));
+				this.boats.sort((a, b) => (a.capacity > b.capacity) ? 1 : ((b.capacity > a.capacity) ? -1 : 0));
 			} else if (this.sortType == 'MaxNumOfPeopleDES') {
-				this.boats.sort((b, a) => (a.maxNumberOfPeople > b.maxNumberOfPeople) ? 1 : ((b.maxNumberOfPeople > a.maxNumberOfPeople) ? -1 : 0));
+				this.boats.sort((b, a) => (a.capacity > b.capacity) ? 1 : ((b.capacity > a.capacity) ? -1 : 0));
 			} 
 		},
+        showIf: function(adventure){
+        return adventure.name.toLowerCase().includes(this.filterByName.toLowerCase())
+        },
+        deleteClick: function (adventure) {
+            let confirmAction = confirm("Are you sure? Delete user " + adventure.name);
+            if (!confirmAction) {
+                return
+            }
+            axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+            axios.delete('http://localhost:8180/api/boat/'+boat.id).then(resp => {
+                alert(resp.data)
+                this.loadData();
+            }, (err) => {alert("Error")});
+        },
   }
 }
 </script>
