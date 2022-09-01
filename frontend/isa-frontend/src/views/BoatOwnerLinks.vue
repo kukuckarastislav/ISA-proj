@@ -6,6 +6,9 @@
                 <div class="col">
                     <a href="/boatOwnerBoats" class="nav-link">My boats</a>
                 </div>
+                <div class="col">
+                    <a href="/boatowner/reservation" class="nav-link">Reservations</a>
+                </div>
                  <div class="col">
                     <a href="/boatowner/calendar" class="nav-link">Calendar</a>
                 </div>

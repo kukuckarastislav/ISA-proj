@@ -41,11 +41,23 @@
           </div>
         </div>
 
+
+        <div v-if="showSelectedReservation" class="row" style="margin-top:30px;">
+        <div class="col-1"></div>
+          <div class="col-10">
+              <BoatReservationViewComponent v-bind:reservation="selectedReservation" />
+              <button class="btn btn-primary m-2" v-on:click="closeSelectedReservation()">Close</button>
+          </div>
+          <div class="col-1"></div>
+        </div>
+
     </div>
 </template>
 
 <script>
 import axios from "axios";
+import BoatReservationViewComponent from '../boat_owner/BoatReservationViewComponent.vue'
+
 
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
@@ -74,7 +86,7 @@ export default {
     FullCalendar,
     CalendarLegend,
     Datepicker,
-    //ReservationViewComponent
+    BoatReservationViewComponent
   },
   data: function(){
     return {
@@ -110,6 +122,7 @@ export default {
   mounted: function(){
       this.loadData();
       this.calendarOptions.select = this.selectInCalendar;
+      this.calendarOptions.eventClick = this.eventClickCalendar;
   },
   methods: {
     loadData: function(){
@@ -182,12 +195,12 @@ export default {
           this.createNewTerm.valid = false;
           return;
         }
-        /*
+        
         const startTimeForBackend = new Date(Date.UTC(this.createNewTerm.date[0].getFullYear(), this.createNewTerm.date[0].getMonth(), this.createNewTerm.date[0].getDate(), this.createNewTerm.date[0].getHours(), this.createNewTerm.date[0].getMinutes()))
         const endTimeForBackend = new Date(Date.UTC(this.createNewTerm.date[1].getFullYear(), this.createNewTerm.date[1].getMonth(), this.createNewTerm.date[1].getDate(), this.createNewTerm.date[1].getHours(), this.createNewTerm.date[1].getMinutes()))
 
         axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
-        axios.post('http://localhost:8180/api/instructorterms/term', {
+        axios.post('http://localhost:8180/api/boat-term/term', {
           "termAvailability":this.createNewTerm.type,
           "startTime":startTimeForBackend,
           "endTime":endTimeForBackend,
@@ -198,7 +211,7 @@ export default {
           (err)=>{
             alert(err)
         });
-        */
+        
     },
     overlap: function(){
         for(const event of this.calendarOptions.events){
@@ -209,6 +222,34 @@ export default {
         }
         return false;
     },
+    eventClickCalendar: function(info){
+        if(this.createNewTerm.formVisible) return;
+        
+        let e = info.event._def.extendedProps
+        if(e.isa_termType != 'TERM'){
+          this.loadDataSelectedReservation(e)
+        }
+    },
+    loadDataSelectedReservation: function(event){
+      //alert('ID ' + event.isa_idTerm)
+      this.selectedReservation = null;
+      this.showSelectedReservation = false; 
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + window.sessionStorage.getItem("jwt");  
+      axios.get('http://localhost:8180/api/boat-terms/reservation/'+event.isa_termType+'/'+event.isa_idTerm).then(
+        (resp) => {
+          console.log(resp.data)
+          this.selectedReservation = resp.data;
+          this.showSelectedReservation = true; 
+        }, 
+        (err)=>{
+          alert(err)
+      });
+    },
+    closeSelectedReservation: function(){
+       this.selectedReservation = null;
+       this.showSelectedReservation = false; 
+    }
   }
 }
 </script>

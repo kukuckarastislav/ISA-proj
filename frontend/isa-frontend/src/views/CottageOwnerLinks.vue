@@ -7,6 +7,9 @@
                     <a href="/cottageOwnerCottages" class="nav-link">My Cottages</a>
                 </div>
                 <div class="col">
+                    <a href="/cottageowner/reservation" class="nav-link">Reservations</a>
+                </div>
+                <div class="col">
                     <a href="/cottageowner/calendar" class="nav-link">Calendar</a>
                 </div>
                  <div class="col">
